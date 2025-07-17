@@ -1,0 +1,31 @@
+{
+  "name": "arch-unit-js",
+  "version": "1.0.0",
+  "description": "arch-unit clone for node.js projects",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "bin": {
+    "arch-unit": "./dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gftf2011/arch-unit-js.git"
+  },
+  "author": "Gabriel Ferrari Tarallo Ferraz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gftf2011/arch-unit-js/issues"
+  },
+  "homepage": "https://github.com/gftf2011/arch-unit-js#readme",
+  "devDependencies": {
+    "@types/babel__traverse": "7.20.7",
+    "@types/node": "24.0.14",
+    "typescript": "5.8.3"
+  },
+  "dependencies": {
+    "@babel/parser": "7.28.0",
+    "@babel/traverse": "7.28.0"
+  }
+}

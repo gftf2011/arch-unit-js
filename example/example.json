@@ -1,0 +1,2737 @@
+{
+    "name": "src",
+    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src",
+    "type": "directory",
+    "children": [
+      {
+        "name": "app",
+        "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app",
+        "type": "directory",
+        "children": [
+          {
+            "name": "actions",
+            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/actions",
+            "type": "directory",
+            "children": [
+              {
+                "name": "create-access-token.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/actions/create-access-token.ts",
+                "type": "file",
+                "imports": [
+                  "../contracts/actions"
+                ]
+              },
+              {
+                "name": "create-note.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/actions/create-note.ts",
+                "type": "file",
+                "imports": [
+                  "../contracts/actions"
+                ]
+              },
+              {
+                "name": "create-user.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/actions/create-user.ts",
+                "type": "file",
+                "imports": [
+                  "../../domain/dto",
+                  "../contracts/actions"
+                ]
+              },
+              {
+                "name": "delete-note.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/actions/delete-note.ts",
+                "type": "file",
+                "imports": [
+                  "../contracts/actions"
+                ]
+              },
+              {
+                "name": "find-note.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/actions/find-note.ts",
+                "type": "file",
+                "imports": [
+                  "../contracts/actions"
+                ]
+              },
+              {
+                "name": "find-notes-by-user-id.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/actions/find-notes-by-user-id.ts",
+                "type": "file",
+                "imports": [
+                  "../contracts/actions"
+                ]
+              },
+              {
+                "name": "find-user-by-email.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/actions/find-user-by-email.ts",
+                "type": "file",
+                "imports": [
+                  "../contracts/actions"
+                ]
+              },
+              {
+                "name": "find-user.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/actions/find-user.ts",
+                "type": "file",
+                "imports": [
+                  "../contracts/actions"
+                ]
+              },
+              {
+                "name": "index.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/actions/index.ts",
+                "type": "file",
+                "imports": []
+              },
+              {
+                "name": "is-note-finished.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/actions/is-note-finished.ts",
+                "type": "file",
+                "imports": [
+                  "../contracts/actions"
+                ]
+              },
+              {
+                "name": "password-match.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/actions/password-match.ts",
+                "type": "file",
+                "imports": [
+                  "../contracts/actions"
+                ]
+              },
+              {
+                "name": "update-note.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/actions/update-note.ts",
+                "type": "file",
+                "imports": [
+                  "../contracts/actions"
+                ]
+              },
+              {
+                "name": "verify-token.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/actions/verify-token.ts",
+                "type": "file",
+                "imports": [
+                  "../contracts/actions"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "contracts",
+            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts",
+            "type": "directory",
+            "children": [
+              {
+                "name": "actions",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/actions",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "index.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/actions/index.ts",
+                    "type": "file",
+                    "imports": []
+                  }
+                ]
+              },
+              {
+                "name": "bus",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/bus",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "index.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/bus/index.ts",
+                    "type": "file",
+                    "imports": [
+                      "../actions"
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "controllers",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/controllers",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "index.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/controllers/index.ts",
+                    "type": "file",
+                    "imports": []
+                  }
+                ]
+              },
+              {
+                "name": "database",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/database",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "index.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/database/index.ts",
+                    "type": "file",
+                    "imports": []
+                  }
+                ]
+              },
+              {
+                "name": "graphql",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/graphql",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "index.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/graphql/index.ts",
+                    "type": "file",
+                    "imports": []
+                  }
+                ]
+              },
+              {
+                "name": "handlers",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/handlers",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "index.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/handlers/index.ts",
+                    "type": "file",
+                    "imports": [
+                      "../actions"
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "http",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/http",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "index.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/http/index.ts",
+                    "type": "file",
+                    "imports": []
+                  }
+                ]
+              },
+              {
+                "name": "middlewares",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/middlewares",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "index.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/middlewares/index.ts",
+                    "type": "file",
+                    "imports": []
+                  }
+                ]
+              },
+              {
+                "name": "providers",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/providers",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "decryption",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/providers/decryption",
+                    "type": "directory",
+                    "children": [
+                      {
+                        "name": "index.ts",
+                        "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/providers/decryption/index.ts",
+                        "type": "file",
+                        "imports": []
+                      }
+                    ]
+                  },
+                  {
+                    "name": "encryption",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/providers/encryption",
+                    "type": "directory",
+                    "children": [
+                      {
+                        "name": "index.ts",
+                        "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/providers/encryption/index.ts",
+                        "type": "file",
+                        "imports": []
+                      }
+                    ]
+                  },
+                  {
+                    "name": "hash",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/providers/hash",
+                    "type": "directory",
+                    "children": [
+                      {
+                        "name": "index.ts",
+                        "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/providers/hash/index.ts",
+                        "type": "file",
+                        "imports": []
+                      }
+                    ]
+                  },
+                  {
+                    "name": "index.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/providers/index.ts",
+                    "type": "file",
+                    "imports": []
+                  },
+                  {
+                    "name": "sequencing",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/providers/sequencing",
+                    "type": "directory",
+                    "children": [
+                      {
+                        "name": "index.ts",
+                        "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/providers/sequencing/index.ts",
+                        "type": "file",
+                        "imports": []
+                      }
+                    ]
+                  },
+                  {
+                    "name": "token",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/providers/token",
+                    "type": "directory",
+                    "children": [
+                      {
+                        "name": "index.ts",
+                        "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/providers/token/index.ts",
+                        "type": "file",
+                        "imports": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "response",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/response",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "index.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/response/index.ts",
+                    "type": "file",
+                    "imports": []
+                  }
+                ]
+              },
+              {
+                "name": "services",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/services",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "index.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/services/index.ts",
+                    "type": "file",
+                    "imports": []
+                  },
+                  {
+                    "name": "note.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/services/note.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../../domain/dto"
+                    ]
+                  },
+                  {
+                    "name": "user.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/services/user.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../../domain/dto"
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "validation",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/validation",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "index.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/contracts/validation/index.ts",
+                    "type": "file",
+                    "imports": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "controllers",
+            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers",
+            "type": "directory",
+            "children": [
+              {
+                "name": "decorators",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/decorators",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "database.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/decorators/database.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../contracts/controllers",
+                      "../../contracts/database"
+                    ]
+                  },
+                  {
+                    "name": "index.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/decorators/index.ts",
+                    "type": "file",
+                    "imports": []
+                  }
+                ]
+              },
+              {
+                "name": "graphql",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/graphql",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "create-note.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/graphql/create-note.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../contracts/services",
+                      "../../errors",
+                      "../template",
+                      "../view-models",
+                      "../utils",
+                      "../../contracts/response",
+                      "../../contracts/graphql"
+                    ]
+                  },
+                  {
+                    "name": "delete-note.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/graphql/delete-note.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../contracts/services",
+                      "../../errors",
+                      "../template",
+                      "../utils",
+                      "../../contracts/response",
+                      "../../contracts/graphql"
+                    ]
+                  },
+                  {
+                    "name": "get-note.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/graphql/get-note.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../contracts/services",
+                      "../../errors",
+                      "../template",
+                      "../utils",
+                      "../view-models",
+                      "../../contracts/response",
+                      "../../contracts/graphql"
+                    ]
+                  },
+                  {
+                    "name": "get-notes-by-user-id.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/graphql/get-notes-by-user-id.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../contracts/services",
+                      "../../errors",
+                      "../template",
+                      "../utils",
+                      "../view-models",
+                      "../../contracts/response",
+                      "../../contracts/graphql"
+                    ]
+                  },
+                  {
+                    "name": "index.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/graphql/index.ts",
+                    "type": "file",
+                    "imports": []
+                  },
+                  {
+                    "name": "sign-in.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/graphql/sign-in.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../contracts/services",
+                      "../../errors",
+                      "../template",
+                      "../utils",
+                      "../view-models",
+                      "../../contracts/response",
+                      "../../contracts/graphql"
+                    ]
+                  },
+                  {
+                    "name": "sign-up.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/graphql/sign-up.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../../domain/dto",
+                      "../../contracts/services",
+                      "../../errors",
+                      "../template",
+                      "../utils",
+                      "../view-models",
+                      "../../contracts/response",
+                      "../../contracts/graphql"
+                    ]
+                  },
+                  {
+                    "name": "update-finished-note.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/graphql/update-finished-note.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../contracts/services",
+                      "../../errors",
+                      "../template",
+                      "../view-models",
+                      "../utils",
+                      "../../contracts/response",
+                      "../../contracts/graphql"
+                    ]
+                  },
+                  {
+                    "name": "update-note.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/graphql/update-note.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../../domain/dto",
+                      "../../contracts/services",
+                      "../../errors",
+                      "../template",
+                      "../view-models",
+                      "../utils",
+                      "../../contracts/response",
+                      "../../contracts/graphql"
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "rest",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/rest",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "create-note.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/rest/create-note.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../../domain/dto",
+                      "../../contracts/http",
+                      "../../contracts/services",
+                      "../../errors",
+                      "../template",
+                      "../view-models",
+                      "../utils",
+                      "../../contracts/response",
+                      "../../contracts/validation",
+                      "../../validation"
+                    ]
+                  },
+                  {
+                    "name": "delete-note.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/rest/delete-note.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../contracts/http",
+                      "../../contracts/services",
+                      "../../errors",
+                      "../template",
+                      "../utils",
+                      "../../contracts/response",
+                      "../../contracts/validation",
+                      "../../validation"
+                    ]
+                  },
+                  {
+                    "name": "get-note.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/rest/get-note.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../contracts/http",
+                      "../../contracts/services",
+                      "../../errors",
+                      "../template",
+                      "../utils",
+                      "../view-models",
+                      "../../contracts/response",
+                      "../../contracts/validation",
+                      "../../validation"
+                    ]
+                  },
+                  {
+                    "name": "get-notes-by-user-id.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/rest/get-notes-by-user-id.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../contracts/http",
+                      "../../contracts/services",
+                      "../../errors",
+                      "../template",
+                      "../utils",
+                      "../view-models",
+                      "../../contracts/response",
+                      "../../contracts/validation",
+                      "../../validation"
+                    ]
+                  },
+                  {
+                    "name": "index.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/rest/index.ts",
+                    "type": "file",
+                    "imports": []
+                  },
+                  {
+                    "name": "sign-in.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/rest/sign-in.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../contracts/http",
+                      "../../contracts/services",
+                      "../../errors",
+                      "../template",
+                      "../utils",
+                      "../view-models",
+                      "../../contracts/response",
+                      "../../contracts/validation",
+                      "../../validation"
+                    ]
+                  },
+                  {
+                    "name": "sign-up.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/rest/sign-up.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../../domain/dto",
+                      "../../contracts/http",
+                      "../../contracts/services",
+                      "../../errors",
+                      "../template",
+                      "../utils",
+                      "../view-models",
+                      "../../contracts/response",
+                      "../../contracts/validation",
+                      "../../validation"
+                    ]
+                  },
+                  {
+                    "name": "update-finished-note.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/rest/update-finished-note.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../contracts/http",
+                      "../../contracts/services",
+                      "../../errors",
+                      "../template",
+                      "../view-models",
+                      "../utils",
+                      "../../contracts/response",
+                      "../../contracts/validation",
+                      "../../validation"
+                    ]
+                  },
+                  {
+                    "name": "update-note.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/rest/update-note.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../../domain/dto",
+                      "../../contracts/http",
+                      "../../contracts/services",
+                      "../../errors",
+                      "../template",
+                      "../view-models",
+                      "../utils",
+                      "../../contracts/response",
+                      "../../contracts/validation",
+                      "../../validation"
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "strategies",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/strategies",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "error-handler.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/strategies/error-handler.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../../domain/errors",
+                      "../../errors",
+                      "../../contracts/response",
+                      "../utils"
+                    ]
+                  },
+                  {
+                    "name": "index.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/strategies/index.ts",
+                    "type": "file",
+                    "imports": []
+                  }
+                ]
+              },
+              {
+                "name": "template",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/template",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "graphql-controller.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/template/graphql-controller.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../contracts/graphql",
+                      "../strategies",
+                      "../../contracts/controllers",
+                      "../../contracts/response"
+                    ]
+                  },
+                  {
+                    "name": "http-controller.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/template/http-controller.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../contracts/http",
+                      "../strategies",
+                      "../../contracts/validation",
+                      "../../validation",
+                      "../../contracts/controllers",
+                      "../../contracts/response"
+                    ]
+                  },
+                  {
+                    "name": "index.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/template/index.ts",
+                    "type": "file",
+                    "imports": []
+                  }
+                ]
+              },
+              {
+                "name": "utils",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/utils",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "http.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/utils/http.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../contracts/response"
+                    ]
+                  },
+                  {
+                    "name": "index.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/utils/index.ts",
+                    "type": "file",
+                    "imports": []
+                  }
+                ]
+              },
+              {
+                "name": "view-models",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/view-models",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "created-session.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/view-models/created-session.ts",
+                    "type": "file",
+                    "imports": []
+                  },
+                  {
+                    "name": "index.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/view-models/index.ts",
+                    "type": "file",
+                    "imports": []
+                  },
+                  {
+                    "name": "note.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/view-models/note.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../../domain/dto"
+                    ]
+                  },
+                  {
+                    "name": "notes.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/controllers/view-models/notes.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../../domain/dto"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "errors",
+            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/errors",
+            "type": "directory",
+            "children": [
+              {
+                "name": "access-denied.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/errors/access-denied.ts",
+                "type": "file",
+                "imports": [
+                  "./application"
+                ]
+              },
+              {
+                "name": "action-not-registered.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/errors/action-not-registered.ts",
+                "type": "file",
+                "imports": [
+                  "../contracts/actions",
+                  "./application"
+                ]
+              },
+              {
+                "name": "application.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/errors/application.ts",
+                "type": "file",
+                "imports": []
+              },
+              {
+                "name": "database.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/errors/database.ts",
+                "type": "file",
+                "imports": [
+                  "./application"
+                ]
+              },
+              {
+                "name": "index.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/errors/index.ts",
+                "type": "file",
+                "imports": []
+              },
+              {
+                "name": "invalid-sequencing-domain.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/errors/invalid-sequencing-domain.ts",
+                "type": "file",
+                "imports": [
+                  "./application"
+                ]
+              },
+              {
+                "name": "invalid-token-subject.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/errors/invalid-token-subject.ts",
+                "type": "file",
+                "imports": [
+                  "./application"
+                ]
+              },
+              {
+                "name": "missing-body-params.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/errors/missing-body-params.ts",
+                "type": "file",
+                "imports": [
+                  "./application"
+                ]
+              },
+              {
+                "name": "missing-header-params.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/errors/missing-header-params.ts",
+                "type": "file",
+                "imports": [
+                  "./application"
+                ]
+              },
+              {
+                "name": "missing-url-params.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/errors/missing-url-params.ts",
+                "type": "file",
+                "imports": [
+                  "./application"
+                ]
+              },
+              {
+                "name": "note-not-found.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/errors/note-not-found.ts",
+                "type": "file",
+                "imports": [
+                  "./application"
+                ]
+              },
+              {
+                "name": "password-does-not-match.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/errors/password-does-not-match.ts",
+                "type": "file",
+                "imports": [
+                  "./application"
+                ]
+              },
+              {
+                "name": "service-unavailable.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/errors/service-unavailable.ts",
+                "type": "file",
+                "imports": [
+                  "./application"
+                ]
+              },
+              {
+                "name": "token-expired.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/errors/token-expired.ts",
+                "type": "file",
+                "imports": [
+                  "./application"
+                ]
+              },
+              {
+                "name": "unfinished-note.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/errors/unfinished-note.ts",
+                "type": "file",
+                "imports": [
+                  "./application"
+                ]
+              },
+              {
+                "name": "user-already-exists.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/errors/user-already-exists.ts",
+                "type": "file",
+                "imports": [
+                  "./application"
+                ]
+              },
+              {
+                "name": "user-does-not-exists.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/errors/user-does-not-exists.ts",
+                "type": "file",
+                "imports": [
+                  "./application"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "handlers",
+            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/handlers",
+            "type": "directory",
+            "children": [
+              {
+                "name": "create-access-token.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/handlers/create-access-token.ts",
+                "type": "file",
+                "imports": [
+                  "../contracts/handlers",
+                  "../actions",
+                  "../contracts/providers"
+                ]
+              },
+              {
+                "name": "create-note.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/handlers/create-note.ts",
+                "type": "file",
+                "imports": [
+                  "../contracts/handlers",
+                  "../actions",
+                  "../contracts/providers",
+                  "../../domain/repositories",
+                  "../../domain/entity",
+                  "../../domain/models"
+                ]
+              },
+              {
+                "name": "create-user.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/handlers/create-user.ts",
+                "type": "file",
+                "imports": [
+                  "../contracts/handlers",
+                  "../actions",
+                  "../contracts/providers",
+                  "../../domain/repositories",
+                  "../../domain/entity",
+                  "../../domain/models"
+                ]
+              },
+              {
+                "name": "delete-note.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/handlers/delete-note.ts",
+                "type": "file",
+                "imports": [
+                  "../contracts/handlers",
+                  "../../domain/repositories",
+                  "../actions"
+                ]
+              },
+              {
+                "name": "find-note.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/handlers/find-note.ts",
+                "type": "file",
+                "imports": [
+                  "../contracts/handlers",
+                  "../actions",
+                  "../contracts/providers",
+                  "../../domain/repositories",
+                  "../../domain/dto"
+                ]
+              },
+              {
+                "name": "find-notes-by-user-id.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/handlers/find-notes-by-user-id.ts",
+                "type": "file",
+                "imports": [
+                  "../contracts/handlers",
+                  "../actions",
+                  "../contracts/providers",
+                  "../../domain/repositories",
+                  "../../domain/dto"
+                ]
+              },
+              {
+                "name": "find-user-by-email.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/handlers/find-user-by-email.ts",
+                "type": "file",
+                "imports": [
+                  "../contracts/handlers",
+                  "../actions",
+                  "../contracts/providers",
+                  "../../domain/repositories",
+                  "../../domain/dto"
+                ]
+              },
+              {
+                "name": "find-user.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/handlers/find-user.ts",
+                "type": "file",
+                "imports": [
+                  "../contracts/handlers",
+                  "../actions",
+                  "../contracts/providers",
+                  "../../domain/repositories",
+                  "../../domain/dto"
+                ]
+              },
+              {
+                "name": "index.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/handlers/index.ts",
+                "type": "file",
+                "imports": []
+              },
+              {
+                "name": "is-note-finished.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/handlers/is-note-finished.ts",
+                "type": "file",
+                "imports": [
+                  "../contracts/handlers",
+                  "../actions",
+                  "../../domain/repositories"
+                ]
+              },
+              {
+                "name": "password-match.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/handlers/password-match.ts",
+                "type": "file",
+                "imports": [
+                  "../contracts/handlers",
+                  "../actions",
+                  "../contracts/providers"
+                ]
+              },
+              {
+                "name": "update-note.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/handlers/update-note.ts",
+                "type": "file",
+                "imports": [
+                  "../contracts/handlers",
+                  "../actions",
+                  "../contracts/providers",
+                  "../../domain/repositories",
+                  "../../domain/entity",
+                  "../../domain/models"
+                ]
+              },
+              {
+                "name": "verify-token.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/handlers/verify-token.ts",
+                "type": "file",
+                "imports": [
+                  "../../shared",
+                  "../actions",
+                  "../contracts/handlers",
+                  "../contracts/providers",
+                  "../errors"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "middlewares",
+            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/middlewares",
+            "type": "directory",
+            "children": [
+              {
+                "name": "decorators",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/middlewares/decorators",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "database.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/middlewares/decorators/database.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../contracts/middlewares",
+                      "../../contracts/database"
+                    ]
+                  },
+                  {
+                    "name": "index.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/middlewares/decorators/index.ts",
+                    "type": "file",
+                    "imports": []
+                  }
+                ]
+              },
+              {
+                "name": "graphql",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/middlewares/graphql",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "auth.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/middlewares/graphql/auth.ts",
+                    "type": "file",
+                    "imports": [
+                      "../template",
+                      "../../errors",
+                      "../utils",
+                      "../../contracts/services",
+                      "../../contracts/response",
+                      "../../contracts/graphql"
+                    ]
+                  },
+                  {
+                    "name": "index.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/middlewares/graphql/index.ts",
+                    "type": "file",
+                    "imports": []
+                  }
+                ]
+              },
+              {
+                "name": "rest",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/middlewares/rest",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "auth.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/middlewares/rest/auth.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../contracts/http",
+                      "../template",
+                      "../../errors",
+                      "../../contracts/validation",
+                      "../../validation",
+                      "../utils",
+                      "../../contracts/services",
+                      "../../contracts/response"
+                    ]
+                  },
+                  {
+                    "name": "index.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/middlewares/rest/index.ts",
+                    "type": "file",
+                    "imports": []
+                  }
+                ]
+              },
+              {
+                "name": "strategies",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/middlewares/strategies",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "error-handler.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/middlewares/strategies/error-handler.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../errors",
+                      "../../contracts/response",
+                      "../utils"
+                    ]
+                  },
+                  {
+                    "name": "index.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/middlewares/strategies/index.ts",
+                    "type": "file",
+                    "imports": []
+                  }
+                ]
+              },
+              {
+                "name": "template",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/middlewares/template",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "graphql-middleware.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/middlewares/template/graphql-middleware.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../contracts/response",
+                      "../strategies",
+                      "../../contracts/middlewares",
+                      "../../contracts/graphql"
+                    ]
+                  },
+                  {
+                    "name": "http-middleware.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/middlewares/template/http-middleware.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../contracts/http",
+                      "../../contracts/response",
+                      "../strategies",
+                      "../../contracts/validation",
+                      "../../contracts/middlewares",
+                      "../../validation"
+                    ]
+                  },
+                  {
+                    "name": "index.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/middlewares/template/index.ts",
+                    "type": "file",
+                    "imports": []
+                  }
+                ]
+              },
+              {
+                "name": "utils",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/middlewares/utils",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "http.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/middlewares/utils/http.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../contracts/response"
+                    ]
+                  },
+                  {
+                    "name": "index.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/middlewares/utils/index.ts",
+                    "type": "file",
+                    "imports": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "services",
+            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/services",
+            "type": "directory",
+            "children": [
+              {
+                "name": "index.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/services/index.ts",
+                "type": "file",
+                "imports": []
+              },
+              {
+                "name": "note.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/services/note.ts",
+                "type": "file",
+                "imports": [
+                  "../../domain/dto",
+                  "../actions",
+                  "../contracts/bus",
+                  "../contracts/services"
+                ]
+              },
+              {
+                "name": "user.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/services/user.ts",
+                "type": "file",
+                "imports": [
+                  "../../domain/dto",
+                  "../actions",
+                  "../contracts/bus",
+                  "../contracts/services"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "validation",
+            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/validation",
+            "type": "directory",
+            "children": [
+              {
+                "name": "builder",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/validation/builder",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "index.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/validation/builder/index.ts",
+                    "type": "file",
+                    "imports": []
+                  },
+                  {
+                    "name": "required-param.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/validation/builder/required-param.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../contracts/validation",
+                      "../../errors"
+                    ]
+                  },
+                  {
+                    "name": "validation-builder.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/validation/builder/validation-builder.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../contracts/validation",
+                      "./required-param"
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "composite",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/validation/composite",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "index.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/validation/composite/index.ts",
+                    "type": "file",
+                    "imports": []
+                  },
+                  {
+                    "name": "validation-composite.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/validation/composite/validation-composite.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../contracts/validation"
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "index.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/app/validation/index.ts",
+                "type": "file",
+                "imports": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "domain",
+        "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain",
+        "type": "directory",
+        "children": [
+          {
+            "name": "dto",
+            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/dto",
+            "type": "directory",
+            "children": [
+              {
+                "name": "index.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/dto/index.ts",
+                "type": "file",
+                "imports": []
+              },
+              {
+                "name": "note.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/dto/note.ts",
+                "type": "file",
+                "imports": []
+              },
+              {
+                "name": "user.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/dto/user.ts",
+                "type": "file",
+                "imports": []
+              }
+            ]
+          },
+          {
+            "name": "entity",
+            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/entity",
+            "type": "directory",
+            "children": [
+              {
+                "name": "index.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/entity/index.ts",
+                "type": "file",
+                "imports": []
+              },
+              {
+                "name": "note.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/entity/note.ts",
+                "type": "file",
+                "imports": [
+                  "../../shared",
+                  "../value-objects"
+                ]
+              },
+              {
+                "name": "user.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/entity/user.ts",
+                "type": "file",
+                "imports": [
+                  "../../shared",
+                  "../value-objects"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "errors",
+            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/errors",
+            "type": "directory",
+            "children": [
+              {
+                "name": "domain.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/errors/domain.ts",
+                "type": "file",
+                "imports": []
+              },
+              {
+                "name": "index.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/errors/index.ts",
+                "type": "file",
+                "imports": []
+              },
+              {
+                "name": "invalid-description.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/errors/invalid-description.ts",
+                "type": "file",
+                "imports": [
+                  "./domain"
+                ]
+              },
+              {
+                "name": "invalid-email.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/errors/invalid-email.ts",
+                "type": "file",
+                "imports": [
+                  "./domain"
+                ]
+              },
+              {
+                "name": "invalid-id.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/errors/invalid-id.ts",
+                "type": "file",
+                "imports": [
+                  "./domain"
+                ]
+              },
+              {
+                "name": "invalid-lastname.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/errors/invalid-lastname.ts",
+                "type": "file",
+                "imports": [
+                  "./domain"
+                ]
+              },
+              {
+                "name": "invalid-name.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/errors/invalid-name.ts",
+                "type": "file",
+                "imports": [
+                  "./domain"
+                ]
+              },
+              {
+                "name": "invalid-title.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/errors/invalid-title.ts",
+                "type": "file",
+                "imports": [
+                  "./domain"
+                ]
+              },
+              {
+                "name": "weak-password.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/errors/weak-password.ts",
+                "type": "file",
+                "imports": [
+                  "./domain"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "models",
+            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/models",
+            "type": "directory",
+            "children": [
+              {
+                "name": "index.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/models/index.ts",
+                "type": "file",
+                "imports": []
+              },
+              {
+                "name": "note.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/models/note.ts",
+                "type": "file",
+                "imports": []
+              },
+              {
+                "name": "user.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/models/user.ts",
+                "type": "file",
+                "imports": []
+              }
+            ]
+          },
+          {
+            "name": "repositories",
+            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/repositories",
+            "type": "directory",
+            "children": [
+              {
+                "name": "base.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/repositories/base.ts",
+                "type": "file",
+                "imports": []
+              },
+              {
+                "name": "index.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/repositories/index.ts",
+                "type": "file",
+                "imports": []
+              },
+              {
+                "name": "note.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/repositories/note.ts",
+                "type": "file",
+                "imports": [
+                  "./base",
+                  "../models"
+                ]
+              },
+              {
+                "name": "user.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/repositories/user.ts",
+                "type": "file",
+                "imports": [
+                  "./base",
+                  "../models"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "value-objects",
+            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/value-objects",
+            "type": "directory",
+            "children": [
+              {
+                "name": "description.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/value-objects/description.ts",
+                "type": "file",
+                "imports": [
+                  "../../shared",
+                  "../errors"
+                ]
+              },
+              {
+                "name": "email.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/value-objects/email.ts",
+                "type": "file",
+                "imports": [
+                  "../../shared",
+                  "../errors"
+                ]
+              },
+              {
+                "name": "id.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/value-objects/id.ts",
+                "type": "file",
+                "imports": [
+                  "../../shared",
+                  "../errors"
+                ]
+              },
+              {
+                "name": "index.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/value-objects/index.ts",
+                "type": "file",
+                "imports": []
+              },
+              {
+                "name": "lastname.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/value-objects/lastname.ts",
+                "type": "file",
+                "imports": [
+                  "../errors",
+                  "../../shared"
+                ]
+              },
+              {
+                "name": "name.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/value-objects/name.ts",
+                "type": "file",
+                "imports": [
+                  "../errors",
+                  "../../shared"
+                ]
+              },
+              {
+                "name": "password.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/value-objects/password.ts",
+                "type": "file",
+                "imports": [
+                  "../../shared",
+                  "../errors"
+                ]
+              },
+              {
+                "name": "title.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/domain/value-objects/title.ts",
+                "type": "file",
+                "imports": [
+                  "../../shared",
+                  "../errors"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "infra",
+        "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/infra",
+        "type": "directory",
+        "children": [
+          {
+            "name": "bus",
+            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/infra/bus",
+            "type": "directory",
+            "children": [
+              {
+                "name": "bus-mediator.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/infra/bus/bus-mediator.ts",
+                "type": "file",
+                "imports": [
+                  "../../app/contracts/actions",
+                  "../../app/contracts/handlers",
+                  "../../app/contracts/bus",
+                  "../../app/errors"
+                ]
+              },
+              {
+                "name": "index.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/infra/bus/index.ts",
+                "type": "file",
+                "imports": []
+              }
+            ]
+          },
+          {
+            "name": "database",
+            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/infra/database",
+            "type": "directory",
+            "children": [
+              {
+                "name": "postgres",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/infra/database/postgres",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "connection",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/infra/database/postgres/connection",
+                    "type": "directory",
+                    "children": [
+                      {
+                        "name": "index.ts",
+                        "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/infra/database/postgres/connection/index.ts",
+                        "type": "file",
+                        "imports": []
+                      },
+                      {
+                        "name": "pg-connection.ts",
+                        "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/infra/database/postgres/connection/pg-connection.ts",
+                        "type": "file",
+                        "imports": [
+                          "pg",
+                          "../../../../app/contracts/database"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "name": "index.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/infra/database/postgres/index.ts",
+                    "type": "file",
+                    "imports": []
+                  },
+                  {
+                    "name": "postgres-transaction.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/infra/database/postgres/postgres-transaction.ts",
+                    "type": "file",
+                    "imports": [
+                      "pg",
+                      "../../../app/contracts/database",
+                      "./connection"
+                    ]
+                  },
+                  {
+                    "name": "proxies",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/infra/database/postgres/proxies",
+                    "type": "directory",
+                    "children": [
+                      {
+                        "name": "circuit-breaker.ts",
+                        "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/infra/database/postgres/proxies/circuit-breaker.ts",
+                        "type": "file",
+                        "imports": [
+                          "../../../../app/errors",
+                          "../../../../app/contracts/database"
+                        ]
+                      },
+                      {
+                        "name": "index.ts",
+                        "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/infra/database/postgres/proxies/index.ts",
+                        "type": "file",
+                        "imports": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "providers",
+            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/infra/providers",
+            "type": "directory",
+            "children": [
+              {
+                "name": "decryption.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/infra/providers/decryption.ts",
+                "type": "file",
+                "imports": [
+                  "crypto",
+                  "../../app/contracts/providers"
+                ]
+              },
+              {
+                "name": "encryption.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/infra/providers/encryption.ts",
+                "type": "file",
+                "imports": [
+                  "crypto",
+                  "../../app/contracts/providers"
+                ]
+              },
+              {
+                "name": "hash.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/infra/providers/hash.ts",
+                "type": "file",
+                "imports": [
+                  "crypto",
+                  "util",
+                  "../../app/contracts/providers"
+                ]
+              },
+              {
+                "name": "index.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/infra/providers/index.ts",
+                "type": "file",
+                "imports": []
+              },
+              {
+                "name": "sequencing.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/infra/providers/sequencing.ts",
+                "type": "file",
+                "imports": [
+                  "uuid",
+                  "../../app/contracts/providers",
+                  "../../app/errors"
+                ]
+              },
+              {
+                "name": "token.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/infra/providers/token.ts",
+                "type": "file",
+                "imports": [
+                  "jsonwebtoken",
+                  "../../app/contracts/providers"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "repositories",
+            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/infra/repositories",
+            "type": "directory",
+            "children": [
+              {
+                "name": "index.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/infra/repositories/index.ts",
+                "type": "file",
+                "imports": [
+                  "./user",
+                  "./note",
+                  "../../domain/repositories",
+                  "../../app/contracts/database"
+                ]
+              },
+              {
+                "name": "note.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/infra/repositories/note.ts",
+                "type": "file",
+                "imports": [
+                  "../../domain/repositories",
+                  "../../domain/models",
+                  "../../app/contracts/database"
+                ]
+              },
+              {
+                "name": "user.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/infra/repositories/user.ts",
+                "type": "file",
+                "imports": [
+                  "../../domain/repositories",
+                  "../../domain/models",
+                  "../../app/contracts/database"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "main",
+        "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main",
+        "type": "directory",
+        "children": [
+          {
+            "name": "adapters",
+            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/adapters",
+            "type": "directory",
+            "children": [
+              {
+                "name": "apollo-server-resolver-adapter.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/adapters/apollo-server-resolver-adapter.ts",
+                "type": "file",
+                "imports": [
+                  "graphql",
+                  "../../app/contracts/controllers"
+                ]
+              },
+              {
+                "name": "express-middleware-adapter.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/adapters/express-middleware-adapter.ts",
+                "type": "file",
+                "imports": [
+                  "express",
+                  "../../app/contracts/middlewares",
+                  "../../app/contracts/http"
+                ]
+              },
+              {
+                "name": "express-route-adapter.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/adapters/express-route-adapter.ts",
+                "type": "file",
+                "imports": [
+                  "express",
+                  "../../app/contracts/controllers",
+                  "../../app/contracts/http"
+                ]
+              },
+              {
+                "name": "index.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/adapters/index.ts",
+                "type": "file",
+                "imports": []
+              }
+            ]
+          },
+          {
+            "name": "bootstrap",
+            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/bootstrap",
+            "type": "directory",
+            "children": [
+              {
+                "name": "index.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/bootstrap/index.ts",
+                "type": "file",
+                "imports": [
+                  "dotenv",
+                  "path"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "config",
+            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/config",
+            "type": "directory",
+            "children": [
+              {
+                "name": "middlewares-graphql.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/config/middlewares-graphql.ts",
+                "type": "file",
+                "imports": [
+                  "express",
+                  "@apollo/server",
+                  "@apollo/server/express4"
+                ]
+              },
+              {
+                "name": "middlewares.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/config/middlewares.ts",
+                "type": "file",
+                "imports": [
+                  "express",
+                  "fs"
+                ]
+              },
+              {
+                "name": "routes.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/config/routes.ts",
+                "type": "file",
+                "imports": [
+                  "express",
+                  "fs"
+                ]
+              },
+              {
+                "name": "server.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/config/server.ts",
+                "type": "file",
+                "imports": [
+                  "express",
+                  "http",
+                  "./middlewares",
+                  "./middlewares-graphql",
+                  "./routes",
+                  "../graphql/apollo"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "factories",
+            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories",
+            "type": "directory",
+            "children": [
+              {
+                "name": "app",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "controllers",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/controllers",
+                    "type": "directory",
+                    "children": [
+                      {
+                        "name": "graphql",
+                        "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/controllers/graphql",
+                        "type": "directory",
+                        "children": [
+                          {
+                            "name": "create-note.ts",
+                            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/controllers/graphql/create-note.ts",
+                            "type": "file",
+                            "imports": [
+                              "../../../../../app/contracts/controllers",
+                              "../../../../../app/controllers/graphql",
+                              "../../../../../app/services",
+                              "../../../infra/bus",
+                              "../../../../../app/controllers/decorators",
+                              "../../../../../infra/database/postgres"
+                            ]
+                          },
+                          {
+                            "name": "delete-note.ts",
+                            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/controllers/graphql/delete-note.ts",
+                            "type": "file",
+                            "imports": [
+                              "../../../../../app/contracts/controllers",
+                              "../../../../../app/controllers/graphql",
+                              "../../../../../app/services",
+                              "../../../infra/bus",
+                              "../../../../../app/controllers/decorators",
+                              "../../../../../infra/database/postgres"
+                            ]
+                          },
+                          {
+                            "name": "get-note.ts",
+                            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/controllers/graphql/get-note.ts",
+                            "type": "file",
+                            "imports": [
+                              "../../../../../app/contracts/controllers",
+                              "../../../../../app/controllers/graphql",
+                              "../../../../../app/services",
+                              "../../../infra/bus",
+                              "../../../../../app/controllers/decorators",
+                              "../../../../../infra/database/postgres"
+                            ]
+                          },
+                          {
+                            "name": "get-notes-by-user-id.ts",
+                            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/controllers/graphql/get-notes-by-user-id.ts",
+                            "type": "file",
+                            "imports": [
+                              "../../../../../app/contracts/controllers",
+                              "../../../../../app/controllers/graphql",
+                              "../../../../../app/services",
+                              "../../../infra/bus",
+                              "../../../../../app/controllers/decorators",
+                              "../../../../../infra/database/postgres"
+                            ]
+                          },
+                          {
+                            "name": "index.ts",
+                            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/controllers/graphql/index.ts",
+                            "type": "file",
+                            "imports": []
+                          },
+                          {
+                            "name": "sign-in.ts",
+                            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/controllers/graphql/sign-in.ts",
+                            "type": "file",
+                            "imports": [
+                              "../../../../../app/contracts/controllers",
+                              "../../../../../app/controllers/graphql",
+                              "../../../../../app/services",
+                              "../../../infra/bus",
+                              "../../../../../app/controllers/decorators",
+                              "../../../../../infra/database/postgres"
+                            ]
+                          },
+                          {
+                            "name": "sign-up.ts",
+                            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/controllers/graphql/sign-up.ts",
+                            "type": "file",
+                            "imports": [
+                              "../../../../../app/contracts/controllers",
+                              "../../../../../app/controllers/graphql",
+                              "../../../../../app/services",
+                              "../../../infra/bus",
+                              "../../../../../app/controllers/decorators",
+                              "../../../../../infra/database/postgres"
+                            ]
+                          },
+                          {
+                            "name": "update-finished-note.ts",
+                            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/controllers/graphql/update-finished-note.ts",
+                            "type": "file",
+                            "imports": [
+                              "../../../../../app/contracts/controllers",
+                              "../../../../../app/controllers/graphql",
+                              "../../../../../app/services",
+                              "../../../infra/bus",
+                              "../../../../../app/controllers/decorators",
+                              "../../../../../infra/database/postgres"
+                            ]
+                          },
+                          {
+                            "name": "update-note.ts",
+                            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/controllers/graphql/update-note.ts",
+                            "type": "file",
+                            "imports": [
+                              "../../../../../app/contracts/controllers",
+                              "../../../../../app/controllers/graphql",
+                              "../../../../../app/services",
+                              "../../../infra/bus",
+                              "../../../../../app/controllers/decorators",
+                              "../../../../../infra/database/postgres"
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "name": "rest",
+                        "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/controllers/rest",
+                        "type": "directory",
+                        "children": [
+                          {
+                            "name": "create-note.ts",
+                            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/controllers/rest/create-note.ts",
+                            "type": "file",
+                            "imports": [
+                              "../../../../../app/contracts/controllers",
+                              "../../../../../app/controllers/rest",
+                              "../../../../../app/services",
+                              "../../../infra/bus",
+                              "../../../../../app/controllers/decorators",
+                              "../../../../../infra/database/postgres"
+                            ]
+                          },
+                          {
+                            "name": "delete-note.ts",
+                            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/controllers/rest/delete-note.ts",
+                            "type": "file",
+                            "imports": [
+                              "../../../../../app/contracts/controllers",
+                              "../../../../../app/controllers/rest",
+                              "../../../../../app/services",
+                              "../../../infra/bus",
+                              "../../../../../app/controllers/decorators",
+                              "../../../../../infra/database/postgres"
+                            ]
+                          },
+                          {
+                            "name": "get-note.ts",
+                            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/controllers/rest/get-note.ts",
+                            "type": "file",
+                            "imports": [
+                              "../../../../../app/contracts/controllers",
+                              "../../../../../app/controllers/rest",
+                              "../../../../../app/services",
+                              "../../../infra/bus",
+                              "../../../../../app/controllers/decorators",
+                              "../../../../../infra/database/postgres"
+                            ]
+                          },
+                          {
+                            "name": "get-notes-by-user-id.ts",
+                            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/controllers/rest/get-notes-by-user-id.ts",
+                            "type": "file",
+                            "imports": [
+                              "../../../../../app/contracts/controllers",
+                              "../../../../../app/controllers/rest",
+                              "../../../../../app/services",
+                              "../../../infra/bus",
+                              "../../../../../app/controllers/decorators",
+                              "../../../../../infra/database/postgres"
+                            ]
+                          },
+                          {
+                            "name": "index.ts",
+                            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/controllers/rest/index.ts",
+                            "type": "file",
+                            "imports": []
+                          },
+                          {
+                            "name": "sign-in.ts",
+                            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/controllers/rest/sign-in.ts",
+                            "type": "file",
+                            "imports": [
+                              "../../../../../app/contracts/controllers",
+                              "../../../../../app/controllers/rest",
+                              "../../../../../app/services",
+                              "../../../infra/bus",
+                              "../../../../../app/controllers/decorators",
+                              "../../../../../infra/database/postgres"
+                            ]
+                          },
+                          {
+                            "name": "sign-up.ts",
+                            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/controllers/rest/sign-up.ts",
+                            "type": "file",
+                            "imports": [
+                              "../../../../../app/contracts/controllers",
+                              "../../../../../app/controllers/rest",
+                              "../../../../../app/services",
+                              "../../../infra/bus",
+                              "../../../../../app/controllers/decorators",
+                              "../../../../../infra/database/postgres"
+                            ]
+                          },
+                          {
+                            "name": "update-finished-note.ts",
+                            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/controllers/rest/update-finished-note.ts",
+                            "type": "file",
+                            "imports": [
+                              "../../../../../app/contracts/controllers",
+                              "../../../../../app/controllers/rest",
+                              "../../../../../app/services",
+                              "../../../infra/bus",
+                              "../../../../../app/controllers/decorators",
+                              "../../../../../infra/database/postgres"
+                            ]
+                          },
+                          {
+                            "name": "update-note.ts",
+                            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/controllers/rest/update-note.ts",
+                            "type": "file",
+                            "imports": [
+                              "../../../../../app/contracts/controllers",
+                              "../../../../../app/controllers/rest",
+                              "../../../../../app/services",
+                              "../../../infra/bus",
+                              "../../../../../app/controllers/decorators",
+                              "../../../../../infra/database/postgres"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "name": "handlers",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/handlers",
+                    "type": "directory",
+                    "children": [
+                      {
+                        "name": "create-access-token.ts",
+                        "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/handlers/create-access-token.ts",
+                        "type": "file",
+                        "imports": [
+                          "../../../../app/contracts/database",
+                          "../../../../app/handlers",
+                          "../../../../infra/providers"
+                        ]
+                      },
+                      {
+                        "name": "create-note.ts",
+                        "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/handlers/create-note.ts",
+                        "type": "file",
+                        "imports": [
+                          "../../../../app/contracts/database",
+                          "../../../../app/handlers",
+                          "../../../../infra/database/postgres/proxies",
+                          "../../../../infra/providers",
+                          "../../../../infra/repositories"
+                        ]
+                      },
+                      {
+                        "name": "create-user.ts",
+                        "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/handlers/create-user.ts",
+                        "type": "file",
+                        "imports": [
+                          "../../../../app/contracts/database",
+                          "../../../../app/handlers",
+                          "../../../../infra/database/postgres/proxies",
+                          "../../../../infra/providers",
+                          "../../../../infra/repositories"
+                        ]
+                      },
+                      {
+                        "name": "delete-note.ts",
+                        "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/handlers/delete-note.ts",
+                        "type": "file",
+                        "imports": [
+                          "../../../../app/contracts/database",
+                          "../../../../app/handlers",
+                          "../../../../infra/database/postgres/proxies",
+                          "../../../../infra/repositories"
+                        ]
+                      },
+                      {
+                        "name": "find-note.ts",
+                        "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/handlers/find-note.ts",
+                        "type": "file",
+                        "imports": [
+                          "../../../../app/contracts/database",
+                          "../../../../app/handlers",
+                          "../../../../infra/providers",
+                          "../../../../infra/repositories",
+                          "../../../../infra/database/postgres/proxies"
+                        ]
+                      },
+                      {
+                        "name": "find-notes-by-user-id.ts",
+                        "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/handlers/find-notes-by-user-id.ts",
+                        "type": "file",
+                        "imports": [
+                          "../../../../app/contracts/database",
+                          "../../../../app/handlers",
+                          "../../../../infra/providers",
+                          "../../../../infra/repositories",
+                          "../../../../infra/database/postgres/proxies"
+                        ]
+                      },
+                      {
+                        "name": "find-user-by-email.ts",
+                        "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/handlers/find-user-by-email.ts",
+                        "type": "file",
+                        "imports": [
+                          "../../../../app/contracts/database",
+                          "../../../../app/handlers",
+                          "../../../../infra/providers",
+                          "../../../../infra/repositories",
+                          "../../../../infra/database/postgres/proxies"
+                        ]
+                      },
+                      {
+                        "name": "find-user.ts",
+                        "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/handlers/find-user.ts",
+                        "type": "file",
+                        "imports": [
+                          "../../../../app/contracts/database",
+                          "../../../../app/handlers",
+                          "../../../../infra/providers",
+                          "../../../../infra/repositories",
+                          "../../../../infra/database/postgres/proxies"
+                        ]
+                      },
+                      {
+                        "name": "index.ts",
+                        "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/handlers/index.ts",
+                        "type": "file",
+                        "imports": []
+                      },
+                      {
+                        "name": "is-note-finished.ts",
+                        "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/handlers/is-note-finished.ts",
+                        "type": "file",
+                        "imports": [
+                          "../../../../app/contracts/database",
+                          "../../../../app/handlers",
+                          "../../../../infra/repositories",
+                          "../../../../infra/database/postgres/proxies"
+                        ]
+                      },
+                      {
+                        "name": "password-match.ts",
+                        "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/handlers/password-match.ts",
+                        "type": "file",
+                        "imports": [
+                          "../../../../app/contracts/database",
+                          "../../../../app/handlers",
+                          "../../../../infra/providers"
+                        ]
+                      },
+                      {
+                        "name": "update-note.ts",
+                        "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/handlers/update-note.ts",
+                        "type": "file",
+                        "imports": [
+                          "../../../../app/contracts/database",
+                          "../../../../app/handlers",
+                          "../../../../infra/providers",
+                          "../../../../infra/repositories",
+                          "../../../../infra/database/postgres/proxies"
+                        ]
+                      },
+                      {
+                        "name": "verify-token.ts",
+                        "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/handlers/verify-token.ts",
+                        "type": "file",
+                        "imports": [
+                          "../../../../app/contracts/database",
+                          "../../../../app/handlers",
+                          "../../../../infra/providers"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "name": "middlewares",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/middlewares",
+                    "type": "directory",
+                    "children": [
+                      {
+                        "name": "graphql",
+                        "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/middlewares/graphql",
+                        "type": "directory",
+                        "children": [
+                          {
+                            "name": "auth.ts",
+                            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/middlewares/graphql/auth.ts",
+                            "type": "file",
+                            "imports": [
+                              "../../../../../app/middlewares/graphql",
+                              "../../../../../app/contracts/middlewares",
+                              "../../../../../app/services",
+                              "../../../../../app/middlewares/decorators",
+                              "../../../infra/bus",
+                              "../../../../../infra/database/postgres"
+                            ]
+                          },
+                          {
+                            "name": "index.ts",
+                            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/middlewares/graphql/index.ts",
+                            "type": "file",
+                            "imports": []
+                          }
+                        ]
+                      },
+                      {
+                        "name": "rest",
+                        "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/middlewares/rest",
+                        "type": "directory",
+                        "children": [
+                          {
+                            "name": "auth.ts",
+                            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/middlewares/rest/auth.ts",
+                            "type": "file",
+                            "imports": [
+                              "../../../../../app/middlewares/rest",
+                              "../../../../../app/contracts/middlewares",
+                              "../../../../../app/services",
+                              "../../../../../app/middlewares/decorators",
+                              "../../../infra/bus",
+                              "../../../../../infra/database/postgres"
+                            ]
+                          },
+                          {
+                            "name": "index.ts",
+                            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/app/middlewares/rest/index.ts",
+                            "type": "file",
+                            "imports": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "infra",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/infra",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "bus",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/infra/bus",
+                    "type": "directory",
+                    "children": [
+                      {
+                        "name": "index.ts",
+                        "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/factories/infra/bus/index.ts",
+                        "type": "file",
+                        "imports": [
+                          "../../../../app/contracts/database",
+                          "../../app/handlers",
+                          "../../../../infra/bus"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "graphql",
+            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/graphql",
+            "type": "directory",
+            "children": [
+              {
+                "name": "apollo",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/graphql/apollo",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "index.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/graphql/apollo/index.ts",
+                    "type": "file",
+                    "imports": [
+                      "@graphql-tools/schema",
+                      "@apollo/server",
+                      "@apollo/server/plugin/drainHttpServer",
+                      "graphql",
+                      "http",
+                      "../resolvers",
+                      "../type-defs",
+                      "../directives"
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "directives",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/graphql/directives",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "auth.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/graphql/directives/auth.ts",
+                    "type": "file",
+                    "imports": [
+                      "@graphql-tools/utils",
+                      "graphql",
+                      "../../factories/app/middlewares/graphql",
+                      "../../../app/contracts/graphql"
+                    ]
+                  },
+                  {
+                    "name": "index.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/graphql/directives/index.ts",
+                    "type": "file",
+                    "imports": []
+                  }
+                ]
+              },
+              {
+                "name": "resolvers",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/graphql/resolvers",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "base.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/graphql/resolvers/base.ts",
+                    "type": "file",
+                    "imports": [
+                      "graphql-scalars"
+                    ]
+                  },
+                  {
+                    "name": "index.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/graphql/resolvers/index.ts",
+                    "type": "file",
+                    "imports": [
+                      "./base",
+                      "./login",
+                      "./notes"
+                    ]
+                  },
+                  {
+                    "name": "login.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/graphql/resolvers/login.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../adapters",
+                      "../../factories/app/controllers/graphql"
+                    ]
+                  },
+                  {
+                    "name": "notes.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/graphql/resolvers/notes.ts",
+                    "type": "file",
+                    "imports": [
+                      "../../adapters",
+                      "../../factories/app/controllers/graphql"
+                    ]
+                  }
+                ]
+              },
+              {
+                "name": "type-defs",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/graphql/type-defs",
+                "type": "directory",
+                "children": [
+                  {
+                    "name": "base.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/graphql/type-defs/base.ts",
+                    "type": "file",
+                    "imports": []
+                  },
+                  {
+                    "name": "index.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/graphql/type-defs/index.ts",
+                    "type": "file",
+                    "imports": [
+                      "./base",
+                      "./login",
+                      "./notes"
+                    ]
+                  },
+                  {
+                    "name": "login.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/graphql/type-defs/login.ts",
+                    "type": "file",
+                    "imports": []
+                  },
+                  {
+                    "name": "notes.ts",
+                    "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/graphql/type-defs/notes.ts",
+                    "type": "file",
+                    "imports": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "loaders",
+            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/loaders",
+            "type": "directory",
+            "children": [
+              {
+                "name": "index.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/loaders/index.ts",
+                "type": "file",
+                "imports": [
+                  "../../infra/database/postgres/connection"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "middlewares",
+            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/middlewares",
+            "type": "directory",
+            "children": [
+              {
+                "name": "body-parser.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/middlewares/body-parser.ts",
+                "type": "file",
+                "imports": [
+                  "express"
+                ]
+              },
+              {
+                "name": "content-type.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/middlewares/content-type.ts",
+                "type": "file",
+                "imports": [
+                  "express"
+                ]
+              },
+              {
+                "name": "cors.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/middlewares/cors.ts",
+                "type": "file",
+                "imports": [
+                  "express"
+                ]
+              },
+              {
+                "name": "no-cache.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/middlewares/no-cache.ts",
+                "type": "file",
+                "imports": [
+                  "express"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "routes",
+            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/routes",
+            "type": "directory",
+            "children": [
+              {
+                "name": "create-note.route.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/routes/create-note.route.ts",
+                "type": "file",
+                "imports": [
+                  "express",
+                  "../adapters",
+                  "../factories/app/controllers/rest",
+                  "../factories/app/middlewares/rest"
+                ]
+              },
+              {
+                "name": "delete-note.route.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/routes/delete-note.route.ts",
+                "type": "file",
+                "imports": [
+                  "express",
+                  "../adapters",
+                  "../factories/app/controllers/rest",
+                  "../factories/app/middlewares/rest"
+                ]
+              },
+              {
+                "name": "find-note.route.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/routes/find-note.route.ts",
+                "type": "file",
+                "imports": [
+                  "express",
+                  "../adapters",
+                  "../factories/app/controllers/rest",
+                  "../factories/app/middlewares/rest"
+                ]
+              },
+              {
+                "name": "find-notes-by-user-id.route.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/routes/find-notes-by-user-id.route.ts",
+                "type": "file",
+                "imports": [
+                  "express",
+                  "../adapters",
+                  "../factories/app/controllers/rest",
+                  "../factories/app/middlewares/rest"
+                ]
+              },
+              {
+                "name": "sign-in.route.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/routes/sign-in.route.ts",
+                "type": "file",
+                "imports": [
+                  "express",
+                  "../adapters",
+                  "../factories/app/controllers/rest"
+                ]
+              },
+              {
+                "name": "sign-up.route.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/routes/sign-up.route.ts",
+                "type": "file",
+                "imports": [
+                  "express",
+                  "../adapters",
+                  "../factories/app/controllers/rest"
+                ]
+              },
+              {
+                "name": "update-finished-note.route.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/routes/update-finished-note.route.ts",
+                "type": "file",
+                "imports": [
+                  "express",
+                  "../adapters",
+                  "../factories/app/controllers/rest",
+                  "../factories/app/middlewares/rest"
+                ]
+              },
+              {
+                "name": "update-note.route.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/routes/update-note.route.ts",
+                "type": "file",
+                "imports": [
+                  "express",
+                  "../adapters",
+                  "../factories/app/controllers/rest",
+                  "../factories/app/middlewares/rest"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "server",
+            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/server",
+            "type": "directory",
+            "children": [
+              {
+                "name": "index.ts",
+                "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/main/server/index.ts",
+                "type": "file",
+                "imports": [
+                  "../bootstrap",
+                  "../loaders",
+                  "../config/server"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "shared",
+        "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/shared",
+        "type": "directory",
+        "children": [
+          {
+            "name": "either.ts",
+            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/shared/either.ts",
+            "type": "file",
+            "imports": []
+          },
+          {
+            "name": "index.ts",
+            "path": "/Users/gabriel/Documents/projects/clean-node-todolist/src/shared/index.ts",
+            "type": "file",
+            "imports": []
+          }
+        ]
+      }
+    ]
+  }
+  
