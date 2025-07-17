@@ -1,11 +1,10 @@
 import { cwd } from "process";
 import { buildFolderTree } from "./utils/treeUtil";
 
-export const astParser = () => {
+export const astParser = (normalized: boolean) => {
     const projectRoot = cwd();
 
-    const tree = buildFolderTree(projectRoot);
-    console.log(JSON.stringify(tree, null, 2));
+    const tree = buildFolderTree(projectRoot, normalized);
 
-    return projectRoot;
+    return tree;
 }

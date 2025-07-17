@@ -8,7 +8,7 @@ type File = {
     name: string;
     path: string;
     type: 'file';
-    imports: string[];
+    dependencies: string[];
 }
 
 type Dirctory = {
@@ -18,7 +18,7 @@ type Dirctory = {
     children: FolderTree[];
 }
 
-export function buildFolderTree(fullPath: string): FolderTree {
+export function buildFolderTree(fullPath: string, normalized: boolean): FolderTree {
     const name = path.basename(fullPath);
 
     const stats = fs.statSync(fullPath);
@@ -33,7 +33,7 @@ export function buildFolderTree(fullPath: string): FolderTree {
         const entries = fs.readdirSync(fullPath, { withFileTypes: true });
         for (const entry of entries) {
             const newFullPath = path.join(fullPath, entry.name);
-            item.children.push(buildFolderTree(newFullPath));
+            item.children.push(buildFolderTree(newFullPath, normalized));
         }
 
         return item;
@@ -42,64 +42,9 @@ export function buildFolderTree(fullPath: string): FolderTree {
             name,
             path: fullPath,
             type: 'file',
-            imports: extractImports(fullPath)
+            dependencies: extractImports(fullPath, normalized)
         }
 
         return item;
     }
 }
-
-// import { parse } from '@babel/parser';
-// import traverse from '@babel/traverse';
-
-// export class ASTParser {
-//   constructor() {
-//     this.parsedFiles = [];
-//   }
-
-//   parseFile(filePath, content) {
-//     try {
-//       const ast = parse(content, {
-//         sourceType: 'module',
-//         plugins: ['typescript']
-//       });
-
-//       const result = {
-//         path: filePath,
-//         imports: [],
-//         classes: [],
-//         functions: []
-//       };
-
-//       traverse(ast, {
-//         ImportDeclaration: (path) => {
-//           result.imports.push(path.node.source.value);
-//         },
-//         ClassDeclaration: (path) => {
-//           if (path.node.id) {
-//             result.classes.push(path.node.id.name);
-//           }
-//         },
-//         FunctionDeclaration: (path) => {
-//           if (path.node.id) {
-//             result.functions.push(path.node.id.name);
-//           }
-//         }
-//       });
-
-//       this.parsedFiles.push(result);
-//       return result;
-//     } catch (error) {
-//       console.error(`Error parsing ${filePath}:`, error.message);
-//       return null;
-//     }
-//   }
-
-//   getParsedFiles() {
-//     return this.parsedFiles;
-//   }
-
-//   clear() {
-//     this.parsedFiles = [];
-//   }
-// } 
