@@ -1,13 +1,11 @@
 {
   "name": "arch-unit-js",
-  "version": "1.0.0",
+  "version": "1.0.0-beta.5",
   "description": "arch-unit clone for node.js projects",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc"
-  },
-  "bin": {
-    "arch-unit": "./dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -22,12 +20,10 @@
   "devDependencies": {
     "@types/babel__traverse": "7.20.7",
     "@types/node": "24.0.14",
-    "@types/yargs": "^17.0.33",
     "typescript": "5.8.3"
   },
   "dependencies": {
     "@babel/parser": "7.28.0",
-    "@babel/traverse": "7.28.0",
-    "yargs": "^18.0.0"
+    "@babel/traverse": "7.28.0"
   }
 }
