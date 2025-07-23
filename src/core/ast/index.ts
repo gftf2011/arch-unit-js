@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import micromatch from 'micromatch';
 import traverse from '@babel/traverse';
 import { parse } from '@babel/parser';
 import { Directory, File, DirectoryTree } from '../../utils/types';
@@ -66,22 +67,34 @@ function createDirectoryWithEmptyChildren(directoryPath: string): Directory {
   }
 }
 
-function buildDirectoryTree(projectPath: string): DirectoryTree {
+function buildDirectoryTree(projectPath: string, mimeTypes: string[]): DirectoryTree {
+  const notification = new Notification();
+
+  const buildAndValidateDirectoryTree = (projectPath: string, notification: Notification, mimeTypes: string[]): DirectoryTree => {
     if (isDirectory(projectPath)) {
-        const item: Directory = createDirectoryWithEmptyChildren(projectPath);
-    
-        const entries = fs.readdirSync(projectPath, { withFileTypes: true });
-        for (const entry of entries) {
-            const newFullPath = path.join(projectPath, entry.name);
-            item.children.push(buildDirectoryTree(newFullPath));
-        }
-
-        return item;
+      const item: Directory = createDirectoryWithEmptyChildren(projectPath);
+      const entries = fs.readdirSync(projectPath, { withFileTypes: true });
+      for (const entry of entries) {
+          const newFullPath = path.join(projectPath, entry.name);
+          item.children.push(buildAndValidateDirectoryTree(newFullPath, notification, mimeTypes));
+      }
+      return item;
     } else {
-        const item: File = createFile(projectPath);
-
-        return item;
+      const item: File = createFile(projectPath);
+      if (micromatch([projectPath], mimeTypes).length === 0) {
+        notification.addError(new Error(`${projectPath}: file is not a valid mime types defined '${mimeTypes}' !`));
+      }
+      return item;
     }
+  }
+
+  const tree = buildAndValidateDirectoryTree(projectPath, notification, mimeTypes);
+
+  if (notification.hasErrors()) {
+    throw new Error(notification.getErrors().map(error => error.message).join('\n'));
+  }
+
+  return tree;
 }
 
 /**
@@ -95,11 +108,20 @@ function buildDirectoryTree(projectPath: string): DirectoryTree {
  * - `<rootDir>`/src
  * - `<rootDir>`/app/anything
  * 
+ * The mime types `mimeTypes` are the mime types of the files to be included in the root directory
+ * 
+ * Some examples of the mime types:
+ * - '*.js'
+ * - '*.ts'
+ * - '*.tsx'
+ * - '*.jsx'
+ * 
  * @param rootDir - The root directory of the project
  * @param projectDirs - The project directories to be included in the root directory
+ * @param mimeTypes - The mime types of the files to be included in the root directory
  * @returns The root directory of the project
  */
-function createRootDirectory(rootDir: string, projectDirs: string[]): Directory {
+function createRootDirectory(rootDir: string, projectDirs: string[], mimeTypes: string[]): Directory {
 
   const validateProjectDirs = (rootDir: string, projectDirs: string[]): void => {
     const notification = new Notification();
@@ -140,7 +162,7 @@ function createRootDirectory(rootDir: string, projectDirs: string[]): Directory 
 
   for (const projectDir of filteredProjectDirs) {
     const projectDirPath = path.join(rootDir, projectDir);
-    const projectTree = buildDirectoryTree(projectDirPath);
+    const projectTree = buildDirectoryTree(projectDirPath, mimeTypes);
     root.children.push(projectTree);
   }
 
@@ -149,8 +171,8 @@ function createRootDirectory(rootDir: string, projectDirs: string[]): Directory 
 
 export const ast = {
     tree: {
-        generate: (rootDir: string, projectDirs: string[]): Directory => {
-          const tree = createRootDirectory(rootDir, projectDirs);
+        generate: (rootDir: string, projectDirs: string[], mimeTypes: string[]): Directory => {
+          const tree = createRootDirectory(rootDir, projectDirs, mimeTypes);
           return tree;
         }
     }

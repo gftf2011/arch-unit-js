@@ -1,11 +1,26 @@
 {
   "name": "arch-unit-js",
-  "version": "1.0.0-beta.9",
+  "version": "1.0.0-beta.18",
   "description": "arch-unit clone for node.js projects",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/types/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
   "scripts": {
-    "build": "tsc",
+    "build:tsc": "tsc",
+    "build:types": "tsc --emitDeclarationOnly",
+    "build": "node esbuild.config.js",
     "publish:beta": "npm publish --tag beta"
   },
   "repository": {
@@ -13,18 +28,21 @@
     "url": "git+https://github.com/gftf2011/arch-unit-js.git"
   },
   "author": "Gabriel Ferrari Tarallo Ferraz",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/gftf2011/arch-unit-js/issues"
   },
   "homepage": "https://github.com/gftf2011/arch-unit-js#readme",
   "devDependencies": {
     "@types/babel__traverse": "7.20.7",
+    "@types/micromatch": "^4.0.9",
     "@types/node": "24.0.14",
+    "esbuild": "^0.25.8",
     "typescript": "5.8.3"
   },
   "dependencies": {
     "@babel/parser": "7.28.0",
-    "@babel/traverse": "7.28.0"
+    "@babel/traverse": "7.28.0",
+    "micromatch": "^4.0.8"
   }
 }
