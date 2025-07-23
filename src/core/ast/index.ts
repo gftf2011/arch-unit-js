@@ -2,36 +2,12 @@ import fs from 'fs';
 import path from 'path';
 import traverse from '@babel/traverse';
 import { parse } from '@babel/parser';
-
-export type DirectoryTree = Directory | File;
-
-export type File = {
-    name: string;
-    path: string;
-    type: 'file';
-    dependencies: string[];
-}
-
-export type Directory = {
-    name: string;
-    path: string;
-    type: 'directory';
-    children: DirectoryTree[];
-}
-
-export type Root = {
-  rootDir: string;
-  roots: Directory[];
-}
+import { Directory, File, DirectoryTree } from '../../utils/types';
+import { Notification } from '../../utils/notification';
 
 function isDirectory(path: string): boolean {
   const stats = fs.statSync(path);
   return stats.isDirectory();
-}
-
-function isFile(path: string): boolean {
-  const stats = fs.statSync(path);
-  return stats.isFile();
 }
 
 function fileOrDirectoryExists(path: string): boolean {
@@ -108,7 +84,49 @@ function buildDirectoryTree(projectPath: string): DirectoryTree {
     }
 }
 
-function createRoot(rootDir: string, projectDirs: string[]): Root {
+/**
+ * Creates the root directory of the project which the package was installed in
+ * 
+ * The root directory `rootDir` is the directory where the package was installed in AND it must be a directory
+ * The project directories `projectDirs` are the directories that are included in the root directory
+ * 
+ * Some examples of the project directories:
+ * - `<rootDir>`/.
+ * - `<rootDir>`/src
+ * - `<rootDir>`/app/anything
+ * 
+ * @param rootDir - The root directory of the project
+ * @param projectDirs - The project directories to be included in the root directory
+ * @returns The root directory of the project
+ */
+function createRootDirectory(rootDir: string, projectDirs: string[]): Directory {
+
+  const validateProjectDirs = (rootDir: string, projectDirs: string[]): void => {
+    const notification = new Notification();
+    for (const projectDir of projectDirs) {
+      if (!projectDir) {
+        notification.addError(new Error(`${projectDir}: must not be empty !`));
+      } else if (!projectDir.includes('<rootDir>')) {
+        notification.addError(new Error(`${projectDir}: projectDir must contain <rootDir> in the path !`));
+      } else if (projectDir.split('<rootDir>/').join('') === '') {
+        notification.addError(new Error(`${projectDir}: projectDir must contain at least one directory after <rootDir> !`));
+      } else if (!fileOrDirectoryExists(path.join(rootDir, projectDir.split('<rootDir>/').join('')))) {
+        notification.addError(new Error(`${projectDir}: projectDir must exist !`));
+      } else if (!isDirectory(path.join(rootDir, projectDir.split('<rootDir>/').join('')))) {
+        notification.addError(new Error(`${projectDir}: projectDir must be a directory !`));
+      }
+    }
+    if (notification.hasErrors()) {
+      throw new Error(notification.getErrors().map(error => error.message).join('\n'));
+    }
+  }
+
+  const filterProjectDirs = (projectDirs: string[]): string[] => {
+    return projectDirs.map(dir => dir.split('<rootDir>/').join(''));
+  }
+
+  validateProjectDirs(rootDir, projectDirs);
+  const filteredProjectDirs = filterProjectDirs(projectDirs);
   
   if (!isDirectory(rootDir)) {
     throw new Error(`rootDir: ${rootDir} - is not a directory`);
@@ -118,22 +136,12 @@ function createRoot(rootDir: string, projectDirs: string[]): Root {
     throw new Error(`rootDir: ${rootDir} - directory does not exists`);
   }
 
-  const root: Root = {
-    rootDir,
-    roots: []
-  }
+  const root: Directory = createDirectoryWithEmptyChildren(rootDir);
 
-  for (const projectDir of projectDirs) {
+  for (const projectDir of filteredProjectDirs) {
     const projectDirPath = path.join(rootDir, projectDir);
-    if (!isDirectory(projectDirPath)) {
-      throw new Error(`projectDir: ${projectDirPath} - is not a directory`);
-    }
-  
-    if (!fileOrDirectoryExists(projectDirPath)) {
-      throw new Error(`projectDir: ${projectDirPath} - directory does not exists`);
-    }
-    const projectTree = buildDirectoryTree(projectDirPath) as Directory;
-    root.roots.push(projectTree);
+    const projectTree = buildDirectoryTree(projectDirPath);
+    root.children.push(projectTree);
   }
 
   return root;
@@ -141,8 +149,8 @@ function createRoot(rootDir: string, projectDirs: string[]): Root {
 
 export const ast = {
     tree: {
-        generate: (rootDir: string, projectDirs: string[]): Root => {
-          const tree = createRoot(rootDir, projectDirs);
+        generate: (rootDir: string, projectDirs: string[]): Directory => {
+          const tree = createRootDirectory(rootDir, projectDirs);
           return tree;
         }
     }

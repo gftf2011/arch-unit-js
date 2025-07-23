@@ -1,11 +1,12 @@
 {
   "name": "arch-unit-js",
-  "version": "1.0.0-beta.5",
+  "version": "1.0.0-beta.9",
   "description": "arch-unit clone for node.js projects",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "publish:beta": "npm publish --tag beta"
   },
   "repository": {
     "type": "git",
