@@ -1,120 +1,85 @@
-// // Types for AST nodes
-// export type ASTNode = DirectoryNode | FileNode;
 
-// export interface DirectoryNode {
-//   name: string;
-//   path: string;
-//   type: 'directory';
-//   children: ASTNode[];
-// }
+import micromatch from 'micromatch';
+import { Options } from '../common/fluent-api';
+import { walkThrough } from '../common/walker';
 
-// export interface FileNode {
-//   name: string;
-//   path: string;
-//   type: 'file';
-//   dependencies?: string[];
-// }
+class ImportMatchConditionSelector {
+  constructor(
+    readonly negated: boolean,
+    readonly rootDir: string,
+    readonly firstPattern: string,
+    readonly secondPattern: string,
+    readonly options: Options
+  ) {}
 
-// // Helper: pattern matching (e.g., '..domain.castmember..' to regex)
-// function matchesPattern(filePath: string, pattern: string): boolean {
-//   // Convert '..domain.castmember..' to regex: '.*domain\\.castmember.*'
-//   const regex = new RegExp(
-//     pattern
-//       .replace(/\./g, '\\.')
-//       .replace(/\\\.\\\./g, '.*') // replace '..' with .*
-//   );
-//   return regex.test(filePath);
-// }
+  async check(): Promise<boolean> {
+    const files = await walkThrough(this.rootDir, this.options.includeMatcher, this.options.ignoreMatcher, this.options.mimeTypes);
+    const filteredFiles = files.filter(file => micromatch([file.path], this.secondPattern).length > 0);
+    const filteredImports: string[] = [];
 
-// // Helper: recursively find files matching a pattern
-// function findFilesMatching(ast: ASTNode, pattern: string | null): FileNode[] {
-//   const result: FileNode[] = [];
-//   function traverse(node: ASTNode) {
-//     if (node.type === 'file' && (!pattern || matchesPattern(node.path, pattern))) {
-//       result.push(node);
-//     }
-//     if (node.type === 'directory' && node.children) {
-//       node.children.forEach(traverse);
-//     }
-//   }
-//   traverse(ast);
-//   return result;
-// }
+    for (const file of filteredFiles) {
+        for (const dependency of file.dependencies) {
+            if (micromatch.isMatch(dependency, this.firstPattern, { dot: true })) {
+                filteredImports.push(dependency);
+            }
+        }
+    }
 
-// // Fluent API classes
-// class ClassSelector {
-//   private packagePattern: string | null = null;
+    return this.negated ? filteredImports.length === 0 : filteredImports.length > 0;
+  }
+}
 
-//   that() {
-//     return this;
-//   }
+class PositiveMatchConditionSelectorBuilder {
+    readonly negated: boolean = false;
 
-//   resideInAPackage(pattern: string) {
-//     this.packagePattern = pattern;
-//     return this;
-//   }
+    constructor(readonly rootDir: string, readonly pattern: string, readonly options: Options) {}
 
-//   should() {
-//     return new ClassCondition(this.packagePattern);
-//   }
-// }
+    beImportedOrRequiredBy(pattern: string): ImportMatchConditionSelector {
+        return new ImportMatchConditionSelector(this.negated, this.rootDir, this.pattern, pattern, this.options);
+    }
+}
 
-// class ClassCondition {
-//   constructor(private fromPattern: string | null) {}
+class NegativeMatchConditionSelectorBuilder {
+    readonly negated: boolean = true;
 
-//   dependOnClassesThat() {
-//     return {
-//       resideInAPackage: (toPattern: string) => new Rule(this.fromPattern, toPattern)
-//     };
-//   }
-// }
+    constructor(readonly rootDir: string, readonly pattern: string, readonly options: Options) {}
 
-// class Rule {
-//   constructor(private fromPattern: string | null, private toPattern: string) {}
+    beImportedOrRequiredBy(pattern: string): ImportMatchConditionSelector {
+        return new ImportMatchConditionSelector(this.negated, this.rootDir, this.pattern, pattern, this.options);
+    }
+}
 
-//   check(ast: ASTNode) {
-//     const violations: { file: string; dependency: string }[] = [];
-//     const files = findFilesMatching(ast, this.fromPattern);
-//     for (const file of files) {
-//       for (const dep of file.dependencies || []) {
-//         if (matchesPattern(dep, this.toPattern)) {
-//           violations.push({ file: file.path, dependency: dep });
-//         }
-//       }
-//     }
-//     return violations;
-//   }
-// }
+class ShouldSelectorBuilder {
+  constructor(readonly rootDir: string, readonly pattern: string, readonly options: Options) {}
 
-// // Entry point
-// export function noClasses() {
-//   return new ClassSelector();
-// }
+  should(): PositiveMatchConditionSelectorBuilder {
+    return new PositiveMatchConditionSelectorBuilder(this.rootDir, this.pattern, this.options);
+  }
 
-// // Example usage (uncomment to test):
-// // import ast from '../example/data.json';
-// // const violations = noClasses()
-// //   .that().resideInAPackage('..domain.castmember..')
-// //   .should().dependOnClassesThat()
-// //   .resideInAPackage('..application..')
-// //   .check(ast);
-// // console.log(violations);
+  shouldNot(): NegativeMatchConditionSelectorBuilder {
+    return new NegativeMatchConditionSelectorBuilder(this.rootDir, this.pattern, this.options);
+  }
+}
+
 class ComponentSelector {
-  that() {
-    return this;
+    constructor(readonly rootDir: string, readonly options: Options) {}
+
+    inDirectory(pattern: string): ShouldSelectorBuilder {
+        return new ShouldSelectorBuilder(this.rootDir, pattern, this.options);
+    }
+}
+
+export class ComponentSelectorBuilder {
+  private constructor(readonly rootDir: string, readonly options: Options) {}
+
+  static create(rootDir: string, options: Options): ComponentSelectorBuilder {
+    return new ComponentSelectorBuilder(rootDir, options);
   }
 
-  resideInFolder() {
-    return this;
+  projectFiles(): ComponentSelector {
+    return new ComponentSelector(this.rootDir, this.options);
   }
 }
 
-export function noComponents() {
-  return new ComponentSelector();
-}
-
-// const violations = noClasses()
-//   .that().resideInAPackage('..domain.castmember..')
-//   .should().dependOnClassesThat()
-//   .resideInAPackage('..application..')
-//   .check(ast);
+// inDirectory.should.beInDirectory.check
+// inDirectory.shouldNot.beInDirectory.check

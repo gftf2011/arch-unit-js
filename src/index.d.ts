@@ -1,9 +1,12 @@
-/**
- * TypeScript declarations for arch-unit-js
- */
+import { Options } from './common/fluent-api';
+import { ComponentSelectorBuilder } from './fluent-api';
 
 /**
- * Builds the AST (Abstract Syntax Tree) for the project
- * @param projectDirs - The directories to build the AST for
+ * Creates and returns a ComponentSelectorBuilder instance for architectural analysis
+ * @param options - Configuration options for the application
+ * @returns ComponentSelectorBuilder instance
  */
-export declare function build(projectDirs: string[]): void;
+export declare const app: (options?: Options) => ComponentSelectorBuilder;
+
+// Re-export the main fluent API classes
+export { ComponentSelectorBuilder } from './fluent-api';

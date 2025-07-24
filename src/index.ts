@@ -1,7 +1,6 @@
 import { fileURLToPath } from 'url';
 import path from 'path';
-import { ast } from './core/ast';
-
+import { ComponentSelectorBuilder } from './fluent-api';
 /**
  * Returns the root directory of the project where the package was installed
  */
@@ -16,12 +15,11 @@ function getProjectRoot(): string {
   }
 }
 
-/**
- * Builds the AST - (Abstract Syntax Tree) for the project
- * @param projectDirs - The directories to build the AST for
- */
-export const build = (projectDirs: string[], options: { mimeTypes: string[] } = { mimeTypes: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.jsx'] }): void => {
+export const app = (options: any = {
+  mimeTypes: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.jsx'],
+  includeMatcher: ['<rootDir>/.'],
+  ignoreMatcher: ['<rootDir>/node_modules/**']
+}) => {
   const rootDir = getProjectRoot();
-  const rootTree = ast.tree.generate(rootDir, projectDirs, options.mimeTypes);
-  console.log(JSON.stringify(rootTree, null, 2));
+  return ComponentSelectorBuilder.create(rootDir, options);
 };
