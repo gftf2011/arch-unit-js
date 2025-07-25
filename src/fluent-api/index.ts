@@ -1,71 +1,119 @@
-
-import micromatch from 'micromatch';
 import { Options } from '../common/fluent-api';
-import { walkThrough } from '../common/walker';
-
-class ImportMatchConditionSelector {
-  constructor(
-    readonly negated: boolean,
-    readonly rootDir: string,
-    readonly firstPattern: string,
-    readonly secondPattern: string,
-    readonly options: Options
-  ) {}
-
-  async check(): Promise<boolean> {
-    const files = await walkThrough(this.rootDir, this.options.includeMatcher, this.options.ignoreMatcher, this.options.mimeTypes);
-    const filteredFiles = files.filter(file => micromatch([file.path], this.secondPattern).length > 0);
-    const filteredImports: string[] = [];
-
-    for (const file of filteredFiles) {
-        for (const dependency of file.dependencies) {
-            if (micromatch.isMatch(dependency, this.firstPattern, { dot: true })) {
-                filteredImports.push(dependency);
-            }
-        }
-    }
-
-    return this.negated ? filteredImports.length === 0 : filteredImports.length > 0;
-  }
-}
+import { ImportMatchConditionSelector, ImportAllMatchConditionSelector } from './checkers';
 
 class PositiveMatchConditionSelectorBuilder {
     readonly negated: boolean = false;
 
-    constructor(readonly rootDir: string, readonly pattern: string, readonly options: Options) {}
+    constructor(
+        readonly rootDir: string,
+        readonly pattern: string,
+        readonly options: Options,
+        readonly excludeIndexFiles: boolean,
+        readonly ruleConstruction: string[]
+    ) {}
 
     beImportedOrRequiredBy(pattern: string): ImportMatchConditionSelector {
-        return new ImportMatchConditionSelector(this.negated, this.rootDir, this.pattern, pattern, this.options);
+        return new ImportMatchConditionSelector({
+            negated: this.negated,
+            rootDir: this.rootDir,
+            filteringPatterns: [pattern],
+            checkingPatterns: [this.pattern],
+            options: this.options,
+            excludeIndexFiles: this.excludeIndexFiles,
+            ruleConstruction: [...this.ruleConstruction, `be imported or required by '${pattern}'`]
+        });
+    }
+
+    onlyDependsOn(patterns: string[]): ImportAllMatchConditionSelector {
+        return new ImportAllMatchConditionSelector({
+            negated: this.negated,
+            rootDir: this.rootDir,
+            filteringPatterns: [this.pattern],
+            checkingPatterns: patterns,
+            options: this.options,
+            excludeIndexFiles: this.excludeIndexFiles,
+            ruleConstruction: [...this.ruleConstruction, `only depends on '[${patterns.join(', ')}]'`]
+        });
     }
 }
 
 class NegativeMatchConditionSelectorBuilder {
     readonly negated: boolean = true;
 
-    constructor(readonly rootDir: string, readonly pattern: string, readonly options: Options) {}
+    constructor(
+        readonly rootDir: string,
+        readonly pattern: string,
+        readonly options: Options,
+        readonly excludeIndexFiles: boolean,
+        readonly ruleConstruction: string[]
+    ) {}
 
     beImportedOrRequiredBy(pattern: string): ImportMatchConditionSelector {
-        return new ImportMatchConditionSelector(this.negated, this.rootDir, this.pattern, pattern, this.options);
+        return new ImportMatchConditionSelector({
+            negated: this.negated,
+            rootDir: this.rootDir,
+            filteringPatterns: [pattern],
+            checkingPatterns: [this.pattern],
+            options: this.options,
+            excludeIndexFiles: this.excludeIndexFiles,
+            ruleConstruction: [...this.ruleConstruction, `be imported or required by '${pattern}'`]
+        });
+    }
+
+    onlyDependsOn(patterns: string[]): ImportAllMatchConditionSelector {
+        return new ImportAllMatchConditionSelector({
+            negated: this.negated,
+            rootDir: this.rootDir,
+            filteringPatterns: [this.pattern],
+            checkingPatterns: patterns,
+            options: this.options,
+            excludeIndexFiles: this.excludeIndexFiles,
+            ruleConstruction:[...this.ruleConstruction, `only depends on '[${patterns.join(', ')}]'`]
+        });
     }
 }
 
 class ShouldSelectorBuilder {
-  constructor(readonly rootDir: string, readonly pattern: string, readonly options: Options) {}
+  constructor(
+    readonly rootDir: string,
+    readonly pattern: string,
+    readonly options: Options,
+    readonly excludeIndexFiles: boolean,
+    readonly ruleConstruction: string[]
+) {}
 
   should(): PositiveMatchConditionSelectorBuilder {
-    return new PositiveMatchConditionSelectorBuilder(this.rootDir, this.pattern, this.options);
+    return new PositiveMatchConditionSelectorBuilder(
+        this.rootDir,
+        this.pattern,
+        this.options,
+        this.excludeIndexFiles,
+        [...this.ruleConstruction, 'should']
+    );
   }
 
   shouldNot(): NegativeMatchConditionSelectorBuilder {
-    return new NegativeMatchConditionSelectorBuilder(this.rootDir, this.pattern, this.options);
+    return new NegativeMatchConditionSelectorBuilder(
+        this.rootDir,
+        this.pattern,
+        this.options,
+        this.excludeIndexFiles,
+        [...this.ruleConstruction, 'should not']
+    );
   }
 }
 
 class ComponentSelector {
-    constructor(readonly rootDir: string, readonly options: Options) {}
+    constructor(readonly rootDir: string, readonly options: Options, readonly ruleConstruction: string[]) {}
 
-    inDirectory(pattern: string): ShouldSelectorBuilder {
-        return new ShouldSelectorBuilder(this.rootDir, pattern, this.options);
+    inDirectory(pattern: string, excludeIndexFiles: boolean = false): ShouldSelectorBuilder {
+        return new ShouldSelectorBuilder(
+            this.rootDir,
+            pattern,
+            this.options,
+            excludeIndexFiles,
+            [...this.ruleConstruction, `inDirectory '${pattern}'` + (excludeIndexFiles ? ' - excluding index files,' : '')]
+        );
     }
 }
 
@@ -77,9 +125,12 @@ export class ComponentSelectorBuilder {
   }
 
   projectFiles(): ComponentSelector {
-    return new ComponentSelector(this.rootDir, this.options);
+    return new ComponentSelector(this.rootDir, this.options, ['Rule: project files']);
   }
 }
 
-// inDirectory.should.beInDirectory.check
-// inDirectory.shouldNot.beInDirectory.check
+// inDirectory.should.beImportedOrRequiredBy.check
+// inDirectory.shouldNot.beImportedOrRequiredBy.check
+
+// inDirectory.should.onlyDependsOn.check
+// inDirectory.shouldNot.onlyDependsOn.check

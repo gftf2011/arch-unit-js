@@ -4,26 +4,23 @@ import path from 'path';
 import traverse from '@babel/traverse';
 import { parse } from '@babel/parser';
 import micromatch from 'micromatch';
-import { File } from '../fluent-api';
+import { File, Dependency } from '../fluent-api';
+import { extractExtensionFromGlobPattern, resolveRootDirPattern, isBuiltinModule, isPackageJsonDependency, isPackageJsonDevDependency } from '../utils';
 
-function resolvePatterns(patterns: string[], rootDir: string): string[] {
-    return patterns.map(p =>
-      p.replace('<rootDir>', rootDir).replace(/\\/g, '/')
-    );
-}
+function resolveImportPath(rootDir: string,currentPath: string, dependency: string, extensions: string[]): Dependency {
+    if (isBuiltinModule(dependency)) {
+        return { name: dependency, type: 'node-builtin-module' };
+    }
 
-function extractExtension(pattern: string): string | null {
-    const match = pattern.match(/\.[^.\\/:*?"<>|\r\n]+$/);
-    return match ? match[0] : null;
-}
+    if (isPackageJsonDependency(rootDir, dependency)) {
+        return { name: dependency, type: 'node-package' };
+    }
 
-function resolveImportPath(currentPath: string, importPath: string, extensions: string[]): string {
-    if (!importPath.startsWith('.') && !importPath.startsWith('/')) {
-      // Node package (e.g., 'pg')
-      return importPath;
+    if (isPackageJsonDevDependency(rootDir, dependency)) {
+        return { name: dependency, type: 'node-dev-package' };
     }
   
-    const fullPath = path.resolve(currentPath, importPath);
+    const fullPath = path.resolve(currentPath, dependency);
   
     const candidates = [
         ...extensions.map(ext => `${fullPath}${ext}`),
@@ -33,30 +30,29 @@ function resolveImportPath(currentPath: string, importPath: string, extensions: 
     for (const candidate of candidates) {
       try {
         const stat = fs.statSync(candidate);
-        if (stat.isFile()) return candidate;
+        if (stat.isFile()) return { name: candidate, type: 'valid-path' };
       } catch {
         // do nothing
       }
     }
-  
-    // fallback to original path if nothing found
-    return importPath;
-  }
 
-async function getDependenciesFromFilePath (filePath: string, extensions: string[]): Promise<string[]> {
+    return { name: dependency, type: 'invalid' };
+}
+
+async function getDependenciesFromFilePath (rootDir: string, filePath: string, extensions: string[]): Promise<Dependency[]> {
     const code = await fsPromises.readFile(filePath, 'utf-8');
-  
+
     const ast = parse(code, {
       sourceType: 'unambiguous', // supports both ESM & CJS
       plugins: ['typescript']    // allows parsing TypeScript syntax
     });
   
-    const dependencies: string[] = [];
+    const dependencies: Dependency[] = [];
   
     traverse(ast, {
       ImportDeclaration({ node }) {
         dependencies.push(
-            resolveImportPath(path.dirname(filePath), node.source.value, extensions)
+            resolveImportPath(rootDir, path.dirname(filePath), node.source.value, extensions)
         );
       },
       CallExpression({ node }) {
@@ -67,7 +63,7 @@ async function getDependenciesFromFilePath (filePath: string, extensions: string
           node.arguments[0].type === 'StringLiteral'
         ) {
             dependencies.push(
-                resolveImportPath(path.dirname(filePath), node.arguments[0].value, extensions)
+                resolveImportPath(rootDir, path.dirname(filePath), node.arguments[0].value, extensions)
             );
         }
       }
@@ -81,13 +77,13 @@ export async function walkThrough(
     filesOrFoldersToInclude: string[],
     filesOrFoldersToIgnore: string[],
     mimeTypes: string[]
-  ): Promise<File[]> {
-    const files: File[] = [];
+  ): Promise<Map<string, File>> {
+    const files: Map<string, File> = new Map();
 
-    const extensions = mimeTypes.map(mimeType => extractExtension(mimeType)) as string[];
+    const extensions = mimeTypes.map(mimeType => extractExtensionFromGlobPattern(mimeType)) as string[];
   
-    const includePatterns = resolvePatterns(filesOrFoldersToInclude, startPath);
-    const ignorePatterns = resolvePatterns(filesOrFoldersToIgnore, startPath);
+    const includePatterns = resolveRootDirPattern(filesOrFoldersToInclude, startPath);
+    const ignorePatterns = resolveRootDirPattern(filesOrFoldersToIgnore, startPath);
   
     async function walk(currentPath: string, extensions: string[]) {
       const entries = await fsPromises.readdir(currentPath, { withFileTypes: true });
@@ -99,14 +95,16 @@ export async function walkThrough(
             if (entry.isDirectory()) {
                 await walk(fullPath, extensions);
             } else if (entry.isFile()) {
-                const dependencies = await getDependenciesFromFilePath(fullPath, extensions);
+                const dependencies = await getDependenciesFromFilePath(startPath, fullPath, extensions);
     
-                files.push({
+                const file: File = {
                     name: entry.name,
                     path: fullPath,
                     dependencies,
                     type: 'file',
-                });
+                };
+
+                files.set(file.path, file);
             }
         }
       }

@@ -14,7 +14,7 @@ const buildConfig = {
   target: 'node16',
   external: ['@babel/parser', '@babel/traverse'], // External dependencies
   sourcemap: true,
-  minify: false,
+  minify: false
 };
 
 // Build CommonJS version
@@ -34,14 +34,4 @@ esbuild.buildSync({
   outfile: 'dist/index.mjs',
 });
 
-// Generate TypeScript declarations using tsc
-
-// Copy TypeScript declarations from tsc
-const { execSync } = require('child_process');
-try {
-  execSync('npx tsc --emitDeclarationOnly --outDir dist', { stdio: 'inherit' });
-} catch (error) {
-  console.log('TypeScript declaration generation failed, but build completed');
-}
-
-console.log('✅ Build completed: CommonJS (index.js), ES Module (index.mjs), and TypeScript declarations (index.d.ts)'); 
+console.log('✅ Build completed: CommonJS (index.js), ES Module (index.mjs)'); 
