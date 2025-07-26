@@ -9,7 +9,10 @@ describe('Project with right structure', () => {
         ['<rootDir>/.'],
         ['<rootDir>/domain', '<rootDir>/use-cases', '<rootDir>/infra'],
         ['^<rootDir>/domain', '^<rootDir>/use-cases', '^<rootDir>/infra'],
-        // ['<rootDir>/domain/**', '<rootDir>/use-cases/**', '<rootDir>/infra/**'] // TODO: add glob pattern validation
+        ['domain', 'use-cases', 'infra'],
+        ['domain/', 'use-cases/', 'infra/'],
+        ['^domain', '^use-cases', '^infra'],
+        ['^domain/', '^use-cases/', '^infra/'],
     ];
 
     const excludeIndexFiles = [

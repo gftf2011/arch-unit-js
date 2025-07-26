@@ -38,13 +38,16 @@ export function extractExtensionFromGlobPattern(pattern: string): string | null 
     return match ? match[0] : null;
 }
 
+export function normalizeWindowsPath(path: string): string {
+    return path.replace(/\\/g, '/');
+}
+
 export function resolveRootDirPattern(patterns: string[], rootDir: string): string[] {
+    const normalizedRootDir = normalizeWindowsPath(rootDir);
     return patterns.map(pattern => {
-      const normalizedRootDir = rootDir.replace(/\\/g, '/');
-  
-      return pattern
-        .replace(/^(\^)?<rootDir>/, normalizedRootDir)
-        .replace(/\\/g, '/');
+        const cleaned = pattern.replace(/^\^/, '').replace('<rootDir>', '');
+        const relative = cleaned.replace(/^\/?\.?/, '');
+        return path.resolve(normalizedRootDir, relative);
     });
 }
 
