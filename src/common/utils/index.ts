@@ -39,9 +39,13 @@ export function extractExtensionFromGlobPattern(pattern: string): string | null 
 }
 
 export function resolveRootDirPattern(patterns: string[], rootDir: string): string[] {
-    return patterns.map(p =>
-      p.replace('<rootDir>', rootDir).replace(/\\/g, '/')
-    );
+    return patterns.map(pattern => {
+      const normalizedRootDir = rootDir.replace(/\\/g, '/');
+  
+      return pattern
+        .replace(/^(\^)?<rootDir>/, normalizedRootDir)
+        .replace(/\\/g, '/');
+    });
 }
 
 const builtinModules = new Set(module.builtinModules);

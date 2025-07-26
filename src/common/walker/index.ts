@@ -84,7 +84,7 @@ export async function walkThrough(
   
     const includePatterns = resolveRootDirPattern(filesOrFoldersToInclude, startPath);
     const ignorePatterns = resolveRootDirPattern(filesOrFoldersToIgnore, startPath);
-  
+
     async function walk(currentPath: string, extensions: string[]) {
       const entries = await fsPromises.readdir(currentPath, { withFileTypes: true });
 
@@ -109,7 +109,7 @@ export async function walkThrough(
         }
       }
     }
-  
+
     for (const includedPath of includePatterns) {
       await walk(includedPath, extensions);
     }
