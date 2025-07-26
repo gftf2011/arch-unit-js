@@ -1,3 +1,7 @@
+import { walkThrough } from '../walker';
+import { extractExtensionFromGlobPattern } from '../utils';
+import micromatch from 'micromatch';
+
 export type Dependency = {
     name: string;
     type: 'valid-path' | 'invalid' | 'node-package' | 'node-dev-package' | 'node-builtin-module';
@@ -16,6 +20,68 @@ export type Options = {
   ignoreMatcher: string[]
 }
 
-export interface Checkable {
-    check(): Promise<boolean>;
+export type CheckableProps = {
+    negated: boolean;
+    rootDir: string;
+    filteringPatterns: string[];
+    checkingPatterns: string[];
+    options: Options;
+    excludeIndexFiles: boolean;
+    ruleConstruction: string[];
+}
+
+export abstract class Checkable {
+    constructor(readonly props: CheckableProps) {}
+
+    private filter(map: Map<string, File>): Map<string, File> {
+        const filters: string[] = this.props.filteringPatterns;
+        const indexFiltering = this.props.options.mimeTypes.map(mimeType => `**/index${extractExtensionFromGlobPattern(mimeType)}`).filter(mimeType => !mimeType.includes("null"));
+        const filteringPattern = this.props.excludeIndexFiles ? [...filters, ...indexFiltering] : filters;
+        const filteredFiles = new Map([...map].filter(([path, _file]) => micromatch([path], filteringPattern).length > 0));
+
+        if (filteredFiles.size === 0) {
+            throw new Error(`Violation - ${this.props.ruleConstruction.join(' ')}\n` + `No files found in '[${filters.join(', ')}']`);
+        }
+
+        return filteredFiles;
+    }
+
+    private async walk(): Promise<Map<string, File>> {
+        return walkThrough(this.props.rootDir, this.props.options.includeMatcher, this.props.options.ignoreMatcher, this.props.options.mimeTypes);
+    }
+
+    private validateFilesExtension(files: Map<string, File>): void {
+        const errors: Error[] = [];
+        for (const [_path, file] of files) {
+            if (micromatch([file.path], this.props.options.mimeTypes).length === 0) {
+                errors.push(new Error(`File: '${file.path}' - mismatch\nFile does not is in 'mimeTypes': [${this.props.options.mimeTypes.join(', ')}] - add desired file extension`));
+            }
+        }
+
+        if (errors.length > 0) {
+            const message = errors.map(error => error.message).join('\n\n');
+            throw new Error(message);
+        }
+    }
+
+    protected abstract checkRule(filteredFiles: Map<string, File>): Promise<boolean>
+    
+    async check(): Promise<boolean> {
+        const hasAnyEmptyChecker = this.props.checkingPatterns.length === 0 
+            || this.props.filteringPatterns.length === 0
+            || this.props.checkingPatterns.includes('')
+            || this.props.filteringPatterns.includes('');
+
+        if (hasAnyEmptyChecker) {
+            throw new Error(`Violation - ${this.props.ruleConstruction.join(' ')}\n` + `No pattern was provided for checking`);
+        }
+
+        const files = await this.walk();
+
+        this.validateFilesExtension(files);
+
+        const filteredFiles = this.filter(files);
+
+        return this.checkRule(filteredFiles);
+    }
 }

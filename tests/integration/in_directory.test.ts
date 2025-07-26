@@ -251,6 +251,122 @@ describe('Project: todo-js-sample', () => {
                             await expect(promise).rejects.toThrow(new Error(`Violation - Rule: project files inDirectory '**/domain/**' should not be imported or required by ''\nNo pattern was provided for checking`));
                         });
                     });
+
+                    test(`should.beImportedOrRequiredBy.check - incorrect 'mimeTypes' - must throw error - includeMatcher: "[<rootDir>]"`, async () => {
+                        const rootDir = path.resolve(path.dirname(__filename), '..', 'sample', 'todo-js-sample');
+                        const options: Options = {
+                            mimeTypes: ['**/*.ts'],
+                            includeMatcher: ['<rootDir>'],
+                            ignoreMatcher: ['<rootDir>/app.js', '<rootDir>/example.js', '<rootDir>/package.json']
+                        };
+                        const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+                        const promise = appInstance
+                            .projectFiles()
+                            .inDirectory('**/domain/**', excludeIndexFile)
+                            .should()
+                            .beImportedOrRequiredBy('**/infra/**')
+                            .check();
+
+                        const errors = [
+                            `File: '${rootDir}/domain/entities/Todo.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`,
+                            `File: '${rootDir}/domain/repositories/TodoRepository.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`,
+                            `File: '${rootDir}/infra/repositories/InMemoryTodoRepository.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`,
+                            `File: '${rootDir}/use-cases/CreateTodo.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`,
+                            `File: '${rootDir}/use-cases/DeleteTodo.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`,
+                            `File: '${rootDir}/use-cases/GetAllTodos.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`,
+                            `File: '${rootDir}/use-cases/GetTodoById.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`,
+                            `File: '${rootDir}/use-cases/UpdateTodo.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`,
+                        ];
+
+                        await expect(promise).rejects.toThrow(new Error(errors.join('\n\n')));
+                    });
+
+                    test(`shouldNot.beImportedOrRequiredBy.check - incorrect 'mimeTypes' - must throw error - includeMatcher: "[<rootDir>]"`, async () => {
+                        const rootDir = path.resolve(path.dirname(__filename), '..', 'sample', 'todo-js-sample');
+                        const options: Options = {
+                            mimeTypes: ['**/*.ts'],
+                            includeMatcher: ['<rootDir>'],
+                            ignoreMatcher: ['<rootDir>/app.js', '<rootDir>/example.js', '<rootDir>/package.json']
+                        };
+                        const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+                        const promise = appInstance
+                            .projectFiles()
+                            .inDirectory('**/domain/**', excludeIndexFile)
+                            .shouldNot()
+                            .beImportedOrRequiredBy('**/infra/**')
+                            .check();
+
+                        const errors = [
+                            `File: '${rootDir}/domain/entities/Todo.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`,
+                            `File: '${rootDir}/domain/repositories/TodoRepository.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`,
+                            `File: '${rootDir}/infra/repositories/InMemoryTodoRepository.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`,
+                            `File: '${rootDir}/use-cases/CreateTodo.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`,
+                            `File: '${rootDir}/use-cases/DeleteTodo.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`,
+                            `File: '${rootDir}/use-cases/GetAllTodos.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`,
+                            `File: '${rootDir}/use-cases/GetTodoById.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`,
+                            `File: '${rootDir}/use-cases/UpdateTodo.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`,
+                        ];
+
+                        await expect(promise).rejects.toThrow(new Error(errors.join('\n\n')));
+                    });
+
+                    test(`should.onlyDependsOn.check - incorrect 'mimeTypes' - must throw error - includeMatcher: "[<rootDir>]"`, async () => {
+                        const rootDir = path.resolve(path.dirname(__filename), '..', 'sample', 'todo-js-sample');
+                        const options: Options = {
+                            mimeTypes: ['**/*.ts'],
+                            includeMatcher: ['<rootDir>'],
+                            ignoreMatcher: ['<rootDir>/app.js', '<rootDir>/example.js', '<rootDir>/package.json']
+                        };
+                        const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+                        const promise = appInstance
+                            .projectFiles()
+                            .inDirectory('**/infra/**', excludeIndexFile)
+                            .should()
+                            .onlyDependsOn(['**/domain/**'])
+                            .check();
+
+                        const errors = [
+                            `File: '${rootDir}/domain/entities/Todo.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`,
+                            `File: '${rootDir}/domain/repositories/TodoRepository.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`,
+                            `File: '${rootDir}/infra/repositories/InMemoryTodoRepository.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`,
+                            `File: '${rootDir}/use-cases/CreateTodo.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`,
+                            `File: '${rootDir}/use-cases/DeleteTodo.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`,
+                            `File: '${rootDir}/use-cases/GetAllTodos.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`,
+                            `File: '${rootDir}/use-cases/GetTodoById.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`,
+                            `File: '${rootDir}/use-cases/UpdateTodo.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`,
+                        ];
+
+                        await expect(promise).rejects.toThrow(new Error(errors.join('\n\n')));
+                    });
+
+                    test(`shouldNot.onlyDependsOn.check - incorrect 'mimeTypes' - must throw error - includeMatcher: "[<rootDir>]"`, async () => {
+                        const rootDir = path.resolve(path.dirname(__filename), '..', 'sample', 'todo-js-sample');
+                        const options: Options = {
+                            mimeTypes: ['**/*.ts'],
+                            includeMatcher: ['<rootDir>'],
+                            ignoreMatcher: ['<rootDir>/app.js', '<rootDir>/example.js', '<rootDir>/package.json']
+                        };
+                        const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+                        const promise = appInstance
+                            .projectFiles()
+                            .inDirectory('**/infra/**', excludeIndexFile)
+                            .shouldNot()
+                            .onlyDependsOn(['**/domain/**'])
+                            .check();
+
+                        const errors = [
+                            `File: '${rootDir}/domain/entities/Todo.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`,
+                            `File: '${rootDir}/domain/repositories/TodoRepository.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`,
+                            `File: '${rootDir}/infra/repositories/InMemoryTodoRepository.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`,
+                            `File: '${rootDir}/use-cases/CreateTodo.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`,
+                            `File: '${rootDir}/use-cases/DeleteTodo.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`,
+                            `File: '${rootDir}/use-cases/GetAllTodos.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`,
+                            `File: '${rootDir}/use-cases/GetTodoById.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`,
+                            `File: '${rootDir}/use-cases/UpdateTodo.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`,
+                        ];
+
+                        await expect(promise).rejects.toThrow(new Error(errors.join('\n\n')));
+                    });
                 });
             });
         });
@@ -258,23 +374,6 @@ describe('Project: todo-js-sample', () => {
 });
 
 describe('Project: todo-ts-sample', () => {
-    test(`should.beImportedOrRequiredBy.check - domain should be imported by use-cases - must be thruthy - includeMatcher: "[<rootDir>]"`, async () => {
-        const rootDir = path.resolve(path.dirname(__filename), '..', 'sample', 'todo-ts-sample');
-        const options: Options = {
-            mimeTypes: ['**/*.js'],
-            includeMatcher: ['<rootDir>'],
-            ignoreMatcher: ['<rootDir>/app.ts', '<rootDir>/example.ts', '<rootDir>/package.json', '<rootDir>/tsconfig.json']
-        };
-        const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-        const answer = await appInstance
-            .projectFiles()
-            .inDirectory('**/domain/**', true)
-            .should()
-            .beImportedOrRequiredBy('**/use-cases/**')
-            .check();
-
-        expect(answer).toBeTruthy();
-    });
     excludeIndexFiles.forEach((excludeIndexFile) => {
         describe(`excluding index files: ${excludeIndexFile}`, () => {
             describe('thruthy scenarios', () => {
