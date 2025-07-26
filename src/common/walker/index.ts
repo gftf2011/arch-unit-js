@@ -5,7 +5,15 @@ import traverse from '@babel/traverse';
 import { parse } from '@babel/parser';
 import micromatch from 'micromatch';
 import { File, Dependency } from '../fluent-api';
-import { extractExtensionFromGlobPattern, resolveRootDirPattern, isBuiltinModule, isPackageJsonDependency, isPackageJsonDevDependency } from '../utils';
+import {
+    extractExtensionFromGlobPattern,
+    resolveRootDirPattern,
+    isBuiltinModule,
+    isPackageJsonDependency,
+    isPackageJsonDevDependency,
+    isTypescriptAtPathDependency,
+    resolveIfTypescriptAtPathDependency
+} from '../utils';
 
 function resolveImportPath(rootDir: string,currentPath: string, dependency: string, extensions: string[]): Dependency {
     if (isBuiltinModule(dependency)) {
@@ -19,21 +27,29 @@ function resolveImportPath(rootDir: string,currentPath: string, dependency: stri
     if (isPackageJsonDevDependency(rootDir, dependency)) {
         return { name: dependency, type: 'node-dev-package' };
     }
-  
-    const fullPath = path.resolve(currentPath, dependency);
-  
+
+    const fullPath = (rootDir: string, currentPath: string, dependency: string) => {
+        if (isTypescriptAtPathDependency(rootDir, dependency)) {
+            return resolveIfTypescriptAtPathDependency(rootDir, dependency);
+        } else {
+            return path.resolve(currentPath, dependency);
+        }
+    };
+
+    const resolvedPathForCandidates = fullPath(rootDir, currentPath, dependency);
+
     const candidates = [
-        ...extensions.map(ext => `${fullPath}${ext}`),
-        ...extensions.map(ext => path.join(fullPath, `index${ext}`)),
+        ...extensions.map(ext => `${resolvedPathForCandidates}${ext}`),
+        ...extensions.map(ext => path.join(resolvedPathForCandidates, `index${ext}`)),
     ];
-  
+
     for (const candidate of candidates) {
-      try {
-        const stat = fs.statSync(candidate);
-        if (stat.isFile()) return { name: candidate, type: 'valid-path' };
-      } catch {
-        // do nothing
-      }
+        try {
+            const stat = fs.statSync(candidate);
+            if (stat.isFile()) return { name: candidate, type: 'valid-path' };
+        } catch {
+            // do nothing
+        }
     }
 
     return { name: dependency, type: 'invalid' };

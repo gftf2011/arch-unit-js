@@ -25,10 +25,10 @@ import module from 'module';
  * ```typescript
  * extractExtensionFromGlobPattern("\*\*\/\*.ts")     // Returns ".ts"
  * extractExtensionFromGlobPattern("src/\*\*\/\*.js") // Returns ".js"
- * extractExtensionFromGlobPattern("file.txt")    // Returns ".txt"
- * extractExtensionFromGlobPattern("*.{ts,js}")   // Returns ".js" (matches last extension)
- * extractExtensionFromGlobPattern("no-extension") // Returns null
- * extractExtensionFromGlobPattern("folder/")     // Returns null
+ * extractExtensionFromGlobPattern("file.txt")        // Returns ".txt"
+ * extractExtensionFromGlobPattern("*.{ts,js}")       // Returns ".js" (matches last extension)
+ * extractExtensionFromGlobPattern("no-extension")    // Returns null
+ * extractExtensionFromGlobPattern("folder/")         // Returns null
  * ```
  * 
  * @since 1.0.0
@@ -38,6 +38,32 @@ export function extractExtensionFromGlobPattern(pattern: string): string | null 
     return match ? match[0] : null;
 }
 
+/**
+ * Normalizes Windows file paths to POSIX-style paths by replacing backslashes with forward slashes.
+ *
+ * This utility is useful for ensuring consistent path handling across different operating systems,
+ * especially when working with glob patterns, file system operations, or tools that expect POSIX-style paths.
+ *
+ * On Windows, file paths use backslashes (e.g., 'C:\\Users\\user\\project'), while POSIX systems (Linux, macOS)
+ * use forward slashes (e.g., '/home/user/project'). This function converts all backslashes in the input path
+ * to forward slashes, making the path compatible with POSIX expectations.
+ *
+ * Note: This function does not modify forward slashes or resolve relative/absolute paths; it only replaces
+ * backslashes with forward slashes.
+ *
+ * @param path - The file path string to normalize. Can be absolute or relative, and may contain backslashes.
+ *
+ * @returns The normalized path string with all backslashes replaced by forward slashes.
+ *
+ * @example
+ * ```typescript
+ * normalizeWindowsPath('C:\\Users\\user\\project')    // Returns 'C:/Users/user/project'
+ * normalizeWindowsPath('folder\\subfolder\\file.txt') // Returns 'folder/subfolder/file.txt'
+ * normalizeWindowsPath('/already/posix/path')         // Returns '/already/posix/path'
+ * ```
+ *
+ * @since 1.0.0
+ */
 export function normalizeWindowsPath(path: string): string {
     return path.replace(/\\/g, '/');
 }
@@ -46,14 +72,13 @@ export function resolveRootDirPattern(patterns: string[], rootDir: string): stri
     const normalizedRootDir = normalizeWindowsPath(rootDir);
     return patterns.map(pattern => {
         const cleaned = pattern.replace(/^\^/, '').replace('<rootDir>', '');
-        const relative = cleaned.replace(/^\/?\.?/, '');
+        const relative = cleaned.replace(/^\/?\.?/, '').replace(/\\/g, '/');
         return path.resolve(normalizedRootDir, relative);
     });
 }
 
-const builtinModules = new Set(module.builtinModules);
-
 export function isBuiltinModule(dependency: string): boolean {
+    const builtinModules = new Set(module.builtinModules);
     return builtinModules.has(dependency);
 }
 
@@ -76,5 +101,33 @@ export function isPackageJsonDevDependency(rootDir: string, dependency: string):
         return Object.keys(packageJson.devDependencies).includes(dependency);
     } catch (error) {
         return false;
+    }
+}
+
+export function isTypescriptAtPathDependency(rootDir: string, dependency: string): boolean {
+    try {
+        if (!dependency.startsWith('@')) {
+            return false;
+        }
+        const typescriptPath = path.join(rootDir, 'tsconfig.json');
+        fs.statSync(typescriptPath);
+        const { baseUrl } = JSON.parse(fs.readFileSync(typescriptPath, 'utf8'));
+        const resolvedPath = path.resolve(rootDir, baseUrl, dependency.replace('@', ''));
+        fs.statSync(resolvedPath);
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
+export function resolveIfTypescriptAtPathDependency(rootDir: string, dependency: string): string {
+    try {
+        const typescriptPath = path.join(rootDir, 'tsconfig.json');
+        fs.statSync(typescriptPath);
+        const { baseUrl } = JSON.parse(fs.readFileSync(typescriptPath, 'utf8'));
+        const resolvedPath = path.resolve(rootDir, baseUrl, dependency.replace('@', ''));
+        return resolvedPath;
+    } catch (error) {
+        return dependency;
     }
 }
