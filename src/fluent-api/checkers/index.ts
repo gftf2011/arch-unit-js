@@ -83,19 +83,36 @@ export class ImportAllMatchConditionSelector implements Checkable {
         const files = await walkThrough(this.props.rootDir, this.props.options.includeMatcher, this.props.options.ignoreMatcher, this.props.options.mimeTypes);
         const filteredFiles = this.filter(files, this.props.filteringPatterns);
 
-        let allImportsMatch = true;
+        if (this.props.negated) {
+            let anyImportsMatch = true;
 
-        for (const [_path, file] of filteredFiles) {
-            if (file.dependencies.length > 0) {
-                const dependencies = micromatch(file.dependencies.map(d => d.name), this.props.checkingPatterns);
-                if (dependencies.length !== file.dependencies.length) {
-                    allImportsMatch = false;
+            for (const [_path, file] of filteredFiles) {
+                const matchingDependencies = file.dependencies.filter(dep => 
+                    micromatch([dep.name], this.props.checkingPatterns).length > 0
+                );
+                
+                if (file.dependencies.length > 0 && matchingDependencies.length === file.dependencies.length) {
+                    anyImportsMatch = false;
+                    break;
                 }
             }
+
+            return anyImportsMatch;
+        } else {
+            let allImportsMatch = true;
+
+            for (const [_path, file] of filteredFiles) {
+                const matchingDependencies = file.dependencies.filter(dep => 
+                    micromatch([dep.name], this.props.checkingPatterns).length > 0
+                );
+                
+                if (file.dependencies.length > 0 && matchingDependencies.length !== file.dependencies.length) {
+                    allImportsMatch = false;
+                    break;
+                }
+            }
+
+            return allImportsMatch;
         }
-
-        // TODO: check if the given imports exist in the project mapping in `files`
-
-        return this.props.negated ? !allImportsMatch : allImportsMatch;
     }
 }
