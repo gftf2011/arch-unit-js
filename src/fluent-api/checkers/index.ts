@@ -39,6 +39,9 @@ export class ImportMatchConditionSelector implements Checkable {
         }
 
         const files = await walkThrough(this.props.rootDir, this.props.options.includeMatcher, this.props.options.ignoreMatcher, this.props.options.mimeTypes);
+        
+        console.log(JSON.stringify(Array.from(files.entries()), null, 2));
+        
         const filteredFiles = this.filter(files, this.props.filteringPatterns);
     
         const filteredImports = new Map<string, File>();

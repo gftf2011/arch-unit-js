@@ -2,24 +2,24 @@ import path from 'path';
 import { Options } from '../../src/common/fluent-api';
 import { ComponentSelectorBuilder } from '../../src/fluent-api';
 
-describe('Project with right structure', () => {
-    const includeMatchers = [
-        ['<rootDir>'],
-        ['<rootDir>/'],
-        ['<rootDir>/.'],
-        ['<rootDir>/domain', '<rootDir>/use-cases', '<rootDir>/infra'],
-        ['^<rootDir>/domain', '^<rootDir>/use-cases', '^<rootDir>/infra'],
-        ['domain', 'use-cases', 'infra'],
-        ['domain/', 'use-cases/', 'infra/'],
-        ['^domain', '^use-cases', '^infra'],
-        ['^domain/', '^use-cases/', '^infra/'],
-    ];
+const includeMatchers = [
+    ['<rootDir>'],
+    ['<rootDir>/'],
+    ['<rootDir>/.'],
+    ['<rootDir>/domain', '<rootDir>/use-cases', '<rootDir>/infra'],
+    ['^<rootDir>/domain', '^<rootDir>/use-cases', '^<rootDir>/infra'],
+    ['domain', 'use-cases', 'infra'],
+    ['domain/', 'use-cases/', 'infra/'],
+    ['^domain', '^use-cases', '^infra'],
+    ['^domain/', '^use-cases/', '^infra/'],
+];
 
-    const excludeIndexFiles = [
-        true,
-        false
-    ];
+const excludeIndexFiles = [
+    true,
+    false
+];
 
+describe('Project: todo-js-sample', () => {
     excludeIndexFiles.forEach((excludeIndexFile) => {
         describe(`excluding index files: ${excludeIndexFile}`, () => {
             describe('thruthy scenarios', () => {
@@ -249,6 +249,73 @@ describe('Project with right structure', () => {
                                 .check();
                     
                             await expect(promise).rejects.toThrow(new Error(`Violation - Rule: project files inDirectory '**/domain/**' should not be imported or required by ''\nNo pattern was provided for checking`));
+                        });
+                    });
+                });
+            });
+        });
+    });
+});
+
+describe('Project: todo-ts-sample', () => {
+    test(`should.beImportedOrRequiredBy.check - domain should be imported by use-cases - must be thruthy - includeMatcher: "[<rootDir>]"`, async () => {
+        const rootDir = path.resolve(path.dirname(__filename), '..', 'sample', 'todo-ts-sample');
+        const options: Options = {
+            mimeTypes: ['**/*.js'],
+            includeMatcher: ['<rootDir>'],
+            ignoreMatcher: ['<rootDir>/app.ts', '<rootDir>/example.ts', '<rootDir>/package.json', '<rootDir>/tsconfig.json']
+        };
+        const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+        const answer = await appInstance
+            .projectFiles()
+            .inDirectory('**/domain/**', true)
+            .should()
+            .beImportedOrRequiredBy('**/use-cases/**')
+            .check();
+
+        expect(answer).toBeTruthy();
+    });
+    excludeIndexFiles.forEach((excludeIndexFile) => {
+        describe(`excluding index files: ${excludeIndexFile}`, () => {
+            describe('thruthy scenarios', () => {
+                describe('inDirectory', () => {
+                    includeMatchers.forEach((includeMatcher) => {
+                        test(`should.beImportedOrRequiredBy.check - domain should be imported by infra - must be thruthy - includeMatcher: "[${includeMatcher.join(', ')}]"`, async () => {
+                            const rootDir = path.resolve(path.dirname(__filename), '..', 'sample', 'todo-ts-sample');
+                            const options: Options = {
+                                mimeTypes: ['**/*.ts'],
+                                includeMatcher: [...includeMatcher],
+                                ignoreMatcher: ['<rootDir>/app.ts', '<rootDir>/example.ts', '<rootDir>/package.json', '<rootDir>/tsconfig.json']
+                            };
+                            const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+                            const answer = await appInstance
+                                .projectFiles()
+                                .inDirectory('**/domain/**', excludeIndexFile)
+                                .should()
+                                .beImportedOrRequiredBy('**/infra/**')
+                                .check();
+                
+                            expect(answer).toBeTruthy();
+                        });
+                    });
+
+                    includeMatchers.forEach((includeMatcher) => {
+                        test(`should.beImportedOrRequiredBy.check - domain should be imported by use-cases - must be thruthy - includeMatcher: "${includeMatcher}"`, async () => {
+                            const rootDir = path.resolve(path.dirname(__filename), '..', 'sample', 'todo-ts-sample');
+                            const options: Options = {
+                                mimeTypes: ['**/*.ts'],
+                                includeMatcher: [...includeMatcher],
+                                ignoreMatcher: ['<rootDir>/app.ts', '<rootDir>/example.ts', '<rootDir>/package.json', '<rootDir>/tsconfig.json']
+                            };
+                            const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+                            const answer = await appInstance
+                                .projectFiles()
+                                .inDirectory('**/domain/**', excludeIndexFile)
+                                .should()
+                                .beImportedOrRequiredBy('**/use-cases/**')
+                                .check();
+                
+                            expect(answer).toBeTruthy();
                         });
                     });
                 });

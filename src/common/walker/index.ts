@@ -29,7 +29,7 @@ function resolveImportPath(rootDir: string,currentPath: string, dependency: stri
     }
 
     const fullPath = (rootDir: string, currentPath: string, dependency: string) => {
-        if (isTypescriptAtPathDependency(rootDir, dependency)) {
+        if (isTypescriptAtPathDependency(dependency)) {
             return resolveIfTypescriptAtPathDependency(rootDir, dependency);
         } else {
             return path.resolve(currentPath, dependency);
