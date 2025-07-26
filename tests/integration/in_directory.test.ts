@@ -144,6 +144,26 @@ describe('Project with right structure', () => {
                             expect(answer).toBeFalsy();
                         });
                     });
+
+                    includeMatchers.forEach((includeMatcher) => {
+                        test(`should.onlyDependsOn.check - domain should not only depends on infra - must be falsy - includeMatcher: "${includeMatcher}"`, async () => {
+                            const rootDir = path.resolve(path.dirname(__filename), '..', 'sample', 'todo-js-sample');
+                            const options: Options = {
+                                mimeTypes: ['**/*.js'],
+                                includeMatcher: [...includeMatcher],
+                                ignoreMatcher: ['<rootDir>/app.js', '<rootDir>/example.js', '<rootDir>/package.json']
+                            };
+                            const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+                            const answer = await appInstance
+                                .projectFiles()
+                                .inDirectory('**/domain/**', excludeIndexFile)
+                                .shouldNot()
+                                .onlyDependsOn(['**/infra/**'])
+                                .check();
+                
+                            expect(answer).toBeFalsy();
+                        });
+                    });
                 });
             });
 
@@ -165,7 +185,7 @@ describe('Project with right structure', () => {
                                 .onlyDependsOn([''])
                                 .check();
                     
-                            await expect(promise).rejects.toThrow();
+                            await expect(promise).rejects.toThrow(new Error(`Violation - Rule: project files inDirectory '**/domain/**' should only depends on '[]'\nNo pattern was provided for checking`));
                         });
                     });
 
@@ -185,7 +205,7 @@ describe('Project with right structure', () => {
                                 .beImportedOrRequiredBy('')
                                 .check();
                     
-                            await expect(promise).rejects.toThrow();
+                            await expect(promise).rejects.toThrow(new Error(`Violation - Rule: project files inDirectory '**/domain/**' should be imported or required by ''\nNo pattern was provided for checking`));
                         });
                     });
 
@@ -205,7 +225,7 @@ describe('Project with right structure', () => {
                                 .onlyDependsOn([''])
                                 .check();
                     
-                            await expect(promise).rejects.toThrow();
+                            await expect(promise).rejects.toThrow(new Error(`Violation - Rule: project files inDirectory '**/domain/**' should not only depends on '[]'\nNo pattern was provided for checking`));
                         });
                     });
 
@@ -225,7 +245,7 @@ describe('Project with right structure', () => {
                                 .beImportedOrRequiredBy('')
                                 .check();
                     
-                            await expect(promise).rejects.toThrow();
+                            await expect(promise).rejects.toThrow(new Error(`Violation - Rule: project files inDirectory '**/domain/**' should not be imported or required by ''\nNo pattern was provided for checking`));
                         });
                     });
                 });

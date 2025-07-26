@@ -29,20 +29,29 @@ export class ImportMatchConditionSelector implements Checkable {
     }
   
     async check(): Promise<boolean> {
-      const files = await walkThrough(this.props.rootDir, this.props.options.includeMatcher, this.props.options.ignoreMatcher, this.props.options.mimeTypes);
-      const filteredFiles = this.filter(files, this.props.filteringPatterns);
-  
-      const filteredImports = new Map<string, File>();
-  
-      for (const [path, file] of filteredFiles) {
-          if (micromatch(file.dependencies.map(d => d.name), this.props.checkingPatterns).length > 0) {
-              filteredImports.set(path, file);
-          }
-      }
-  
-      // TODO: check if the given imports exist in the project mapping in `files`
-  
-      return this.props.negated ? filteredImports.size === 0 : filteredImports.size > 0;
+        const hasAnyEmptyChecker = this.props.checkingPatterns.length === 0 
+            || this.props.filteringPatterns.length === 0
+            || this.props.checkingPatterns.includes('')
+            || this.props.filteringPatterns.includes('');
+
+        if (hasAnyEmptyChecker) {
+            throw new Error(`Violation - ${this.props.ruleConstruction.join(' ')}\n` + `No pattern was provided for checking`);
+        }
+
+        const files = await walkThrough(this.props.rootDir, this.props.options.includeMatcher, this.props.options.ignoreMatcher, this.props.options.mimeTypes);
+        const filteredFiles = this.filter(files, this.props.filteringPatterns);
+    
+        const filteredImports = new Map<string, File>();
+    
+        for (const [path, file] of filteredFiles) {
+            if (micromatch(file.dependencies.map(d => d.name), this.props.checkingPatterns).length > 0) {
+                filteredImports.set(path, file);
+            }
+        }
+    
+        // TODO: check if the given imports exist in the project mapping in `files`
+    
+        return this.props.negated ? filteredImports.size === 0 : filteredImports.size > 0;
     }
 }
 
@@ -62,15 +71,26 @@ export class ImportAllMatchConditionSelector implements Checkable {
     }
     
     async check(): Promise<boolean> {
+        const hasAnyEmptyChecker = this.props.checkingPatterns.length === 0 
+            || this.props.filteringPatterns.length === 0
+            || this.props.checkingPatterns.includes('')
+            || this.props.filteringPatterns.includes('');
+
+        if (hasAnyEmptyChecker) {
+            throw new Error(`Violation - ${this.props.ruleConstruction.join(' ')}\n` + `No pattern was provided for checking`);
+        }
+
         const files = await walkThrough(this.props.rootDir, this.props.options.includeMatcher, this.props.options.ignoreMatcher, this.props.options.mimeTypes);
         const filteredFiles = this.filter(files, this.props.filteringPatterns);
 
         let allImportsMatch = true;
 
         for (const [_path, file] of filteredFiles) {
-            const dependencies = micromatch(file.dependencies.map(d => d.name), this.props.checkingPatterns);
-            if (dependencies.length !== file.dependencies.length) {
-                allImportsMatch = false;
+            if (file.dependencies.length > 0) {
+                const dependencies = micromatch(file.dependencies.map(d => d.name), this.props.checkingPatterns);
+                if (dependencies.length !== file.dependencies.length) {
+                    allImportsMatch = false;
+                }
             }
         }
 
