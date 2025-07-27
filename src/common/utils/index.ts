@@ -68,7 +68,7 @@ export function normalizeWindowsPath(path: string): string {
     return path.replace(/\\/g, '/');
 }
 
-export function resolveRootDirPattern(patterns: string[], rootDir: string): string[] {
+export function resolveRootDirPatternToGlobPattern(patterns: string[], rootDir: string): string[] {
     const normalizedRootDir = normalizeWindowsPath(rootDir);
     return patterns.map(pattern => {
         const cleaned = pattern.replace(/^\^/, '').replace('<rootDir>', '');

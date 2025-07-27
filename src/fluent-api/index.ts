@@ -8,7 +8,7 @@ class PositiveMatchConditionSelectorBuilder {
         readonly rootDir: string,
         readonly pattern: string,
         readonly options: Options,
-        readonly excludeIndexFiles: boolean,
+        readonly excludePattern: string[],
         readonly ruleConstruction: string[]
     ) {}
 
@@ -19,7 +19,7 @@ class PositiveMatchConditionSelectorBuilder {
             filteringPatterns: [pattern],
             checkingPatterns: [this.pattern],
             options: this.options,
-            excludeIndexFiles: this.excludeIndexFiles,
+            excludePattern: this.excludePattern,
             ruleConstruction: [...this.ruleConstruction, `be imported or required by '${pattern}'`]
         });
     }
@@ -31,7 +31,7 @@ class PositiveMatchConditionSelectorBuilder {
             filteringPatterns: [this.pattern],
             checkingPatterns: patterns,
             options: this.options,
-            excludeIndexFiles: this.excludeIndexFiles,
+            excludePattern: this.excludePattern,
             ruleConstruction: [...this.ruleConstruction, `only depends on '[${patterns.join(', ')}]'`]
         });
     }
@@ -43,7 +43,7 @@ class PositiveMatchConditionSelectorBuilder {
             filteringPatterns: [this.pattern],
             checkingPatterns: [pattern],
             options: this.options,
-            excludeIndexFiles: this.excludeIndexFiles,
+            excludePattern: this.excludePattern,
             ruleConstruction: [...this.ruleConstruction, `have name '${pattern}'`]
         });
     }
@@ -56,7 +56,7 @@ class NegativeMatchConditionSelectorBuilder {
         readonly rootDir: string,
         readonly pattern: string,
         readonly options: Options,
-        readonly excludeIndexFiles: boolean,
+        readonly excludePattern: string[],
         readonly ruleConstruction: string[]
     ) {}
 
@@ -67,7 +67,7 @@ class NegativeMatchConditionSelectorBuilder {
             filteringPatterns: [pattern],
             checkingPatterns: [this.pattern],
             options: this.options,
-            excludeIndexFiles: this.excludeIndexFiles,
+            excludePattern: this.excludePattern,
             ruleConstruction: [...this.ruleConstruction, `be imported or required by '${pattern}'`]
         });
     }
@@ -79,7 +79,7 @@ class NegativeMatchConditionSelectorBuilder {
             filteringPatterns: [this.pattern],
             checkingPatterns: patterns,
             options: this.options,
-            excludeIndexFiles: this.excludeIndexFiles,
+            excludePattern: this.excludePattern,
             ruleConstruction:[...this.ruleConstruction, `only depends on '[${patterns.join(', ')}]'`]
         });
     }
@@ -91,7 +91,7 @@ class NegativeMatchConditionSelectorBuilder {
             filteringPatterns: [this.pattern],
             checkingPatterns: [pattern],
             options: this.options,
-            excludeIndexFiles: this.excludeIndexFiles,
+            excludePattern: this.excludePattern,
             ruleConstruction: [...this.ruleConstruction, `have name '${pattern}'`]
         });
     }
@@ -102,7 +102,7 @@ class ShouldSelectorBuilder {
     readonly rootDir: string,
     readonly pattern: string,
     readonly options: Options,
-    readonly excludeIndexFiles: boolean,
+    readonly excludePattern: string[],
     readonly ruleConstruction: string[]
 ) {}
 
@@ -111,7 +111,7 @@ class ShouldSelectorBuilder {
         this.rootDir,
         this.pattern,
         this.options,
-        this.excludeIndexFiles,
+        this.excludePattern,
         [...this.ruleConstruction, 'should']
     );
   }
@@ -121,7 +121,7 @@ class ShouldSelectorBuilder {
         this.rootDir,
         this.pattern,
         this.options,
-        this.excludeIndexFiles,
+        this.excludePattern,
         [...this.ruleConstruction, 'should not']
     );
   }
@@ -130,13 +130,13 @@ class ShouldSelectorBuilder {
 class ComponentSelector {
     constructor(readonly rootDir: string, readonly options: Options, readonly ruleConstruction: string[]) {}
 
-    inDirectory(pattern: string, excludeIndexFiles: boolean = false): ShouldSelectorBuilder {
+    inDirectory(pattern: string, excludePattern: string[] = []): ShouldSelectorBuilder {
         return new ShouldSelectorBuilder(
             this.rootDir,
             pattern,
             this.options,
-            excludeIndexFiles,
-            [...this.ruleConstruction, `inDirectory '${pattern}'` + (excludeIndexFiles ? ' - excluding index files,' : '')]
+            excludePattern,
+            [...this.ruleConstruction, `inDirectory '${pattern}'` + (excludePattern.length > 0 ? ` - excluding files [${excludePattern.join(', ')}] ,` : '')]
         );
     }
 }
@@ -158,3 +158,6 @@ export class ComponentSelectorBuilder {
 
 // inDirectory.should.onlyDependsOn.check
 // inDirectory.shouldNot.onlyDependsOn.check
+
+// inDirectory.should.onlyHaveName.check
+// inDirectory.shouldNot.onlyHaveName.check

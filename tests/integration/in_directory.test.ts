@@ -14,14 +14,19 @@ const includeMatchers = [
     ['^domain/', '^use-cases/', '^infra/'],
 ];
 
-const excludeIndexFiles = [
-    true,
-    false
+const excludeJsFilesPatterns = [
+    [],
+    ['**/index.js']
+];
+
+const excludeTsFilesPatterns = [
+    [],
+    ['**/index.ts']
 ];
 
 describe('Project: todo-js-sample', () => {
-    excludeIndexFiles.forEach((excludeIndexFile) => {
-        describe(`excluding index files: ${excludeIndexFile}`, () => {
+    excludeJsFilesPatterns.forEach((excludeFilesPattern) => {
+        describe(`excluding: [${excludeFilesPattern.join(', ')}]`, () => {
             describe('thruthy scenarios', () => {
                 describe('inDirectory', () => {
                     includeMatchers.forEach((includeMatcher) => {
@@ -35,7 +40,7 @@ describe('Project: todo-js-sample', () => {
                             const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                             const answer = await appInstance
                                 .projectFiles()
-                                .inDirectory('**/domain/**', excludeIndexFile)
+                                .inDirectory('**/domain/**', excludeFilesPattern)
                                 .should()
                                 .beImportedOrRequiredBy('**/infra/**')
                                 .check();
@@ -55,7 +60,7 @@ describe('Project: todo-js-sample', () => {
                             const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                             const answer = await appInstance
                                 .projectFiles()
-                                .inDirectory('**/domain/**', excludeIndexFile)
+                                .inDirectory('**/domain/**', excludeFilesPattern)
                                 .should()
                                 .beImportedOrRequiredBy('**/use-cases/**')
                                 .check();
@@ -75,7 +80,7 @@ describe('Project: todo-js-sample', () => {
                             const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                             const answer = await appInstance
                                 .projectFiles()
-                                .inDirectory('**/infra/**', excludeIndexFile)
+                                .inDirectory('**/infra/**', excludeFilesPattern)
                                 .should()
                                 .onlyDependsOn(['**/domain/**'])
                                 .check();
@@ -95,7 +100,7 @@ describe('Project: todo-js-sample', () => {
                             const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                             const answer = await appInstance
                                 .projectFiles()
-                                .inDirectory('**/use-cases/**', excludeIndexFile)
+                                .inDirectory('**/use-cases/**', excludeFilesPattern)
                                 .should()
                                 .onlyDependsOn(['**/domain/**'])
                                 .check();
@@ -115,7 +120,7 @@ describe('Project: todo-js-sample', () => {
                             const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                             const answer = await appInstance
                                 .projectFiles()
-                                .inDirectory('**/domain/**', excludeIndexFile)
+                                .inDirectory('**/domain/**', excludeFilesPattern)
                                 .shouldNot()
                                 .onlyDependsOn(['**/infra/**'])
                                 .check();
@@ -135,7 +140,7 @@ describe('Project: todo-js-sample', () => {
                             const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                             const answer = await appInstance
                                 .projectFiles()
-                                .inDirectory('**/repositories/**', excludeIndexFile)
+                                .inDirectory('**/repositories/**', excludeFilesPattern)
                                 .should()
                                 .onlyHaveName('*Repository*')
                                 .check();
@@ -155,7 +160,7 @@ describe('Project: todo-js-sample', () => {
                             const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                             const answer = await appInstance
                                 .projectFiles()
-                                .inDirectory('**/domain/**', excludeIndexFile)
+                                .inDirectory('**/domain/**', excludeFilesPattern)
                                 .shouldNot()
                                 .onlyHaveName('*Repository*')
                                 .check();
@@ -175,7 +180,7 @@ describe('Project: todo-js-sample', () => {
                             const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                             const answer = await appInstance
                                 .projectFiles()
-                                .inDirectory('**/use-cases/**', excludeIndexFile)
+                                .inDirectory('**/use-cases/**', excludeFilesPattern)
                                 .shouldNot()
                                 .onlyHaveName('*Repository.js')
                                 .check();
@@ -199,7 +204,7 @@ describe('Project: todo-js-sample', () => {
                             const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                             const answer = await appInstance
                                 .projectFiles()
-                                .inDirectory('**/domain/**', excludeIndexFile)
+                                .inDirectory('**/domain/**', excludeFilesPattern)
                                 .shouldNot()
                                 .beImportedOrRequiredBy('**/infra/**')
                                 .check();
@@ -219,7 +224,7 @@ describe('Project: todo-js-sample', () => {
                             const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                             const answer = await appInstance
                                 .projectFiles()
-                                .inDirectory('**/domain/**', excludeIndexFile)
+                                .inDirectory('**/domain/**', excludeFilesPattern)
                                 .shouldNot()
                                 .beImportedOrRequiredBy('**/use-cases/**')
                                 .check();
@@ -239,7 +244,7 @@ describe('Project: todo-js-sample', () => {
                             const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                             const answer = await appInstance
                                 .projectFiles()
-                                .inDirectory('**/infra/**', excludeIndexFile)
+                                .inDirectory('**/infra/**', excludeFilesPattern)
                                 .shouldNot()
                                 .onlyDependsOn(['**/domain/**'])
                                 .check();
@@ -259,7 +264,7 @@ describe('Project: todo-js-sample', () => {
                             const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                             const answer = await appInstance
                                 .projectFiles()
-                                .inDirectory('**/repositories/**', excludeIndexFile)
+                                .inDirectory('**/repositories/**', excludeFilesPattern)
                                 .shouldNot()
                                 .onlyHaveName('*Repository*')
                                 .check();
@@ -362,7 +367,7 @@ describe('Project: todo-js-sample', () => {
                         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                         const promise = appInstance
                             .projectFiles()
-                            .inDirectory('**/domain/**', excludeIndexFile)
+                            .inDirectory('**/domain/**', excludeFilesPattern)
                             .should()
                             .beImportedOrRequiredBy('**/infra/**')
                             .check();
@@ -391,7 +396,7 @@ describe('Project: todo-js-sample', () => {
                         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                         const promise = appInstance
                             .projectFiles()
-                            .inDirectory('**/domain/**', excludeIndexFile)
+                            .inDirectory('**/domain/**', excludeFilesPattern)
                             .shouldNot()
                             .beImportedOrRequiredBy('**/infra/**')
                             .check();
@@ -420,7 +425,7 @@ describe('Project: todo-js-sample', () => {
                         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                         const promise = appInstance
                             .projectFiles()
-                            .inDirectory('**/infra/**', excludeIndexFile)
+                            .inDirectory('**/infra/**', excludeFilesPattern)
                             .should()
                             .onlyDependsOn(['**/domain/**'])
                             .check();
@@ -449,7 +454,7 @@ describe('Project: todo-js-sample', () => {
                         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                         const promise = appInstance
                             .projectFiles()
-                            .inDirectory('**/infra/**', excludeIndexFile)
+                            .inDirectory('**/infra/**', excludeFilesPattern)
                             .shouldNot()
                             .onlyDependsOn(['**/domain/**'])
                             .check();
@@ -478,7 +483,7 @@ describe('Project: todo-js-sample', () => {
                         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                         const promise = appInstance
                             .projectFiles()
-                            .inDirectory('**/domain/**', excludeIndexFile)
+                            .inDirectory('**/domain/**', excludeFilesPattern)
                             .should()
                             .beImportedOrRequiredBy('**/infra/**')
                             .check();
@@ -587,11 +592,47 @@ describe('Project: todo-js-sample-with-invalid-dependencies', () => {
 
         await expect(promise).rejects.toThrow(new Error(errorsMessage.join('\n\n')));
     });
+
+    test(`should.onlyHaveName.check - incorrect path dependencies - must not throw error`, async () => {
+        const rootDir = path.resolve(path.dirname(__filename), '..', 'sample', 'todo-js-sample-with-invalid-dependencies');
+        const options: Options = {
+            mimeTypes: ['**/*.js'],
+            includeMatcher: ['<rootDir>'],
+            ignoreMatcher: ['<rootDir>/app.js', '<rootDir>/example.js', '<rootDir>/package.json']
+        };
+        const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+        const answer = await appInstance
+            .projectFiles()
+            .inDirectory('**/infra/**')
+            .should()
+            .onlyHaveName('*Repository*')
+            .check();
+
+        expect(answer).toBeTruthy();
+    });
+
+    test(`shouldNot.onlyHaveName.check - incorrect path dependencies - must not throw error`, async () => {
+        const rootDir = path.resolve(path.dirname(__filename), '..', 'sample', 'todo-js-sample-with-invalid-dependencies');
+        const options: Options = {
+            mimeTypes: ['**/*.js'],
+            includeMatcher: ['<rootDir>'],
+            ignoreMatcher: ['<rootDir>/app.js', '<rootDir>/example.js', '<rootDir>/package.json']
+        };
+        const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+        const answer = await appInstance
+            .projectFiles()
+            .inDirectory('**/domain/**')
+            .shouldNot()
+            .onlyHaveName('*Repository*')
+            .check();
+
+        expect(answer).toBeTruthy();
+    });
 });
 
 describe('Project: todo-ts-sample', () => {
-    excludeIndexFiles.forEach((excludeIndexFile) => {
-        describe(`excluding index files: ${excludeIndexFile}`, () => {
+    excludeTsFilesPatterns.forEach((excludeFilesPattern) => {
+        describe(`excluding: [${excludeFilesPattern.join(', ')}]`, () => {
             describe('thruthy scenarios', () => {
                 describe('inDirectory', () => {
                     includeMatchers.forEach((includeMatcher) => {
@@ -605,7 +646,7 @@ describe('Project: todo-ts-sample', () => {
                             const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                             const answer = await appInstance
                                 .projectFiles()
-                                .inDirectory('**/domain/**', excludeIndexFile)
+                                .inDirectory('**/domain/**', excludeFilesPattern)
                                 .should()
                                 .beImportedOrRequiredBy('**/infra/**')
                                 .check();
@@ -625,7 +666,7 @@ describe('Project: todo-ts-sample', () => {
                             const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                             const answer = await appInstance
                                 .projectFiles()
-                                .inDirectory('**/domain/**', excludeIndexFile)
+                                .inDirectory('**/domain/**', excludeFilesPattern)
                                 .should()
                                 .beImportedOrRequiredBy('**/use-cases/**')
                                 .check();
@@ -645,7 +686,7 @@ describe('Project: todo-ts-sample', () => {
                             const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                             const answer = await appInstance
                                 .projectFiles()
-                                .inDirectory('**/infra/**', excludeIndexFile)
+                                .inDirectory('**/infra/**', excludeFilesPattern)
                                 .should()
                                 .onlyDependsOn(['**/domain/**'])
                                 .check();

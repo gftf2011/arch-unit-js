@@ -26,7 +26,7 @@ export type CheckableProps = {
     filteringPatterns: string[];
     checkingPatterns: string[];
     options: Options;
-    excludeIndexFiles: boolean;
+    excludePattern: string[];
     ruleConstruction: string[];
 }
 
@@ -35,8 +35,7 @@ export abstract class Checkable {
 
     protected filter(map: Map<string, File>): Map<string, File> {
         const filters: string[] = this.props.filteringPatterns;
-        const indexFiltering = this.props.options.mimeTypes.map(mimeType => `**/index${extractExtensionFromGlobPattern(mimeType)}`).filter(mimeType => !mimeType.includes("null"));
-        const filteringPattern = this.props.excludeIndexFiles ? [...filters, ...indexFiltering] : filters;
+        const filteringPattern = [...filters, ...this.props.excludePattern];
         const filteredFiles = new Map([...map].filter(([path, _file]) => micromatch([path], filteringPattern).length > 0));
 
         if (filteredFiles.size === 0) {

@@ -7,7 +7,7 @@ import micromatch from 'micromatch';
 import { File, Dependency } from '../fluent-api';
 import {
     extractExtensionFromGlobPattern,
-    resolveRootDirPattern,
+    resolveRootDirPatternToGlobPattern,
     isBuiltinModule,
     isPackageJsonDependency,
     isPackageJsonDevDependency,
@@ -101,8 +101,8 @@ export class Node {
     
         const extensions = mimeTypes.map(mimeType => extractExtensionFromGlobPattern(mimeType)) as string[];
       
-        const includePatterns = resolveRootDirPattern(filesOrFoldersToInclude, startPath);
-        const ignorePatterns = resolveRootDirPattern(filesOrFoldersToIgnore, startPath);
+        const includePatterns = resolveRootDirPatternToGlobPattern(filesOrFoldersToInclude, startPath);
+        const ignorePatterns = resolveRootDirPatternToGlobPattern(filesOrFoldersToIgnore, startPath);
     
         async function walk(currentPath: string, extensions: string[]) {
           const entries = await fsPromises.readdir(currentPath, { withFileTypes: true });
