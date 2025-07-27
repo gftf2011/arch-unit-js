@@ -14,9 +14,6 @@ export class BeImportedOrRequiredBySelector extends Checkable {
                 filteredImports.set(path, file);
             }
         }
-    
-        // TODO: check if the given imports exist in the project mapping in `files`
-    
         return this.props.negated ? filteredImports.size === 0 : filteredImports.size > 0;
     }
 }
@@ -27,36 +24,27 @@ export class OnlyDependsOnSelector extends Checkable {
     }
 
     protected override async checkRule(filteredFiles: Map<string, File>): Promise<boolean> {
+        const filesFound = new Map<string, File>();
+        let allEmptyDependencies = true;
+        
+        for (const [path, file] of filteredFiles) {
+            const matchingDependencies = file.dependencies.filter(dep => micromatch([dep.name], this.props.checkingPatterns).length === 1);
+
+            if (matchingDependencies.length === file.dependencies.length) {
+                if (matchingDependencies.length !== 0) {
+                    allEmptyDependencies = false;
+                }
+                filesFound.set(path, file);
+            }
+        }
+
         if (this.props.negated) {
-            let anyImportsMatch = true;
-
-            for (const [_path, file] of filteredFiles) {
-                const matchingDependencies = file.dependencies.filter(dep => 
-                    micromatch([dep.name], this.props.checkingPatterns).length > 0
-                );
-                
-                if (file.dependencies.length > 0 && matchingDependencies.length === file.dependencies.length) {
-                    anyImportsMatch = false;
-                    break;
-                }
+            if (allEmptyDependencies) {
+                return true;
             }
-
-            return anyImportsMatch;
+            return filesFound.size === filteredFiles.size ? false : true;
         } else {
-            let allImportsMatch = true;
-
-            for (const [_path, file] of filteredFiles) {
-                const matchingDependencies = file.dependencies.filter(dep => 
-                    micromatch([dep.name], this.props.checkingPatterns).length > 0
-                );
-                
-                if (file.dependencies.length > 0 && matchingDependencies.length !== file.dependencies.length) {
-                    allImportsMatch = false;
-                    break;
-                }
-            }
-
-            return allImportsMatch;
+            return filesFound.size === filteredFiles.size ? true : false;
         }
     }
 }
@@ -87,6 +75,36 @@ export class OnlyHaveNameSelector extends Checkable {
             return filesFound.size === filteredFiles.size ? false : true;
         } else {
             return filesFound.size === filteredFiles.size ? true : false;
+        }
+    }
+}
+
+export class HaveNameSelector extends Checkable {
+    constructor(readonly props: CheckableProps) {
+        super(props);
+    }
+
+    protected override validateFilesDependencies(_files: Map<string, File>): void {
+        return;
+    }
+
+    protected override validateIfAllDependenciesExistInProjectGraph(_files: Map<string, File>): void {
+        return;
+    }
+
+    protected override async checkRule(filteredFiles: Map<string, File>): Promise<boolean> {
+        const filesFound = new Map<string, File>();
+        
+        for (const [path, file] of filteredFiles) {
+            if (micromatch([file.name], this.props.checkingPatterns).length === 1) {
+                filesFound.set(path, file);
+            }
+        }
+
+        if (this.props.negated) {
+            return filesFound.size > 0 ? false : true;
+        } else {
+            return filesFound.size > 0 ? true : false;
         }
     }
 }
