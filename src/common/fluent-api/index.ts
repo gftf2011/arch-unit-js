@@ -64,6 +64,31 @@ export abstract class Checkable {
         }
     }
 
+    private validateFilesDependencies(files: Map<string, File>): void {
+        const errors: Error[] = [];
+        for (const [_path, file] of files) {
+            const filePath = file.path;
+            const invalidDependencies: string[] = [];
+            for (const dependency of file.dependencies) {
+                if (dependency.type === 'invalid') {
+                    invalidDependencies.push(dependency.name);
+                }
+            }
+
+            if (invalidDependencies.length > 0) {
+                let errorMessage = `Dependencies in file: '${filePath}' - could not be resolved\n`;
+                errorMessage += `${invalidDependencies.map(dependency => `- '${dependency}'`).join('\n')}`;
+                errorMessage += `Check if dependency is listed in packge.json OR if dependency path is valid`;
+                errors.push(new Error(errorMessage));
+            }
+        }
+
+        if (errors.length > 0) {
+            const message = errors.map(error => error.message).join('\n\n');
+            throw new Error(message);
+        }
+    }
+
     protected abstract checkRule(filteredFiles: Map<string, File>): Promise<boolean>
     
     async check(): Promise<boolean> {
@@ -79,6 +104,7 @@ export abstract class Checkable {
         const files = await this.walk();
 
         this.validateFilesExtension(files);
+        this.validateFilesDependencies(files);
 
         const filteredFiles = this.filter(files);
 
