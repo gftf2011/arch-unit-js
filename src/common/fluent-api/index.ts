@@ -33,7 +33,7 @@ export type CheckableProps = {
 export abstract class Checkable {
     constructor(readonly props: CheckableProps) {}
 
-    private filter(map: Map<string, File>): Map<string, File> {
+    protected filter(map: Map<string, File>): Map<string, File> {
         const filters: string[] = this.props.filteringPatterns;
         const indexFiltering = this.props.options.mimeTypes.map(mimeType => `**/index${extractExtensionFromGlobPattern(mimeType)}`).filter(mimeType => !mimeType.includes("null"));
         const filteringPattern = this.props.excludeIndexFiles ? [...filters, ...indexFiltering] : filters;
@@ -46,15 +46,15 @@ export abstract class Checkable {
         return filteredFiles;
     }
 
-    private async buildProjectGraph(): Promise<Map<string, File>> {
+    protected async buildProjectGraph(): Promise<Map<string, File>> {
         return Node.buildProjectGraph(this.props.rootDir, this.props.options.includeMatcher, this.props.options.ignoreMatcher, this.props.options.mimeTypes);
     }
 
-    private clearFiles(files: Map<string, File>): void {
+    protected clearFiles(files: Map<string, File>): void {
         files.clear();
     }
 
-    private validateFilesExtension(files: Map<string, File>): void {
+    protected validateFilesExtension(files: Map<string, File>): void {
         const errors: Error[] = [];
         for (const [_path, file] of files) {
             if (micromatch([file.path], this.props.options.mimeTypes).length === 0) {
@@ -68,7 +68,7 @@ export abstract class Checkable {
         }
     }
 
-    private validateFilesDependencies(files: Map<string, File>): void {
+    protected validateFilesDependencies(files: Map<string, File>): void {
         const errors: Error[] = [];
         for (const [_path, file] of files) {
             const filePath = file.path;
@@ -93,7 +93,7 @@ export abstract class Checkable {
         }
     }
 
-    private validateIfAllDependenciesExistInProjectGraph(files: Map<string, File>): void {
+    protected validateIfAllDependenciesExistInProjectGraph(files: Map<string, File>): void {
         const errors: Error[] = [];
         for (const [_path, file] of files) {
             const filePath = file.path;
@@ -120,7 +120,7 @@ export abstract class Checkable {
 
     protected abstract checkRule(filteredFiles: Map<string, File>): Promise<boolean>
     
-    async check(): Promise<boolean> {
+    public async check(): Promise<boolean> {
         const hasAnyEmptyChecker = this.props.checkingPatterns.length === 0
             || this.props.filteringPatterns.length === 0
             || this.props.checkingPatterns.includes('')

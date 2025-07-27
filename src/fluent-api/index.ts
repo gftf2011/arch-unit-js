@@ -1,5 +1,5 @@
 import { Options } from '../common/fluent-api';
-import { BeImportedOrRequiredBySelector, OnlyDependsOnSelector } from './checkers';
+import { BeImportedOrRequiredBySelector, OnlyDependsOnSelector, OnlyHaveNameSelector } from './checkers';
 
 class PositiveMatchConditionSelectorBuilder {
     readonly negated: boolean = false;
@@ -33,6 +33,18 @@ class PositiveMatchConditionSelectorBuilder {
             options: this.options,
             excludeIndexFiles: this.excludeIndexFiles,
             ruleConstruction: [...this.ruleConstruction, `only depends on '[${patterns.join(', ')}]'`]
+        });
+    }
+
+    onlyHaveName(pattern: string): OnlyHaveNameSelector {
+        return new OnlyHaveNameSelector({
+            negated: this.negated,
+            rootDir: this.rootDir,
+            filteringPatterns: [this.pattern],
+            checkingPatterns: [pattern],
+            options: this.options,
+            excludeIndexFiles: this.excludeIndexFiles,
+            ruleConstruction: [...this.ruleConstruction, `have name '${pattern}'`]
         });
     }
 }
@@ -69,6 +81,18 @@ class NegativeMatchConditionSelectorBuilder {
             options: this.options,
             excludeIndexFiles: this.excludeIndexFiles,
             ruleConstruction:[...this.ruleConstruction, `only depends on '[${patterns.join(', ')}]'`]
+        });
+    }
+
+    onlyHaveName(pattern: string): OnlyHaveNameSelector {
+        return new OnlyHaveNameSelector({
+            negated: this.negated,
+            rootDir: this.rootDir,
+            filteringPatterns: [this.pattern],
+            checkingPatterns: [pattern],
+            options: this.options,
+            excludeIndexFiles: this.excludeIndexFiles,
+            ruleConstruction: [...this.ruleConstruction, `have name '${pattern}'`]
         });
     }
 }

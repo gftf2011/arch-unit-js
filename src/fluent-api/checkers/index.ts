@@ -60,3 +60,33 @@ export class OnlyDependsOnSelector extends Checkable {
         }
     }
 }
+
+export class OnlyHaveNameSelector extends Checkable {
+    constructor(readonly props: CheckableProps) {
+        super(props);
+    }
+
+    protected override validateFilesDependencies(_files: Map<string, File>): void {
+        return;
+    }
+
+    protected override validateIfAllDependenciesExistInProjectGraph(_files: Map<string, File>): void {
+        return;
+    }
+
+    protected override async checkRule(filteredFiles: Map<string, File>): Promise<boolean> {
+        const filesFound = new Map<string, File>();
+        
+        for (const [path, file] of filteredFiles) {
+            if (micromatch([file.name], this.props.checkingPatterns).length === 1) {
+                filesFound.set(path, file);
+            }
+        }
+
+        if (this.props.negated) {
+            return filesFound.size === filteredFiles.size ? false : true;
+        } else {
+            return filesFound.size === filteredFiles.size ? true : false;
+        }
+    }
+}

@@ -123,6 +123,66 @@ describe('Project: todo-js-sample', () => {
                             expect(answer).toBeTruthy();
                         });
                     });
+
+                    includeMatchers.forEach((includeMatcher) => {
+                        test(`should.onlyHaveName.check - 'repositories' should only have name '*Repository*' - must be thruthy - includeMatcher: "${includeMatcher}"`, async () => {
+                            const rootDir = path.resolve(path.dirname(__filename), '..', 'sample', 'todo-js-sample');
+                            const options: Options = {
+                                mimeTypes: ['**/*.js'],
+                                includeMatcher: [...includeMatcher],
+                                ignoreMatcher: ['<rootDir>/app.js', '<rootDir>/example.js', '<rootDir>/package.json']
+                            };
+                            const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+                            const answer = await appInstance
+                                .projectFiles()
+                                .inDirectory('**/repositories/**', excludeIndexFile)
+                                .should()
+                                .onlyHaveName('*Repository*')
+                                .check();
+                
+                            expect(answer).toBeTruthy();
+                        });
+                    });
+
+                    includeMatchers.forEach((includeMatcher) => {
+                        test(`shouldNot.onlyHaveName.check - 'domain' should not only have name '*Repository*' - must be thruthy - includeMatcher: "${includeMatcher}"`, async () => {
+                            const rootDir = path.resolve(path.dirname(__filename), '..', 'sample', 'todo-js-sample');
+                            const options: Options = {
+                                mimeTypes: ['**/*.js'],
+                                includeMatcher: [...includeMatcher],
+                                ignoreMatcher: ['<rootDir>/app.js', '<rootDir>/example.js', '<rootDir>/package.json']
+                            };
+                            const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+                            const answer = await appInstance
+                                .projectFiles()
+                                .inDirectory('**/domain/**', excludeIndexFile)
+                                .shouldNot()
+                                .onlyHaveName('*Repository*')
+                                .check();
+                
+                            expect(answer).toBeTruthy();
+                        });
+                    });
+
+                    includeMatchers.forEach((includeMatcher) => {
+                        test(`shouldNot.onlyHaveName.check - 'use-cases' should not only have name '*Repository*' - must be thruthy - includeMatcher: "${includeMatcher}"`, async () => {
+                            const rootDir = path.resolve(path.dirname(__filename), '..', 'sample', 'todo-js-sample');
+                            const options: Options = {
+                                mimeTypes: ['**/*.js'],
+                                includeMatcher: [...includeMatcher],
+                                ignoreMatcher: ['<rootDir>/app.js', '<rootDir>/example.js', '<rootDir>/package.json']
+                            };
+                            const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+                            const answer = await appInstance
+                                .projectFiles()
+                                .inDirectory('**/use-cases/**', excludeIndexFile)
+                                .shouldNot()
+                                .onlyHaveName('*Repository.js')
+                                .check();
+                
+                            expect(answer).toBeTruthy();
+                        });
+                    });
                 });
             });
 
@@ -182,6 +242,26 @@ describe('Project: todo-js-sample', () => {
                                 .inDirectory('**/infra/**', excludeIndexFile)
                                 .shouldNot()
                                 .onlyDependsOn(['**/domain/**'])
+                                .check();
+                
+                            expect(answer).toBeFalsy();
+                        });
+                    });
+
+                    includeMatchers.forEach((includeMatcher) => {
+                        test(`shouldNot.onlyHaveName.check - 'repositories' should not only have name '*Repository*' - must be falsy - includeMatcher: "${includeMatcher}"`, async () => {
+                            const rootDir = path.resolve(path.dirname(__filename), '..', 'sample', 'todo-js-sample');
+                            const options: Options = {
+                                mimeTypes: ['**/*.js'],
+                                includeMatcher: [...includeMatcher],
+                                ignoreMatcher: ['<rootDir>/app.js', '<rootDir>/example.js', '<rootDir>/package.json']
+                            };
+                            const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+                            const answer = await appInstance
+                                .projectFiles()
+                                .inDirectory('**/repositories/**', excludeIndexFile)
+                                .shouldNot()
+                                .onlyHaveName('*Repository*')
                                 .check();
                 
                             expect(answer).toBeFalsy();
