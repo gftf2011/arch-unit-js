@@ -1,5 +1,5 @@
 import { Options } from '../common/fluent-api';
-import { ImportMatchConditionSelector, ImportAllMatchConditionSelector } from './checkers';
+import { BeImportedOrRequiredBySelector, OnlyDependsOnSelector } from './checkers';
 
 class PositiveMatchConditionSelectorBuilder {
     readonly negated: boolean = false;
@@ -12,8 +12,8 @@ class PositiveMatchConditionSelectorBuilder {
         readonly ruleConstruction: string[]
     ) {}
 
-    beImportedOrRequiredBy(pattern: string): ImportMatchConditionSelector {
-        return new ImportMatchConditionSelector({
+    beImportedOrRequiredBy(pattern: string): BeImportedOrRequiredBySelector {
+        return new BeImportedOrRequiredBySelector({
             negated: this.negated,
             rootDir: this.rootDir,
             filteringPatterns: [pattern],
@@ -24,8 +24,8 @@ class PositiveMatchConditionSelectorBuilder {
         });
     }
 
-    onlyDependsOn(patterns: string[]): ImportAllMatchConditionSelector {
-        return new ImportAllMatchConditionSelector({
+    onlyDependsOn(patterns: string[]): OnlyDependsOnSelector {
+        return new OnlyDependsOnSelector({
             negated: this.negated,
             rootDir: this.rootDir,
             filteringPatterns: [this.pattern],
@@ -48,8 +48,8 @@ class NegativeMatchConditionSelectorBuilder {
         readonly ruleConstruction: string[]
     ) {}
 
-    beImportedOrRequiredBy(pattern: string): ImportMatchConditionSelector {
-        return new ImportMatchConditionSelector({
+    beImportedOrRequiredBy(pattern: string): BeImportedOrRequiredBySelector {
+        return new BeImportedOrRequiredBySelector({
             negated: this.negated,
             rootDir: this.rootDir,
             filteringPatterns: [pattern],
@@ -60,8 +60,8 @@ class NegativeMatchConditionSelectorBuilder {
         });
     }
 
-    onlyDependsOn(patterns: string[]): ImportAllMatchConditionSelector {
-        return new ImportAllMatchConditionSelector({
+    onlyDependsOn(patterns: string[]): OnlyDependsOnSelector {
+        return new OnlyDependsOnSelector({
             negated: this.negated,
             rootDir: this.rootDir,
             filteringPatterns: [this.pattern],

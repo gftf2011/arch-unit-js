@@ -387,6 +387,28 @@ describe('Project: todo-js-sample', () => {
 
                         await expect(promise).rejects.toThrow(new Error(errors.join('\n\n')));
                     });
+
+                    test(`must throw error if file path is not being reached by the 'includeMatcher'`, async () => {
+                        const rootDir = path.resolve(path.dirname(__filename), '..', 'sample', 'todo-js-sample');
+                        const options: Options = {
+                            mimeTypes: ['**/*.js'],
+                            includeMatcher: ['<rootDir>/infra'],
+                            ignoreMatcher: ['<rootDir>/app.js', '<rootDir>/example.js', '<rootDir>/package.json']
+                        };
+                        const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+                        const promise = appInstance
+                            .projectFiles()
+                            .inDirectory('**/domain/**', excludeIndexFile)
+                            .should()
+                            .beImportedOrRequiredBy('**/infra/**')
+                            .check();
+                        
+                        const errorsMessage = [
+                            `Dependencies in file: '${rootDir}/infra/repositories/InMemoryTodoRepository.js' - could not be resolved\n- '${rootDir}/domain/repositories/TodoRepository.js' - file path was not found\nCheck if path is being reached by the 'includeMatcher'`,
+                        ];
+
+                        await expect(promise).rejects.toThrow(new Error(errorsMessage.join('\n\n')));
+                    });
                 });
             });
         });

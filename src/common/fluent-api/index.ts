@@ -93,10 +93,35 @@ export abstract class Checkable {
         }
     }
 
+    private validateIfAllDependenciesExistInProjectGraph(files: Map<string, File>): void {
+        const errors: Error[] = [];
+        for (const [_path, file] of files) {
+            const filePath = file.path;
+            const invalidDependencies: string[] = [];
+            for (const dependency of file.dependencies) {
+                if (dependency.type === 'valid-path' && !files.has(dependency.name)) {
+                    invalidDependencies.push(dependency.name);
+                }
+            }
+
+            if (invalidDependencies.length > 0) {
+                let errorMessage = `Dependencies in file: '${filePath}' - could not be resolved\n`;
+                errorMessage += `${invalidDependencies.map(dependency => `- '${dependency}' - file path was not found`).join('\n')}\n`;
+                errorMessage += `Check if path is being reached by the 'includeMatcher'`;
+                errors.push(new Error(errorMessage));
+            }
+        }
+
+        if (errors.length > 0) {
+            const message = errors.map(error => error.message).join('\n\n');
+            throw new Error(message);
+        }
+    }
+
     protected abstract checkRule(filteredFiles: Map<string, File>): Promise<boolean>
     
     async check(): Promise<boolean> {
-        const hasAnyEmptyChecker = this.props.checkingPatterns.length === 0 
+        const hasAnyEmptyChecker = this.props.checkingPatterns.length === 0
             || this.props.filteringPatterns.length === 0
             || this.props.checkingPatterns.includes('')
             || this.props.filteringPatterns.includes('');
@@ -109,6 +134,7 @@ export abstract class Checkable {
 
         this.validateFilesExtension(files);
         this.validateFilesDependencies(files);
+        this.validateIfAllDependenciesExistInProjectGraph(files);
 
         const filteredFiles = this.filter(files);
         const result = await this.checkRule(filteredFiles);

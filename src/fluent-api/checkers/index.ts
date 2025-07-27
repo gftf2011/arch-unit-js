@@ -1,7 +1,7 @@
 import micromatch from "micromatch";
 import { Checkable, File, CheckableProps } from "../../common/fluent-api";
 
-export class ImportMatchConditionSelector extends Checkable {
+export class BeImportedOrRequiredBySelector extends Checkable {
     constructor(readonly props: CheckableProps) {
         super(props);
     }
@@ -21,7 +21,7 @@ export class ImportMatchConditionSelector extends Checkable {
     }
 }
 
-export class ImportAllMatchConditionSelector extends Checkable {
+export class OnlyDependsOnSelector extends Checkable {
     constructor(readonly props: CheckableProps) {
         super(props);
     }
