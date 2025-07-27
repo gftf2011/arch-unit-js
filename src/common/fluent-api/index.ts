@@ -1,4 +1,4 @@
-import { walkThrough } from '../walker';
+import { Node } from '../node';
 import { extractExtensionFromGlobPattern } from '../utils';
 import micromatch from 'micromatch';
 
@@ -46,8 +46,12 @@ export abstract class Checkable {
         return filteredFiles;
     }
 
-    private async walk(): Promise<Map<string, File>> {
-        return walkThrough(this.props.rootDir, this.props.options.includeMatcher, this.props.options.ignoreMatcher, this.props.options.mimeTypes);
+    private async buildProjectGraph(): Promise<Map<string, File>> {
+        return Node.buildProjectGraph(this.props.rootDir, this.props.options.includeMatcher, this.props.options.ignoreMatcher, this.props.options.mimeTypes);
+    }
+
+    private clearFiles(files: Map<string, File>): void {
+        files.clear();
     }
 
     private validateFilesExtension(files: Map<string, File>): void {
@@ -101,13 +105,17 @@ export abstract class Checkable {
             throw new Error(`Violation - ${this.props.ruleConstruction.join(' ')}\n` + `No pattern was provided for checking`);
         }
 
-        const files = await this.walk();
+        const files = await this.buildProjectGraph();
 
         this.validateFilesExtension(files);
         this.validateFilesDependencies(files);
 
         const filteredFiles = this.filter(files);
+        const result = await this.checkRule(filteredFiles);
 
-        return this.checkRule(filteredFiles);
+        this.clearFiles(files);
+        this.clearFiles(filteredFiles);
+
+        return result;
     }
 }
