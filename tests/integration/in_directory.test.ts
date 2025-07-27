@@ -85,6 +85,26 @@ describe('Project: todo-js-sample', () => {
                     });
 
                     includeMatchers.forEach((includeMatcher) => {
+                        test(`should.onlyDependsOn.check - use-cases should only depends on domain - must be thruthy - includeMatcher: "${includeMatcher}"`, async () => {
+                            const rootDir = path.resolve(path.dirname(__filename), '..', 'sample', 'todo-js-sample');
+                            const options: Options = {
+                                mimeTypes: ['**/*.js'],
+                                includeMatcher: [...includeMatcher],
+                                ignoreMatcher: ['<rootDir>/app.js', '<rootDir>/example.js', '<rootDir>/package.json']
+                            };
+                            const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+                            const answer = await appInstance
+                                .projectFiles()
+                                .inDirectory('**/use-cases/**', excludeIndexFile)
+                                .should()
+                                .onlyDependsOn(['**/domain/**'])
+                                .check();
+                
+                            expect(answer).toBeTruthy();
+                        });
+                    });
+
+                    includeMatchers.forEach((includeMatcher) => {
                         test(`shouldNot.onlyDependsOn.check - domain should not only depends on infra - must be thruthy - includeMatcher: "${includeMatcher}"`, async () => {
                             const rootDir = path.resolve(path.dirname(__filename), '..', 'sample', 'todo-js-sample');
                             const options: Options = {
@@ -373,6 +393,100 @@ describe('Project: todo-js-sample', () => {
     });
 });
 
+describe('Project: todo-js-sample-with-invalid-dependencies', () => {
+    test(`should.beImportedOrRequiredBy.check - incorrect path dependencies - must throw error`, async () => {
+        const rootDir = path.resolve(path.dirname(__filename), '..', 'sample', 'todo-js-sample-with-invalid-dependencies');
+        const options: Options = {
+            mimeTypes: ['**/*.js'],
+            includeMatcher: ['<rootDir>'],
+            ignoreMatcher: ['<rootDir>/app.js', '<rootDir>/example.js', '<rootDir>/package.json']
+        };
+        const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+        const promise = appInstance
+            .projectFiles()
+            .inDirectory('**/domain/**')
+            .should()
+            .beImportedOrRequiredBy('**/infra/**')
+            .check();
+
+        const errorsMessage = [
+            `Dependencies in file: '${rootDir}/infra/repositories/InMemoryTodoRepository.js' - could not be resolved\n- '../../../domain/repositories/TodoRepository'\nCheck if dependency is listed in packge.json OR if dependency path is valid`,
+            `Dependencies in file: '${rootDir}/use-cases/CreateTodo.js' - could not be resolved\n- '../../domain/entities/Todo'\nCheck if dependency is listed in packge.json OR if dependency path is valid`,
+        ];
+
+        await expect(promise).rejects.toThrow(new Error(errorsMessage.join('\n\n')));
+    });
+
+    test(`shouldNot.beImportedOrRequiredBy.check - incorrect path dependencies - must throw error`, async () => {
+        const rootDir = path.resolve(path.dirname(__filename), '..', 'sample', 'todo-js-sample-with-invalid-dependencies');
+        const options: Options = {
+            mimeTypes: ['**/*.js'],
+            includeMatcher: ['<rootDir>'],
+            ignoreMatcher: ['<rootDir>/app.js', '<rootDir>/example.js', '<rootDir>/package.json']
+        };
+        const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+        const promise = appInstance
+            .projectFiles()
+            .inDirectory('**/domain/**')
+            .shouldNot()
+            .beImportedOrRequiredBy('**/infra/**')
+            .check();
+
+        const errorsMessage = [
+            `Dependencies in file: '${rootDir}/infra/repositories/InMemoryTodoRepository.js' - could not be resolved\n- '../../../domain/repositories/TodoRepository'\nCheck if dependency is listed in packge.json OR if dependency path is valid`,
+            `Dependencies in file: '${rootDir}/use-cases/CreateTodo.js' - could not be resolved\n- '../../domain/entities/Todo'\nCheck if dependency is listed in packge.json OR if dependency path is valid`,
+        ];
+
+        await expect(promise).rejects.toThrow(new Error(errorsMessage.join('\n\n')));
+    });
+
+    test(`should.onlyDependsOn.check - incorrect path dependencies - must throw error`, async () => {
+        const rootDir = path.resolve(path.dirname(__filename), '..', 'sample', 'todo-js-sample-with-invalid-dependencies');
+        const options: Options = {
+            mimeTypes: ['**/*.js'],
+            includeMatcher: ['<rootDir>'],
+            ignoreMatcher: ['<rootDir>/app.js', '<rootDir>/example.js', '<rootDir>/package.json']
+        };
+        const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+        const promise = appInstance
+            .projectFiles()
+            .inDirectory('**/infra/**')
+            .should()
+            .onlyDependsOn(['**/domain/**'])
+            .check();
+
+        const errorsMessage = [
+            `Dependencies in file: '${rootDir}/infra/repositories/InMemoryTodoRepository.js' - could not be resolved\n- '../../../domain/repositories/TodoRepository'\nCheck if dependency is listed in packge.json OR if dependency path is valid`,
+            `Dependencies in file: '${rootDir}/use-cases/CreateTodo.js' - could not be resolved\n- '../../domain/entities/Todo'\nCheck if dependency is listed in packge.json OR if dependency path is valid`,
+        ];
+
+        await expect(promise).rejects.toThrow(new Error(errorsMessage.join('\n\n')));
+    });
+
+    test(`shouldNot.onlyDependsOn.check - incorrect path dependencies - must throw error`, async () => {
+        const rootDir = path.resolve(path.dirname(__filename), '..', 'sample', 'todo-js-sample-with-invalid-dependencies');
+        const options: Options = {
+            mimeTypes: ['**/*.js'],
+            includeMatcher: ['<rootDir>'],
+            ignoreMatcher: ['<rootDir>/app.js', '<rootDir>/example.js', '<rootDir>/package.json']
+        };
+        const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+        const promise = appInstance
+            .projectFiles()
+            .inDirectory('**/infra/**')
+            .shouldNot()
+            .onlyDependsOn(['**/domain/**'])
+            .check();
+
+        const errorsMessage = [
+            `Dependencies in file: '${rootDir}/infra/repositories/InMemoryTodoRepository.js' - could not be resolved\n- '../../../domain/repositories/TodoRepository'\nCheck if dependency is listed in packge.json OR if dependency path is valid`,
+            `Dependencies in file: '${rootDir}/use-cases/CreateTodo.js' - could not be resolved\n- '../../domain/entities/Todo'\nCheck if dependency is listed in packge.json OR if dependency path is valid`,
+        ];
+
+        await expect(promise).rejects.toThrow(new Error(errorsMessage.join('\n\n')));
+    });
+});
+
 describe('Project: todo-ts-sample', () => {
     excludeIndexFiles.forEach((excludeIndexFile) => {
         describe(`excluding index files: ${excludeIndexFile}`, () => {
@@ -412,6 +526,26 @@ describe('Project: todo-ts-sample', () => {
                                 .inDirectory('**/domain/**', excludeIndexFile)
                                 .should()
                                 .beImportedOrRequiredBy('**/use-cases/**')
+                                .check();
+                
+                            expect(answer).toBeTruthy();
+                        });
+                    });
+
+                    includeMatchers.forEach((includeMatcher) => {
+                        test(`should.onlyDependsOn.check - use-cases should only depends on domain - must be thruthy - includeMatcher: "${includeMatcher}"`, async () => {
+                            const rootDir = path.resolve(path.dirname(__filename), '..', 'sample', 'todo-ts-sample');
+                            const options: Options = {
+                                mimeTypes: ['**/*.ts'],
+                                includeMatcher: [...includeMatcher],
+                                ignoreMatcher: ['<rootDir>/app.ts', '<rootDir>/example.ts', '<rootDir>/package.json', '<rootDir>/tsconfig.json']
+                            };
+                            const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+                            const answer = await appInstance
+                                .projectFiles()
+                                .inDirectory('**/infra/**', excludeIndexFile)
+                                .should()
+                                .onlyDependsOn(['**/domain/**'])
                                 .check();
                 
                             expect(answer).toBeTruthy();

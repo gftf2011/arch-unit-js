@@ -77,7 +77,7 @@ export abstract class Checkable {
 
             if (invalidDependencies.length > 0) {
                 let errorMessage = `Dependencies in file: '${filePath}' - could not be resolved\n`;
-                errorMessage += `${invalidDependencies.map(dependency => `- '${dependency}'`).join('\n')}`;
+                errorMessage += `${invalidDependencies.map(dependency => `- '${dependency}'`).join('\n')}\n`;
                 errorMessage += `Check if dependency is listed in packge.json OR if dependency path is valid`;
                 errors.push(new Error(errorMessage));
             }
