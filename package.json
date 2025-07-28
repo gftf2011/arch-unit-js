@@ -21,7 +21,7 @@
     "build:tsc": "tsc",
     "build:types": "npx tsc --emitDeclarationOnly",
     "build": "node esbuild.config.js && npm run build:types",
-    "test": "jest",
+    "test": "jest --detectOpenHandles",
     "test:watch": "jest --watch",
     "publish:beta": "npm publish --tag beta"
   },

@@ -26,7 +26,7 @@ export class OnlyDependsOnSelector extends Checkable {
     protected override async checkRule(filteredFiles: Map<string, File>): Promise<boolean> {
         const filesFound = new Map<string, File>();
         let allEmptyDependencies = true;
-        
+
         for (const [path, file] of filteredFiles) {
             const matchingDependencies = file.dependencies.filter(dep => micromatch([dep.name], this.props.checkingPatterns).length === 1);
 
