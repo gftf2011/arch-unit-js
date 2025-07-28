@@ -1,8 +1,8 @@
 import { Node } from '../node';
-import { extractExtensionFromGlobPattern } from '../utils';
 import micromatch from 'micromatch';
 
 export type Dependency = {
+    resolvedWith: 'require' | 'import';
     name: string;
     type: 'valid-path' | 'invalid' | 'node-package' | 'node-dev-package' | 'node-builtin-module';
 }
@@ -10,6 +10,17 @@ export type Dependency = {
 export type File = {
     name: string;
     path: string;
+    totalRequiredDependencies: number;
+    totalImportedDependencies: number;
+    loc: number;
+    totalLines: number;
+    totalClasses: number;
+    totalFunctions: number;
+    totalVariables: number;
+    totalVarVariables: number;
+    totalLetVariables: number;
+    totalConstVariables: number;
+    hasDefaultExport: boolean;
     type: 'file';
     dependencies: Dependency[];
 }

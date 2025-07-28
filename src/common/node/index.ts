@@ -18,17 +18,23 @@ import {
 export class Node {
     private constructor(readonly rootDir: string) {}
 
-    private static resolveImportPath(rootDir: string,currentPath: string, dependency: string, extensions: string[]): Dependency {
+    private static resolveImportPath(
+        rootDir: string,
+        currentPath: string,
+        dependency: string,
+        extensions: string[],
+        resolvedWith: 'require' | 'import'
+    ): Dependency {
         if (isBuiltinModule(dependency)) {
-            return { name: dependency, type: 'node-builtin-module' };
+            return { name: dependency, type: 'node-builtin-module', resolvedWith };
         }
     
         if (isPackageJsonDependency(rootDir, dependency)) {
-            return { name: dependency, type: 'node-package' };
+            return { name: dependency, type: 'node-package', resolvedWith };
         }
     
         if (isPackageJsonDevDependency(rootDir, dependency)) {
-            return { name: dependency, type: 'node-dev-package' };
+            return { name: dependency, type: 'node-dev-package', resolvedWith };
         }
     
         const fullPath = (rootDir: string, currentPath: string, dependency: string) => {
@@ -49,29 +55,64 @@ export class Node {
         for (const candidate of candidates) {
             try {
                 const stat = fs.statSync(candidate);
-                if (stat.isFile()) return { name: candidate, type: 'valid-path' };
+                if (stat.isFile()) return { name: candidate, type: 'valid-path', resolvedWith };
             } catch {
                 // do nothing
             }
         }
     
-        return { name: dependency, type: 'invalid' };
+        return { name: dependency, type: 'invalid', resolvedWith };
     }
-    
-    private static async getDependenciesFromFilePath (rootDir: string, filePath: string, extensions: string[]): Promise<Dependency[]> {
+
+    private static async createFile (rootDir: string, fileName: string, filePath: string, extensions: string[]): Promise<File> {
         const code = await fsPromises.readFile(filePath, 'utf-8');
     
         const ast = parse(code, {
           sourceType: 'unambiguous', // supports both ESM & CJS
-          plugins: ['typescript']    // allows parsing TypeScript syntax
+          plugins: ['typescript', 'jsx']    // allows parsing TypeScript & JSX syntax
         });
+
+        const codeLines = new Set<number>();
+
+        const countLogicalCodeLines = (code: string): number => {
+            const lines = code.split('\n');
+            return lines.filter(line => {
+                const trimmed = line.trim();
+                return trimmed.length > 0 && !trimmed.startsWith('//') && !trimmed.startsWith('/*');
+            }).length;
+        }
+
+        let totalRequiredDependencies = 0;
+        let totalImportedDependencies = 0;
+        let totalClasses = 0;
+        let totalFunctions = 0;
+        let totalVariables = 0;
+        let totalVarVariables = 0;
+        let totalLetVariables = 0;
+        let totalConstVariables = 0;
+
+        let hasDefaultExport = false;
       
         const dependencies: Dependency[] = [];
       
         traverse(ast, {
+          enter({ node }) {
+            const loc = node.loc;
+            if (loc) {
+                for (let i = loc.start.line; i <= loc.end.line; i++) {
+                    codeLines.add(i);
+                }
+            }
+          },
           ImportDeclaration({ node }) {
+            totalImportedDependencies++;
             dependencies.push(
-                Node.resolveImportPath(rootDir, path.dirname(filePath), node.source.value, extensions)
+                Node.resolveImportPath(
+                    rootDir,
+                    path.dirname(filePath),
+                    node.source.value,
+                    extensions, 'import'
+                )
             );
           },
           CallExpression({ node }) {
@@ -81,14 +122,71 @@ export class Node {
               node.arguments.length === 1 &&
               node.arguments[0].type === 'StringLiteral'
             ) {
+                totalRequiredDependencies++;
                 dependencies.push(
-                    Node.resolveImportPath(rootDir, path.dirname(filePath), node.arguments[0].value, extensions)
+                    Node.resolveImportPath(
+                        rootDir,
+                        path.dirname(filePath),
+                        node.arguments[0].value,
+                        extensions, 'require'
+                    )
                 );
             }
-          }
-        });
+          },
+          ClassDeclaration({ node }) {
+            totalClasses++;
+          },
+          FunctionDeclaration({ node }) {
+            totalFunctions++;
+          },
+          ClassMethod({ node }) {
+            totalFunctions++;
+          },
+          ClassPrivateMethod({ node }) {
+            totalFunctions++;
+          },
+          ArrowFunctionExpression(path) {
+            if (
+              path.parent.type === 'VariableDeclarator' ||
+              path.parent.type === 'AssignmentExpression'
+            ) {
+              totalFunctions++;
+            }
+          },
+          VariableDeclaration({ node }) {
+            const kind = node.kind; // 'var' | 'let' | 'const'
+            const count = node.declarations.length;
       
-        return dependencies;
+            totalVariables += count;
+      
+            if (kind === 'var') totalVarVariables += count;
+            else if (kind === 'let') totalLetVariables += count;
+            else if (kind === 'const') totalConstVariables += count;
+          },
+          ExportDefaultDeclaration() {
+            hasDefaultExport = true;
+          },
+        });
+
+        const file: File = {
+            name: fileName,
+            path: filePath,
+            dependencies,
+            type: 'file',
+            loc: countLogicalCodeLines(code),
+            totalLines: code.split('\n').length,
+            totalRequiredDependencies,
+            totalImportedDependencies,
+            totalClasses,
+            totalFunctions,
+            totalVariables,
+            totalVarVariables,
+            totalLetVariables,
+            totalConstVariables,
+            hasDefaultExport,
+        };
+      
+        return file;
     }
     
     public static async buildProjectGraph(
@@ -114,14 +212,7 @@ export class Node {
                 if (entry.isDirectory()) {
                     await walk(fullPath, extensions);
                 } else if (entry.isFile()) {
-                    const dependencies = await Node.getDependenciesFromFilePath(startPath, fullPath, extensions);
-        
-                    const file: File = {
-                        name: entry.name,
-                        path: fullPath,
-                        dependencies,
-                        type: 'file',
-                    };
+                    const file = await Node.createFile(startPath, entry.name, fullPath, extensions);
     
                     files.set(file.path, file);
                 }
