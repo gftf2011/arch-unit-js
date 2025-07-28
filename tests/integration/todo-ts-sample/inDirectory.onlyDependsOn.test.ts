@@ -23,6 +23,30 @@ const includeAndExcludeScenarios = [
     [['^domain/', '^use-cases/', '^infra/'], ['!**/index.ts']],
 ];
 
+const onlyIncludeScenarios = [
+    [['<rootDir>']],
+    [['<rootDir>/']],
+    [['<rootDir>/.']],
+    [['<rootDir>/domain', '<rootDir>/use-cases', '<rootDir>/infra']],
+    [['^<rootDir>/domain', '^<rootDir>/use-cases', '^<rootDir>/infra']],
+    [['domain', 'use-cases', 'infra']],
+    [['domain/', 'use-cases/', 'infra/']],
+    [['^domain', '^use-cases', '^infra']],
+    [['^domain/', '^use-cases/', '^infra/']],
+];
+
+const onlyIncludeWithExcludedFilesScenarios = [
+    [['<rootDir>'], ['!**/index.ts']],
+    [['<rootDir>/'], ['!**/index.ts']],
+    [['<rootDir>/.'], ['!**/index.ts']],
+    [['<rootDir>/domain', '<rootDir>/use-cases', '<rootDir>/infra'], ['!**/index.ts']],
+    [['^<rootDir>/domain', '^<rootDir>/use-cases', '^<rootDir>/infra'], ['!**/index.ts']],
+    [['domain', 'use-cases', 'infra'], ['!**/index.ts']],
+    [['domain/', 'use-cases/', 'infra/'], ['!**/index.ts']],
+    [['^domain', '^use-cases', '^infra'], ['!**/index.ts']],
+    [['^domain/', '^use-cases/', '^infra/'], ['!**/index.ts']],
+];
+
 const invalidIncludeAndExcludeScenarios = [
     [['<rootDir>/infra'], []],
     [['<rootDir>/infra'], ['**/index.ts']]
@@ -53,8 +77,8 @@ describe('Positive scenarios', () => {
                     }
                 });
 
-                test(`check - use-cases should only depends on domain`, async () => {
-                    for (const [includeMatcher, excludeFilesPattern] of includeAndExcludeScenarios) {
+                test(`check - use-cases should only depends on domain - excluding index.ts`, async () => {
+                    for (const [includeMatcher, excludeFilesPattern] of onlyIncludeWithExcludedFilesScenarios) {
                         const options: Options = {
                             mimeTypes: ['**/*.ts'],
                             includeMatcher: [...includeMatcher],
@@ -89,6 +113,25 @@ describe('Positive scenarios', () => {
                             .inDirectory('**/domain/**', excludeFilesPattern)
                             .shouldNot()
                             .onlyDependsOn(['**/infra/**'])
+                            .check();
+            
+                        expect(answer).toBeTruthy();
+                    }
+                });
+
+                test(`check - use-cases should not only depends on domain - including index.ts`, async () => {
+                    for (const [includeMatcher, excludeFilesPattern] of onlyIncludeScenarios) {
+                        const options: Options = {
+                            mimeTypes: ['**/*.ts'],
+                            includeMatcher: [...includeMatcher],
+                            ignoreMatcher: ['<rootDir>/app.ts', '<rootDir>/example.ts', '<rootDir>/package.json', '<rootDir>/tsconfig.json']
+                        };
+                        const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+                        const answer = await appInstance
+                            .projectFiles()
+                            .inDirectory('**/use-cases/**', excludeFilesPattern)
+                            .shouldNot()
+                            .onlyDependsOn(['**/domain/**'])
                             .check();
             
                         expect(answer).toBeTruthy();
