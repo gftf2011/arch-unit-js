@@ -473,6 +473,50 @@ describe('Project: todo-js-sample', () => {
                         await expect(promise).rejects.toThrow(new Error(errors.join('\n\n')));
                     });
 
+                    test(`should.onlyHaveName.check - domain should only have name "" - must throw error - includeMatcher: "[<rootDir>]"`, async () => {
+                        const rootDir = path.resolve(path.dirname(__filename), '..', 'sample', 'todo-js-sample');
+                        const options: Options = {
+                            mimeTypes: ['**/*.ts'],
+                            includeMatcher: ['<rootDir>'],
+                            ignoreMatcher: ['<rootDir>/app.js', '<rootDir>/example.js', '<rootDir>/package.json']
+                        };
+                        const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+                        const promise = appInstance
+                            .projectFiles()
+                            .inDirectory('**/domain/**', excludeFilesPattern)
+                            .should()
+                            .onlyHaveName('')
+                            .check();
+
+                        const errors = [
+                            `Violation - Rule: project files inDirectory '**/domain/**'${excludeFilesPattern.length > 0 ? ` - excluding files [${excludeFilesPattern.join(', ')}] ,` : ''} should have name ''\nNo pattern was provided for checking`,
+                        ];
+
+                        await expect(promise).rejects.toThrow(new Error(errors.join('\n\n')));
+                    });
+
+                    test(`shouldNot.onlyHaveName.check - domain should not only have name "" - must throw error - includeMatcher: "[<rootDir>]"`, async () => {
+                        const rootDir = path.resolve(path.dirname(__filename), '..', 'sample', 'todo-js-sample');
+                        const options: Options = {
+                            mimeTypes: ['**/*.ts'],
+                            includeMatcher: ['<rootDir>'],
+                            ignoreMatcher: ['<rootDir>/app.js', '<rootDir>/example.js', '<rootDir>/package.json']
+                        };
+                        const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+                        const promise = appInstance
+                            .projectFiles()
+                            .inDirectory('**/domain/**', excludeFilesPattern)
+                            .shouldNot()
+                            .onlyHaveName('')
+                            .check();
+
+                            const errors = [
+                                `Violation - Rule: project files inDirectory '**/domain/**'${excludeFilesPattern.length > 0 ? ` - excluding files [${excludeFilesPattern.join(', ')}] ,` : ''} should not have name ''\nNo pattern was provided for checking`,
+                            ];
+
+                        await expect(promise).rejects.toThrow(new Error(errors.join('\n\n')));
+                    });
+
                     test(`must throw error if file path is not being reached by the 'includeMatcher'`, async () => {
                         const rootDir = path.resolve(path.dirname(__filename), '..', 'sample', 'todo-js-sample');
                         const options: Options = {
