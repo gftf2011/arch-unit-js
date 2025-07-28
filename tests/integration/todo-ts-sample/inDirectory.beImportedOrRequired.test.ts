@@ -4,23 +4,23 @@ import { ComponentSelectorBuilder } from '../../../src/fluent-api';
 
 const includeAndExcludeScenarios = [
     [['<rootDir>'], []],
-    [['<rootDir>'], ['**/index.ts']],
+    [['<rootDir>'], ['!**/index.ts']],
     [['<rootDir>/'], []],
-    [['<rootDir>/'], ['**/index.ts']],
+    [['<rootDir>/'], ['!**/index.ts']],
     [['<rootDir>/.'], []],
-    [['<rootDir>/.'], ['**/index.ts']],
+    [['<rootDir>/.'], ['!**/index.ts']],
     [['<rootDir>/domain', '<rootDir>/use-cases', '<rootDir>/infra'], []],
-    [['<rootDir>/domain', '<rootDir>/use-cases', '<rootDir>/infra'], ['**/index.ts']],
+    [['<rootDir>/domain', '<rootDir>/use-cases', '<rootDir>/infra'], ['!**/index.ts']],
     [['^<rootDir>/domain', '^<rootDir>/use-cases', '^<rootDir>/infra'], []],
-    [['^<rootDir>/domain', '^<rootDir>/use-cases', '^<rootDir>/infra'], ['**/index.ts']],
+    [['^<rootDir>/domain', '^<rootDir>/use-cases', '^<rootDir>/infra'], ['!**/index.ts']],
     [['domain', 'use-cases', 'infra'], []],
-    [['domain', 'use-cases', 'infra'], ['**/index.ts']],
+    [['domain', 'use-cases', 'infra'], ['!**/index.ts']],
     [['domain/', 'use-cases/', 'infra/'], []],
-    [['domain/', 'use-cases/', 'infra/'], ['**/index.ts']],
+    [['domain/', 'use-cases/', 'infra/'], ['!**/index.ts']],
     [['^domain', '^use-cases', '^infra'], []],
-    [['^domain', '^use-cases', '^infra'], ['**/index.ts']],
+    [['^domain', '^use-cases', '^infra'], ['!**/index.ts']],
     [['^domain/', '^use-cases/', '^infra/'], []],
-    [['^domain/', '^use-cases/', '^infra/'], ['**/index.ts']],
+    [['^domain/', '^use-cases/', '^infra/'], ['!**/index.ts']],
 ];
 
 const rootDir = path.resolve(path.dirname(__filename), '..', '..', 'sample', 'todo-ts-sample');
