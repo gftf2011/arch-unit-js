@@ -1,5 +1,6 @@
 import { TodoRepository } from '@/domain/repositories/TodoRepository';
 import { ITodo } from '@/domain/entities';
+import pg from 'pg';
 
 export class InMemoryTodoRepository extends TodoRepository {
   private todos: ITodo[] = [];

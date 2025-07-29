@@ -49,6 +49,16 @@ export class OnlyDependsOnSelector extends Checkable {
     }
 }
 
+export class DependsOnSelector extends Checkable {
+    constructor(protected readonly props: CheckableProps) {
+        super(props);
+    }
+
+    protected override async checkRule(filteredFiles: Map<string, File>): Promise<boolean> {
+        
+    }
+}
+
 export class OnlyHaveNameSelector extends Checkable {
     constructor(protected readonly props: CheckableProps) {
         super(props);

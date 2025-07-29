@@ -185,3 +185,6 @@ export class ComponentSelectorBuilder {
 
 // inDirectory.should.onlyHaveName.check
 // inDirectory.shouldNot.onlyHaveName.check
+
+// inDirectory.should.haveName.check
+// inDirectory.shouldNot.haveName.check

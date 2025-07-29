@@ -58,7 +58,7 @@ describe('Positive scenarios', () => {
     describe('inDirectory', () => {
         describe('should', () => {
             describe('onlyDependsOn', () => {
-                test(`check - infra should only depends on domain`, async () => {
+                test(`check - infra should only depends on domain and 'pg'`, async () => {
                     for (const [includeMatcher, excludeFilesPattern] of includeAndExcludeScenarios) {
                         const options: Options = {
                             mimeTypes: ['**/*.ts'],
@@ -70,7 +70,7 @@ describe('Positive scenarios', () => {
                             .projectFiles()
                             .inDirectory('**/infra/**', excludeFilesPattern)
                             .should()
-                            .onlyDependsOn(['**/domain/**'])
+                            .onlyDependsOn(['**/domain/**', 'pg'])
                             .check();
             
                         expect(answer).toBeTruthy();
@@ -144,9 +144,31 @@ describe('Positive scenarios', () => {
 
 describe('Negative scenarios', () => {
     describe('inDirectory', () => {
+        describe('should', () => {
+            describe('onlyDependsOn', () => {
+                test(`check - infra should only depends on domain`, async () => {
+                    for (const [includeMatcher, excludeFilesPattern] of includeAndExcludeScenarios) {
+                        const options: Options = {
+                            mimeTypes: ['**/*.ts'],
+                            includeMatcher: [...includeMatcher],
+                            ignoreMatcher: ['<rootDir>/app.ts', '<rootDir>/example.ts', '<rootDir>/package.json', '<rootDir>/tsconfig.json']
+                        };
+                        const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+                        const answer = await appInstance
+                            .projectFiles()
+                            .inDirectory('**/infra/**', excludeFilesPattern)
+                            .should()
+                            .onlyDependsOn(['**/domain/**'])
+                            .check();
+            
+                        expect(answer).toBeFalsy();
+                    }
+                });
+            });
+        });
         describe('shouldNot', () => {
             describe('onlyDependsOn', () => {
-                test(`check - infra should not only depends on domain`, async () => {
+                test(`check - infra should not only depends on domain and 'pg'`, async () => {
                     for (const [includeMatcher, excludeFilesPattern] of includeAndExcludeScenarios) {
                         const options: Options = {
                             mimeTypes: ['**/*.ts'],
@@ -158,7 +180,7 @@ describe('Negative scenarios', () => {
                             .projectFiles()
                             .inDirectory('**/infra/**', excludeFilesPattern)
                             .shouldNot()
-                            .onlyDependsOn(['**/domain/**'])
+                            .onlyDependsOn(['**/domain/**', 'pg'])
                             .check();
             
                         expect(answer).toBeFalsy();
