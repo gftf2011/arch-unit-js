@@ -226,7 +226,7 @@ describe('Edge scenarios', () => {
                             .onlyHaveName('')
                             .check();
                 
-                        await expect(promise).rejects.toThrow(new Error(`Violation - Rule: project files inDirectory '**/domain/**'${excludeFilesPattern.length > 0 ? ` - excluding files [${excludeFilesPattern.join(', ')}] ,` : ''} should have name ''\nNo pattern was provided for checking`));
+                        await expect(promise).rejects.toThrow(new Error(`Violation - Rule: project files inDirectory '**/domain/**'${excludeFilesPattern.length > 0 ? ` - excluding files [${excludeFilesPattern.join(', ')}] ,` : ''} should only have name ''\nNo pattern was provided for checking`));
                     }
                 });
 
@@ -280,7 +280,7 @@ describe('Edge scenarios', () => {
                             .onlyHaveName('')
                             .check();
                 
-                        await expect(promise).rejects.toThrow(new Error(`Violation - Rule: project files inDirectory '**/domain/**'${excludeFilesPattern.length > 0 ? ` - excluding files [${excludeFilesPattern.join(', ')}] ,` : ''} should not have name ''\nNo pattern was provided for checking`));
+                        await expect(promise).rejects.toThrow(new Error(`Violation - Rule: project files inDirectory '**/domain/**'${excludeFilesPattern.length > 0 ? ` - excluding files [${excludeFilesPattern.join(', ')}] ,` : ''} should not only have name ''\nNo pattern was provided for checking`));
                     }
                 });
 

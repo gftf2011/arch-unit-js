@@ -42,7 +42,7 @@ export type CheckableProps = {
 }
 
 export abstract class Checkable {
-    constructor(readonly props: CheckableProps) {}
+    constructor(protected readonly props: CheckableProps) {}
 
     protected filter(map: Map<string, File>): Map<string, File> {
         const filters: string[] = this.props.filteringPatterns;
@@ -50,7 +50,7 @@ export abstract class Checkable {
         const filteredFiles = new Map([...map].filter(([path, _file]) => micromatch([path], filteringPattern).length > 0));
 
         if (filteredFiles.size === 0) {
-            throw new Error(`Violation - ${this.props.ruleConstruction.join(' ')}\n` + `No files found in '[${filters.join(', ')}']`);
+            throw new Error(`Violation - ${this.props.ruleConstruction.join(' ')}\n` + `No files found in '[${filters.join(', ')}]'`);
         }
 
         return filteredFiles;

@@ -2,7 +2,7 @@ import micromatch from "micromatch";
 import { Checkable, File, CheckableProps } from "../../common/fluent-api";
 
 export class BeImportedOrRequiredBySelector extends Checkable {
-    constructor(readonly props: CheckableProps) {
+    constructor(protected readonly props: CheckableProps) {
         super(props);
     }
 
@@ -19,7 +19,7 @@ export class BeImportedOrRequiredBySelector extends Checkable {
 }
 
 export class OnlyDependsOnSelector extends Checkable {
-    constructor(readonly props: CheckableProps) {
+    constructor(protected readonly props: CheckableProps) {
         super(props);
     }
 
@@ -50,7 +50,7 @@ export class OnlyDependsOnSelector extends Checkable {
 }
 
 export class OnlyHaveNameSelector extends Checkable {
-    constructor(readonly props: CheckableProps) {
+    constructor(protected readonly props: CheckableProps) {
         super(props);
     }
 
@@ -80,7 +80,7 @@ export class OnlyHaveNameSelector extends Checkable {
 }
 
 export class HaveNameSelector extends Checkable {
-    constructor(readonly props: CheckableProps) {
+    constructor(protected readonly props: CheckableProps) {
         super(props);
     }
 

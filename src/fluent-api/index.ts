@@ -1,5 +1,5 @@
 import { Options } from '../common/fluent-api';
-import { BeImportedOrRequiredBySelector, OnlyDependsOnSelector, OnlyHaveNameSelector } from './checkers';
+import { BeImportedOrRequiredBySelector, HaveNameSelector, OnlyDependsOnSelector, OnlyHaveNameSelector } from './checkers';
 
 class PositiveMatchConditionSelectorBuilder {
     readonly negated: boolean = false;
@@ -38,6 +38,18 @@ class PositiveMatchConditionSelectorBuilder {
 
     onlyHaveName(pattern: string): OnlyHaveNameSelector {
         return new OnlyHaveNameSelector({
+            negated: this.negated,
+            rootDir: this.rootDir,
+            filteringPatterns: [this.pattern],
+            checkingPatterns: [pattern],
+            options: this.options,
+            excludePattern: this.excludePattern,
+            ruleConstruction: [...this.ruleConstruction, `only have name '${pattern}'`]
+        });
+    }
+
+    haveName(pattern: string): HaveNameSelector {
+        return new HaveNameSelector({
             negated: this.negated,
             rootDir: this.rootDir,
             filteringPatterns: [this.pattern],
@@ -86,6 +98,18 @@ class NegativeMatchConditionSelectorBuilder {
 
     onlyHaveName(pattern: string): OnlyHaveNameSelector {
         return new OnlyHaveNameSelector({
+            negated: this.negated,
+            rootDir: this.rootDir,
+            filteringPatterns: [this.pattern],
+            checkingPatterns: [pattern],
+            options: this.options,
+            excludePattern: this.excludePattern,
+            ruleConstruction: [...this.ruleConstruction, `only have name '${pattern}'`]
+        });
+    }
+
+    haveName(pattern: string): HaveNameSelector {
+        return new HaveNameSelector({
             negated: this.negated,
             rootDir: this.rootDir,
             filteringPatterns: [this.pattern],
