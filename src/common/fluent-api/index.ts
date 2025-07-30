@@ -128,7 +128,9 @@ export abstract class Checkable {
         }
     }
 
-    protected abstract checkRule(filteredFiles: Map<string, File>): Promise<boolean>
+    protected abstract checkPositiveRule(filteredFiles: Map<string, File>): Promise<boolean>
+
+    protected abstract checkNegativeRule(filteredFiles: Map<string, File>): Promise<boolean>
     
     public async check(): Promise<boolean> {
         const hasAnyEmptyChecker = this.props.checkingPatterns.length === 0
@@ -147,7 +149,9 @@ export abstract class Checkable {
         this.validateIfAllDependenciesExistInProjectGraph(files);
 
         const filteredFiles = this.filter(files);
-        const result = await this.checkRule(filteredFiles);
+        const result = this.props.negated
+            ? await this.checkNegativeRule(filteredFiles)
+            : await this.checkPositiveRule(filteredFiles);
 
         this.clearFiles(files);
         this.clearFiles(filteredFiles);

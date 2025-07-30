@@ -32,9 +32,6 @@ The rule validates that files are properly connected to ONLY the necessary archi
 **Scenario 5**: File has dependencies and ALL patterns are present (plus additional non-matching dependencies)
 - **Result**: ❌ FAIL - Extra dependencies are not allowed
 
-**Scenario 6**: File has dependencies and SOME match the patterns (plus additional non-matching dependencies)
-- **Result**: ❌ FAIL - Not all patterns are present and extra dependencies exist
-
 ## Scenario Examples
 
 ### Scenario 1: File has NO dependencies
@@ -242,51 +239,3 @@ projectFiles()
 ```
 
 **Result**: ❌ FAIL - `ViolatingUseCase.ts` imports from `domain` and `infrastructure` but also from `utils` (extra dependency not allowed)
-
-### Scenario 6: File has dependencies and SOME match the patterns (plus additional non-matching dependencies)
-```
-project/
-├── src/
-│   ├── domain/
-│   │   └── entities/
-│   │       └── User.ts
-│   ├── application/
-│   │   └── use-cases/
-│   │       └── MixedViolatingUseCase.ts  // imports: ['../domain/entities/User', '../utils/helper', '../config/settings']
-│   ├── utils/
-│   │   └── helper.ts
-│   ├── config/
-│   │   └── settings.ts
-│   └── infrastructure/
-│       └── database/
-│           └── DatabaseConnection.ts
-```
-
-**File Content:**
-```typescript
-// src/application/use-cases/MixedViolatingUseCase.ts
-import { User } from '../domain/entities/User';
-import { helper } from '../utils/helper';
-import { settings } from '../config/settings';
-
-export class MixedViolatingUseCase {
-  execute(userData: any) {
-    const user = new User(userData);
-    const processedData = helper.process(userData);
-    const config = settings.getConfig();
-    
-    return { user, processedData, config };
-  }
-}
-```
-
-**API Usage:**
-```typescript
-projectFiles()
-  .inDirectory('**/use-cases/**')
-  .should()
-  .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
-  .check()
-```
-
-**Result**: ❌ FAIL - `MixedViolatingUseCase.ts` imports from `domain` but not from `infrastructure`, and has extra dependencies from `utils` and `config`

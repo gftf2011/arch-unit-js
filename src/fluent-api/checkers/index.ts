@@ -1,51 +1,72 @@
 import micromatch from "micromatch";
 import { Checkable, File, CheckableProps } from "../../common/fluent-api";
 
-export class BeImportedOrRequiredBySelector extends Checkable {
+export class ProjectFilesInDirectoryOnlyDependsOnShouldSelector extends Checkable {
     constructor(protected readonly props: CheckableProps) {
         super(props);
     }
 
-    protected override async checkRule(filteredFiles: Map<string, File>): Promise<boolean> {
-        const filteredImports = new Map<string, File>();
-    
-        for (const [path, file] of filteredFiles) {
-            if (micromatch(file.dependencies.map(d => d.name), this.props.checkingPatterns).length > 0) {
-                filteredImports.set(path, file);
-            }
-        }
-        return this.props.negated ? filteredImports.size === 0 : filteredImports.size > 0;
-    }
-}
-
-export class OnlyDependsOnSelector extends Checkable {
-    constructor(protected readonly props: CheckableProps) {
-        super(props);
-    }
-
-    protected override async checkRule(filteredFiles: Map<string, File>): Promise<boolean> {
-        const filesFound = new Map<string, File>();
-        let allEmptyDependencies = true;
-
-        for (const [path, file] of filteredFiles) {
-            const matchingDependencies = file.dependencies.filter(dep => micromatch([dep.name], this.props.checkingPatterns).length === 1);
-
-            if (matchingDependencies.length === file.dependencies.length) {
-                if (matchingDependencies.length !== 0) {
-                    allEmptyDependencies = false;
+    protected override async checkPositiveRule(filteredFiles: Map<string, File>): Promise<boolean> {
+        for (const [_, file] of filteredFiles) {
+            if (file.dependencies.length === 0) continue; // No dependencies is OK
+            
+            const matchingDeps = file.dependencies.filter(dep => 
+                micromatch([dep.name], this.props.checkingPatterns).length > 0
+            );
+            
+            // All dependencies must match patterns (exclusive match)
+            if (matchingDeps.length !== file.dependencies.length) return false;
+            
+            // All patterns must be present in the dependencies
+            const matchedPatterns = new Set<string>();
+            for (const dep of file.dependencies) {
+                for (const pattern of this.props.checkingPatterns) {
+                    if (micromatch([dep.name], [pattern]).length > 0) {
+                        matchedPatterns.add(pattern);
+                    }
                 }
-                filesFound.set(path, file);
             }
+            
+            // All patterns must be matched by at least one dependency
+            if (matchedPatterns.size !== this.props.checkingPatterns.length) return false;
         }
+        return true;
+    }
 
-        if (this.props.negated) {
-            if (allEmptyDependencies) {
-                return true;
+    protected override async checkNegativeRule(filteredFiles: Map<string, File>): Promise<boolean> {
+        // shouldNot.onlyDependsOn passes when files do NOT exclusively depend only on specified patterns
+        
+        for (const [_, file] of filteredFiles) {
+            // Files with no dependencies always pass (cannot violate exclusive dependency)
+            if (file.dependencies.length === 0) continue;
+            
+            const matchingDeps = file.dependencies.filter(dep => 
+                micromatch([dep.name], this.props.checkingPatterns).length > 0
+            );
+            
+            // If any file has additional non-matching dependencies, the rule passes
+            if (matchingDeps.length < file.dependencies.length) {
+                return true; // Pass - file has mixed dependencies
             }
-            return filesFound.size === filteredFiles.size ? false : true;
-        } else {
-            return filesFound.size === filteredFiles.size ? true : false;
         }
+        
+        // If we reach here, all files with dependencies exclusively depend on matching patterns
+        // Now check if any file exclusively depends on the patterns (either ALL or SOME)
+        for (const [_, file] of filteredFiles) {
+            if (file.dependencies.length === 0) continue;
+            
+            const matchingDeps = file.dependencies.filter(dep => 
+                micromatch([dep.name], this.props.checkingPatterns).length > 0
+            );
+            
+            // If file has only matching dependencies, it's exclusively depending on patterns
+            if (matchingDeps.length === file.dependencies.length && file.dependencies.length > 0) {
+                return false; // Fail - found exclusive dependency
+            }
+        }
+        
+        // If no files have exclusive dependencies, the rule passes
+        return true;
     }
 }
 
@@ -54,12 +75,16 @@ export class DependsOnSelector extends Checkable {
         super(props);
     }
 
-    protected override async checkRule(filteredFiles: Map<string, File>): Promise<boolean> {
-        
+    protected override async checkPositiveRule(filteredFiles: Map<string, File>): Promise<boolean> {
+        return true;
+    }
+
+    protected override async checkNegativeRule(filteredFiles: Map<string, File>): Promise<boolean> {
+        return false;
     }
 }
 
-export class OnlyHaveNameSelector extends Checkable {
+export class ProjectFilesInDirectoryOnlyHaveNameShouldSelector extends Checkable {
     constructor(protected readonly props: CheckableProps) {
         super(props);
     }
@@ -72,24 +97,16 @@ export class OnlyHaveNameSelector extends Checkable {
         return;
     }
 
-    protected override async checkRule(filteredFiles: Map<string, File>): Promise<boolean> {
-        const filesFound = new Map<string, File>();
-        
-        for (const [path, file] of filteredFiles) {
-            if (micromatch([file.name], this.props.checkingPatterns).length === 1) {
-                filesFound.set(path, file);
-            }
-        }
+    protected override async checkNegativeRule(filteredFiles: Map<string, File>): Promise<boolean> {
+        return false;
+    }
 
-        if (this.props.negated) {
-            return filesFound.size === filteredFiles.size ? false : true;
-        } else {
-            return filesFound.size === filteredFiles.size ? true : false;
-        }
+    protected override async checkPositiveRule(filteredFiles: Map<string, File>): Promise<boolean> {
+        return true;
     }
 }
 
-export class HaveNameSelector extends Checkable {
+export class ProjectFilesInDirectoryHaveNameShouldSelector extends Checkable {
     constructor(protected readonly props: CheckableProps) {
         super(props);
     }
@@ -102,19 +119,11 @@ export class HaveNameSelector extends Checkable {
         return;
     }
 
-    protected override async checkRule(filteredFiles: Map<string, File>): Promise<boolean> {
-        const filesFound = new Map<string, File>();
-        
-        for (const [path, file] of filteredFiles) {
-            if (micromatch([file.name], this.props.checkingPatterns).length === 1) {
-                filesFound.set(path, file);
-            }
-        }
+    protected override async checkPositiveRule(filteredFiles: Map<string, File>): Promise<boolean> {
+        return true;
+    }
 
-        if (this.props.negated) {
-            return filesFound.size > 0 ? false : true;
-        } else {
-            return filesFound.size > 0 ? true : false;
-        }
+    protected override async checkNegativeRule(filteredFiles: Map<string, File>): Promise<boolean> {
+        return false;
     }
 }

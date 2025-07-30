@@ -1,5 +1,5 @@
 import { Options } from '../common/fluent-api';
-import { BeImportedOrRequiredBySelector, HaveNameSelector, OnlyDependsOnSelector, OnlyHaveNameSelector } from './checkers';
+import { ProjectFilesInDirectoryHaveNameShouldSelector, ProjectFilesInDirectoryOnlyDependsOnShouldSelector, ProjectFilesInDirectoryOnlyHaveNameShouldSelector } from './checkers';
 
 class PositiveMatchConditionSelectorBuilder {
     readonly negated: boolean = false;
@@ -12,20 +12,8 @@ class PositiveMatchConditionSelectorBuilder {
         readonly ruleConstruction: string[]
     ) {}
 
-    beImportedOrRequiredBy(pattern: string): BeImportedOrRequiredBySelector {
-        return new BeImportedOrRequiredBySelector({
-            negated: this.negated,
-            rootDir: this.rootDir,
-            filteringPatterns: [pattern],
-            checkingPatterns: [this.pattern],
-            options: this.options,
-            excludePattern: this.excludePattern,
-            ruleConstruction: [...this.ruleConstruction, `be imported or required by '${pattern}'`]
-        });
-    }
-
-    onlyDependsOn(patterns: string[]): OnlyDependsOnSelector {
-        return new OnlyDependsOnSelector({
+    onlyDependsOn(patterns: string[]): ProjectFilesInDirectoryOnlyDependsOnShouldSelector {
+        return new ProjectFilesInDirectoryOnlyDependsOnShouldSelector({
             negated: this.negated,
             rootDir: this.rootDir,
             filteringPatterns: [this.pattern],
@@ -36,8 +24,8 @@ class PositiveMatchConditionSelectorBuilder {
         });
     }
 
-    onlyHaveName(pattern: string): OnlyHaveNameSelector {
-        return new OnlyHaveNameSelector({
+    onlyHaveName(pattern: string): ProjectFilesInDirectoryOnlyHaveNameShouldSelector {
+        return new ProjectFilesInDirectoryOnlyHaveNameShouldSelector({
             negated: this.negated,
             rootDir: this.rootDir,
             filteringPatterns: [this.pattern],
@@ -48,8 +36,8 @@ class PositiveMatchConditionSelectorBuilder {
         });
     }
 
-    haveName(pattern: string): HaveNameSelector {
-        return new HaveNameSelector({
+    haveName(pattern: string): ProjectFilesInDirectoryHaveNameShouldSelector {
+        return new ProjectFilesInDirectoryHaveNameShouldSelector({
             negated: this.negated,
             rootDir: this.rootDir,
             filteringPatterns: [this.pattern],
@@ -72,20 +60,8 @@ class NegativeMatchConditionSelectorBuilder {
         readonly ruleConstruction: string[]
     ) {}
 
-    beImportedOrRequiredBy(pattern: string): BeImportedOrRequiredBySelector {
-        return new BeImportedOrRequiredBySelector({
-            negated: this.negated,
-            rootDir: this.rootDir,
-            filteringPatterns: [pattern],
-            checkingPatterns: [this.pattern],
-            options: this.options,
-            excludePattern: this.excludePattern,
-            ruleConstruction: [...this.ruleConstruction, `be imported or required by '${pattern}'`]
-        });
-    }
-
-    onlyDependsOn(patterns: string[]): OnlyDependsOnSelector {
-        return new OnlyDependsOnSelector({
+    onlyDependsOn(patterns: string[]): ProjectFilesInDirectoryOnlyDependsOnShouldSelector {
+        return new ProjectFilesInDirectoryOnlyDependsOnShouldSelector({
             negated: this.negated,
             rootDir: this.rootDir,
             filteringPatterns: [this.pattern],
@@ -96,8 +72,8 @@ class NegativeMatchConditionSelectorBuilder {
         });
     }
 
-    onlyHaveName(pattern: string): OnlyHaveNameSelector {
-        return new OnlyHaveNameSelector({
+    onlyHaveName(pattern: string): ProjectFilesInDirectoryOnlyHaveNameShouldSelector {
+        return new ProjectFilesInDirectoryOnlyHaveNameShouldSelector({
             negated: this.negated,
             rootDir: this.rootDir,
             filteringPatterns: [this.pattern],
@@ -108,8 +84,8 @@ class NegativeMatchConditionSelectorBuilder {
         });
     }
 
-    haveName(pattern: string): HaveNameSelector {
-        return new HaveNameSelector({
+    haveName(pattern: string): ProjectFilesInDirectoryHaveNameShouldSelector {
+        return new ProjectFilesInDirectoryHaveNameShouldSelector({
             negated: this.negated,
             rootDir: this.rootDir,
             filteringPatterns: [this.pattern],
@@ -151,7 +127,7 @@ class ShouldSelectorBuilder {
   }
 }
 
-class ComponentSelector {
+class ProjectFilesComponentSelector {
     constructor(readonly rootDir: string, readonly options: Options, readonly ruleConstruction: string[]) {}
 
     inDirectory(pattern: string, excludePattern: string[] = []): ShouldSelectorBuilder {
@@ -172,8 +148,8 @@ export class ComponentSelectorBuilder {
     return new ComponentSelectorBuilder(rootDir, options);
   }
 
-  projectFiles(): ComponentSelector {
-    return new ComponentSelector(this.rootDir, this.options, ['Rule: project files']);
+  projectFiles(): ProjectFilesComponentSelector {
+    return new ProjectFilesComponentSelector(this.rootDir, this.options, ['Rule: project files']);
   }
 }
 

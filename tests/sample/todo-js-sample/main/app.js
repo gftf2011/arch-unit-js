@@ -1,9 +1,10 @@
-const InMemoryTodoRepository = require('./infra/repositories/InMemoryTodoRepository');
-const CreateTodo = require('./application/use-cases/CreateTodo');
-const GetAllTodos = require('./application/use-cases/GetAllTodos');
-const GetTodoById = require('./application/use-cases/GetTodoById');
-const UpdateTodo = require('./application/use-cases/UpdateTodo');
-const DeleteTodo = require('./application/use-cases/DeleteTodo');
+const Todo = require('../domain/entities/Todo');
+const InMemoryTodoRepository = require('../infra/repositories/InMemoryTodoRepository');
+const CreateTodo = require('../use-cases/CreateTodo');
+const GetAllTodos = require('../use-cases/GetAllTodos');
+const GetTodoById = require('../use-cases/GetTodoById');
+const UpdateTodo = require('../use-cases/UpdateTodo');
+const DeleteTodo = require('../use-cases/DeleteTodo');
 
 class TodoApp {
   constructor() {
