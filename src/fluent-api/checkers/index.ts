@@ -84,7 +84,23 @@ export class ProjectFilesInDirectoryDependsOnShouldSelector extends Checkable {
     }
 
     protected override async checkNegativeRule(filteredFiles: Map<string, File>): Promise<boolean> {
-        return false;
+        for (const [_, file] of filteredFiles) {
+            // Files with no dependencies pass the rule (no forbidden patterns can be present)
+            if (file.dependencies.length === 0) continue;
+            
+            // Check if ANY of the specified patterns are present in this file's dependencies
+            for (const dependency of file.dependencies) {
+                const hasAnyPattern = this.props.checkingPatterns.some(pattern => 
+                    micromatch([dependency.name], [pattern]).length > 0
+                );
+                
+                // If any forbidden pattern is found, the rule fails
+                if (hasAnyPattern) return false;
+            }
+        }
+        
+        // No files have any forbidden patterns
+        return true;
     }
 }
 

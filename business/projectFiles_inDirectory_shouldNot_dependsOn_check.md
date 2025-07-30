@@ -9,7 +9,7 @@
 
 This rule ensures architectural isolation by preventing dependencies on specified components or modules.
 
-**Note**: The `shouldNot.dependsOn` rule validates both project paths and npm dependencies (e.g., `['jquery', 'moment']`).
+**Note**: The `shouldNot.dependsOn` rule validates both project paths and npm dependencies (e.g., `['lodash', 'express']`).
 
 ## All Possible Scenarios
 
