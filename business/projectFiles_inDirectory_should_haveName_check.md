@@ -54,7 +54,7 @@ src/application/use-cases/
 
 **API Usage:**
 ```typescript
-app()
+projectFiles()
   .inDirectory('**/use-cases/**')
   .should()
   .haveName('*UseCase.ts')
@@ -90,7 +90,7 @@ src/application/use-cases/
 
 **API Usage:**
 ```typescript
-app()
+projectFiles()
   .inDirectory('**/use-cases/**')
   .should()
   .haveName('*UseCase.ts')
@@ -126,7 +126,7 @@ src/application/use-cases/
 
 **API Usage:**
 ```typescript
-app()
+projectFiles()
   .inDirectory('**/use-cases/**')
   .should()
   .haveName('*UseCase.ts')

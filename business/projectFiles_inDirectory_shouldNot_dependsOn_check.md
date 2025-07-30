@@ -63,7 +63,7 @@ export class EmptyUseCase {
 
 **API Usage:**
 ```typescript
-app()
+projectFiles()
   .inDirectory('**/use-cases/**')
   .shouldNot()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
@@ -103,7 +103,7 @@ export class SafeUseCase {
 
 **API Usage:**
 ```typescript
-app()
+projectFiles()
   .inDirectory('**/use-cases/**')
   .shouldNot()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
@@ -145,7 +145,7 @@ export class ViolatingUseCase {
 
 **API Usage:**
 ```typescript
-app()
+projectFiles()
   .inDirectory('**/use-cases/**')
   .shouldNot()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
@@ -188,7 +188,7 @@ export class FullyViolatingUseCase {
 
 **API Usage:**
 ```typescript
-app()
+projectFiles()
   .inDirectory('**/use-cases/**')
   .shouldNot()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
@@ -240,7 +240,7 @@ export class ComplexViolatingUseCase {
 
 **API Usage:**
 ```typescript
-app()
+projectFiles()
   .inDirectory('**/use-cases/**')
   .shouldNot()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
@@ -288,7 +288,7 @@ export class PartialViolatingUseCase {
 
 **API Usage:**
 ```typescript
-app()
+projectFiles()
   .inDirectory('**/use-cases/**')
   .shouldNot()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])

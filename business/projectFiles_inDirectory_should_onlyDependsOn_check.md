@@ -23,7 +23,7 @@ The rule validates that files are properly connected to ONLY the necessary archi
 **Scenario 2**: File has dependencies but NONE match the patterns
 - **Result**: ❌ FAIL - No patterns are present
 
-**Scenario 3**: File has dependencies and SOME match the patterns
+**Scenario 3**: File has dependencies that match only SOME of the patterns (exclusively)
 - **Result**: ❌ FAIL - Not all patterns are present
 
 **Scenario 4**: File has dependencies and ALL patterns are present (exclusively)
@@ -64,7 +64,7 @@ export class EmptyUseCase {
 
 **API Usage:**
 ```typescript
-app()
+projectFiles()
   .inDirectory('**/use-cases/**')
   .should()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
@@ -104,7 +104,7 @@ export class WrongUseCase {
 
 **API Usage:**
 ```typescript
-app()
+projectFiles()
   .inDirectory('**/use-cases/**')
   .should()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
@@ -113,7 +113,7 @@ app()
 
 **Result**: ❌ FAIL - `WrongUseCase.ts` imports from `utils` and `config`, not `domain` or `infrastructure`
 
-### Scenario 3: File has dependencies and SOME match the patterns
+### Scenario 3: File has dependencies that match only SOME of the patterns (exclusively)
 ```
 project/
 ├── src/
@@ -143,7 +143,7 @@ export class PartialUseCase {
 
 **API Usage:**
 ```typescript
-app()
+projectFiles()
   .inDirectory('**/use-cases/**')
   .should()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
@@ -186,7 +186,7 @@ export class PerfectUseCase {
 
 **API Usage:**
 ```typescript
-app()
+projectFiles()
   .inDirectory('**/use-cases/**')
   .should()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
@@ -234,7 +234,7 @@ export class ViolatingUseCase {
 
 **API Usage:**
 ```typescript
-app()
+projectFiles()
   .inDirectory('**/use-cases/**')
   .should()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
@@ -282,7 +282,7 @@ export class MixedViolatingUseCase {
 
 **API Usage:**
 ```typescript
-app()
+projectFiles()
   .inDirectory('**/use-cases/**')
   .should()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])

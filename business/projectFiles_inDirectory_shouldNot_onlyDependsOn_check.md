@@ -23,7 +23,7 @@ The rule validates that files have flexible dependency relationships, allowing a
 **Scenario 2**: File has dependencies but NONE match the patterns
 - **Result**: ✅ PASS - No patterns are present, so no exclusive dependency
 
-**Scenario 3**: File has dependencies and SOME match the patterns
+**Scenario 3**: File has dependencies and SOME match the patterns (mixed dependencies)
 - **Result**: ✅ PASS - Mixed dependencies, not exclusive
 
 **Scenario 4**: File has dependencies and ALL patterns are present (exclusively)
@@ -32,8 +32,8 @@ The rule validates that files have flexible dependency relationships, allowing a
 **Scenario 5**: File has dependencies and ALL patterns are present (plus additional non-matching dependencies)
 - **Result**: ✅ PASS - Mixed dependencies, not exclusive
 
-**Scenario 6**: File has dependencies and SOME match the patterns (plus additional non-matching dependencies)
-- **Result**: ✅ PASS - Mixed dependencies, not exclusive
+**Scenario 6**: File has dependencies that match only SOME of the patterns (exclusively)
+- **Result**: ❌ FAIL - Exclusive dependencies to some patterns are not allowed
 
 ## Scenario Examples
 
@@ -64,7 +64,7 @@ export class EmptyUseCase {
 
 **API Usage:**
 ```typescript
-app()
+projectFiles()
   .inDirectory('**/use-cases/**')
   .shouldNot()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
@@ -104,7 +104,7 @@ export class SafeUseCase {
 
 **API Usage:**
 ```typescript
-app()
+projectFiles()
   .inDirectory('**/use-cases/**')
   .shouldNot()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
@@ -113,7 +113,7 @@ app()
 
 **Result**: ✅ PASS - `SafeUseCase.ts` imports from `utils` and `config`, not from `domain` or `infrastructure`
 
-### Scenario 3: File has dependencies and SOME match the patterns
+### Scenario 3: File has dependencies and SOME match the patterns (mixed dependencies)
 ```
 project/
 ├── src/
@@ -122,9 +122,12 @@ project/
 │   │       └── User.ts
 │   ├── application/
 │   │   └── use-cases/
-│   │       └── MixedUseCase.ts  // imports: ['../domain/entities/User', '../utils/helper']
+│   │       ├── MixedUseCase.ts  // imports: ['../domain/entities/User', '../utils/helper']
+│   │       └── DiverseUseCase.ts  // imports: ['../domain/entities/User', '../utils/helper', '../config/settings']
 │   ├── utils/
 │   │   └── helper.ts
+│   ├── config/
+│   │   └── settings.ts
 │   └── infrastructure/
 │       └── database/
 │           └── DatabaseConnection.ts
@@ -142,18 +145,33 @@ export class MixedUseCase {
     return helper.process(user);
   }
 }
+
+// src/application/use-cases/DiverseUseCase.ts
+import { User } from '../domain/entities/User';
+import { helper } from '../utils/helper';
+import { settings } from '../config/settings';
+
+export class DiverseUseCase {
+  execute(userData: any) {
+    const user = new User(userData);
+    const processedData = helper.process(userData);
+    const config = settings.getConfig();
+    
+    return { user, processedData, config };
+  }
+}
 ```
 
 **API Usage:**
 ```typescript
-app()
+projectFiles()
   .inDirectory('**/use-cases/**')
   .shouldNot()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
   .check()
 ```
 
-**Result**: ✅ PASS - `MixedUseCase.ts` imports from `domain` and `utils` (mixed dependencies, not exclusive)
+**Result**: ✅ PASS - Files import from `domain` (matches pattern) and `utils`/`config` (don't match patterns) - mixed dependencies, not exclusive
 
 ### Scenario 4: File has dependencies and ALL patterns are present (exclusively)
 ```
@@ -189,7 +207,7 @@ export class ExclusiveUseCase {
 
 **API Usage:**
 ```typescript
-app()
+projectFiles()
   .inDirectory('**/use-cases/**')
   .shouldNot()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
@@ -237,7 +255,7 @@ export class FlexibleUseCase {
 
 **API Usage:**
 ```typescript
-app()
+projectFiles()
   .inDirectory('**/use-cases/**')
   .shouldNot()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
@@ -246,7 +264,7 @@ app()
 
 **Result**: ✅ PASS - `FlexibleUseCase.ts` imports from `domain`, `infrastructure`, and `utils` (mixed dependencies, not exclusive)
 
-### Scenario 6: File has dependencies and SOME match the patterns (plus additional non-matching dependencies)
+### Scenario 6: File has dependencies that match only SOME of the patterns (exclusively)
 ```
 project/
 ├── src/
@@ -255,11 +273,9 @@ project/
 │   │       └── User.ts
 │   ├── application/
 │   │   └── use-cases/
-│   │       └── DiverseUseCase.ts  // imports: ['../domain/entities/User', '../utils/helper', '../config/settings']
-│   ├── utils/
-│   │   └── helper.ts
-│   ├── config/
-│   │   └── settings.ts
+│   │       ├── CreateUserUseCase.ts  // imports: ['../domain/entities/User']
+│   │       ├── UpdateUserUseCase.ts  // imports: ['../domain/entities/User']
+│   │       └── DeleteUserUseCase.ts  // imports: ['../domain/entities/User']
 │   └── infrastructure/
 │       └── database/
 │           └── DatabaseConnection.ts
@@ -267,29 +283,44 @@ project/
 
 **File Content:**
 ```typescript
-// src/application/use-cases/DiverseUseCase.ts
+// src/application/use-cases/CreateUserUseCase.ts
 import { User } from '../domain/entities/User';
-import { helper } from '../utils/helper';
-import { settings } from '../config/settings';
 
-export class DiverseUseCase {
+export class CreateUserUseCase {
   execute(userData: any) {
-    const user = new User(userData);
-    const processedData = helper.process(userData);
-    const config = settings.getConfig();
-    
-    return { user, processedData, config };
+    const user = new User(userData.id, userData.title, userData.description);
+    return user;
+  }
+}
+
+// src/application/use-cases/UpdateUserUseCase.ts
+import { User } from '../domain/entities/User';
+
+export class UpdateUserUseCase {
+  execute(id: string, userData: any) {
+    const user = new User(id, userData.title, userData.description);
+    return user;
+  }
+}
+
+// src/application/use-cases/DeleteUserUseCase.ts
+import { User } from '../domain/entities/User';
+
+export class DeleteUserUseCase {
+  execute(id: string) {
+    // Logic to delete user
+    return `User ${id} deleted`;
   }
 }
 ```
 
 **API Usage:**
 ```typescript
-app()
+projectFiles()
   .inDirectory('**/use-cases/**')
   .shouldNot()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
   .check()
 ```
 
-**Result**: ✅ PASS - `DiverseUseCase.ts` imports from `domain`, `utils`, and `config` (mixed dependencies, not exclusive)
+**Result**: ❌ FAIL - All use-case files import ONLY from `domain` but not from `infrastructure` (exclusive dependencies to some patterns not allowed)

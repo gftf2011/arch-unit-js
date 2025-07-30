@@ -60,7 +60,7 @@ export class EmptyUseCase {
 
 **API Usage:**
 ```typescript
-app()
+projectFiles()
   .inDirectory('**/use-cases/**')
   .should()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
@@ -100,7 +100,7 @@ export class WrongUseCase {
 
 **API Usage:**
 ```typescript
-app()
+projectFiles()
   .inDirectory('**/use-cases/**')
   .should()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
@@ -142,7 +142,7 @@ export class PartialUseCase {
 
 **API Usage:**
 ```typescript
-app()
+projectFiles()
   .inDirectory('**/use-cases/**')
   .should()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
@@ -185,7 +185,7 @@ export class CorrectUseCase {
 
 **API Usage:**
 ```typescript
-app()
+projectFiles()
   .inDirectory('**/use-cases/**')
   .should()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
@@ -237,7 +237,7 @@ export class CompleteUseCase {
 
 **API Usage:**
 ```typescript
-app()
+projectFiles()
   .inDirectory('**/use-cases/**')
   .should()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
