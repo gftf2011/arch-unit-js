@@ -1,5 +1,10 @@
 import { Options } from '../common/fluent-api';
-import { ProjectFilesInDirectoryHaveNameShouldSelector, ProjectFilesInDirectoryOnlyDependsOnShouldSelector, ProjectFilesInDirectoryOnlyHaveNameShouldSelector } from './checkers';
+import {
+    ProjectFilesInDirectoryHaveNameShouldSelector,
+    ProjectFilesInDirectoryOnlyDependsOnShouldSelector,
+    ProjectFilesInDirectoryOnlyHaveNameShouldSelector,
+    ProjectFilesInDirectoryDependsOnShouldSelector
+} from './checkers';
 
 class PositiveMatchConditionSelectorBuilder {
     readonly negated: boolean = false;
@@ -11,6 +16,18 @@ class PositiveMatchConditionSelectorBuilder {
         readonly excludePattern: string[],
         readonly ruleConstruction: string[]
     ) {}
+
+    dependsOn(patterns: string[]): ProjectFilesInDirectoryDependsOnShouldSelector {
+        return new ProjectFilesInDirectoryDependsOnShouldSelector({
+            negated: this.negated,
+            rootDir: this.rootDir,
+            filteringPatterns: [this.pattern],
+            checkingPatterns: patterns,
+            options: this.options,
+            excludePattern: this.excludePattern,
+            ruleConstruction: [...this.ruleConstruction, `depends on '[${patterns.join(', ')}]'`]
+        });
+    }
 
     onlyDependsOn(patterns: string[]): ProjectFilesInDirectoryOnlyDependsOnShouldSelector {
         return new ProjectFilesInDirectoryOnlyDependsOnShouldSelector({
@@ -59,6 +76,18 @@ class NegativeMatchConditionSelectorBuilder {
         readonly excludePattern: string[],
         readonly ruleConstruction: string[]
     ) {}
+
+    dependsOn(patterns: string[]): ProjectFilesInDirectoryDependsOnShouldSelector {
+        return new ProjectFilesInDirectoryDependsOnShouldSelector({
+            negated: this.negated,
+            rootDir: this.rootDir,
+            filteringPatterns: [this.pattern],
+            checkingPatterns: patterns,
+            options: this.options,
+            excludePattern: this.excludePattern,
+            ruleConstruction: [...this.ruleConstruction, `depends on '[${patterns.join(', ')}]'`]
+        });
+    }
 
     onlyDependsOn(patterns: string[]): ProjectFilesInDirectoryOnlyDependsOnShouldSelector {
         return new ProjectFilesInDirectoryOnlyDependsOnShouldSelector({

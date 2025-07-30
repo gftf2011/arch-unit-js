@@ -2,17 +2,15 @@
 
 ## Business Rule Description
 
-**DESCRIPTION**: All files in the directory must have dependencies that match ALL the specified patterns. The rule passes only when every file in the directory has dependencies that match each of the defined patterns.
+**DESCRIPTION**: Files in the directory must have dependencies that match ALL the specified patterns. The rule passes only when every file has dependencies matching each defined pattern.
 
-- It is NOT OK if NONE of the patterns are present in file dependencies
-- It is NOT OK if SOME of the patterns are present in file dependencies
-- It is OK if ALL patterns are present in file dependencies
+- It is NOT OK if NONE of the patterns are present
+- It is NOT OK if SOME of the patterns are present  
+- It is OK if ALL patterns are present (extra dependencies are ignored)
 
-This rule ensures that files within a specific directory structure depend on all the required architectural components or modules defined in the checking patterns. It enforces that every file must have dependencies that match each specified pattern, ensuring complete architectural compliance and proper coupling to all required dependencies.
+This rule ensures complete architectural compliance by requiring files to depend on all specified components or modules.
 
-The rule validates that files are properly connected to all necessary architectural elements, preventing incomplete dependency relationships and ensuring that components have access to all required resources, utilities, or modules as defined by the architectural patterns.
-
-**Note**: The `should.dependsOn` rule is not restricted to project paths only. It also validates npm dependencies, allowing you to ensure files depend on specific external packages (e.g., `['express', 'lodash']`).
+**Note**: The `should.dependsOn` rule validates both project paths and npm dependencies (e.g., `['express', 'lodash']`).
 
 ## All Possible Scenarios
 
@@ -27,9 +25,6 @@ The rule validates that files are properly connected to all necessary architectu
 
 **Scenario 4**: File has dependencies and ALL patterns are present
 - **Result**: ✅ PASS - All required patterns are present
-
-**Scenario 5**: File has dependencies and ALL patterns are present (plus additional non-matching dependencies)
-- **Result**: ✅ PASS - All required patterns are present (extra dependencies are ignored)
 
 ## Scenario Examples
 
@@ -160,7 +155,12 @@ project/
 │   │       └── User.ts
 │   ├── application/
 │   │   └── use-cases/
-│   │       └── CorrectUseCase.ts  // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection']
+│   │       ├── CorrectUseCase.ts  // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection']
+│   │       └── CompleteUseCase.ts  // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection', '../utils/helper', '../config/settings']
+│   ├── utils/
+│   │   └── helper.ts
+│   ├── config/
+│   │   └── settings.ts
 │   └── infrastructure/
 │       └── database/
 │           └── DatabaseConnection.ts
@@ -181,40 +181,7 @@ export class CorrectUseCase {
     return user;
   }
 }
-```
 
-**API Usage:**
-```typescript
-projectFiles()
-  .inDirectory('**/use-cases/**')
-  .should()
-  .dependsOn(['**/domain/**', '**/infrastructure/**'])
-  .check()
-```
-
-**Result**: ✅ PASS - `CorrectUseCase.ts` imports from both `domain` and `infrastructure`
-
-### Scenario 5: File has dependencies and ALL patterns are present (plus additional non-matching dependencies)
-```
-project/
-├── src/
-│   ├── domain/
-│   │   └── entities/
-│   │       └── User.ts
-│   ├── application/
-│   │   └── use-cases/
-│   │       └── CompleteUseCase.ts  // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection', '../utils/helper', '../config/settings']
-│   ├── utils/
-│   │   └── helper.ts
-│   ├── config/
-│   │   └── settings.ts
-│   └── infrastructure/
-│       └── database/
-│           └── DatabaseConnection.ts
-```
-
-**File Content:**
-```typescript
 // src/application/use-cases/CompleteUseCase.ts
 import { User } from '../domain/entities/User';
 import { DatabaseConnection } from '../infrastructure/database/DatabaseConnection';
@@ -244,5 +211,5 @@ projectFiles()
   .check()
 ```
 
-**Result**: ✅ PASS - `CompleteUseCase.ts` imports from both `domain` and `infrastructure` (extra imports from `utils` and `config` are ignored)
+**Result**: ✅ PASS - Both files import from `domain` and `infrastructure`: `CorrectUseCase.ts` has minimal dependencies, `CompleteUseCase.ts` has extra dependencies (ignored)
 

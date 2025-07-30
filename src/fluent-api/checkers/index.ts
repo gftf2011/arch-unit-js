@@ -20,7 +20,7 @@ export class ProjectFilesInDirectoryOnlyDependsOnShouldSelector extends Checkabl
         }
         return true;
     }
-
+  
     protected override async checkNegativeRule(filteredFiles: Map<string, File>): Promise<boolean> {
         // shouldNot.onlyDependsOn passes when files do NOT exclusively depend only on specified patterns
         
@@ -58,12 +58,28 @@ export class ProjectFilesInDirectoryOnlyDependsOnShouldSelector extends Checkabl
     }
 }
 
-export class DependsOnSelector extends Checkable {
+export class ProjectFilesInDirectoryDependsOnShouldSelector extends Checkable {
     constructor(protected readonly props: CheckableProps) {
         super(props);
     }
 
     protected override async checkPositiveRule(filteredFiles: Map<string, File>): Promise<boolean> {
+        for (const [_, file] of filteredFiles) {
+            // Files with no dependencies fail the rule (cannot satisfy ALL patterns requirement)
+            if (file.dependencies.length === 0) return false;
+            
+            // Check if ALL specified patterns are present in this file's dependencies
+            for (const pattern of this.props.checkingPatterns) {
+                const hasPattern = file.dependencies.some(dep => 
+                    micromatch([dep.name], [pattern]).length > 0
+                );
+                
+                // If any pattern is missing, the rule fails
+                if (!hasPattern) return false;
+            }
+        }
+        
+        // All files have ALL required patterns
         return true;
     }
 
@@ -101,7 +117,7 @@ export class ProjectFilesInDirectoryHaveNameShouldSelector extends Checkable {
 
     protected override validateFilesDependencies(_files: Map<string, File>): void {
         return;
-    }
+            }
 
     protected override validateIfAllDependenciesExistInProjectGraph(_files: Map<string, File>): void {
         return;
