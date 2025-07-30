@@ -191,7 +191,7 @@ describe('should.onlyDependsOn scenarios', () => {
                     await appInstance
                         .projectFiles()
                         .inDirectory('**/infra/**')
-                        .shouldNot()
+                        .should()
                         .onlyDependsOn(['**/domain/**'])
                         .check();
                     
@@ -224,7 +224,7 @@ describe('should.onlyDependsOn scenarios', () => {
             const promise = appInstance
                 .projectFiles()
                 .inDirectory('**/domain/**')
-                .shouldNot()
+                .should()
                 .onlyDependsOn(['**/infra/**'])
                 .check();
             

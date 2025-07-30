@@ -144,4 +144,115 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
             }
         });
     });
+
+    describe('Edge scenarios', () => {
+        test('projectFiles.inDirectory("**/domain/**").should().onlyDependsOn([]).check() - should FAIL (empty array)', async () => {
+            for (const [includeMatcher] of includeMatchers) {
+                try {
+                    const options: Options = {
+                        mimeTypes: ['**/*.js'],
+                        includeMatcher: [...includeMatcher],
+                        ignoreMatcher: excludeMatchers
+                    };
+                    const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+                    await appInstance
+                        .projectFiles()
+                        .inDirectory('**/domain/**')
+                        .shouldNot()
+                        .onlyDependsOn([])
+                        .check();
+
+                    // If we get here, the test should fail
+                    expect(1).toBe(2);
+                } catch (error) {
+                    const errorMessage = (error as Error).message;
+
+                    expect(errorMessage).toContain(`Violation - Rule: project files inDirectory '**/domain/**' should not only depends on '[]'\n`);
+                    expect(errorMessage).toContain(`No pattern was provided for checking`);
+                }
+            }
+        });
+
+        test('projectFiles.inDirectory("**/domain/**").should().onlyDependsOn(["uuid", ""]).check() - should FAIL (array with empty string)', async () => {
+            for (const [includeMatcher] of includeMatchers) {
+                try {
+                    const options: Options = {
+                        mimeTypes: ['**/*.js'],
+                        includeMatcher: [...includeMatcher],
+                        ignoreMatcher: excludeMatchers
+                    };
+                    const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+                    await appInstance
+                        .projectFiles()
+                        .inDirectory('**/domain/**')
+                        .shouldNot()
+                        .onlyDependsOn(["uuid", ""])
+                        .check();
+
+                    // If we get here, the test should fail
+                    expect(1).toBe(2);
+                } catch (error) {
+                    const errorMessage = (error as Error).message;
+
+                    expect(errorMessage).toContain(`Violation - Rule: project files inDirectory '**/domain/**' should not only depends on '[uuid, ]'\n`);
+                    expect(errorMessage).toContain(`No pattern was provided for checking`);
+                }
+            }
+        });
+
+        test('incorrect extension', async () => {
+            for (const [includeMatcher] of includeMatchers) {
+                const options: Options = {
+                    mimeTypes: ['**/*.ts'],
+                    includeMatcher: [...includeMatcher],
+                    ignoreMatcher: excludeMatchers
+                };
+                const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+                try {
+                    await appInstance
+                        .projectFiles()
+                        .inDirectory('**/infra/**')
+                        .shouldNot()
+                        .onlyDependsOn(['**/domain/**'])
+                        .check();
+                    
+                    // If we get here, the test should fail
+                    expect(1).toBe(2);
+                } catch (error) {
+                    const errorMessage = (error as Error).message;
+
+                    expect(errorMessage).toContain(`File: '${rootDir}/domain/entities/Todo.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`);
+                    expect(errorMessage).toContain(`File: '${rootDir}/domain/repositories/TodoRepository.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`);
+                    expect(errorMessage).toContain(`File: '${rootDir}/infra/repositories/InMemoryTodoRepository.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`);
+                    expect(errorMessage).toContain(`File: '${rootDir}/main/app.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`);
+                    expect(errorMessage).toContain(`File: '${rootDir}/use-cases/CreateTodo.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`);
+                    expect(errorMessage).toContain(`File: '${rootDir}/use-cases/DeleteTodo.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`);
+                    expect(errorMessage).toContain(`File: '${rootDir}/use-cases/GetAllTodos.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`);
+                    expect(errorMessage).toContain(`File: '${rootDir}/use-cases/GetTodoById.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`);
+                    expect(errorMessage).toContain(`File: '${rootDir}/use-cases/UpdateTodo.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`);
+                }
+            }
+        });
+
+        test(`must throw error if file path is not being reached by the 'includeMatcher'`, async () => {
+            const options: Options = {
+                mimeTypes: ['**/*.js'],
+                includeMatcher: ['<rootDir>/infra'],
+                ignoreMatcher: excludeMatchers
+            };
+            const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+            const promise = appInstance
+                .projectFiles()
+                .inDirectory('**/domain/**')
+                .shouldNot()
+                .onlyDependsOn(['**/infra/**'])
+                .check();
+            
+            const errorsMessage = [
+                `Dependencies in file: '${rootDir}/infra/repositories/InMemoryTodoRepository.js' - could not be resolved\n- '${rootDir}/domain/repositories/TodoRepository.js' - file path was not found\nCheck if path is being reached by the 'includeMatcher'`,
+            ];
+
+            await expect(promise).rejects.toThrow(new Error(errorsMessage.join('\n\n')));
+        });
+    });
 });
