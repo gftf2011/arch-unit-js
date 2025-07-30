@@ -140,6 +140,18 @@ export class ProjectFilesInDirectoryHaveNameShouldSelector extends Checkable {
     }
 
     protected override async checkPositiveRule(filteredFiles: Map<string, File>): Promise<boolean> {
+        for (const [filePath, _] of filteredFiles) {
+            // Extract just the filename from the full path
+            const fileName = filePath.split('/').pop() || filePath;
+            
+            // Check if this file name matches the pattern
+            const matches = micromatch([fileName], this.props.checkingPatterns).length > 0;
+            
+            // If any file doesn't match the pattern, the rule fails
+            if (!matches) return false;
+        }
+        
+        // All files match the pattern
         return true;
     }
 

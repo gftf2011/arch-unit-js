@@ -2,28 +2,22 @@
 
 ## Business Rule Description
 
-**DESCRIPTION**: All files in the directory must NOT have names that match the specified pattern. The rule passes when files have names that do NOT match the defined pattern. Files that have names matching the specified pattern will fail this rule.
+**DESCRIPTION**: Files in the directory must NOT have names that match the specified pattern. The rule passes when no files match the defined pattern.
 
-- It is OK if NONE of the files match the specified pattern
-- It is NOT OK if SOME of the files match the specified pattern
-- It is NOT OK if ALL files match the specified pattern
+- It is OK if NONE of the files match the pattern
+- It is NOT OK if ANY files match the pattern
 
-This rule ensures that files within a specific directory structure do NOT have names that conform to the required naming pattern defined in the checking pattern. It enforces that files must have names that do NOT match the specified pattern, ensuring naming flexibility and preventing restrictive naming conventions.
+This rule ensures naming flexibility by preventing files from conforming to the specified naming convention.
 
-The rule validates that files have flexible naming relationships, allowing different naming patterns beyond the specified pattern and ensuring that components can have names that follow different conventions beyond those defined by the architectural pattern.
-
-**Note**: The `shouldNot.haveName` rule accepts only a single pattern, not an array of patterns. It validates file names against this single pattern to ensure non-matching naming compliance.
+**Note**: The `shouldNot.haveName` rule accepts only a single pattern, not an array of patterns.
 
 ## All Possible Scenarios
 
 **Scenario 1**: Directory has files but NONE match the pattern
 - **Result**: ✅ PASS - No files match the specified pattern
 
-**Scenario 2**: Directory has files and SOME match the pattern
-- **Result**: ❌ FAIL - Some files match the specified pattern (violates the rule)
-
-**Scenario 3**: Directory has files and ALL files match the pattern
-- **Result**: ❌ FAIL - All files match the specified pattern (exclusive matching not allowed)
+**Scenario 2**: Directory has files and ANY files match the pattern
+- **Result**: ❌ FAIL - Files match the specified pattern (violates the rule)
 
 ## Scenario Examples
 
@@ -63,7 +57,7 @@ projectFiles()
 
 **Result**: ✅ PASS - No files match the `*UseCase.ts` pattern
 
-### Scenario 2: Directory has files and SOME match the pattern
+### Scenario 2: Directory has files and ANY files match the pattern
 ```
 project/
 ├── src/
@@ -71,43 +65,11 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
-│   │       ├── CreateUserUseCase.ts
-│   │       ├── helper.ts
-│   │       └── config.ts
-│   └── infrastructure/
-│       └── database/
-│           └── DatabaseConnection.ts
-```
-
-**Directory Content:**
-```
-src/application/use-cases/
-├── CreateUserUseCase.ts
-├── helper.ts
-└── config.ts
-```
-
-**API Usage:**
-```typescript
-projectFiles()
-  .inDirectory('**/use-cases/**')
-  .shouldNot()
-  .haveName('*UseCase.ts')
-  .check()
-```
-
-**Result**: ❌ FAIL - `CreateUserUseCase.ts` matches the pattern (violates the shouldNot rule)
-
-### Scenario 3: Directory has files and ALL files match the pattern
-```
-project/
-├── src/
-│   ├── domain/
-│   │   └── entities/
-│   │       └── User.ts
-│   ├── application/
-│   │   └── use-cases/
+│   │   └── use-cases-mixed/
+│   │   │   ├── CreateUserUseCase.ts
+│   │   │   ├── helper.ts
+│   │   │   └── config.ts
+│   │   └── use-cases-all/
 │   │       ├── CreateUserUseCase.ts
 │   │       ├── UpdateUserUseCase.ts
 │   │       └── DeleteUserUseCase.ts
@@ -116,21 +78,35 @@ project/
 │           └── DatabaseConnection.ts
 ```
 
-**Directory Content:**
+**Directory Content (Mixed):**
 ```
-src/application/use-cases/
-├── CreateUserUseCase.ts
-├── UpdateUserUseCase.ts
-└── DeleteUserUseCase.ts
+src/application/use-cases-mixed/
+├── CreateUserUseCase.ts  // matches pattern
+├── helper.ts             // doesn't match
+└── config.ts             // doesn't match
+```
+
+**Directory Content (All Match):**
+```
+src/application/use-cases-all/
+├── CreateUserUseCase.ts  // matches pattern
+├── UpdateUserUseCase.ts  // matches pattern
+└── DeleteUserUseCase.ts  // matches pattern
 ```
 
 **API Usage:**
 ```typescript
 projectFiles()
-  .inDirectory('**/use-cases/**')
+  .inDirectory('**/use-cases-mixed/**')
+  .shouldNot()
+  .haveName('*UseCase.ts')
+  .check()
+
+projectFiles()
+  .inDirectory('**/use-cases-all/**')
   .shouldNot()
   .haveName('*UseCase.ts')
   .check()
 ```
 
-**Result**: ❌ FAIL - All files match the `*UseCase.ts` pattern (exclusive matching not allowed)
+**Result**: ❌ FAIL - Both directories fail: `use-cases-mixed` has some files matching, `use-cases-all` has all files matching the pattern

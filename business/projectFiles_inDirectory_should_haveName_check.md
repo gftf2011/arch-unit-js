@@ -2,17 +2,15 @@
 
 ## Business Rule Description
 
-**DESCRIPTION**: All files in the directory must have names that match ONLY the specified pattern. The rule passes when every file in the directory has a name that matches EXCLUSIVELY the defined pattern (no other naming patterns allowed).
+**DESCRIPTION**: All files in the directory must have names that match the specified pattern. The rule passes only when every file name matches the defined pattern.
 
-- It is NOT OK if NONE of the files match the specified pattern
-- It is NOT OK if SOME of the files match the specified pattern
-- It is OK if ALL files match the specified pattern
+- It is NOT OK if NONE of the files match the pattern
+- It is NOT OK if SOME of the files match the pattern
+- It is OK if ALL files match the pattern
 
-This rule ensures that files within a specific directory structure have names that conform EXCLUSIVELY to the required naming pattern defined in the checking pattern. It enforces that every file must have a name that matches ONLY the specified pattern, ensuring strict naming consistency and preventing any files with non-conforming names.
+This rule ensures naming consistency by requiring all files to conform to the specified naming convention.
 
-The rule validates that files are properly named according to the specified pattern, preventing any naming inconsistencies and ensuring that all components follow the same naming convention as defined by the architectural pattern.
-
-**Note**: The `should.haveName` rule accepts only a single pattern, not an array of patterns. It validates file names against this single pattern to ensure exclusive naming compliance.
+**Note**: The `should.haveName` rule accepts only a single pattern, not an array of patterns.
 
 ## All Possible Scenarios
 
@@ -22,8 +20,8 @@ The rule validates that files are properly named according to the specified patt
 **Scenario 2**: Directory has files and SOME match the pattern
 - **Result**: ❌ FAIL - Not all files match the specified pattern
 
-**Scenario 3**: Directory has files and ALL files match the pattern (exclusively)
-- **Result**: ✅ PASS - All files match the specified pattern with no extra files
+**Scenario 3**: Directory has files and ALL files match the pattern
+- **Result**: ✅ PASS - All files match the specified pattern
 
 ## Scenario Examples
 
@@ -97,9 +95,9 @@ projectFiles()
   .check()
 ```
 
-**Result**: ❌ FAIL - Only `CreateUserUseCase.ts` matches the pattern, but `helper.ts` and `config.ts` do not
+**Result**: ❌ FAIL - Only `CreateUserUseCase.ts` matches the pattern
 
-### Scenario 3: Directory has files and ALL files match the pattern (exclusively)
+### Scenario 3: Directory has files and ALL files match the pattern
 ```
 project/
 ├── src/
@@ -133,4 +131,4 @@ projectFiles()
   .check()
 ```
 
-**Result**: ✅ PASS - All files match the `*UseCase.ts` pattern (exclusive matching)
+**Result**: ✅ PASS - All files match the `*UseCase.ts` pattern
