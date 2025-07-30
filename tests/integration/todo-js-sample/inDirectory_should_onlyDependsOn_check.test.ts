@@ -62,7 +62,7 @@ describe('should.onlyDependsOn scenarios', () => {
     });
 
     describe('Scenario 3: File has dependencies that match only SOME of the patterns (exclusively)', () => {
-        test('"use-cases" should only depend on "domain" and "infra" - should FAIL (only has "domain")', async () => {
+        test('"use-cases" should only depend on "domain" and "infra" - should PASS ("domain" is a subset)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
                     mimeTypes: ['**/*.js'],
@@ -77,12 +77,12 @@ describe('should.onlyDependsOn scenarios', () => {
                     .onlyDependsOn(['**/domain/**', '**/infra/**'])
                     .check();
         
-                expect(answer).toBe(false);
+                expect(answer).toBe(true);
             }
         });
     });
 
-    describe('Scenario 4: File has dependencies and ALL patterns are present (exclusively)', () => {
+    describe('Scenario 4:File has dependencies and ALL patterns are present (exclusively)', () => {
         test('"infra" should only depend on "domain" - should PASS', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
@@ -103,7 +103,7 @@ describe('should.onlyDependsOn scenarios', () => {
         });
     });
 
-    describe('Scenario 5: File has dependencies and ALL patterns are present (plus additional non-matching dependencies)', () => {
+    describe('Scenario 5: File has dependencies with additional non-matching dependencies', () => {
         test('"main" should only depend on "domain" and "use-cases" - should FAIL (has "infra" too)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {

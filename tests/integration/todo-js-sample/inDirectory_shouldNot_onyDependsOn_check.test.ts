@@ -61,7 +61,7 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
         });
     });
 
-    describe('Scenario 3: File has dependencies and SOME match the patterns (mixed dependencies)', () => {
+    describe('Scenario 3: File has mixed dependencies', () => {
         test('"main" should not only depend on "domain" - should PASS (has mixed dependencies)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
@@ -80,9 +80,28 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
                 expect(answer).toBe(true);
             }
         });
+
+        test('"main" should not only depend on "domain" and "use-cases" - should PASS (has mixed dependencies)', async () => {
+            for (const [includeMatcher] of includeMatchers) {
+                const options: Options = {
+                    mimeTypes: ['**/*.js'],
+                    includeMatcher: [...includeMatcher],
+                    ignoreMatcher: excludeMatchers
+                };
+                const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+                const answer = await appInstance
+                    .projectFiles()
+                    .inDirectory('**/main/**')
+                    .shouldNot()
+                    .onlyDependsOn(['**/domain/**', '**/use-cases/**'])
+                    .check();
+        
+                expect(answer).toBe(true);
+            }
+        });
     });
 
-    describe('Scenario 4: File has dependencies and ALL patterns are present (exclusively)', () => {
+    describe('Scenario 4: File has exclusive dependencies to specified patterns', () => {
         test('"infra" should not only depend on "domain" - should FAIL', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
@@ -101,10 +120,8 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
                 expect(answer).toBe(false);
             }
         });
-    });
 
-    describe('Scenario 5: File has dependencies and ALL patterns are present (plus additional non-matching dependencies)', () => {
-        test('"main" should not only depend on "use-cases" and "infra" - should PASS (has additional dependencies)', async () => {
+        test('"main" should not only depend on "domain" and "use-cases" and "infra" - should FAIL', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
                     mimeTypes: ['**/*.js'],
@@ -116,28 +133,7 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
                     .projectFiles()
                     .inDirectory('**/main/**')
                     .shouldNot()
-                    .onlyDependsOn(['**/use-cases/**', '**/infra/**'])
-                    .check();
-        
-                expect(answer).toBe(true);
-            }
-        });
-    });
-
-    describe('Scenario 6: File has dependencies that match only SOME of the patterns (exclusively)', () => {
-        test('"use-cases" should not only depend on "domain" and "infra" - should FAIL (only depends on "domain" exclusively)', async () => {
-            for (const [includeMatcher] of includeMatchers) {
-                const options: Options = {
-                    mimeTypes: ['**/*.js'],
-                    includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
-                };
-                const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
-                    .projectFiles()
-                    .inDirectory('**/use-cases/**')
-                    .shouldNot()
-                    .onlyDependsOn(['**/domain/**', '**/infra/**'])
+                    .onlyDependsOn(['**/domain/**', '**/use-cases/**', '**/infra/**'])
                     .check();
         
                 expect(answer).toBe(false);

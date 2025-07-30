@@ -15,20 +15,8 @@ export class ProjectFilesInDirectoryOnlyDependsOnShouldSelector extends Checkabl
             );
             
             // All dependencies must match patterns (exclusive match)
+            // Files can depend exclusively on ANY subset of the specified patterns
             if (matchingDeps.length !== file.dependencies.length) return false;
-            
-            // All patterns must be present in the dependencies
-            const matchedPatterns = new Set<string>();
-            for (const dep of file.dependencies) {
-                for (const pattern of this.props.checkingPatterns) {
-                    if (micromatch([dep.name], [pattern]).length > 0) {
-                        matchedPatterns.add(pattern);
-                    }
-                }
-            }
-            
-            // All patterns must be matched by at least one dependency
-            if (matchedPatterns.size !== this.props.checkingPatterns.length) return false;
         }
         return true;
     }

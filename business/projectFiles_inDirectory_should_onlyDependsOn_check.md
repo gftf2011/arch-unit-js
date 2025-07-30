@@ -2,18 +2,16 @@
 
 ## Business Rule Description
 
-**DESCRIPTION**: All files in the directory must have dependencies that match ONLY the specified patterns OR have no dependencies at all. The rule passes when every file in the directory has dependencies that match EXCLUSIVELY the defined patterns (no other dependencies allowed) OR when files have no dependencies.
+**DESCRIPTION**: All files in the directory must have dependencies that match ONLY the specified patterns OR have no dependencies at all. The rule passes when files depend exclusively on any subset of the defined patterns or have no dependencies.
 
-- It is OK if NONE of the patterns are present in file dependencies (no dependencies)
-- It is NOT OK if SOME of the patterns are present in file dependencies
-- It is NOT OK if ALL patterns are present but with additional non-matching dependencies
-- It is OK if ALL patterns are present and NO other dependencies exist
+- It is OK if files have NO dependencies
+- It is OK if files depend exclusively on SOME of the specified patterns  
+- It is OK if files depend exclusively on ALL of the specified patterns
+- It is NOT OK if files have additional non-matching dependencies
 
-This rule ensures that files within a specific directory structure depend EXCLUSIVELY on the required architectural components or modules defined in the checking patterns, OR have no dependencies at all. It enforces that every file must have dependencies that match ONLY the specified patterns, ensuring strict architectural compliance and preventing any unwanted coupling to non-specified dependencies.
+This rule ensures strict architectural compliance by allowing files to depend only on the specified architectural components or modules, preventing unwanted coupling to non-specified dependencies.
 
-The rule validates that files are properly connected to ONLY the necessary architectural elements, preventing any additional dependency relationships and ensuring that components have access to ONLY the required resources, utilities, or modules as defined by the architectural patterns. Files with no dependencies are considered compliant as they cannot violate the exclusive dependency requirement.
-
-**Note**: The `should.onlyDependsOn` rule is not restricted to project paths only. It also validates npm dependencies, allowing you to ensure files depend ONLY on specific external packages (e.g., `['express', 'lodash']`).
+**Note**: The `should.onlyDependsOn` rule validates both project paths and npm dependencies (e.g., `['express', 'lodash']`).
 
 ## All Possible Scenarios
 
@@ -24,12 +22,12 @@ The rule validates that files are properly connected to ONLY the necessary archi
 - **Result**: ❌ FAIL - No patterns are present
 
 **Scenario 3**: File has dependencies that match only SOME of the patterns (exclusively)
-- **Result**: ❌ FAIL - Not all patterns are present
+- **Result**: ✅ PASS - Some patterns are present exclusively
 
 **Scenario 4**: File has dependencies and ALL patterns are present (exclusively)
 - **Result**: ✅ PASS - All required patterns are present with no extra dependencies
 
-**Scenario 5**: File has dependencies and ALL patterns are present (plus additional non-matching dependencies)
+**Scenario 5**: File has dependencies with additional non-matching dependencies
 - **Result**: ❌ FAIL - Extra dependencies are not allowed
 
 ## Scenario Examples
@@ -147,7 +145,7 @@ projectFiles()
   .check()
 ```
 
-**Result**: ❌ FAIL - `PartialUseCase.ts` imports from `domain` but not from `infrastructure`
+**Result**: ✅ PASS - `PartialUseCase.ts` imports exclusively from `domain` (matches one of the specified patterns)
 
 ### Scenario 4: File has dependencies and ALL patterns are present (exclusively)
 ```
@@ -192,7 +190,7 @@ projectFiles()
 
 **Result**: ✅ PASS - `PerfectUseCase.ts` imports ONLY from `domain` and `infrastructure`
 
-### Scenario 5: File has dependencies and ALL patterns are present (plus additional non-matching dependencies)
+### Scenario 5: File has dependencies with additional non-matching dependencies
 ```
 project/
 ├── src/
@@ -201,9 +199,12 @@ project/
 │   │       └── User.ts
 │   ├── application/
 │   │   └── use-cases/
-│   │       └── ViolatingUseCase.ts  // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection', '../utils/helper']
+│   │       ├── ViolatingUseCase.ts  // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection', '../utils/helper']
+│   │       └── MixedViolatingUseCase.ts  // imports: ['../domain/entities/User', '../utils/helper', '../config/settings']
 │   ├── utils/
 │   │   └── helper.ts
+│   ├── config/
+│   │   └── settings.ts
 │   └── infrastructure/
 │       └── database/
 │           └── DatabaseConnection.ts
@@ -227,6 +228,21 @@ export class ViolatingUseCase {
     return { user, processedData };
   }
 }
+
+// src/application/use-cases/MixedViolatingUseCase.ts
+import { User } from '../domain/entities/User';
+import { helper } from '../utils/helper';
+import { settings } from '../config/settings';
+
+export class MixedViolatingUseCase {
+  execute(userData: any) {
+    const user = new User(userData);
+    const processedData = helper.process(userData);
+    const config = settings.getConfig();
+    
+    return { user, processedData, config };
+  }
+}
 ```
 
 **API Usage:**
@@ -238,4 +254,4 @@ projectFiles()
   .check()
 ```
 
-**Result**: ❌ FAIL - `ViolatingUseCase.ts` imports from `domain` and `infrastructure` but also from `utils` (extra dependency not allowed)
+**Result**: ❌ FAIL - Both files have extra dependencies: `ViolatingUseCase.ts` has all required patterns plus `utils`, `MixedViolatingUseCase.ts` has some required patterns plus `utils` and `config` (extra dependencies not allowed)
