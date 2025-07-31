@@ -3,7 +3,8 @@ import {
     ProjectFilesInDirectoryHaveNameShouldSelector,
     ProjectFilesInDirectoryOnlyDependsOnShouldSelector,
     ProjectFilesInDirectoryOnlyHaveNameShouldSelector,
-    ProjectFilesInDirectoryDependsOnShouldSelector
+    ProjectFilesInDirectoryDependsOnShouldSelector,
+    ProjectFilesInDirectoryHaveCyclesShouldSelector
 } from './checkers';
 
 class PositiveMatchConditionSelectorBuilder {
@@ -16,6 +17,18 @@ class PositiveMatchConditionSelectorBuilder {
         readonly excludePattern: string[],
         readonly ruleConstruction: string[]
     ) {}
+
+    haveCicles(): ProjectFilesInDirectoryHaveCyclesShouldSelector {
+        return new ProjectFilesInDirectoryHaveCyclesShouldSelector({
+            negated: this.negated,
+            rootDir: this.rootDir,
+            filteringPatterns: [this.pattern],
+            checkingPatterns: [],
+            options: this.options,
+            excludePattern: this.excludePattern,
+            ruleConstruction: [...this.ruleConstruction, `have cicles`]
+        });
+    }
 
     dependsOn(pattern: string[] | string): ProjectFilesInDirectoryDependsOnShouldSelector {
         const patternArray = typeof pattern === 'string' ? [pattern] : pattern;
@@ -78,6 +91,18 @@ class NegativeMatchConditionSelectorBuilder {
         readonly excludePattern: string[],
         readonly ruleConstruction: string[]
     ) {}
+
+    haveCicles(): ProjectFilesInDirectoryHaveCyclesShouldSelector {
+        return new ProjectFilesInDirectoryHaveCyclesShouldSelector({
+            negated: this.negated,
+            rootDir: this.rootDir,
+            filteringPatterns: [this.pattern],
+            checkingPatterns: [],
+            options: this.options,
+            excludePattern: this.excludePattern,
+            ruleConstruction: [...this.ruleConstruction, `have cicles`]
+        });
+    }
 
     dependsOn(pattern: string[] | string): ProjectFilesInDirectoryDependsOnShouldSelector {
         const patternArray = typeof pattern === 'string' ? [pattern] : pattern;
@@ -185,15 +210,3 @@ export class ComponentSelectorBuilder {
     return new ProjectFilesComponentSelector(this.rootDir, this.options, ['Rule: project files']);
   }
 }
-
-// inDirectory.should.beImportedOrRequiredBy.check
-// inDirectory.shouldNot.beImportedOrRequiredBy.check
-
-// inDirectory.should.onlyDependsOn.check
-// inDirectory.shouldNot.onlyDependsOn.check
-
-// inDirectory.should.onlyHaveName.check
-// inDirectory.shouldNot.onlyHaveName.check
-
-// inDirectory.should.haveName.check
-// inDirectory.shouldNot.haveName.check

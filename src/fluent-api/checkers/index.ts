@@ -1,7 +1,7 @@
 import micromatch from "micromatch";
-import { Checkable, File, CheckableProps } from "../../common/fluent-api";
+import { Checkable, File, CheckableProps, CiclesCheckable } from "../../common/fluent-api";
 
-export class ProjectFilesInDirectoryHaveCyclesShouldSelector extends Checkable {
+export class ProjectFilesInDirectoryHaveCyclesShouldSelector extends CiclesCheckable {
     constructor(protected readonly props: CheckableProps) {
         super(props);
     }

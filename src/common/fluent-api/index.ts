@@ -159,3 +159,27 @@ export abstract class Checkable {
         return result;
     }
 }
+
+export abstract class CiclesCheckable extends Checkable {
+    constructor(protected readonly props: CheckableProps) {
+        super(props);
+    }
+
+    public override async check(): Promise<boolean> {
+        const files = await this.buildProjectGraph();
+
+        this.validateFilesExtension(files);
+        this.validateFilesDependencies(files);
+        this.validateIfAllDependenciesExistInProjectGraph(files);
+
+        const filteredFiles = this.filter(files);
+        const result = this.props.negated
+            ? await this.checkNegativeRule(filteredFiles)
+            : await this.checkPositiveRule(filteredFiles);
+
+        this.clearFiles(files);
+        this.clearFiles(filteredFiles);
+
+        return result;
+    }
+}
