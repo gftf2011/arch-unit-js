@@ -17,27 +17,29 @@ class PositiveMatchConditionSelectorBuilder {
         readonly ruleConstruction: string[]
     ) {}
 
-    dependsOn(patterns: string[]): ProjectFilesInDirectoryDependsOnShouldSelector {
+    dependsOn(pattern: string[] | string): ProjectFilesInDirectoryDependsOnShouldSelector {
+        const patternArray = typeof pattern === 'string' ? [pattern] : pattern;
         return new ProjectFilesInDirectoryDependsOnShouldSelector({
             negated: this.negated,
             rootDir: this.rootDir,
             filteringPatterns: [this.pattern],
-            checkingPatterns: patterns,
+            checkingPatterns: patternArray,
             options: this.options,
             excludePattern: this.excludePattern,
-            ruleConstruction: [...this.ruleConstruction, `depends on '[${patterns.join(', ')}]'`]
+            ruleConstruction: [...this.ruleConstruction, `depends on '[${patternArray.join(', ')}]'`]
         });
     }
 
-    onlyDependsOn(patterns: string[]): ProjectFilesInDirectoryOnlyDependsOnShouldSelector {
+    onlyDependsOn(pattern: string[] | string): ProjectFilesInDirectoryOnlyDependsOnShouldSelector {
+        const patternArray = typeof pattern === 'string' ? [pattern] : pattern;
         return new ProjectFilesInDirectoryOnlyDependsOnShouldSelector({
             negated: this.negated,
             rootDir: this.rootDir,
             filteringPatterns: [this.pattern],
-            checkingPatterns: patterns,
+            checkingPatterns: patternArray,
             options: this.options,
             excludePattern: this.excludePattern,
-            ruleConstruction: [...this.ruleConstruction, `only depends on '[${patterns.join(', ')}]'`]
+            ruleConstruction: [...this.ruleConstruction, `only depends on '[${patternArray.join(', ')}]'`]
         });
     }
 
@@ -77,27 +79,29 @@ class NegativeMatchConditionSelectorBuilder {
         readonly ruleConstruction: string[]
     ) {}
 
-    dependsOn(patterns: string[]): ProjectFilesInDirectoryDependsOnShouldSelector {
+    dependsOn(pattern: string[] | string): ProjectFilesInDirectoryDependsOnShouldSelector {
+        const patternArray = typeof pattern === 'string' ? [pattern] : pattern;
         return new ProjectFilesInDirectoryDependsOnShouldSelector({
             negated: this.negated,
             rootDir: this.rootDir,
             filteringPatterns: [this.pattern],
-            checkingPatterns: patterns,
+            checkingPatterns: patternArray,
             options: this.options,
             excludePattern: this.excludePattern,
-            ruleConstruction: [...this.ruleConstruction, `depends on '[${patterns.join(', ')}]'`]
+            ruleConstruction: [...this.ruleConstruction, `depends on '[${patternArray.join(', ')}]'`]
         });
     }
 
-    onlyDependsOn(patterns: string[]): ProjectFilesInDirectoryOnlyDependsOnShouldSelector {
+    onlyDependsOn(pattern: string[] | string): ProjectFilesInDirectoryOnlyDependsOnShouldSelector {
+        const patternArray = typeof pattern === 'string' ? [pattern] : pattern;
         return new ProjectFilesInDirectoryOnlyDependsOnShouldSelector({
             negated: this.negated,
             rootDir: this.rootDir,
             filteringPatterns: [this.pattern],
-            checkingPatterns: patterns,
+            checkingPatterns: patternArray,
             options: this.options,
             excludePattern: this.excludePattern,
-            ruleConstruction:[...this.ruleConstruction, `only depends on '[${patterns.join(', ')}]'`]
+            ruleConstruction:[...this.ruleConstruction, `only depends on '[${patternArray.join(', ')}]'`]
         });
     }
 
