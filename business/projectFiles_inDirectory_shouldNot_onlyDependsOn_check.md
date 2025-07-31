@@ -12,6 +12,8 @@ This rule ensures architectural flexibility by preventing overly restrictive cou
 
 **Note**: The `shouldNot.onlyDependsOn` rule validates both project paths and npm dependencies (e.g., `['express', 'lodash']`).
 
+**Note**: The `shouldNot.onlyDependsOn` accepts as parameter also a single string.
+
 ## All Possible Scenarios
 
 **Scenario 1**: File has NO dependencies

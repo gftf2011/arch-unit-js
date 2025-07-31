@@ -13,6 +13,8 @@ This rule ensures strict architectural compliance by allowing files to depend on
 
 **Note**: The `should.onlyDependsOn` rule validates both project paths and npm dependencies (e.g., `['express', 'lodash']`).
 
+**Note**: The `should.onlyDependsOn` accepts as parameter also a single string.
+
 ## All Possible Scenarios
 
 **Scenario 1**: File has NO dependencies

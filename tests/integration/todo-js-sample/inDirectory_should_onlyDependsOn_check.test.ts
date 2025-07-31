@@ -146,7 +146,7 @@ describe('should.onlyDependsOn scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Violation - Rule: project files inDirectory '**/domain/**' should only depends on '[]'\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/domain/**' should only depends on '[]'\n`);
                     expect(errorMessage).toContain(`No pattern was provided for checking`);
                 }
             }
@@ -173,7 +173,7 @@ describe('should.onlyDependsOn scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Violation - Rule: project files inDirectory '**/domain/**' should only depends on '[uuid, ]'\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/domain/**' should only depends on '[uuid, ]'\n`);
                     expect(errorMessage).toContain(`No pattern was provided for checking`);
                 }
             }

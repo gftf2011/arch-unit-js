@@ -311,7 +311,7 @@ describe('shouldNot.haveName scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Violation - Rule: project files inDirectory '**/domain/**' should not have name ''\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/domain/**' should not have name ''\n`);
                     expect(errorMessage).toContain(`No pattern was provided for checking`);
                 }
             }

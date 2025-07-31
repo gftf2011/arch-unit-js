@@ -11,6 +11,8 @@ This rule ensures architectural isolation by preventing dependencies on specifie
 
 **Note**: The `shouldNot.dependsOn` rule validates both project paths and npm dependencies (e.g., `['lodash', 'express']`).
 
+**Note**: The `shouldNot.dependsOn` accepts as parameter also a single string.
+
 ## All Possible Scenarios
 
 **Scenario 1**: File has NO dependencies

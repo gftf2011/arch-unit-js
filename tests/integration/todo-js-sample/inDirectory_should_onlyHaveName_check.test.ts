@@ -18,9 +18,9 @@ const includeMatchers = [
 
 const excludeMatchers = ['<rootDir>/package.json'];
 
-describe('should.haveName scenarios', () => {
+describe('should.onlyHaveName scenarios', () => {
     describe('Scenario 1: Directory has files but NONE match the pattern', () => {
-        test('"use-cases" should have name "*UseCase.js" - should FAIL (none match)', async () => {
+        test('"entities" should only have name "*UseCase.js" - should FAIL', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
                     mimeTypes: ['**/*.js'],
@@ -28,37 +28,19 @@ describe('should.haveName scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
-                    .projectFiles()
-                    .inDirectory('**/use-cases/**')
-                    .should()
-                    .haveName('*UseCase.js')
-                    .check();
-        
-                expect(answer).toBe(false);
-            }
-        });
 
-        test('"domain/entities" should have name "*Repository.js" - should FAIL (none match)', async () => {
-            for (const [includeMatcher] of includeMatchers) {
-                const options: Options = {
-                    mimeTypes: ['**/*.js'],
-                    includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
-                };
-                const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
+                const result = await appInstance
                     .projectFiles()
                     .inDirectory('**/entities/**')
                     .should()
-                    .haveName('*Repository.js')
+                    .onlyHaveName('*UseCase.js')
                     .check();
-        
-                expect(answer).toBe(false);
+
+                expect(result).toBe(false);
             }
         });
 
-        test('"infra/repositories" should have name "*Entity.js" - should FAIL (none match)', async () => {
+        test('"infra repositories" should only have name "*Entity.js" - should FAIL', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
                     mimeTypes: ['**/*.js'],
@@ -66,20 +48,21 @@ describe('should.haveName scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
+
+                const result = await appInstance
                     .projectFiles()
                     .inDirectory('**/infra/repositories/**')
                     .should()
-                    .haveName('*Entity.js')
+                    .onlyHaveName('*Entity.js')
                     .check();
-        
-                expect(answer).toBe(false);
+
+                expect(result).toBe(false);
             }
         });
     });
 
     describe('Scenario 2: Directory has files and SOME match the pattern', () => {
-        test('"use-cases" should have name "*Todo.js" - should FAIL (only some match)', async () => {
+        test('"use-cases" should only have name "*Todo.js" - should FAIL', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
                     mimeTypes: ['**/*.js'],
@@ -87,20 +70,41 @@ describe('should.haveName scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
+
+                const result = await appInstance
                     .projectFiles()
                     .inDirectory('**/use-cases/**')
                     .should()
-                    .haveName('*Todo.js')
+                    .onlyHaveName('*Todo.js')
                     .check();
-        
-                expect(answer).toBe(false);
+
+                expect(result).toBe(false);
+            }
+        });
+
+        test('"use-cases" should only have name "Get*.js" - should FAIL', async () => {
+            for (const [includeMatcher] of includeMatchers) {
+                const options: Options = {
+                    mimeTypes: ['**/*.js'],
+                    includeMatcher: [...includeMatcher],
+                    ignoreMatcher: excludeMatchers
+                };
+                const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+
+                const result = await appInstance
+                    .projectFiles()
+                    .inDirectory('**/use-cases/**')
+                    .should()
+                    .onlyHaveName('Get*.js')
+                    .check();
+
+                expect(result).toBe(false);
             }
         });
     });
 
     describe('Scenario 3: Directory has files and ALL files match the pattern', () => {
-        test('"domain/entities" should have name "*Todo.js" - should PASS (all match)', async () => {
+        test('"entities" should only have name "*Todo.js" - should PASS', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
                     mimeTypes: ['**/*.js'],
@@ -108,18 +112,19 @@ describe('should.haveName scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
+
+                const result = await appInstance
                     .projectFiles()
                     .inDirectory('**/entities/**')
                     .should()
-                    .haveName('*Todo.js')
+                    .onlyHaveName('*Todo.js')
                     .check();
-        
-                expect(answer).toBe(true);
+
+                expect(result).toBe(true);
             }
         });
 
-        test('"domain/entities" should have name "Todo.js" - should PASS (exact match)', async () => {
+        test('"entities" should only have name "*.js" - should PASS', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
                     mimeTypes: ['**/*.js'],
@@ -127,18 +132,19 @@ describe('should.haveName scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
+
+                const result = await appInstance
                     .projectFiles()
                     .inDirectory('**/entities/**')
                     .should()
-                    .haveName('Todo.js')
+                    .onlyHaveName('*.js')
                     .check();
-        
-                expect(answer).toBe(true);
+
+                expect(result).toBe(true);
             }
         });
 
-        test('"infra/repositories" should have name "*Repository.js" - should PASS (all match)', async () => {
+        test('"infra repositories" should only have name "*Repository.js" - should PASS', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
                     mimeTypes: ['**/*.js'],
@@ -146,18 +152,19 @@ describe('should.haveName scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
+
+                const result = await appInstance
                     .projectFiles()
                     .inDirectory('**/infra/repositories/**')
                     .should()
-                    .haveName('*Repository.js')
+                    .onlyHaveName('*Repository.js')
                     .check();
-        
-                expect(answer).toBe(true);
+
+                expect(result).toBe(true);
             }
         });
 
-        test('"infra/repositories" should have name "InMemory*Repository.js" - should PASS (all match)', async () => {
+        test('"main" should only have name "app.js" - should PASS', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
                     mimeTypes: ['**/*.js'],
@@ -165,58 +172,21 @@ describe('should.haveName scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
-                    .projectFiles()
-                    .inDirectory('**/infra/repositories/**')
-                    .should()
-                    .haveName('InMemory*Repository.js')
-                    .check();
-        
-                expect(answer).toBe(true);
-            }
-        });
 
-        test('"use-cases" should have name "*.js" - should PASS (all match wildcard)', async () => {
-            for (const [includeMatcher] of includeMatchers) {
-                const options: Options = {
-                    mimeTypes: ['**/*.js'],
-                    includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
-                };
-                const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
+                const result = await appInstance
                     .projectFiles()
-                    .inDirectory('**/use-cases/**')
+                    .inDirectory('**/main/**')
                     .should()
-                    .haveName('*.js')
+                    .onlyHaveName('app.js')
                     .check();
-        
-                expect(answer).toBe(true);
-            }
-        });
 
-        test('"use-cases" should have name "*Todo*" - should PASS (all match)', async () => {
-            for (const [includeMatcher] of includeMatchers) {
-                const options: Options = {
-                    mimeTypes: ['**/*.js'],
-                    includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
-                };
-                const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
-                    .projectFiles()
-                    .inDirectory('**/use-cases/**')
-                    .should()
-                    .haveName('*Todo*')
-                    .check();
-        
-                expect(answer).toBe(true);
+                expect(result).toBe(true);
             }
         });
     });
 
     describe('Edge scenarios', () => {
-        test('projectFiles.inDirectory("**/domain/**").should().haveName("").check() - should FAIL (empty pattern)', async () => {
+        test('projectFiles.inDirectory("**/domain/**").should().onlyHaveName("").check() - should FAIL (empty pattern)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 try {
                     const options: Options = {
@@ -229,7 +199,7 @@ describe('should.haveName scenarios', () => {
                         .projectFiles()
                         .inDirectory('**/domain/**')
                         .should()
-                        .haveName('')
+                        .onlyHaveName('')
                         .check();
 
                     // If we get here, the test should fail
@@ -237,7 +207,7 @@ describe('should.haveName scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/domain/**' should have name ''\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/domain/**' should only have name ''\n`);
                     expect(errorMessage).toContain(`No pattern was provided for checking`);
                 }
             }
@@ -256,7 +226,7 @@ describe('should.haveName scenarios', () => {
                         .projectFiles()
                         .inDirectory('**/entities/**')
                         .should()
-                        .haveName('*Todo.js')
+                        .onlyHaveName('*Todo.js')
                         .check();
                     
                     // If we get here, the test should fail

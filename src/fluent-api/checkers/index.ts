@@ -122,6 +122,20 @@ export class ProjectFilesInDirectoryOnlyHaveNameShouldSelector extends Checkable
     }
 
     protected override async checkPositiveRule(filteredFiles: Map<string, File>): Promise<boolean> {
+        // If no files are found, the rule passes (vacuous truth)
+        if (filteredFiles.size === 0) return true;
+        
+        for (const [_, file] of filteredFiles) {
+            const fileName = file.name;
+            
+            // Check if this file name matches the pattern
+            const matches = micromatch([fileName], this.props.checkingPatterns).length > 0;
+            
+            // If any file doesn't match the pattern, the rule fails
+            if (!matches) return false;
+        }
+        
+        // All files match the pattern
         return true;
     }
 }
@@ -133,7 +147,7 @@ export class ProjectFilesInDirectoryHaveNameShouldSelector extends Checkable {
 
     protected override validateFilesDependencies(_files: Map<string, File>): void {
         return;
-            }
+    }
 
     protected override validateIfAllDependenciesExistInProjectGraph(_files: Map<string, File>): void {
         return;

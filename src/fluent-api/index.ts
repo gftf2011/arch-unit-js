@@ -7,7 +7,7 @@ import {
 } from './checkers';
 
 class PositiveMatchConditionSelectorBuilder {
-    readonly negated: boolean = false;
+    private readonly negated: boolean = false;
 
     constructor(
         readonly rootDir: string,
@@ -69,7 +69,7 @@ class PositiveMatchConditionSelectorBuilder {
 }
 
 class NegativeMatchConditionSelectorBuilder {
-    readonly negated: boolean = true;
+    private readonly negated: boolean = true;
 
     constructor(
         readonly rootDir: string,
@@ -169,7 +169,7 @@ class ProjectFilesComponentSelector {
             pattern,
             this.options,
             excludePattern,
-            [...this.ruleConstruction, `inDirectory '${pattern}'` + (excludePattern.length > 0 ? ` - excluding files [${excludePattern.join(', ')}] ,` : '')]
+            [...this.ruleConstruction, `in directory '${pattern}'` + (excludePattern.length > 0 ? ` - excluding files [${excludePattern.join(', ')}] ,` : '')]
         );
     }
 }
