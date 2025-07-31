@@ -9,11 +9,8 @@ const includeMatchers = [
     [['<rootDir>/']],
     [['<rootDir>/.']],
     [['<rootDir>/domain', '<rootDir>/use-cases', '<rootDir>/infra', '<rootDir>/main']],
-    [['^<rootDir>/domain', '^<rootDir>/use-cases', '^<rootDir>/infra', '^<rootDir>/main']],
     [['domain', 'use-cases', 'infra', 'main']],
     [['domain/', 'use-cases/', 'infra/', 'main/']],
-    [['^domain', '^use-cases', '^infra', '^main']],
-    [['^domain/', '^use-cases/', '^infra/', '^main/']]
 ];
 
 const excludeMatchers = ['<rootDir>/package.json'];
@@ -100,6 +97,25 @@ describe('should.haveName scenarios', () => {
     });
 
     describe('Scenario 3: Directory has files and ALL files match the pattern', () => {
+        test('entire project as (**) should have name with "*.js" - should PASS (all match)', async () => {
+            for (const [includeMatcher] of includeMatchers) {
+                const options: Options = {
+                    mimeTypes: ['**/*.js'],
+                    includeMatcher: [...includeMatcher],
+                    ignoreMatcher: excludeMatchers
+                };
+                const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+                const answer = await appInstance
+                    .projectFiles()
+                    .inDirectory('**')
+                    .should()
+                    .haveName('*.js')
+                    .check();
+        
+                expect(answer).toBe(true);
+            }
+        });
+        
         test('"domain/entities" should have name "*Todo.js" - should PASS (all match)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {

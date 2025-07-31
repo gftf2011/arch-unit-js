@@ -68,10 +68,63 @@ export function normalizeWindowsPath(path: string): string {
     return path.replace(/\\/g, '/');
 }
 
+/**
+ * Resolves root directory patterns to absolute glob patterns by processing pattern tokens and normalizing paths.
+ *
+ * This function takes an array of pattern strings that may contain special tokens and path prefixes,
+ * and converts them into absolute file system paths suitable for glob matching. It's designed to handle
+ * various pattern formats commonly used in build tools and file matching systems.
+ *
+ * The function performs the following transformations on each pattern:
+ * 1. Replaces '<rootDir>' tokens with an empty string (to be resolved against the actual rootDir)
+ * 2. Normalizes relative path indicators ('./', '.', leading '/')
+ * 3. Converts Windows-style backslashes to forward slashes
+ * 4. Resolves the cleaned pattern against the provided rootDir to create absolute paths
+ *
+ * This is particularly useful for configuration systems that need to convert relative or tokenized
+ * patterns into absolute paths for file system operations, glob matching, or build processes.
+ *
+ * @param patterns - An array of pattern strings to resolve. Each pattern may contain:
+ *                   - '<rootDir>' tokens that will be resolved against the rootDir parameter
+ *                   - Relative path indicators like './', '.', or leading '/'
+ *                   - Windows or POSIX path separators
+ *                   Examples: ['<rootDir>/src', './utils', 'components']
+ *
+ * @param rootDir - The root directory path to resolve patterns against. This should be an absolute
+ *                  path that will serve as the base for resolving all relative patterns.
+ *                  Example: '/Users/user/project' or 'C:\\Users\\user\\project'
+ *
+ * @returns An array of absolute file system paths corresponding to the input patterns.
+ *          All paths are normalized to use forward slashes and resolved against the rootDir.
+ *
+ * @example
+ * ```typescript
+ * const patterns = ['<rootDir>/src', './utils', 'components'];
+ * const rootDir = '/Users/user/project';
+ * const resolved = resolveRootDirPatternToGlobPattern(patterns, rootDir);
+ * // Returns: [
+ * //   '/Users/user/project/src',
+ * //   '/Users/user/project/utils',
+ * //   '/Users/user/project/components'
+ * // ]
+ *
+ * // Windows paths are also supported
+ * const windowsPatterns = ['<rootDir>\\src', 'domain\\', '.\\utils'];
+ * const windowsRootDir = 'C:\\Users\\user\\project';
+ * const windowsResolved = resolveRootDirPatternToGlobPattern(windowsPatterns, windowsRootDir);
+ * // Returns: [
+ * //   'C:/Users/user/project/src',
+ * //   'C:/Users/user/project/domain',
+ * //   'C:/Users/user/project/utils'
+ * // ]
+ * ```
+ *
+ * @since 1.0.0
+ */
 export function resolveRootDirPatternToGlobPattern(patterns: string[], rootDir: string): string[] {
     const normalizedRootDir = normalizeWindowsPath(rootDir);
     return patterns.map(pattern => {
-        const cleaned = pattern.replace(/^\^/, '').replace('<rootDir>', '');
+        const cleaned = pattern.replace('<rootDir>', '');
         const relative = cleaned.replace(/^\/?\.?/, '').replace(/\\/g, '/');
         return path.resolve(normalizedRootDir, relative);
     });

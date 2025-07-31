@@ -1,6 +1,72 @@
 import micromatch from "micromatch";
 import { Checkable, File, CheckableProps } from "../../common/fluent-api";
 
+export class ProjectFilesInDirectoryHaveCyclesShouldSelector extends Checkable {
+    constructor(protected readonly props: CheckableProps) {
+        super(props);
+    }
+    
+    protected override async checkPositiveRule(_: Map<string, File>): Promise<boolean> {
+        throw new Error('IF YOU SEE THIS, YOU MUST BE A UTTERLY STUPID PERSON');
+    }
+
+    protected override async checkNegativeRule(graph: Map<string, File>): Promise<boolean> {
+        // If no files, no cycles possible
+        if (graph.size === 0) return true;
+        
+        // Color coding: 0 = white (unvisited), 1 = gray (visiting), 2 = black (visited)
+        const colors = new Map<string, number>();
+        
+        // Initialize all nodes as white (unvisited)
+        for (const [filePath] of graph) {
+            colors.set(filePath, 0);
+        }
+        
+        // DFS function to detect cycles
+        const hasCycleDFS = (filePath: string): boolean => {
+            const color = colors.get(filePath);
+            
+            // If gray (currently being visited), we found a back edge = cycle
+            if (color === 1) return true;
+            
+            // If black (already visited), skip
+            if (color === 2) return false;
+            
+            // Mark as gray (visiting)
+            colors.set(filePath, 1);
+            
+            // Check all dependencies
+            const file = graph.get(filePath);
+            if (file && file.dependencies) {
+                for (const dependency of file.dependencies) {
+                    // Only check dependencies that exist in our graph (internal dependencies)
+                    if (graph.has(dependency.name)) {
+                        if (hasCycleDFS(dependency.name)) {
+                            return true; // Cycle detected
+                        }
+                    }
+                }
+            }
+            
+            // Mark as black (visited)
+            colors.set(filePath, 2);
+            return false;
+        };
+        
+        // Check for cycles starting from each unvisited node
+        for (const [filePath] of graph) {
+            if (colors.get(filePath) === 0) { // If white (unvisited)
+                if (hasCycleDFS(filePath)) {
+                    return false; // Cycle found - rule fails
+                }
+            }
+        }
+        
+        return true; // No cycles found - rule passes
+    }
+    
+}
+
 export class ProjectFilesInDirectoryOnlyDependsOnShouldSelector extends Checkable {
     constructor(protected readonly props: CheckableProps) {
         super(props);
