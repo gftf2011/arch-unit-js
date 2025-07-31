@@ -118,7 +118,26 @@ export class ProjectFilesInDirectoryOnlyHaveNameShouldSelector extends Checkable
     }
 
     protected override async checkNegativeRule(filteredFiles: Map<string, File>): Promise<boolean> {
-        return false;
+        // If no files are found, the rule passes (no exclusive naming possible)
+        if (filteredFiles.size === 0) return true;
+        
+        let matchingFiles = 0;
+        let totalFiles = filteredFiles.size;
+        
+        for (const [_, file] of filteredFiles) {
+            const fileName = file.name;
+            
+            // Check if this file name matches the pattern
+            const matches = micromatch([fileName], this.props.checkingPatterns).length > 0;
+            
+            if (matches) {
+                matchingFiles++;
+            }
+        }
+        
+        // Rule fails only when ALL files match the pattern (exclusive naming)
+        // Rule passes when NONE match or when SOME match (mixed naming)
+        return matchingFiles !== totalFiles;
     }
 
     protected override async checkPositiveRule(filteredFiles: Map<string, File>): Promise<boolean> {
