@@ -15,9 +15,9 @@ const includeMatchers = [
 
 const excludeMatchers = ['<rootDir>/package.json'];
 
-describe('should.onlyDependsOn scenarios', () => {
-    describe('Scenario 1: File has NO dependencies', () => {
-        test('"domain" entities should only depend on "inexistent-dependency" - should PASS', async () => {
+describe('should.haveLocLessThan scenarios', () => {
+    describe('Scenario 1: All files have lines of code LESS than the threshold', () => {
+        test('"use-cases" should have LOC less than 50 - should PASS', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
                     mimeTypes: ['**/*.js'],
@@ -25,20 +25,39 @@ describe('should.onlyDependsOn scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
+
+                const result = await appInstance
+                    .projectFiles()
+                    .inDirectory('**/use-cases/**')
+                    .should()
+                    .haveLocLessThan(50)
+                    .check();
+
+                expect(result).toBe(true);
+            }
+        });
+
+        test('"entities" should have LOC less than 30 - should PASS', async () => {
+            for (const [includeMatcher] of includeMatchers) {
+                const options: Options = {
+                    mimeTypes: ['**/*.js'],
+                    includeMatcher: [...includeMatcher],
+                    ignoreMatcher: excludeMatchers
+                };
+                const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+
+                const result = await appInstance
                     .projectFiles()
                     .inDirectory('**/entities/**')
                     .should()
-                    .onlyDependsOn(['inexistent-dependency'])
+                    .haveLocLessThan(30)
                     .check();
-        
-                expect(answer).toBe(true);
+
+                expect(result).toBe(true);
             }
         });
-    });
 
-    describe('Scenario 2: File has dependencies but NONE match the patterns', () => {
-        test('"use-cases" should only depend on "infra" - should FAIL', async () => {
+        test('"domain" should have LOC less than 40 - should PASS', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
                     mimeTypes: ['**/*.js'],
@@ -46,20 +65,41 @@ describe('should.onlyDependsOn scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
+
+                const result = await appInstance
+                    .projectFiles()
+                    .inDirectory('**/domain/**')
+                    .should()
+                    .haveLocLessThan(40)
+                    .check();
+
+                expect(result).toBe(true);
+            }
+        });
+    });
+
+    describe('Scenario 2: ANY files have lines of code GREATER than or EQUAL to the threshold', () => {
+        test('"use-cases" should have LOC less than 30 - should FAIL (UpdateTodo.js exceeds threshold)', async () => {
+            for (const [includeMatcher] of includeMatchers) {
+                const options: Options = {
+                    mimeTypes: ['**/*.js'],
+                    includeMatcher: [...includeMatcher],
+                    ignoreMatcher: excludeMatchers
+                };
+                const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+
+                const result = await appInstance
                     .projectFiles()
                     .inDirectory('**/use-cases/**')
                     .should()
-                    .onlyDependsOn(['**/infra/**'])
+                    .haveLocLessThan(30)
                     .check();
-        
-                expect(answer).toBe(false);
+
+                expect(result).toBe(false);
             }
         });
-    });
 
-    describe('Scenario 3: File has dependencies that match only SOME of the patterns (exclusively)', () => {
-        test('"use-cases" should only depend on "domain" and "infra" - should PASS ("domain" is a subset)', async () => {
+        test('"domain" should have LOC less than 20 - should FAIL (multiple files exceed threshold)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
                     mimeTypes: ['**/*.js'],
@@ -67,20 +107,19 @@ describe('should.onlyDependsOn scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
+
+                const result = await appInstance
                     .projectFiles()
-                    .inDirectory('**/use-cases/**')
+                    .inDirectory('**/domain/**')
                     .should()
-                    .onlyDependsOn(['**/domain/**', '**/infra/**'])
+                    .haveLocLessThan(20)
                     .check();
-        
-                expect(answer).toBe(true);
+
+                expect(result).toBe(false);
             }
         });
-    });
 
-    describe('Scenario 4:File has dependencies and ALL patterns are present (exclusively)', () => {
-        test('"infra" should only depend on "domain" - should PASS', async () => {
+        test('entire project should have LOC less than 10 - should FAIL (all files exceed threshold)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
                     mimeTypes: ['**/*.js'],
@@ -88,41 +127,21 @@ describe('should.onlyDependsOn scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
-                    .projectFiles()
-                    .inDirectory('**/infra/**')
-                    .should()
-                    .onlyDependsOn(['**/domain/**'])
-                    .check();
-        
-                expect(answer).toBe(true);
-            }
-        });
-    });
 
-    describe('Scenario 5: File has dependencies with additional non-matching dependencies', () => {
-        test('"main" should only depend on "domain" and "use-cases" - should FAIL (has "infra" too)', async () => {
-            for (const [includeMatcher] of includeMatchers) {
-                const options: Options = {
-                    mimeTypes: ['**/*.js'],
-                    includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
-                };
-                const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
+                const result = await appInstance
                     .projectFiles()
-                    .inDirectory('**/main/**')
+                    .inDirectory('**')
                     .should()
-                    .onlyDependsOn(['**/use-cases/**', '**/domain/**'])
+                    .haveLocLessThan(10)
                     .check();
-        
-                expect(answer).toBe(false);
+
+                expect(result).toBe(false);
             }
         });
     });
 
     describe('Edge scenarios', () => {
-        test('projectFiles.inDirectory("**/domain/**").should().onlyDependsOn([]).check() - should FAIL (empty array)', async () => {
+        test('projectFiles.inDirectory("**/nonexistent/**").should().haveLocLessThan(10).check() - should throw error (no files exist)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 try {
                     const options: Options = {
@@ -131,25 +150,25 @@ describe('should.onlyDependsOn scenarios', () => {
                         ignoreMatcher: excludeMatchers
                     };
                     const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+    
                     await appInstance
                         .projectFiles()
-                        .inDirectory('**/domain/**')
+                        .inDirectory('**/nonexistent/**')
                         .should()
-                        .onlyDependsOn([])
+                        .haveLocLessThan(10)
                         .check();
 
-                    // If we get here, the test should fail
                     expect(1).toBe(2);
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/domain/**' should only depends on '[]'\n`);
-                    expect(errorMessage).toContain(`No pattern was provided for checking`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/nonexistent/**' should have L.O.C. less than: 10\n`);
+                    expect(errorMessage).toContain(`No files found in '[**/nonexistent/**]'`);
                 }
             }
         });
 
-        test('projectFiles.inDirectory("**/domain/**").should().onlyDependsOn(["uuid", ""]).check() - should FAIL (array with empty string)', async () => {
+        test('threshold of 0 should always FAIL (no files can have less than 0 LOC)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 try {
                     const options: Options = {
@@ -158,41 +177,88 @@ describe('should.onlyDependsOn scenarios', () => {
                         ignoreMatcher: excludeMatchers
                     };
                     const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+    
                     await appInstance
                         .projectFiles()
-                        .inDirectory('**/domain/**')
+                        .inDirectory('**/entities/**')
                         .should()
-                        .onlyDependsOn(["uuid", ""])
+                        .haveLocLessThan(0)
                         .check();
-
-                    // If we get here, the test should fail
+    
                     expect(1).toBe(2);
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/domain/**' should only depends on '[uuid, ]'\n`);
-                    expect(errorMessage).toContain(`No pattern was provided for checking`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/entities/**' should have L.O.C. less than: 0\n`);
+                    expect(errorMessage).toContain(`Threshold value must be greater than 0`);
                 }
+            }
+        });
+
+        test('threshold of -1 should always FAIL (impossible scenario)', async () => {
+            for (const [includeMatcher] of includeMatchers) {
+                try {
+                    const options: Options = {
+                        mimeTypes: ['**/*.js'],
+                        includeMatcher: [...includeMatcher],
+                        ignoreMatcher: excludeMatchers
+                    };
+                    const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+    
+                    await appInstance
+                        .projectFiles()
+                        .inDirectory('**/entities/**')
+                        .should()
+                        .haveLocLessThan(-1)
+                        .check();
+    
+                    expect(1).toBe(2);
+                } catch (error) {
+                    const errorMessage = (error as Error).message;
+
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/entities/**' should have L.O.C. less than: -1\n`);
+                    expect(errorMessage).toContain(`Threshold value must be greater than 0`);
+                }
+            }
+        });
+
+        test('very high threshold should always PASS', async () => {
+            for (const [includeMatcher] of includeMatchers) {
+                const options: Options = {
+                    mimeTypes: ['**/*.js'],
+                    includeMatcher: [...includeMatcher],
+                    ignoreMatcher: excludeMatchers
+                };
+                const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+
+                const result = await appInstance
+                    .projectFiles()
+                    .inDirectory('**')
+                    .should()
+                    .haveLocLessThan(1000)
+                    .check();
+
+                expect(result).toBe(true);
             }
         });
 
         test('incorrect extension', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.ts'],
+                    mimeTypes: ['**/*.ts'], // Looking for TypeScript in JavaScript project
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+
                 try {
                     await appInstance
                         .projectFiles()
-                        .inDirectory('**/infra/**')
+                        .inDirectory('**/entities/**')
                         .should()
-                        .onlyDependsOn(['**/domain/**'])
+                        .haveLocLessThan(50)
                         .check();
                     
-                    // If we get here, the test should fail
                     expect(1).toBe(2);
                 } catch (error) {
                     const errorMessage = (error as Error).message;
@@ -208,27 +274,6 @@ describe('should.onlyDependsOn scenarios', () => {
                     expect(errorMessage).toContain(`File: '${rootDir}/use-cases/UpdateTodo.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`);
                 }
             }
-        });
-
-        test(`must throw error if file path is not being reached by the 'includeMatcher'`, async () => {
-            const options: Options = {
-                mimeTypes: ['**/*.js'],
-                includeMatcher: ['<rootDir>/infra'],
-                ignoreMatcher: excludeMatchers
-            };
-            const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-            const promise = appInstance
-                .projectFiles()
-                .inDirectory('**/domain/**')
-                .should()
-                .onlyDependsOn(['**/infra/**'])
-                .check();
-            
-            const errorsMessage = [
-                `Dependencies in file: '${rootDir}/infra/repositories/InMemoryTodoRepository.js' - could not be resolved\n- '${rootDir}/domain/repositories/TodoRepository.js' - file path was not found\nCheck if path is being reached by the 'includeMatcher'`,
-            ];
-
-            await expect(promise).rejects.toThrow(new Error(errorsMessage.join('\n\n')));
         });
     });
 });

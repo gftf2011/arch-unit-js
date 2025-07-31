@@ -1,8 +1,71 @@
 import micromatch from "micromatch";
-import { Checkable, File, CheckableProps, CiclesCheckable } from "../../common/fluent-api";
+import {
+    File,
+    LOCAnalysisProps,
+    PatternCheckableProps,
+    LOCAnalysisCheckable,
+    PatternCiclesCheckable,
+    PatternCheckable
+} from "../../common/fluent-api";
 
-export class ProjectFilesInDirectoryHaveCyclesShouldSelector extends CiclesCheckable {
-    constructor(protected readonly props: CheckableProps) {
+export class ProjectFilesInDirectoryLOCAnalysisLessThanShouldSelector extends LOCAnalysisCheckable {
+    constructor(protected readonly props: LOCAnalysisProps) {
+        super(props);
+    }
+
+    protected override async checkPositiveRule(filteredFiles: Map<string, File>): Promise<boolean> {
+        return Array.from(filteredFiles.values()).every(file => file.loc < this.props.analisisThreshold);
+    }
+
+    protected override async checkNegativeRule(filteredFiles: Map<string, File>): Promise<boolean> {
+        return Array.from(filteredFiles.values()).every(file => file.loc >= this.props.analisisThreshold);
+    }
+}
+
+export class ProjectFilesInDirectoryLOCAnalysisLessThanOrEqualShouldSelector extends LOCAnalysisCheckable {
+    constructor(protected readonly props: LOCAnalysisProps) {
+        super(props);
+    }
+
+    protected override async checkPositiveRule(filteredFiles: Map<string, File>): Promise<boolean> {
+        return Array.from(filteredFiles.values()).every(file => file.loc <= this.props.analisisThreshold);
+    }
+
+    protected override async checkNegativeRule(filteredFiles: Map<string, File>): Promise<boolean> {
+        return Array.from(filteredFiles.values()).every(file => file.loc > this.props.analisisThreshold);
+    }
+}
+
+export class ProjectFilesInDirectoryLOCAnalysisGreaterThanShouldSelector extends LOCAnalysisCheckable {
+    constructor(protected readonly props: LOCAnalysisProps) {
+        super(props);
+    }
+
+    protected override async checkPositiveRule(filteredFiles: Map<string, File>): Promise<boolean> {
+        return Array.from(filteredFiles.values()).every(file => file.loc > this.props.analisisThreshold);
+    }
+
+    protected override async checkNegativeRule(filteredFiles: Map<string, File>): Promise<boolean> {
+        return Array.from(filteredFiles.values()).every(file => file.loc <= this.props.analisisThreshold);
+    }
+}
+
+export class ProjectFilesInDirectoryLOCAnalysisGreaterThanOrEqualShouldSelector extends LOCAnalysisCheckable {
+    constructor(protected readonly props: LOCAnalysisProps) {
+        super(props);
+    }
+
+    protected override async checkPositiveRule(filteredFiles: Map<string, File>): Promise<boolean> {
+        return Array.from(filteredFiles.values()).every(file => file.loc >= this.props.analisisThreshold);
+    }
+
+    protected override async checkNegativeRule(filteredFiles: Map<string, File>): Promise<boolean> {
+        return Array.from(filteredFiles.values()).every(file => file.loc = this.props.analisisThreshold);
+    }
+}
+
+export class ProjectFilesInDirectoryHaveCyclesShouldSelector extends PatternCiclesCheckable {
+    constructor(protected readonly props: PatternCheckableProps) {
         super(props);
     }
     
@@ -67,8 +130,8 @@ export class ProjectFilesInDirectoryHaveCyclesShouldSelector extends CiclesCheck
     
 }
 
-export class ProjectFilesInDirectoryOnlyDependsOnShouldSelector extends Checkable {
-    constructor(protected readonly props: CheckableProps) {
+export class ProjectFilesInDirectoryOnlyDependsOnShouldSelector extends PatternCheckable {
+    constructor(protected readonly props: PatternCheckableProps) {
         super(props);
     }
 
@@ -124,8 +187,8 @@ export class ProjectFilesInDirectoryOnlyDependsOnShouldSelector extends Checkabl
     }
 }
 
-export class ProjectFilesInDirectoryDependsOnShouldSelector extends Checkable {
-    constructor(protected readonly props: CheckableProps) {
+export class ProjectFilesInDirectoryDependsOnShouldSelector extends PatternCheckable {
+    constructor(protected readonly props: PatternCheckableProps) {
         super(props);
     }
 
@@ -170,8 +233,8 @@ export class ProjectFilesInDirectoryDependsOnShouldSelector extends Checkable {
     }
 }
 
-export class ProjectFilesInDirectoryOnlyHaveNameShouldSelector extends Checkable {
-    constructor(protected readonly props: CheckableProps) {
+export class ProjectFilesInDirectoryOnlyHaveNameShouldSelector extends PatternCheckable {
+    constructor(protected readonly props: PatternCheckableProps) {
         super(props);
     }
 
@@ -225,8 +288,8 @@ export class ProjectFilesInDirectoryOnlyHaveNameShouldSelector extends Checkable
     }
 }
 
-export class ProjectFilesInDirectoryHaveNameShouldSelector extends Checkable {
-    constructor(protected readonly props: CheckableProps) {
+export class ProjectFilesInDirectoryHaveNameShouldSelector extends PatternCheckable {
+    constructor(protected readonly props: PatternCheckableProps) {
         super(props);
     }
 

@@ -14,12 +14,6 @@ export type File = {
     totalImportedDependencies: number;
     loc: number;
     totalLines: number;
-    totalClasses: number;
-    totalFunctions: number;
-    totalVariables: number;
-    totalVarVariables: number;
-    totalLetVariables: number;
-    totalConstVariables: number;
     hasDefaultExport: boolean;
     type: 'file';
     dependencies: Dependency[];
@@ -31,17 +25,24 @@ export type Options = {
   ignoreMatcher: string[]
 }
 
-export type CheckableProps = {
+type CheckableProps = {
     negated: boolean;
     rootDir: string;
     filteringPatterns: string[];
-    checkingPatterns: string[];
     options: Options;
     excludePattern: string[];
     ruleConstruction: string[];
 }
 
-export abstract class Checkable {
+export type LOCAnalysisProps = CheckableProps & {
+    analisisThreshold: number;
+};
+
+export type PatternCheckableProps = CheckableProps & {
+    checkingPatterns: string[];
+}
+
+abstract class Checkable {
     constructor(protected readonly props: CheckableProps) {}
 
     protected filter(map: Map<string, File>): Map<string, File> {
@@ -133,15 +134,6 @@ export abstract class Checkable {
     protected abstract checkNegativeRule(filteredFiles: Map<string, File>): Promise<boolean>
     
     public async check(): Promise<boolean> {
-        const hasAnyEmptyChecker = this.props.checkingPatterns.length === 0
-            || this.props.filteringPatterns.length === 0
-            || this.props.checkingPatterns.includes('')
-            || this.props.filteringPatterns.includes('');
-
-        if (hasAnyEmptyChecker) {
-            throw new Error(`Violation - ${this.props.ruleConstruction.join(' ')}\n` + `No pattern was provided for checking`);
-        }
-
         const files = await this.buildProjectGraph();
 
         this.validateFilesExtension(files);
@@ -160,8 +152,41 @@ export abstract class Checkable {
     }
 }
 
-export abstract class CiclesCheckable extends Checkable {
-    constructor(protected readonly props: CheckableProps) {
+export abstract class LOCAnalysisCheckable extends Checkable {
+    constructor(protected readonly props: LOCAnalysisProps) {
+        super(props);
+    }
+
+    public override async check(): Promise<boolean> {
+        const isThresholdValid = this.props.analisisThreshold <= 0;
+
+        if (isThresholdValid) {
+            throw new Error(`Violation - ${this.props.ruleConstruction.join(' ')}\n` + `Threshold value must be greater than 0`);
+        }
+        return super.check();
+    }
+}
+
+export abstract class PatternCheckable extends Checkable {
+    constructor(protected readonly props: PatternCheckableProps) {
+        super(props);
+    }
+
+    public override async check(): Promise<boolean> {
+        const hasAnyEmptyChecker = this.props.checkingPatterns.length === 0
+            || this.props.filteringPatterns.length === 0
+            || this.props.checkingPatterns.includes('')
+            || this.props.filteringPatterns.includes('');
+
+        if (hasAnyEmptyChecker) {
+            throw new Error(`Violation - ${this.props.ruleConstruction.join(' ')}\n` + `No pattern was provided for checking`);
+        }
+        return super.check();
+    }
+}
+
+export abstract class PatternCiclesCheckable extends PatternCheckable {
+    constructor(protected readonly props: PatternCheckableProps) {
         super(props);
     }
 

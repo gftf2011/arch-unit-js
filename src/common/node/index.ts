@@ -78,18 +78,12 @@ export class Node {
             const lines = code.split('\n');
             return lines.filter(line => {
                 const trimmed = line.trim();
-                return trimmed.length > 0 && !trimmed.startsWith('//') && !trimmed.startsWith('/*');
+                return trimmed.length > 0 && !trimmed.startsWith('//') && !trimmed.startsWith('/*') && !trimmed.startsWith('*');
             }).length;
         }
 
         let totalRequiredDependencies = 0;
         let totalImportedDependencies = 0;
-        let totalClasses = 0;
-        let totalFunctions = 0;
-        let totalVariables = 0;
-        let totalVarVariables = 0;
-        let totalLetVariables = 0;
-        let totalConstVariables = 0;
 
         let hasDefaultExport = false;
       
@@ -133,36 +127,6 @@ export class Node {
                 );
             }
           },
-          ClassDeclaration({ node }) {
-            totalClasses++;
-          },
-          FunctionDeclaration({ node }) {
-            totalFunctions++;
-          },
-          ClassMethod({ node }) {
-            totalFunctions++;
-          },
-          ClassPrivateMethod({ node }) {
-            totalFunctions++;
-          },
-          ArrowFunctionExpression(path) {
-            if (
-              path.parent.type === 'VariableDeclarator' ||
-              path.parent.type === 'AssignmentExpression'
-            ) {
-              totalFunctions++;
-            }
-          },
-          VariableDeclaration({ node }) {
-            const kind = node.kind; // 'var' | 'let' | 'const'
-            const count = node.declarations.length;
-      
-            totalVariables += count;
-      
-            if (kind === 'var') totalVarVariables += count;
-            else if (kind === 'let') totalLetVariables += count;
-            else if (kind === 'const') totalConstVariables += count;
-          },
           ExportDefaultDeclaration() {
             hasDefaultExport = true;
           },
@@ -177,12 +141,6 @@ export class Node {
             totalLines: code.split('\n').length,
             totalRequiredDependencies,
             totalImportedDependencies,
-            totalClasses,
-            totalFunctions,
-            totalVariables,
-            totalVarVariables,
-            totalLetVariables,
-            totalConstVariables,
             hasDefaultExport,
         };
       

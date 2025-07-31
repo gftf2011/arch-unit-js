@@ -4,7 +4,8 @@ import {
     ProjectFilesInDirectoryOnlyDependsOnShouldSelector,
     ProjectFilesInDirectoryOnlyHaveNameShouldSelector,
     ProjectFilesInDirectoryDependsOnShouldSelector,
-    ProjectFilesInDirectoryHaveCyclesShouldSelector
+    ProjectFilesInDirectoryHaveCyclesShouldSelector,
+    ProjectFilesInDirectoryLOCAnalysisLessThanShouldSelector
 } from './checkers';
 
 class PositiveMatchConditionSelectorBuilder {
@@ -17,6 +18,18 @@ class PositiveMatchConditionSelectorBuilder {
         readonly excludePattern: string[],
         readonly ruleConstruction: string[]
     ) {}
+
+    haveLocLessThan(threshold: number): ProjectFilesInDirectoryLOCAnalysisLessThanShouldSelector {
+        return new ProjectFilesInDirectoryLOCAnalysisLessThanShouldSelector({
+            negated: this.negated,
+            rootDir: this.rootDir,
+            filteringPatterns: [this.pattern],
+            analisisThreshold: threshold,
+            options: this.options,
+            excludePattern: this.excludePattern,
+            ruleConstruction: [...this.ruleConstruction, `have L.O.C. less than: ${threshold}`]
+        });
+    }
 
     haveCicles(): ProjectFilesInDirectoryHaveCyclesShouldSelector {
         return new ProjectFilesInDirectoryHaveCyclesShouldSelector({
@@ -91,6 +104,18 @@ class NegativeMatchConditionSelectorBuilder {
         readonly excludePattern: string[],
         readonly ruleConstruction: string[]
     ) {}
+
+    haveLocLessThan(threshold: number): ProjectFilesInDirectoryLOCAnalysisLessThanShouldSelector {
+        return new ProjectFilesInDirectoryLOCAnalysisLessThanShouldSelector({
+            negated: this.negated,
+            rootDir: this.rootDir,
+            filteringPatterns: [this.pattern],
+            analisisThreshold: threshold,
+            options: this.options,
+            excludePattern: this.excludePattern,
+            ruleConstruction: [...this.ruleConstruction, `have L.O.C. less than: ${threshold}`]
+        });
+    }
 
     haveCicles(): ProjectFilesInDirectoryHaveCyclesShouldSelector {
         return new ProjectFilesInDirectoryHaveCyclesShouldSelector({
