@@ -2,28 +2,26 @@
 
 ## Business Rule Description
 
-**DESCRIPTION**: All files in the directory must NOT have names that match ONLY the specified pattern. The rule passes when files have names that are NOT exclusively the defined pattern OR when files have no names at all. Files that have names matching exclusively the specified pattern will fail this rule.
+**DESCRIPTION**: Files in the directory must NOT all have names that match the specified pattern. The rule passes when files have mixed naming patterns or no files match the pattern.
 
-- It is OK if NONE of the files match the specified pattern
-- It is OK if SOME of the files match the specified pattern
-- It is NOT OK if ALL files match the specified pattern
+- It is OK if NONE of the files match the pattern
+- It is OK if SOME of the files match the pattern
+- It is NOT OK if ALL files match the pattern
 
-This rule ensures that files within a specific directory structure do NOT have names that conform EXCLUSIVELY to the required naming pattern defined in the checking pattern. It enforces that files must have names that are NOT limited to only the specified pattern, ensuring naming flexibility and preventing overly restrictive naming conventions.
+This rule ensures naming flexibility by preventing exclusive use of the specified naming convention.
 
-The rule validates that files have flexible naming relationships, allowing additional naming patterns beyond the specified pattern and ensuring that components can have names that follow different conventions beyond those defined by the architectural pattern.
-
-**Note**: The `shouldNot.onlyHaveName` rule accepts only a single pattern, not an array of patterns. It validates file names against this single pattern to ensure non-exclusive naming compliance.
+**Note**: The `shouldNot.onlyHaveName` rule accepts only a single pattern, not an array of patterns.
 
 ## All Possible Scenarios
 
 **Scenario 1**: Directory has files but NONE match the pattern
-- **Result**: ✅ PASS - No files match the specified pattern, so no exclusive naming
+- **Result**: ✅ PASS - No files match the pattern
 
 **Scenario 2**: Directory has files and SOME match the pattern
-- **Result**: ✅ PASS - Mixed naming patterns, not exclusive
+- **Result**: ✅ PASS - Mixed naming patterns
 
-**Scenario 3**: Directory has files and ALL files match the pattern (exclusively)
-- **Result**: ❌ FAIL - Exclusive naming patterns are not allowed
+**Scenario 3**: Directory has files and ALL files match the pattern
+- **Result**: ❌ FAIL - Exclusive naming not allowed
 
 ## Scenario Examples
 
@@ -61,7 +59,7 @@ projectFiles()
   .check()
 ```
 
-**Result**: ✅ PASS - No files match the `*UseCase.ts` pattern, so no exclusive naming
+**Result**: ✅ PASS - No files match the `*UseCase.ts` pattern
 
 ### Scenario 2: Directory has files and SOME match the pattern
 ```
@@ -97,9 +95,9 @@ projectFiles()
   .check()
 ```
 
-**Result**: ✅ PASS - Mixed naming patterns: `CreateUserUseCase.ts` matches the pattern, but `helper.ts` and `config.ts` do not (not exclusive)
+**Result**: ✅ PASS - Mixed naming patterns: some match, some don't
 
-### Scenario 3: Directory has files and ALL files match the pattern (exclusively)
+### Scenario 3: Directory has files and ALL files match the pattern
 ```
 project/
 ├── src/
@@ -133,4 +131,4 @@ projectFiles()
   .check()
 ```
 
-**Result**: ❌ FAIL - All files match the `*UseCase.ts` pattern (exclusive naming not allowed)
+**Result**: ❌ FAIL - All files match the `*UseCase.ts` pattern
