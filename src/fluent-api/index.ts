@@ -5,7 +5,8 @@ import {
     ProjectFilesInDirectoryOnlyHaveNameShouldSelector,
     ProjectFilesInDirectoryDependsOnShouldSelector,
     ProjectFilesInDirectoryHaveCyclesShouldSelector,
-    ProjectFilesInDirectoryLOCAnalysisLessThanShouldSelector
+    ProjectFilesInDirectoryLOCAnalysisLessThanShouldSelector,
+    ProjectFilesInDirectoryLOCAnalysisLessThanOrEqualShouldSelector
 } from './checkers';
 
 class PositiveMatchConditionSelectorBuilder {
@@ -18,6 +19,18 @@ class PositiveMatchConditionSelectorBuilder {
         readonly excludePattern: string[],
         readonly ruleConstruction: string[]
     ) {}
+
+    haveLocLessOrEqualThan(threshold: number): ProjectFilesInDirectoryLOCAnalysisLessThanOrEqualShouldSelector {
+        return new ProjectFilesInDirectoryLOCAnalysisLessThanOrEqualShouldSelector({
+            negated: this.negated,
+            rootDir: this.rootDir,
+            filteringPatterns: [this.pattern],
+            analisisThreshold: threshold,
+            options: this.options,
+            excludePattern: this.excludePattern,
+            ruleConstruction: [...this.ruleConstruction, `have L.O.C. less or equal than: ${threshold}`]
+        });
+    }
 
     haveLocLessThan(threshold: number): ProjectFilesInDirectoryLOCAnalysisLessThanShouldSelector {
         return new ProjectFilesInDirectoryLOCAnalysisLessThanShouldSelector({
@@ -104,6 +117,18 @@ class NegativeMatchConditionSelectorBuilder {
         readonly excludePattern: string[],
         readonly ruleConstruction: string[]
     ) {}
+
+    haveLocLessOrEqualThan(threshold: number): ProjectFilesInDirectoryLOCAnalysisLessThanOrEqualShouldSelector {
+        return new ProjectFilesInDirectoryLOCAnalysisLessThanOrEqualShouldSelector({
+            negated: this.negated,
+            rootDir: this.rootDir,
+            filteringPatterns: [this.pattern],
+            analisisThreshold: threshold,
+            options: this.options,
+            excludePattern: this.excludePattern,
+            ruleConstruction: [...this.ruleConstruction, `have L.O.C. less or equal than: ${threshold}`]
+        });
+    }
 
     haveLocLessThan(threshold: number): ProjectFilesInDirectoryLOCAnalysisLessThanShouldSelector {
         return new ProjectFilesInDirectoryLOCAnalysisLessThanShouldSelector({
