@@ -5,15 +5,17 @@ import { ComponentSelectorBuilder } from '../../../src/fluent-api';
 const rootDir = path.resolve(path.dirname(__filename), '..', '..', 'sample', 'todo-js-sample');
 
 const includeMatchers = [
-    [['<rootDir>']],
-    [['<rootDir>/']],
-    [['<rootDir>/.']],
-    [['<rootDir>/domain', '<rootDir>/use-cases', '<rootDir>/infra', '<rootDir>/main']],
-    [['domain', 'use-cases', 'infra', 'main']],
-    [['domain/', 'use-cases/', 'infra/', 'main/']],
+    [['<rootDir>/**']],
+    [['<rootDir>/**/']],
+    [['./**']],
+    [['./**/']],
+    [['<rootDir>/domain/**', '<rootDir>/use-cases/**', '<rootDir>/infra/**', '<rootDir>/main/**']],
+    [['<rootDir>/domain/**/', '<rootDir>/use-cases/**/', '<rootDir>/infra/**/', '<rootDir>/main/**/']],
+    [['./domain/**', './use-cases/**', './infra/**', './main/**']],
+    [['./domain/**/', './use-cases/**/', './infra/**/', './main/**/']],
 ];
 
-const excludeMatchers = ['<rootDir>/**/package.json'];
+const excludeMatchers = ['!<rootDir>/**/package.json'];
 
 describe('should.dependsOn scenarios', () => {
     describe('Scenario 1: File has NO dependencies', () => {
@@ -287,7 +289,7 @@ describe('should.dependsOn scenarios', () => {
         test(`must throw error if file path is not being reached by the 'includeMatcher'`, async () => {
             const options: Options = {
                 mimeTypes: ['**/*.js'],
-                includeMatcher: ['<rootDir>/infra'],
+                includeMatcher: ['<rootDir>/infra/**'],
                 ignoreMatcher: excludeMatchers
             };
             const appInstance = ComponentSelectorBuilder.create(rootDir, options);

@@ -4,6 +4,7 @@ import micromatch from 'micromatch';
 export type Dependency = {
     resolvedWith: 'require' | 'import';
     name: string;
+    fullName: string;
     type: 'valid-path' | 'invalid' | 'node-package' | 'node-dev-package' | 'node-builtin-module';
 }
 
@@ -110,8 +111,8 @@ abstract class Checkable {
             const filePath = file.path;
             const invalidDependencies: string[] = [];
             for (const dependency of file.dependencies) {
-                if (dependency.type === 'valid-path' && !files.has(dependency.name)) {
-                    invalidDependencies.push(dependency.name);
+                if (dependency.type === 'valid-path' && !files.has(dependency.fullName)) {
+                    invalidDependencies.push(dependency.fullName);
                 }
             }
 

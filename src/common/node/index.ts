@@ -26,15 +26,30 @@ export class Node {
         resolvedWith: 'require' | 'import'
     ): Dependency {
         if (isBuiltinModule(dependency)) {
-            return { name: dependency, type: 'node-builtin-module', resolvedWith };
+            return {
+              name: dependency,
+              fullName: dependency,
+              type: 'node-builtin-module',
+              resolvedWith,
+            };
         }
     
         if (isPackageJsonDependency(rootDir, dependency)) {
-            return { name: dependency, type: 'node-package', resolvedWith };
+            return {
+              name: dependency,
+              fullName: dependency,
+              type: 'node-package',
+              resolvedWith,
+            };
         }
     
         if (isPackageJsonDevDependency(rootDir, dependency)) {
-            return { name: dependency, type: 'node-dev-package', resolvedWith };
+            return {
+              name: dependency,
+              fullName: dependency,
+              type: 'node-dev-package',
+              resolvedWith,
+            };
         }
     
         const fullPath = (rootDir: string, currentPath: string, dependency: string) => {
@@ -55,13 +70,25 @@ export class Node {
         for (const candidate of candidates) {
             try {
                 const stat = fs.statSync(candidate);
-                if (stat.isFile()) return { name: candidate, type: 'valid-path', resolvedWith };
+                if (stat.isFile()) return {
+                  name: path.relative(rootDir, candidate),
+                  fullName: candidate,
+                  // name: replacePath(rootDir, candidate),
+                  // name: candidate,
+                  type: 'valid-path',
+                  resolvedWith,
+                };
             } catch {
                 // do nothing
             }
         }
     
-        return { name: dependency, type: 'invalid', resolvedWith };
+        return {
+          name: dependency,
+          fullName: dependency,
+          type: 'invalid',
+          resolvedWith,
+        };
     }
 
     private static async createFile (rootDir: string, fileName: string, filePath: string, extensions: string[]): Promise<File> {
@@ -159,28 +186,29 @@ export class Node {
       
         const includePatterns = resolveRootDirPatternToGlobPattern(filesOrFoldersToInclude, startPath);
         const ignorePatterns = resolveRootDirPatternToGlobPattern(filesOrFoldersToIgnore, startPath);
-    
+
         async function walk(currentPath: string, extensions: string[]) {
           const entries = await fsPromises.readdir(currentPath, { withFileTypes: true });
     
           for (const entry of entries) {
             const fullPath = path.join(currentPath, entry.name);
-      
-            if (micromatch([fullPath], ignorePatterns).length === 0) {
-                if (entry.isDirectory()) {
-                    await walk(fullPath, extensions);
-                } else if (entry.isFile()) {
-                    const file = await Node.createFile(startPath, entry.name, fullPath, extensions);
-    
-                    files.set(file.path, file);
-                }
+
+            if (micromatch([fullPath], [...includePatterns, ...ignorePatterns]).length > 0) {
+              if (entry.isDirectory()) {
+                await walk(fullPath, extensions);
+              } else if (entry.isFile()) {
+                const file = await Node.createFile(startPath, entry.name, fullPath, extensions);
+                files.set(file.path, file);
+              }
             }
           }
         }
-    
-        for (const includedPath of includePatterns) {
-          await walk(includedPath, extensions);
-        }
+
+        // for (const includedPath of includePatterns) {
+        //   await walk(includedPath, extensions);
+        // }
+
+        await walk(startPath, extensions);
     
         return files;
     }

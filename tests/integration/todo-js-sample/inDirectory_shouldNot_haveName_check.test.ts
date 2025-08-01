@@ -5,15 +5,17 @@ import { ComponentSelectorBuilder } from '../../../src/fluent-api';
 const rootDir = path.resolve(path.dirname(__filename), '..', '..', 'sample', 'todo-js-sample');
 
 const includeMatchers = [
-    [['<rootDir>']],
-    [['<rootDir>/']],
-    [['<rootDir>/.']],
-    [['<rootDir>/domain', '<rootDir>/use-cases', '<rootDir>/infra', '<rootDir>/main']],
-    [['domain', 'use-cases', 'infra', 'main']],
-    [['domain/', 'use-cases/', 'infra/', 'main/']],
+    [['<rootDir>/**']],
+    [['<rootDir>/**/']],
+    [['./**']],
+    [['./**/']],
+    [['<rootDir>/domain/**', '<rootDir>/use-cases/**', '<rootDir>/infra/**', '<rootDir>/main/**']],
+    [['<rootDir>/domain/**/', '<rootDir>/use-cases/**/', '<rootDir>/infra/**/', '<rootDir>/main/**/']],
+    [['./domain/**', './use-cases/**', './infra/**', './main/**']],
+    [['./domain/**/', './use-cases/**/', './infra/**/', './main/**/']],
 ];
 
-const excludeMatchers = ['<rootDir>/package.json'];
+const excludeMatchers = ['!<rootDir>/**/package.json'];
 
 describe('shouldNot.haveName scenarios', () => {
     describe('Scenario 1: Directory has files but NONE match the pattern', () => {
