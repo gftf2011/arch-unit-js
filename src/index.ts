@@ -1,7 +1,7 @@
 import { fileURLToPath } from 'url';
 import path from 'path';
 import { ComponentSelectorBuilder } from './fluent-api';
-import { Options } from './common/fluent-api';
+import { Options } from './fluent-api/common/types';
 /**
  * Returns the root directory of the project where the package was installed
  */

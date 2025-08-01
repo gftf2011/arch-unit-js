@@ -1,47 +1,7 @@
-import { Node } from '../node';
+import { File } from '../../../core/file';
+import { NodeGraph } from '../../../core/node-graph';
 import micromatch from 'micromatch';
-
-export type Dependency = {
-    resolvedWith: 'require' | 'import';
-    name: string;
-    fullName: string;
-    type: 'valid-path' | 'invalid' | 'node-package' | 'node-dev-package' | 'node-builtin-module';
-}
-
-export type File = {
-    name: string;
-    path: string;
-    totalRequiredDependencies: number;
-    totalImportedDependencies: number;
-    loc: number;
-    totalLines: number;
-    hasDefaultExport: boolean;
-    type: 'file';
-    dependencies: Dependency[];
-}
-
-export type Options = {
-  mimeTypes: string[],
-  includeMatcher: string[],
-  ignoreMatcher: string[]
-}
-
-type CheckableProps = {
-    negated: boolean;
-    rootDir: string;
-    filteringPatterns: string[];
-    options: Options;
-    excludePattern: string[];
-    ruleConstruction: string[];
-}
-
-export type LOCAnalysisProps = CheckableProps & {
-    analisisThreshold: number;
-};
-
-export type PatternCheckableProps = CheckableProps & {
-    checkingPatterns: string[];
-}
+import { CheckableProps, LOCAnalysisProps, PatternCheckableProps } from '../types';
 
 abstract class Checkable {
     constructor(protected readonly props: CheckableProps) {}
@@ -58,8 +18,8 @@ abstract class Checkable {
         return filteredFiles;
     }
 
-    protected async buildProjectGraph(): Promise<Map<string, File>> {
-        return Node.buildProjectGraph(this.props.rootDir, this.props.options.includeMatcher, this.props.options.ignoreMatcher, this.props.options.mimeTypes);
+    protected async buildNodeGraph(): Promise<NodeGraph> {
+        return NodeGraph.create(this.props.rootDir, this.props.options.includeMatcher, this.props.options.ignoreMatcher, this.props.options.mimeTypes);
     }
 
     protected clearFiles(files: Map<string, File>): void {
@@ -135,7 +95,7 @@ abstract class Checkable {
     protected abstract checkNegativeRule(filteredFiles: Map<string, File>): Promise<boolean>
     
     public async check(): Promise<boolean> {
-        const files = await this.buildProjectGraph();
+        const files = (await this.buildNodeGraph()).nodes;
 
         this.validateFilesExtension(files);
         this.validateFilesDependencies(files);
@@ -192,7 +152,7 @@ export abstract class PatternCiclesCheckable extends PatternCheckable {
     }
 
     public override async check(): Promise<boolean> {
-        const files = await this.buildProjectGraph();
+        const files = (await this.buildNodeGraph()).nodes;
 
         this.validateFilesExtension(files);
         this.validateFilesDependencies(files);

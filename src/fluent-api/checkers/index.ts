@@ -1,24 +1,23 @@
 import micromatch from "micromatch";
+import { File } from "../../core/file";
 import {
-    File,
-    LOCAnalysisProps,
-    PatternCheckableProps,
     LOCAnalysisCheckable,
     PatternCiclesCheckable,
     PatternCheckable
-} from "../../common/fluent-api";
+} from "../common/checkables";
+import { LOCAnalysisProps, PatternCheckableProps } from "../common/types";
 
 export class ProjectFilesInDirectoryLOCAnalysisLessThanShouldSelector extends LOCAnalysisCheckable {
     constructor(protected readonly props: LOCAnalysisProps) {
         super(props);
     }
 
-    protected override async checkPositiveRule(filteredFiles: Map<string, File>): Promise<boolean> {
-        return Array.from(filteredFiles.values()).every(file => file.loc < this.props.analisisThreshold);
+    protected override async checkPositiveRule(nodes: Map<string, File>): Promise<boolean> {
+        return Array.from(nodes.values()).every(file => file.loc < this.props.analisisThreshold);
     }
 
-    protected override async checkNegativeRule(filteredFiles: Map<string, File>): Promise<boolean> {
-        return Array.from(filteredFiles.values()).every(file => file.loc >= this.props.analisisThreshold);
+    protected override async checkNegativeRule(nodes: Map<string, File>): Promise<boolean> {
+        return Array.from(nodes.values()).every(file => file.loc >= this.props.analisisThreshold);
     }
 }
 
@@ -27,12 +26,12 @@ export class ProjectFilesInDirectoryLOCAnalysisLessThanOrEqualShouldSelector ext
         super(props);
     }
 
-    protected override async checkPositiveRule(filteredFiles: Map<string, File>): Promise<boolean> {
-        return Array.from(filteredFiles.values()).every(file => file.loc <= this.props.analisisThreshold);
+    protected override async checkPositiveRule(nodes: Map<string, File>): Promise<boolean> {
+        return Array.from(nodes.values()).every(file => file.loc <= this.props.analisisThreshold);
     }
 
-    protected override async checkNegativeRule(filteredFiles: Map<string, File>): Promise<boolean> {
-        return Array.from(filteredFiles.values()).every(file => file.loc > this.props.analisisThreshold);
+    protected override async checkNegativeRule(nodes: Map<string, File>): Promise<boolean> {
+        return Array.from(nodes.values()).every(file => file.loc > this.props.analisisThreshold);
     }
 }
 
@@ -41,12 +40,12 @@ export class ProjectFilesInDirectoryLOCAnalysisGreaterThanShouldSelector extends
         super(props);
     }
 
-    protected override async checkPositiveRule(filteredFiles: Map<string, File>): Promise<boolean> {
-        return Array.from(filteredFiles.values()).every(file => file.loc > this.props.analisisThreshold);
+    protected override async checkPositiveRule(nodes: Map<string, File>): Promise<boolean> {
+        return Array.from(nodes.values()).every(file => file.loc > this.props.analisisThreshold);
     }
 
-    protected override async checkNegativeRule(filteredFiles: Map<string, File>): Promise<boolean> {
-        return Array.from(filteredFiles.values()).every(file => file.loc <= this.props.analisisThreshold);
+    protected override async checkNegativeRule(nodes: Map<string, File>): Promise<boolean> {
+        return Array.from(nodes.values()).every(file => file.loc <= this.props.analisisThreshold);
     }
 }
 
@@ -60,7 +59,7 @@ export class ProjectFilesInDirectoryLOCAnalysisGreaterThanOrEqualShouldSelector 
     }
 
     protected override async checkNegativeRule(filteredFiles: Map<string, File>): Promise<boolean> {
-        return Array.from(filteredFiles.values()).every(file => file.loc = this.props.analisisThreshold);
+        return Array.from(filteredFiles.values()).every(file => file.loc === this.props.analisisThreshold);
     }
 }
 
@@ -73,15 +72,15 @@ export class ProjectFilesInDirectoryHaveCyclesShouldSelector extends PatternCicl
         throw new Error('IF YOU SEE THIS, YOU MUST BE A UTTERLY STUPID PERSON');
     }
 
-    protected override async checkNegativeRule(graph: Map<string, File>): Promise<boolean> {
+    protected override async checkNegativeRule(nodes: Map<string, File>): Promise<boolean> {
         // If no files, no cycles possible
-        if (graph.size === 0) return true;
+        if (nodes.size === 0) return true;
         
         // Color coding: 0 = white (unvisited), 1 = gray (visiting), 2 = black (visited)
         const colors = new Map<string, number>();
         
         // Initialize all nodes as white (unvisited)
-        for (const [filePath] of graph) {
+        for (const [filePath] of nodes) {
             colors.set(filePath, 0);
         }
         
@@ -99,11 +98,11 @@ export class ProjectFilesInDirectoryHaveCyclesShouldSelector extends PatternCicl
             colors.set(filePath, 1);
             
             // Check all dependencies
-            const file = graph.get(filePath);
+            const file = nodes.get(filePath);
             if (file && file.dependencies) {
                 for (const dependency of file.dependencies) {
                     // Only check dependencies that exist in our graph (internal dependencies)
-                    if (graph.has(dependency.name)) {
+                    if (nodes.has(dependency.name)) {
                         if (hasCycleDFS(dependency.name)) {
                             return true; // Cycle detected
                         }
@@ -117,7 +116,7 @@ export class ProjectFilesInDirectoryHaveCyclesShouldSelector extends PatternCicl
         };
         
         // Check for cycles starting from each unvisited node
-        for (const [filePath] of graph) {
+        for (const [filePath] of nodes) {
             if (colors.get(filePath) === 0) { // If white (unvisited)
                 if (hasCycleDFS(filePath)) {
                     return false; // Cycle found - rule fails
@@ -135,8 +134,8 @@ export class ProjectFilesInDirectoryOnlyDependsOnShouldSelector extends PatternC
         super(props);
     }
 
-    protected override async checkPositiveRule(filteredFiles: Map<string, File>): Promise<boolean> {
-        for (const [_, file] of filteredFiles) {
+    protected override async checkPositiveRule(nodes: Map<string, File>): Promise<boolean> {
+        for (const [_, file] of nodes) {
             if (file.dependencies.length === 0) continue; // No dependencies is OK
             
             const matchingDeps = file.dependencies.filter(dep => 
@@ -150,10 +149,10 @@ export class ProjectFilesInDirectoryOnlyDependsOnShouldSelector extends PatternC
         return true;
     }
   
-    protected override async checkNegativeRule(filteredFiles: Map<string, File>): Promise<boolean> {
+    protected override async checkNegativeRule(nodes: Map<string, File>): Promise<boolean> {
         // shouldNot.onlyDependsOn passes when files do NOT exclusively depend only on specified patterns
         
-        for (const [_, file] of filteredFiles) {
+        for (const [_, file] of nodes) {
             // Files with no dependencies always pass (cannot violate exclusive dependency)
             if (file.dependencies.length === 0) continue;
             
@@ -169,7 +168,7 @@ export class ProjectFilesInDirectoryOnlyDependsOnShouldSelector extends PatternC
         
         // If we reach here, all files with dependencies exclusively depend on matching patterns
         // Now check if any file exclusively depends on the patterns (either ALL or SOME)
-        for (const [_, file] of filteredFiles) {
+        for (const [_, file] of nodes) {
             if (file.dependencies.length === 0) continue;
             
             const matchingDeps = file.dependencies.filter(dep => 
@@ -192,8 +191,8 @@ export class ProjectFilesInDirectoryDependsOnShouldSelector extends PatternCheck
         super(props);
     }
 
-    protected override async checkPositiveRule(filteredFiles: Map<string, File>): Promise<boolean> {
-        for (const [_, file] of filteredFiles) {
+    protected override async checkPositiveRule(nodes: Map<string, File>): Promise<boolean> {
+        for (const [_, file] of nodes) {
             // Files with no dependencies fail the rule (cannot satisfy ALL patterns requirement)
             if (file.dependencies.length === 0) return false;
             
@@ -212,8 +211,8 @@ export class ProjectFilesInDirectoryDependsOnShouldSelector extends PatternCheck
         return true;
     }
 
-    protected override async checkNegativeRule(filteredFiles: Map<string, File>): Promise<boolean> {
-        for (const [_, file] of filteredFiles) {
+    protected override async checkNegativeRule(nodes: Map<string, File>): Promise<boolean> {
+        for (const [_, file] of nodes) {
             // Files with no dependencies pass the rule (no forbidden patterns can be present)
             if (file.dependencies.length === 0) continue;
             
@@ -238,22 +237,22 @@ export class ProjectFilesInDirectoryOnlyHaveNameShouldSelector extends PatternCh
         super(props);
     }
 
-    protected override validateFilesDependencies(_files: Map<string, File>): void {
+    protected override validateFilesDependencies(_: Map<string, File>): void {
         return;
     }
 
-    protected override validateIfAllDependenciesExistInProjectGraph(_files: Map<string, File>): void {
+    protected override validateIfAllDependenciesExistInProjectGraph(_: Map<string, File>): void {
         return;
     }
 
-    protected override async checkNegativeRule(filteredFiles: Map<string, File>): Promise<boolean> {
+    protected override async checkNegativeRule(nodes: Map<string, File>): Promise<boolean> {
         // If no files are found, the rule passes (no exclusive naming possible)
-        if (filteredFiles.size === 0) return true;
+        if (nodes.size === 0) return true;
         
         let matchingFiles = 0;
-        let totalFiles = filteredFiles.size;
+        let totalFiles = nodes.size;
         
-        for (const [_, file] of filteredFiles) {
+        for (const [_, file] of nodes) {
             const fileName = file.name;
             
             // Check if this file name matches the pattern
@@ -269,11 +268,11 @@ export class ProjectFilesInDirectoryOnlyHaveNameShouldSelector extends PatternCh
         return matchingFiles !== totalFiles;
     }
 
-    protected override async checkPositiveRule(filteredFiles: Map<string, File>): Promise<boolean> {
+    protected override async checkPositiveRule(nodes: Map<string, File>): Promise<boolean> {
         // If no files are found, the rule passes (vacuous truth)
-        if (filteredFiles.size === 0) return true;
+        if (nodes.size === 0) return true;
         
-        for (const [_, file] of filteredFiles) {
+        for (const [_, file] of nodes) {
             const fileName = file.name;
             
             // Check if this file name matches the pattern
@@ -293,16 +292,16 @@ export class ProjectFilesInDirectoryHaveNameShouldSelector extends PatternChecka
         super(props);
     }
 
-    protected override validateFilesDependencies(_files: Map<string, File>): void {
+    protected override validateFilesDependencies(_: Map<string, File>): void {
         return;
     }
 
-    protected override validateIfAllDependenciesExistInProjectGraph(_files: Map<string, File>): void {
+    protected override validateIfAllDependenciesExistInProjectGraph(_: Map<string, File>): void {
         return;
     }
 
-    protected override async checkPositiveRule(filteredFiles: Map<string, File>): Promise<boolean> {
-        for (const [_, file] of filteredFiles) {
+    protected override async checkPositiveRule(nodes: Map<string, File>): Promise<boolean> {
+        for (const [_, file] of nodes) {
             const fileName = file.name;
             
             // Check if this file name matches the pattern
@@ -316,8 +315,8 @@ export class ProjectFilesInDirectoryHaveNameShouldSelector extends PatternChecka
         return true;
     }
 
-    protected override async checkNegativeRule(filteredFiles: Map<string, File>): Promise<boolean> {
-        for (const [_, file] of filteredFiles) {
+    protected override async checkNegativeRule(nodes: Map<string, File>): Promise<boolean> {
+        for (const [_, file] of nodes) {
             const fileName = file.name;
             
             // Check if this file name matches the pattern

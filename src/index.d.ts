@@ -1,4 +1,4 @@
-import { Options } from './common/fluent-api';
+import { Options } from './fluent-api/common/types';
 import { ComponentSelectorBuilder } from './fluent-api';
 
 /**

@@ -1,4 +1,4 @@
-import { Options } from '../common/fluent-api';
+import { Options } from './common/types';
 import {
     ProjectFilesInDirectoryHaveNameShouldSelector,
     ProjectFilesInDirectoryOnlyDependsOnShouldSelector,
@@ -6,7 +6,8 @@ import {
     ProjectFilesInDirectoryDependsOnShouldSelector,
     ProjectFilesInDirectoryHaveCyclesShouldSelector,
     ProjectFilesInDirectoryLOCAnalysisLessThanShouldSelector,
-    ProjectFilesInDirectoryLOCAnalysisLessThanOrEqualShouldSelector
+    ProjectFilesInDirectoryLOCAnalysisLessThanOrEqualShouldSelector,
+    ProjectFilesInDirectoryLOCAnalysisGreaterThanShouldSelector
 } from './checkers';
 
 class PositiveMatchConditionSelectorBuilder {
@@ -19,6 +20,18 @@ class PositiveMatchConditionSelectorBuilder {
         readonly excludePattern: string[],
         readonly ruleConstruction: string[]
     ) {}
+
+    haveLocGreaterThan(threshold: number): ProjectFilesInDirectoryLOCAnalysisGreaterThanShouldSelector {
+        return new ProjectFilesInDirectoryLOCAnalysisGreaterThanShouldSelector({
+            negated: this.negated,
+            rootDir: this.rootDir,
+            filteringPatterns: [this.pattern],
+            analisisThreshold: threshold,
+            options: this.options,
+            excludePattern: this.excludePattern,
+            ruleConstruction: [...this.ruleConstruction, `have L.O.C. greater than: ${threshold}`]
+        });
+    }
 
     haveLocLessOrEqualThan(threshold: number): ProjectFilesInDirectoryLOCAnalysisLessThanOrEqualShouldSelector {
         return new ProjectFilesInDirectoryLOCAnalysisLessThanOrEqualShouldSelector({
@@ -117,6 +130,18 @@ class NegativeMatchConditionSelectorBuilder {
         readonly excludePattern: string[],
         readonly ruleConstruction: string[]
     ) {}
+
+    haveLocGreaterThan(threshold: number): ProjectFilesInDirectoryLOCAnalysisGreaterThanShouldSelector {
+        return new ProjectFilesInDirectoryLOCAnalysisGreaterThanShouldSelector({
+            negated: this.negated,
+            rootDir: this.rootDir,
+            filteringPatterns: [this.pattern],
+            analisisThreshold: threshold,
+            options: this.options,
+            excludePattern: this.excludePattern,
+            ruleConstruction: [...this.ruleConstruction, `have L.O.C. greater than: ${threshold}`]
+        });
+    }
 
     haveLocLessOrEqualThan(threshold: number): ProjectFilesInDirectoryLOCAnalysisLessThanOrEqualShouldSelector {
         return new ProjectFilesInDirectoryLOCAnalysisLessThanOrEqualShouldSelector({
