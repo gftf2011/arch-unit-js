@@ -140,19 +140,3 @@ projectFiles()
 ```
 
 **Result**: ❌ FAIL - Multiple files violate the constraint: EmailService.ts (10 LOC - equal to threshold), DataTable.ts (45 LOC), LegacyProcessor.ts (78 LOC)
-
-## Best Practices
-
-### Recommended LOC Thresholds:
-- **Utility functions**: 20-50 LOC
-- **Service classes**: 50-100 LOC
-- **Component classes**: 75-150 LOC
-- **Complex business logic**: 100-200 LOC
-
-### When Files Exceed Limits:
-1. **Extract methods** into separate utility functions
-2. **Split large classes** into smaller, focused classes
-3. **Create composition** instead of inheritance
-4. **Use dependency injection** to reduce coupling
-5. **Apply design patterns** like Strategy or Command
-6. **Move constants** to separate configuration files
