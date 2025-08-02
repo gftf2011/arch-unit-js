@@ -39,6 +39,26 @@ describe('should.haveLocGreaterThan scenarios', () => {
             }
         });
 
+        test('"use-cases" should have LOC greater than 10, ignoring "use-cases/GetAllTodos.js" - should PASS', async () => {
+            for (const [includeMatcher] of includeMatchers) {
+                const options: Options = {
+                    mimeTypes: ['**/*.js'],
+                    includeMatcher: [...includeMatcher],
+                    ignoreMatcher: excludeMatchers
+                };
+                const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+
+                const result = await appInstance
+                    .projectFiles()
+                    .inDirectory('**/use-cases/**', ['!**/use-cases/GetAllTodos.js'])
+                    .should()
+                    .haveLocGreaterThan(10)
+                    .check();
+
+                expect(result).toBe(true);
+            }
+        });
+
         test('"entities" should have LOC greater than 8 - should PASS', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
