@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import { ITodoRepository } from '@/domain/repositories/TodoRepository';
 import { Todo } from '@/domain/entities';
 
@@ -9,7 +10,7 @@ export class CreateTodo {
       throw new Error('Title is required');
     }
 
-    const id = Date.now().toString();
+    const id = uuidv4();
     const todo = new Todo(id, title.trim(), description || '');
     await this.todoRepository.create(todo);
     return todo;
