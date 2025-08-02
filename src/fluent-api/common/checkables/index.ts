@@ -1,4 +1,4 @@
-import { File } from '../../../core/file';
+import { RootFile } from '../../../core/file';
 import { NodeGraph } from '../../../core/node-graph';
 import micromatch from 'micromatch';
 import { CheckableProps, LOCAnalysisProps, PatternCheckableProps } from '../types';
@@ -6,7 +6,7 @@ import { CheckableProps, LOCAnalysisProps, PatternCheckableProps } from '../type
 abstract class Checkable {
     constructor(protected readonly props: CheckableProps) {}
 
-    protected filter(map: Map<string, File>): Map<string, File> {
+    protected filter(map: Map<string, RootFile>): Map<string, RootFile> {
         const filters: string[] = this.props.filteringPatterns;
         const filteringPattern = [...filters, ...this.props.excludePattern];
         const filteredFiles = new Map([...map].filter(([path, _file]) => micromatch([path], filteringPattern).length > 0));
@@ -22,11 +22,11 @@ abstract class Checkable {
         return NodeGraph.create(this.props.rootDir, this.props.options.includeMatcher, this.props.options.ignoreMatcher, this.props.options.mimeTypes);
     }
 
-    protected clearFiles(files: Map<string, File>): void {
+    protected clearFiles(files: Map<string, RootFile>): void {
         files.clear();
     }
 
-    protected validateFilesExtension(files: Map<string, File>): void {
+    protected validateFilesExtension(files: Map<string, RootFile>): void {
         const errors: Error[] = [];
         for (const [_path, file] of files) {
             if (micromatch([file.path], this.props.options.mimeTypes).length === 0) {
@@ -40,7 +40,7 @@ abstract class Checkable {
         }
     }
 
-    protected validateFilesDependencies(files: Map<string, File>): void {
+    protected validateFilesDependencies(files: Map<string, RootFile>): void {
         const errors: Error[] = [];
         for (const [_path, file] of files) {
             const filePath = file.path;
@@ -65,7 +65,7 @@ abstract class Checkable {
         }
     }
 
-    protected validateIfAllDependenciesExistInProjectGraph(files: Map<string, File>): void {
+    protected validateIfAllDependenciesExistInProjectGraph(files: Map<string, RootFile>): void {
         const errors: Error[] = [];
         for (const [_path, file] of files) {
             const filePath = file.path;
@@ -90,9 +90,9 @@ abstract class Checkable {
         }
     }
 
-    protected abstract checkPositiveRule(filteredFiles: Map<string, File>): Promise<boolean>
+    protected abstract checkPositiveRule(filteredFiles: Map<string, RootFile>): Promise<boolean>
 
-    protected abstract checkNegativeRule(filteredFiles: Map<string, File>): Promise<boolean>
+    protected abstract checkNegativeRule(filteredFiles: Map<string, RootFile>): Promise<boolean>
     
     public async check(): Promise<boolean> {
         const files = (await this.buildNodeGraph()).nodes;

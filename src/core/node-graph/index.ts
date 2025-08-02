@@ -1,7 +1,7 @@
 import fsPromises from 'fs/promises';
 import path from 'path';
 import micromatch from 'micromatch';
-import { File } from '../file';
+import { RootFile, JavascriptOrTypescriptRelatedFile } from '../file';
 import {
     extractExtensionFromGlobPattern,
     resolveRootDirPatternToGlobPattern
@@ -9,7 +9,7 @@ import {
 
 export class NodeGraph {
     private constructor(
-        readonly nodes: Map<string, File>
+        readonly nodes: Map<string, RootFile>
     ) {}
 
     public static async create(
@@ -18,7 +18,7 @@ export class NodeGraph {
         filesOrFoldersToIgnore: string[],
         mimeTypes: string[]
       ): Promise<NodeGraph> {
-        const nodes: Map<string, File> = new Map();
+        const nodes: Map<string, RootFile> = new Map();
     
         const extensions = mimeTypes.map(mimeType => extractExtensionFromGlobPattern(mimeType)) as string[];
       
@@ -35,7 +35,7 @@ export class NodeGraph {
               if (entry.isDirectory()) {
                 await walk(fullPath, extensions);
               } else if (entry.isFile()) {
-                const file = await File.create(startPath, entry.name, fullPath, extensions);
+                const file = await JavascriptOrTypescriptRelatedFile.create(entry.name, fullPath).build(startPath, extensions);
                 nodes.set(file.path, file);
               }
             }
