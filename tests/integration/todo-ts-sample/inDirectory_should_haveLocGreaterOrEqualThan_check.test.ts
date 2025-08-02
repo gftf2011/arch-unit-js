@@ -1,0 +1,443 @@
+import path from 'path';
+import { Options } from '../../../src/fluent-api/common/types';
+import { ComponentSelectorBuilder } from '../../../src/fluent-api';
+
+const rootDir = path.resolve(path.dirname(__filename), '..', '..', 'sample', 'todo-ts-sample');
+
+const includeMatchers = [
+    [['<rootDir>/**']],
+    [['<rootDir>/**/']],
+    [['./**']],
+    [['./**/']],
+    [['<rootDir>/domain/**', '<rootDir>/use-cases/**', '<rootDir>/infra/**', '<rootDir>/main/**']],
+    [['<rootDir>/domain/**/', '<rootDir>/use-cases/**/', '<rootDir>/infra/**/', '<rootDir>/main/**/']],
+    [['./domain/**', './use-cases/**', './infra/**', './main/**']],
+    [['./domain/**/', './use-cases/**/', './infra/**/', './main/**/']],
+];
+
+const excludeMatchers = ['!<rootDir>/**/package.json', '!<rootDir>/**/tsconfig.json'];
+
+describe('should.haveLocGreaterOrEqualThan scenarios', () => {
+    describe('Scenario 1: All files have lines of code GREATER than or EQUAL to the threshold', () => {
+        test('"use-cases" should have LOC greater or equal than 7 excluding index.ts - should PASS (all files >= 7)', async () => {
+            for (const [includeMatcher] of includeMatchers) {
+                const options: Options = {
+                    mimeTypes: ['**/*.ts'],
+                    includeMatcher: [...includeMatcher],
+                    ignoreMatcher: excludeMatchers
+                };
+                const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+
+                const result = await appInstance
+                    .projectFiles()
+                    .inDirectory('**/use-cases/**', ['!**/use-cases/index.ts'])
+                    .should()
+                    .haveLocGreaterOrEqualThan(7)
+                    .check();
+
+                expect(result).toBe(true);
+            }
+        });
+
+        test('"use-cases" should have LOC greater or equal than 15 - should PASS (all files >= 15)', async () => {
+            for (const [includeMatcher] of includeMatchers) {
+                const options: Options = {
+                    mimeTypes: ['**/*.ts'],
+                    includeMatcher: [...includeMatcher],
+                    ignoreMatcher: excludeMatchers
+                };
+                const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+
+                const result = await appInstance
+                    .projectFiles()
+                    .inDirectory('**/use-cases/**')
+                    .should()
+                    .haveLocGreaterOrEqualThan(15)
+                    .check();
+
+                expect(result).toBe(false);
+            }
+        });
+
+        test('"entities" should have LOC greater or equal than 25 - should PASS (Todo.ts has exactly 25 LOC)', async () => {
+            for (const [includeMatcher] of includeMatchers) {
+                const options: Options = {
+                    mimeTypes: ['**/*.ts'],
+                    includeMatcher: [...includeMatcher],
+                    ignoreMatcher: excludeMatchers
+                };
+                const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+
+                const result = await appInstance
+                    .projectFiles()
+                    .inDirectory('**/entities/**')
+                    .should()
+                    .haveLocGreaterOrEqualThan(25)
+                    .check();
+
+                expect(result).toBe(false);
+            }
+        });
+
+        test('"domain" should have LOC greater or equal than 1 - should PASS (all files >= 1)', async () => {
+            for (const [includeMatcher] of includeMatchers) {
+                const options: Options = {
+                    mimeTypes: ['**/*.ts'],
+                    includeMatcher: [...includeMatcher],
+                    ignoreMatcher: excludeMatchers
+                };
+                const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+
+                const result = await appInstance
+                    .projectFiles()
+                    .inDirectory('**/domain/**')
+                    .should()
+                    .haveLocGreaterOrEqualThan(1)
+                    .check();
+
+                expect(result).toBe(true);
+            }
+        });
+
+        test('"infra" should have LOC greater or equal than 32 - should PASS (InMemoryTodoRepository.ts has exactly 32 LOC)', async () => {
+            for (const [includeMatcher] of includeMatchers) {
+                const options: Options = {
+                    mimeTypes: ['**/*.ts'],
+                    includeMatcher: [...includeMatcher],
+                    ignoreMatcher: excludeMatchers
+                };
+                const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+
+                const result = await appInstance
+                    .projectFiles()
+                    .inDirectory('**/infra/**')
+                    .should()
+                    .haveLocGreaterOrEqualThan(32)
+                    .check();
+
+                expect(result).toBe(true);
+            }
+        });
+
+        test('"main" should have LOC greater or equal than 37 - should PASS (app.ts has exactly 40 LOC)', async () => {
+            for (const [includeMatcher] of includeMatchers) {
+                const options: Options = {
+                    mimeTypes: ['**/*.ts'],
+                    includeMatcher: [...includeMatcher],
+                    ignoreMatcher: excludeMatchers
+                };
+                const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+
+                const result = await appInstance
+                    .projectFiles()
+                    .inDirectory('**/main/**')
+                    .should()
+                    .haveLocGreaterOrEqualThan(37)
+                    .check();
+
+                expect(result).toBe(true);
+            }
+        });
+
+        test('entire project should have LOC greater or equal than 1 - should PASS (all files >= 1)', async () => {
+            for (const [includeMatcher] of includeMatchers) {
+                const options: Options = {
+                    mimeTypes: ['**/*.ts'],
+                    includeMatcher: [...includeMatcher],
+                    ignoreMatcher: excludeMatchers
+                };
+                const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+
+                const result = await appInstance
+                    .projectFiles()
+                    .inDirectory('**')
+                    .should()
+                    .haveLocGreaterOrEqualThan(1)
+                    .check();
+
+                expect(result).toBe(true);
+            }
+        });
+    });
+
+    describe('Scenario 2: ANY files have lines of code LESS than the threshold', () => {
+        test('"use-cases" should have LOC greater or equal than 10 - should FAIL (GetAllTodos.ts has only 8 LOC)', async () => {
+            for (const [includeMatcher] of includeMatchers) {
+                const options: Options = {
+                    mimeTypes: ['**/*.ts'],
+                    includeMatcher: [...includeMatcher],
+                    ignoreMatcher: excludeMatchers
+                };
+                const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+
+                const result = await appInstance
+                    .projectFiles()
+                    .inDirectory('**/use-cases/**')
+                    .should()
+                    .haveLocGreaterOrEqualThan(10)
+                    .check();
+
+                expect(result).toBe(false);
+            }
+        });
+
+        test('"use-cases" should have LOC greater or equal than 20 - should FAIL (multiple files below threshold)', async () => {
+            for (const [includeMatcher] of includeMatchers) {
+                const options: Options = {
+                    mimeTypes: ['**/*.ts'],
+                    includeMatcher: [...includeMatcher],
+                    ignoreMatcher: excludeMatchers
+                };
+                const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+
+                const result = await appInstance
+                    .projectFiles()
+                    .inDirectory('**/use-cases/**')
+                    .should()
+                    .haveLocGreaterOrEqualThan(20)
+                    .check();
+
+                expect(result).toBe(false);
+            }
+        });
+
+        test('"domain" should have LOC greater or equal than 30 - should FAIL (multiple files below threshold)', async () => {
+            for (const [includeMatcher] of includeMatchers) {
+                const options: Options = {
+                    mimeTypes: ['**/*.ts'],
+                    includeMatcher: [...includeMatcher],
+                    ignoreMatcher: excludeMatchers
+                };
+                const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+
+                const result = await appInstance
+                    .projectFiles()
+                    .inDirectory('**/domain/**')
+                    .should()
+                    .haveLocGreaterOrEqualThan(30)
+                    .check();
+
+                expect(result).toBe(false);
+            }
+        });
+
+        test('entire project should have LOC greater or equal than 50 - should FAIL (multiple files below threshold)', async () => {
+            for (const [includeMatcher] of includeMatchers) {
+                const options: Options = {
+                    mimeTypes: ['**/*.ts'],
+                    includeMatcher: [...includeMatcher],
+                    ignoreMatcher: excludeMatchers
+                };
+                const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+
+                const result = await appInstance
+                    .projectFiles()
+                    .inDirectory('**')
+                    .should()
+                    .haveLocGreaterOrEqualThan(50)
+                    .check();
+
+                expect(result).toBe(false);
+            }
+        });
+
+        test('"entities" should have LOC greater or equal than 28 - should FAIL (Todo.ts has exactly 28 LOC - boundary case)', async () => {
+            for (const [includeMatcher] of includeMatchers) {
+                const options: Options = {
+                    mimeTypes: ['**/*.ts'],
+                    includeMatcher: [...includeMatcher],
+                    ignoreMatcher: excludeMatchers
+                };
+                const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+
+                const result = await appInstance
+                    .projectFiles()
+                    .inDirectory('**/entities/**')
+                    .should()
+                    .haveLocGreaterOrEqualThan(28)
+                    .check();
+
+                expect(result).toBe(false);
+            }
+        });
+
+        test('"main" should have LOC greater or equal than 41 - should FAIL (app.ts has exactly 40 LOC - boundary case)', async () => {
+            for (const [includeMatcher] of includeMatchers) {
+                const options: Options = {
+                    mimeTypes: ['**/*.ts'],
+                    includeMatcher: [...includeMatcher],
+                    ignoreMatcher: excludeMatchers
+                };
+                const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+
+                const result = await appInstance
+                    .projectFiles()
+                    .inDirectory('**/main/**')
+                    .should()
+                    .haveLocGreaterOrEqualThan(41)
+                    .check();
+
+                expect(result).toBe(false);
+            }
+        });
+    });
+
+    describe('Edge scenarios', () => {
+        test('projectFiles.inDirectory("**/nonexistent/**").should().haveLocGreaterOrEqualThan(10).check() - should throw error (no files exist)', async () => {
+            for (const [includeMatcher] of includeMatchers) {
+                try {
+                    const options: Options = {
+                        mimeTypes: ['**/*.ts'],
+                        includeMatcher: [...includeMatcher],
+                        ignoreMatcher: excludeMatchers
+                    };
+                    const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+    
+                    await appInstance
+                        .projectFiles()
+                        .inDirectory('**/nonexistent/**')
+                        .should()
+                        .haveLocGreaterOrEqualThan(10)
+                        .check();
+
+                    expect(1).toBe(2);
+                } catch (error) {
+                    const errorMessage = (error as Error).message;
+
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/nonexistent/**' should have L.O.C. greater or equal than: 10\n`);
+                    expect(errorMessage).toContain(`No files found in '[**/nonexistent/**]'`);
+                }
+            }
+        });
+
+        test('threshold of 0 should always throw error (invalid threshold)', async () => {
+            for (const [includeMatcher] of includeMatchers) {
+                try {
+                    const options: Options = {
+                        mimeTypes: ['**/*.ts'],
+                        includeMatcher: [...includeMatcher],
+                        ignoreMatcher: excludeMatchers
+                    };
+                    const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+    
+                    await appInstance
+                        .projectFiles()
+                        .inDirectory('**/entities/**')
+                        .should()
+                        .haveLocGreaterOrEqualThan(0)
+                        .check();
+    
+                    expect(1).toBe(2);
+                } catch (error) {
+                    const errorMessage = (error as Error).message;
+
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/entities/**' should have L.O.C. greater or equal than: 0\n`);
+                    expect(errorMessage).toContain(`Threshold value must be greater than 0`);
+                }
+            }
+        });
+
+        test('threshold of -1 should always throw error (invalid threshold)', async () => {
+            for (const [includeMatcher] of includeMatchers) {
+                try {
+                    const options: Options = {
+                        mimeTypes: ['**/*.ts'],
+                        includeMatcher: [...includeMatcher],
+                        ignoreMatcher: excludeMatchers
+                    };
+                    const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+    
+                    await appInstance
+                        .projectFiles()
+                        .inDirectory('**/entities/**')
+                        .should()
+                        .haveLocGreaterOrEqualThan(-1)
+                        .check();
+    
+                    expect(1).toBe(2);
+                } catch (error) {
+                    const errorMessage = (error as Error).message;
+
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/entities/**' should have L.O.C. greater or equal than: -1\n`);
+                    expect(errorMessage).toContain(`Threshold value must be greater than 0`);
+                }
+            }
+        });
+
+        test('very low threshold (1) should always PASS', async () => {
+            for (const [includeMatcher] of includeMatchers) {
+                const options: Options = {
+                    mimeTypes: ['**/*.ts'],
+                    includeMatcher: [...includeMatcher],
+                    ignoreMatcher: excludeMatchers
+                };
+                const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+
+                const result = await appInstance
+                    .projectFiles()
+                    .inDirectory('**')
+                    .should()
+                    .haveLocGreaterOrEqualThan(1)
+                    .check();
+
+                expect(result).toBe(true);
+            }
+        });
+
+        test('boundary case: threshold equal to smallest file LOC should PASS', async () => {
+            for (const [includeMatcher] of includeMatchers) {
+                const options: Options = {
+                    mimeTypes: ['**/*.ts'],
+                    includeMatcher: [...includeMatcher],
+                    ignoreMatcher: excludeMatchers
+                };
+                const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+
+                const result = await appInstance
+                    .projectFiles()
+                    .inDirectory('**/entities/**')
+                    .should()
+                    .haveLocGreaterOrEqualThan(1) // index.ts has exactly 1 LOC
+                    .check();
+
+                expect(result).toBe(true);
+            }
+        });
+
+        test('incorrect extension', async () => {
+            for (const [includeMatcher] of includeMatchers) {
+                const options: Options = {
+                    mimeTypes: ['**/*.js'], // Looking for JavaScript in TypeScript project
+                    includeMatcher: [...includeMatcher],
+                    ignoreMatcher: excludeMatchers
+                };
+                const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+
+                try {
+                    await appInstance
+                        .projectFiles()
+                        .inDirectory('**/entities/**')
+                        .should()
+                        .haveLocGreaterOrEqualThan(10)
+                        .check();
+                    
+                    expect(1).toBe(2);
+                } catch (error) {
+                    const errorMessage = (error as Error).message;
+
+                    expect(errorMessage).toContain(`File: '${rootDir}/domain/entities/Todo.ts' - mismatch\nFile does not is in 'mimeTypes': [**/*.js] - add desired file extension`);
+                    expect(errorMessage).toContain(`File: '${rootDir}/domain/entities/index.ts' - mismatch\nFile does not is in 'mimeTypes': [**/*.js] - add desired file extension`);
+                    expect(errorMessage).toContain(`File: '${rootDir}/domain/repositories/TodoRepository.ts' - mismatch\nFile does not is in 'mimeTypes': [**/*.js] - add desired file extension`);
+                    expect(errorMessage).toContain(`File: '${rootDir}/infra/repositories/InMemoryTodoRepository.ts' - mismatch\nFile does not is in 'mimeTypes': [**/*.js] - add desired file extension`);
+                    expect(errorMessage).toContain(`File: '${rootDir}/main/app.ts' - mismatch\nFile does not is in 'mimeTypes': [**/*.js] - add desired file extension`);
+                    expect(errorMessage).toContain(`File: '${rootDir}/use-cases/CreateTodo.ts' - mismatch\nFile does not is in 'mimeTypes': [**/*.js] - add desired file extension`);
+                    expect(errorMessage).toContain(`File: '${rootDir}/use-cases/DeleteTodo.ts' - mismatch\nFile does not is in 'mimeTypes': [**/*.js] - add desired file extension`);
+                    expect(errorMessage).toContain(`File: '${rootDir}/use-cases/GetAllTodos.ts' - mismatch\nFile does not is in 'mimeTypes': [**/*.js] - add desired file extension`);
+                    expect(errorMessage).toContain(`File: '${rootDir}/use-cases/GetTodoById.ts' - mismatch\nFile does not is in 'mimeTypes': [**/*.js] - add desired file extension`);
+                    expect(errorMessage).toContain(`File: '${rootDir}/use-cases/UpdateTodo.ts' - mismatch\nFile does not is in 'mimeTypes': [**/*.js] - add desired file extension`);
+                    expect(errorMessage).toContain(`File: '${rootDir}/use-cases/index.ts' - mismatch\nFile does not is in 'mimeTypes': [**/*.js] - add desired file extension`);
+                }
+            }
+        });
+    });
+});
