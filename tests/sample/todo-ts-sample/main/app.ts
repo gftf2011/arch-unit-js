@@ -6,7 +6,7 @@ import { GetTodoById } from '@/use-cases/GetTodoById';
 import { UpdateTodo, TodoUpdates } from '@/use-cases/UpdateTodo';
 import { DeleteTodo } from '@/use-cases/DeleteTodo';
 import { Todo, ITodo } from '@/domain/entities';
-import { DeleteResult } from '@/use-cases/DeleteTodo';
+import { DeleteResult } from '../use-cases/DeleteTodo';
 
 export class TodoApp {
   private todoRepository: InMemoryTodoRepository;
