@@ -59,7 +59,7 @@ export class ProjectFilesInDirectoryLOCAnalysisGreaterThanOrEqualShouldSelector 
     }
 
     protected override async checkNegativeRule(filteredFiles: Map<string, RootFile>): Promise<boolean> {
-        return Array.from(filteredFiles.values()).every(file => file.loc === this.props.analisisThreshold);
+        return Array.from(filteredFiles.values()).every(file => file.loc < this.props.analisisThreshold);
     }
 }
 
