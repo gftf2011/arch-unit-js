@@ -6,6 +6,8 @@ import {
     PatternCheckable
 } from "../common/checkables";
 import { LOCAnalysisProps, PatternCheckableProps } from "../common/types";
+import { NotificationHandler } from "../common/notification/handler";
+import { NotificationError } from "../common/errors/notification";
 
 export class ProjectFilesInDirectoryLOCAnalysisLessThanShouldSelector extends LOCAnalysisCheckable {
     constructor(protected readonly props: LOCAnalysisProps) {
@@ -13,24 +15,22 @@ export class ProjectFilesInDirectoryLOCAnalysisLessThanShouldSelector extends LO
     }
 
     protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<void> {
-        const errors: Error[] = [];
+        const notificationHandler = NotificationHandler.create();
         for (const [_, file] of nodes) {
-            if (file.loc >= this.props.analisisThreshold) errors.push(new Error(`- '${file.path}'`));
+            if (file.loc >= this.props.analisisThreshold) notificationHandler.addError(new Error(`- '${file.path}'`));
         }
-        if (errors.length > 0) {
-            const errorMessage = this.props.ruleConstruction.join(' ') + '\n\nViolating files:\n' + errors.map(error => error.message).join('\n');
-            throw new Error(errorMessage);
+        if (notificationHandler.hasErrors()) {
+            throw new NotificationError(this.props.ruleConstruction, notificationHandler.getErrors());
         }
     }
 
     protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
-        const errors: Error[] = [];
+        const notificationHandler = NotificationHandler.create();
         for (const [_, file] of nodes) {
-            if (file.loc < this.props.analisisThreshold) errors.push(new Error(`- '${file.path}'`));
+            if (file.loc < this.props.analisisThreshold) notificationHandler.addError(new Error(`- '${file.path}'`));
         }
-        if (errors.length > 0) {
-            const errorMessage = this.props.ruleConstruction.join(' ') + '\n\nViolating files:\n' + errors.map(error => error.message).join('\n');
-            throw new Error(errorMessage);
+        if (notificationHandler.hasErrors()) {
+            throw new NotificationError(this.props.ruleConstruction, notificationHandler.getErrors());
         }
     }
 }
@@ -41,24 +41,22 @@ export class ProjectFilesInDirectoryLOCAnalysisLessThanOrEqualShouldSelector ext
     }
 
     protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<void> {
-        const errors: Error[] = [];
+        const notificationHandler = NotificationHandler.create();
         for (const [_, file] of nodes) {
-            if (file.loc > this.props.analisisThreshold) errors.push(new Error(`- '${file.path}'`));
+            if (file.loc > this.props.analisisThreshold) notificationHandler.addError(new Error(`- '${file.path}'`));
         }
-        if (errors.length > 0) {
-            const errorMessage = this.props.ruleConstruction.join(' ') + '\n\nViolating files:\n' + errors.map(error => error.message).join('\n');
-            throw new Error(errorMessage);
+        if (notificationHandler.hasErrors()) {
+            throw new NotificationError(this.props.ruleConstruction, notificationHandler.getErrors());
         }
     }
 
     protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
-        const errors: Error[] = [];
+        const notificationHandler = NotificationHandler.create();
         for (const [_, file] of nodes) {
-            if (file.loc <= this.props.analisisThreshold) errors.push(new Error(`- '${file.path}'`));
+            if (file.loc <= this.props.analisisThreshold) notificationHandler.addError(new Error(`- '${file.path}'`));
         }
-        if (errors.length > 0) {
-            const errorMessage = this.props.ruleConstruction.join(' ') + '\n\nViolating files:\n' + errors.map(error => error.message).join('\n');
-            throw new Error(errorMessage);
+        if (notificationHandler.hasErrors()) {
+            throw new NotificationError(this.props.ruleConstruction, notificationHandler.getErrors());
         }
     }
 }
@@ -69,24 +67,22 @@ export class ProjectFilesInDirectoryLOCAnalysisGreaterThanShouldSelector extends
     }
 
     protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<void> {
-        const errors: Error[] = [];
+        const notificationHandler = NotificationHandler.create();
         for (const [_, file] of nodes) {
-            if (file.loc <= this.props.analisisThreshold) errors.push(new Error(`- '${file.path}'`));
+            if (file.loc <= this.props.analisisThreshold) notificationHandler.addError(new Error(`- '${file.path}'`));
         }
-        if (errors.length > 0) {
-            const errorMessage = this.props.ruleConstruction.join(' ') + '\n\nViolating files:\n' + errors.map(error => error.message).join('\n');
-            throw new Error(errorMessage);
+        if (notificationHandler.hasErrors()) {
+            throw new NotificationError(this.props.ruleConstruction, notificationHandler.getErrors());
         }
     }
 
     protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
-        const errors: Error[] = [];
+        const notificationHandler = NotificationHandler.create();
         for (const [_, file] of nodes) {
-            if (file.loc > this.props.analisisThreshold) errors.push(new Error(`- '${file.path}'`));
+            if (file.loc > this.props.analisisThreshold) notificationHandler.addError(new Error(`- '${file.path}'`));
         }
-        if (errors.length > 0) {
-            const errorMessage = this.props.ruleConstruction.join(' ') + '\n\nViolating files:\n' + errors.map(error => error.message).join('\n');
-            throw new Error(errorMessage);
+        if (notificationHandler.hasErrors()) {
+            throw new NotificationError(this.props.ruleConstruction, notificationHandler.getErrors());
         }
     }
 }
@@ -97,24 +93,22 @@ export class ProjectFilesInDirectoryLOCAnalysisGreaterThanOrEqualShouldSelector 
     }
 
     protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<void> {
-        const errors: Error[] = [];
+        const notificationHandler = NotificationHandler.create();
         for (const [_, file] of nodes) {
-            if (file.loc < this.props.analisisThreshold) errors.push(new Error(`- '${file.path}'`));
+            if (file.loc < this.props.analisisThreshold) notificationHandler.addError(new Error(`- '${file.path}'`));
         }
-        if (errors.length > 0) {
-            const errorMessage = this.props.ruleConstruction.join(' ') + '\n\nViolating files:\n' + errors.map(error => error.message).join('\n');
-            throw new Error(errorMessage);
+        if (notificationHandler.hasErrors()) {
+            throw new NotificationError(this.props.ruleConstruction, notificationHandler.getErrors());
         }
     }
 
     protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
-        const errors: Error[] = [];
+        const notificationHandler = NotificationHandler.create();
         for (const [_, file] of nodes) {
-            if (file.loc >= this.props.analisisThreshold) errors.push(new Error(`- '${file.path}'`));
+            if (file.loc >= this.props.analisisThreshold) notificationHandler.addError(new Error(`- '${file.path}'`));
         }
-        if (errors.length > 0) {
-            const errorMessage = this.props.ruleConstruction.join(' ') + '\n\nViolating files:\n' + errors.map(error => error.message).join('\n');
-            throw new Error(errorMessage);
+        if (notificationHandler.hasErrors()) {
+            throw new NotificationError(this.props.ruleConstruction, notificationHandler.getErrors());
         }
     }
 }
@@ -125,13 +119,15 @@ export class ProjectFilesInDirectoryHaveCyclesShouldSelector extends PatternCicl
     }
     
     protected override async checkPositiveRule(_: Map<string, RootFile>): Promise<void> {
-        const errorMessage = this.props.ruleConstruction.join(' ') + '\n\nIF YOU SEE THIS, YOU MUST BE A UTTERLY STUPID PERSON';
-        throw new Error(errorMessage);
+        const notificationHandler = NotificationHandler.create();
+        const error = new Error('IF YOU SEE THIS, YOU MUST BE A UTTERLY STUPID PERSON');
+        notificationHandler.addError(error);
+        throw new NotificationError(this.props.ruleConstruction, notificationHandler.getErrors());
     }
 
     protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
         if (nodes.size === 0) return;
-        
+
         // Color coding: 0 = white (unvisited), 1 = gray (visiting), 2 = black (visited)
         const colors = new Map<string, number>();
         
@@ -175,7 +171,7 @@ export class ProjectFilesInDirectoryHaveCyclesShouldSelector extends PatternCicl
         for (const [filePath] of nodes) {
             if (colors.get(filePath) === 0) { // If white (unvisited)
                 if (hasCycleDFS(filePath)) {
-                    throw new Error(this.props.ruleConstruction.join(' '));
+                    throw new NotificationError(this.props.ruleConstruction, []);
                 }
             }
         }
@@ -188,7 +184,7 @@ export class ProjectFilesInDirectoryOnlyDependsOnShouldSelector extends PatternC
     }
 
     protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<void> {
-        const errors: Error[] = [];
+        const notificationHandler = NotificationHandler.create();
         const check = (file: RootFile): boolean => {
             if (file.dependencies.length === 0) return true;
 
@@ -201,17 +197,16 @@ export class ProjectFilesInDirectoryOnlyDependsOnShouldSelector extends PatternC
             return true;
         }
         for (const [_, file] of nodes) {
-            if (!check(file)) errors.push(new Error(`- '${file.path}'`));
+            if (!check(file)) notificationHandler.addError(new Error(`- '${file.path}'`));
         }
 
-        if (errors.length > 0) {
-            const errorMessage = this.props.ruleConstruction.join(' ') + '\n\nViolating files:\n' + errors.map(error => error.message).join('\n');
-            throw new Error(errorMessage);
+        if (notificationHandler.hasErrors()) {
+            throw new NotificationError(this.props.ruleConstruction, notificationHandler.getErrors());
         }
     }
   
     protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
-        const errors: Error[] = [];
+        const notificationHandler = NotificationHandler.create();
         const check = (file: RootFile): boolean => {
             if (file.dependencies.length === 0) return true;
 
@@ -224,12 +219,11 @@ export class ProjectFilesInDirectoryOnlyDependsOnShouldSelector extends PatternC
             return false;
         }
         for (const [_, file] of nodes) {
-            if (!check(file)) errors.push(new Error(`- '${file.path}'`));
+            if (!check(file)) notificationHandler.addError(new Error(`- '${file.path}'`));
         }
 
-        if (errors.length > 0) {
-            const errorMessage = this.props.ruleConstruction.join(' ') + '\n\nViolating files:\n' + errors.map(error => error.message).join('\n');
-            throw new Error(errorMessage);
+        if (notificationHandler.hasErrors()) {
+            throw new NotificationError(this.props.ruleConstruction, notificationHandler.getErrors());
         }
     }
 }
@@ -240,7 +234,7 @@ export class ProjectFilesInDirectoryDependsOnShouldSelector extends PatternCheck
     }
 
     protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<void> {
-        const errors: Error[] = [];
+        const notificationHandler = NotificationHandler.create();
         const check = (file: RootFile): boolean => {
             if (file.dependencies.length === 0) return false;
             
@@ -256,17 +250,16 @@ export class ProjectFilesInDirectoryDependsOnShouldSelector extends PatternCheck
             return true;
         }
         for (const [_, file] of nodes) {
-            if (!check(file)) errors.push(new Error(`- '${file.path}'`));
+            if (!check(file)) notificationHandler.addError(new Error(`- '${file.path}'`));
         }
 
-        if (errors.length > 0) {
-            const errorMessage = this.props.ruleConstruction.join(' ') + '\n\nViolating files:\n' + errors.map(error => error.message).join('\n');
-            throw new Error(errorMessage);
+        if (notificationHandler.hasErrors()) {
+            throw new NotificationError(this.props.ruleConstruction, notificationHandler.getErrors());
         }
     }
 
     protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
-        const errors: Error[] = [];
+        const notificationHandler = NotificationHandler.create();
         const check = (file: RootFile): boolean => {
             // Files with no dependencies pass the rule (no forbidden patterns can be present)
             if (file.dependencies.length === 0) return true;
@@ -284,12 +277,11 @@ export class ProjectFilesInDirectoryDependsOnShouldSelector extends PatternCheck
             return true;
         }
         for (const [_, file] of nodes) {
-            if (!check(file)) errors.push(new Error(`- '${file.path}'`));
+            if (!check(file)) notificationHandler.addError(new Error(`- '${file.path}'`));
         }
 
-        if (errors.length > 0) {
-            const errorMessage = this.props.ruleConstruction.join(' ') + '\n\nViolating files:\n' + errors.map(error => error.message).join('\n');
-            throw new Error(errorMessage);
+        if (notificationHandler.hasErrors()) {
+            throw new NotificationError(this.props.ruleConstruction, notificationHandler.getErrors());
         }
     }
 }
@@ -310,9 +302,9 @@ export class ProjectFilesInDirectoryOnlyHaveNameShouldSelector extends PatternCh
     protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
         if (nodes.size === 0) return;
 
-        let matchingFiles = 0;
         let totalFiles = nodes.size;
         
+        const notificationHandler = NotificationHandler.create();
         for (const [_, file] of nodes) {
             const fileName = file.name;
             
@@ -320,31 +312,30 @@ export class ProjectFilesInDirectoryOnlyHaveNameShouldSelector extends PatternCh
             const matches = micromatch([fileName], this.props.checkingPatterns).length > 0;
             
             if (matches) {
-                matchingFiles++;
+                notificationHandler.addError(new Error(`- '${file.path}'`));
             }
         }
 
-        if (matchingFiles === totalFiles) {
-            throw new Error(this.props.ruleConstruction.join(' '));
+        if (notificationHandler.getErrors().length === totalFiles) {
+            throw new NotificationError(this.props.ruleConstruction, notificationHandler.getErrors());
         }
     }
 
     protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<void> {
         if (nodes.size === 0) return;
         
-        const errors: Error[] = [];
+        const notificationHandler = NotificationHandler.create();
         const check = (file: RootFile): boolean => {
             const fileName = file.name;
             const matches = micromatch([fileName], this.props.checkingPatterns).length > 0;
             return matches;
         }
         for (const [_, file] of nodes) {
-            if (!check(file)) errors.push(new Error(`- '${file.path}'`));
+            if (!check(file)) notificationHandler.addError(new Error(`- '${file.path}'`));
         }
 
-        if (errors.length > 0) {
-            const errorMessage = this.props.ruleConstruction.join(' ') + '\n\nViolating files:\n' + errors.map(error => error.message).join('\n');
-            throw new Error(errorMessage);
+        if (notificationHandler.getErrors().length > 0) {
+            throw new NotificationError(this.props.ruleConstruction, notificationHandler.getErrors());
         }
     }
 }
@@ -363,36 +354,34 @@ export class ProjectFilesInDirectoryHaveNameShouldSelector extends PatternChecka
     }
 
     protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<void> {
-        const errors: Error[] = [];
+        const notificationHandler = NotificationHandler.create();
         const check = (file: RootFile): boolean => {
             const fileName = file.name;
             const matches = micromatch([fileName], this.props.checkingPatterns).length > 0;
             return matches;
         }
         for (const [_, file] of nodes) {
-            if (!check(file)) errors.push(new Error(`- '${file.path}'`));
+            if (!check(file)) notificationHandler.addError(new Error(`- '${file.path}'`));
         }
 
-        if (errors.length > 0) {
-            const errorMessage = this.props.ruleConstruction.join(' ') + '\n\nViolating files:\n' + errors.map(error => error.message).join('\n');
-            throw new Error(errorMessage);
+        if (notificationHandler.getErrors().length > 0) {
+            throw new NotificationError(this.props.ruleConstruction, notificationHandler.getErrors());
         }
     }
 
     protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
-        const errors: Error[] = [];
+        const notificationHandler = NotificationHandler.create();
         const check = (file: RootFile): boolean => {
             const fileName = file.name;
             const matches = micromatch([fileName], this.props.checkingPatterns).length > 0;
             return !matches;
         }
         for (const [_, file] of nodes) {
-            if (!check(file)) errors.push(new Error(`- '${file.path}'`));
+            if (!check(file)) notificationHandler.addError(new Error(`- '${file.path}'`));
         }
 
-        if (errors.length > 0) {
-            const errorMessage = this.props.ruleConstruction.join(' ') + '\n\nViolating files:\n' + errors.map(error => error.message).join('\n');
-            throw new Error(errorMessage);
+        if (notificationHandler.getErrors().length > 0) {
+            throw new NotificationError(this.props.ruleConstruction, notificationHandler.getErrors());
         }
     }
 }

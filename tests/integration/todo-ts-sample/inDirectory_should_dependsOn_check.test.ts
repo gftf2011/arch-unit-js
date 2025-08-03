@@ -40,8 +40,7 @@ describe('should.dependsOn scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Rule: project files in directory '**/domain/entities/**' should depends on '[inexistent-dependency]'\n\n`);
-                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/domain/entities/**' should depends on '[inexistent-dependency]'\n\n`);
                     expect(errorMessage).toContain(`- '${rootDir}/domain/entities/Todo.ts'`);
                     expect(errorMessage).toContain(`- '${rootDir}/domain/entities/index.ts'`);
                 }
@@ -71,8 +70,7 @@ describe('should.dependsOn scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Rule: project files in directory '**/use-cases/**' should depends on '[inexistent-dependency]'\n\n`);
-                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/use-cases/**' should depends on '[inexistent-dependency]'\n\n`);
                     expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.ts'`);
                     expect(errorMessage).toContain(`- '${rootDir}/use-cases/DeleteTodo.ts'`);
                     expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetAllTodos.ts'`);
@@ -104,8 +102,7 @@ describe('should.dependsOn scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Rule: project files in directory '**/use-cases/**' should depends on '[**/infra/**]'\n\n`);
-                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/use-cases/**' should depends on '[**/infra/**]'\n\n`);
                     expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.ts'`);
                     expect(errorMessage).toContain(`- '${rootDir}/use-cases/DeleteTodo.ts'`);
                     expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetAllTodos.ts'`);
@@ -139,8 +136,7 @@ describe('should.dependsOn scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Rule: project files in directory '**/use-cases/**' - excluding files [!**/index.ts] , should depends on '[**/domain/**, uuid]'\n\n`);
-                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/use-cases/**' - excluding files [!**/index.ts] , should depends on '[**/domain/**, uuid]'\n\n`);
                     expect(errorMessage).toContain(`- '${rootDir}/use-cases/DeleteTodo.ts'`);
                     expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetAllTodos.ts'`);
                     expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetTodoById.ts'`);
@@ -170,8 +166,7 @@ describe('should.dependsOn scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Rule: project files in directory '**/main/**' should depends on '[**/domain/**, **/use-cases/**, **/infra/**, inexistent]'\n\n`);
-                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/main/**' should depends on '[**/domain/**, **/use-cases/**, **/infra/**, inexistent]'\n\n`);
                     expect(errorMessage).toContain(`- '${rootDir}/main/app.ts'`);
                 }
             }
@@ -270,7 +265,7 @@ describe('should.dependsOn scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/domain/**' should depends on '[]'\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/domain/**' should depends on '[]'\n\n`);
                     expect(errorMessage).toContain(`No pattern was provided for checking`);
                 }
             }
@@ -297,7 +292,7 @@ describe('should.dependsOn scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/domain/**' should depends on '[uuid, ]'\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/domain/**' should depends on '[uuid, ]'\n\n`);
                     expect(errorMessage).toContain(`No pattern was provided for checking`);
                 }
             }
@@ -324,17 +319,18 @@ describe('should.dependsOn scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`File: '${rootDir}/domain/entities/Todo.ts' - mismatch\nFile does not is in 'mimeTypes': [**/*.js] - add desired file extension`);
-                    expect(errorMessage).toContain(`File: '${rootDir}/domain/entities/index.ts' - mismatch\nFile does not is in 'mimeTypes': [**/*.js] - add desired file extension`);
-                    expect(errorMessage).toContain(`File: '${rootDir}/domain/repositories/TodoRepository.ts' - mismatch\nFile does not is in 'mimeTypes': [**/*.js] - add desired file extension`);
-                    expect(errorMessage).toContain(`File: '${rootDir}/infra/repositories/InMemoryTodoRepository.ts' - mismatch\nFile does not is in 'mimeTypes': [**/*.js] - add desired file extension`);
-                    expect(errorMessage).toContain(`File: '${rootDir}/main/app.ts' - mismatch\nFile does not is in 'mimeTypes': [**/*.js] - add desired file extension`);
-                    expect(errorMessage).toContain(`File: '${rootDir}/use-cases/CreateTodo.ts' - mismatch\nFile does not is in 'mimeTypes': [**/*.js] - add desired file extension`);
-                    expect(errorMessage).toContain(`File: '${rootDir}/use-cases/DeleteTodo.ts' - mismatch\nFile does not is in 'mimeTypes': [**/*.js] - add desired file extension`);
-                    expect(errorMessage).toContain(`File: '${rootDir}/use-cases/GetAllTodos.ts' - mismatch\nFile does not is in 'mimeTypes': [**/*.js] - add desired file extension`);
-                    expect(errorMessage).toContain(`File: '${rootDir}/use-cases/GetTodoById.ts' - mismatch\nFile does not is in 'mimeTypes': [**/*.js] - add desired file extension`);
-                    expect(errorMessage).toContain(`File: '${rootDir}/use-cases/UpdateTodo.ts' - mismatch\nFile does not is in 'mimeTypes': [**/*.js] - add desired file extension`);
-                    expect(errorMessage).toContain(`File: '${rootDir}/use-cases/index.ts' - mismatch\nFile does not is in 'mimeTypes': [**/*.js] - add desired file extension`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/infra/**' should depends on '[**/domain/**]'\n\n`);
+                    expect(errorMessage).toContain(`- '${rootDir}/domain/entities/Todo.ts' - mismatch in 'mimeTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/domain/entities/index.ts' - mismatch in 'mimeTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/domain/repositories/TodoRepository.ts' - mismatch in 'mimeTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/infra/repositories/InMemoryTodoRepository.ts' - mismatch in 'mimeTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/main/app.ts' - mismatch in 'mimeTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.ts' - mismatch in 'mimeTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/DeleteTodo.ts' - mismatch in 'mimeTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetAllTodos.ts' - mismatch in 'mimeTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetTodoById.ts' - mismatch in 'mimeTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/UpdateTodo.ts' - mismatch in 'mimeTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/index.ts' - mismatch in 'mimeTypes': [**/*.js]`);
                 }
             }
         });
@@ -346,18 +342,24 @@ describe('should.dependsOn scenarios', () => {
                 ignoreMatcher: excludeMatchers
             };
             const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-            const promise = appInstance
-                .projectFiles()
-                .inDirectory('**/domain/**')
-                .should()
-                .dependsOn(['**/infra/**'])
-                .check();
+            try {
+                await appInstance
+                    .projectFiles()
+                    .inDirectory('**/domain/**')
+                    .should()
+                    .dependsOn(['**/infra/**'])
+                    .check();
 
-            const errorsMessage = [
-                `Dependencies in file: '${rootDir}/infra/repositories/InMemoryTodoRepository.ts' - could not be resolved\n- '${rootDir}/domain/repositories/TodoRepository.ts' - file path was not found\n- '${rootDir}/domain/entities/index.ts' - file path was not found\nCheck if path is being reached by the 'includeMatcher'`,
-            ];
+                // If we get here, the test should fail
+                expect(1).toBe(2);
+            } catch (error) {
+                const errorMessage = (error as Error).message;
 
-            await expect(promise).rejects.toThrow(new Error(errorsMessage.join('\n\n')));
+                expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/domain/**' should depends on '[**/infra/**]'\n\n`);
+                expect(errorMessage).toContain(`Check if dependencies in file: '${rootDir}/infra/repositories/InMemoryTodoRepository.ts' - are being reached by the 'includeMatcher'`);
+                expect(errorMessage).toContain(`- '${rootDir}/domain/repositories/TodoRepository.ts'`);
+                expect(errorMessage).toContain(`- '${rootDir}/domain/entities/index.ts'`);
+            }
         });
     });
 });

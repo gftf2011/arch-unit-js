@@ -116,7 +116,7 @@ describe('shouldNot.onlyHaveName scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/domain/**' should not only have name ''\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/domain/**' should not only have name ''\n\n`);
                     expect(errorMessage).toContain(`No pattern was provided for checking`);
                 }
             }
@@ -143,7 +143,16 @@ describe('shouldNot.onlyHaveName scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`File: '${rootDir}/domain/entities/Todo.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/entities/**' should not only have name '*Todo.js'\n\n`);
+                    expect(errorMessage).toContain(`- '${rootDir}/domain/entities/Todo.js' - mismatch in 'mimeTypes': [**/*.ts]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/domain/repositories/TodoRepository.js' - mismatch in 'mimeTypes': [**/*.ts]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/infra/repositories/InMemoryTodoRepository.js' - mismatch in 'mimeTypes': [**/*.ts]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/main/app.js' - mismatch in 'mimeTypes': [**/*.ts]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.js' - mismatch in 'mimeTypes': [**/*.ts]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/DeleteTodo.js' - mismatch in 'mimeTypes': [**/*.ts]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetAllTodos.js' - mismatch in 'mimeTypes': [**/*.ts]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetTodoById.js' - mismatch in 'mimeTypes': [**/*.ts]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/UpdateTodo.js' - mismatch in 'mimeTypes': [**/*.ts]`);
                 }
             }
         });

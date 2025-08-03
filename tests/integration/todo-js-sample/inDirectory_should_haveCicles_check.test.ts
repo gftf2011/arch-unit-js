@@ -37,7 +37,7 @@ describe('should.haveCicles scenarios', () => {
                 expect(1).toBe(2);
             } catch (error) {
                 const errorMessage = (error as Error).message;
-                expect(errorMessage).toBe("Rule: project files in directory '**' should have cicles\n\nIF YOU SEE THIS, YOU MUST BE A UTTERLY STUPID PERSON");
+                expect(errorMessage).toBe("Violation - Rule: project files in directory '**' should have cicles\n\nIF YOU SEE THIS, YOU MUST BE A UTTERLY STUPID PERSON");
             }
         }
     });

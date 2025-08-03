@@ -127,8 +127,7 @@ describe('shouldNot.haveName scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Rule: project files in directory '**/entities/**' should not have name '*Todo.js'\n\n`);
-                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/entities/**' should not have name '*Todo.js'\n\n`);
                     expect(errorMessage).toContain(`- '${rootDir}/domain/entities/Todo.js'`);
                 }
             }
@@ -155,8 +154,7 @@ describe('shouldNot.haveName scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Rule: project files in directory '**/entities/**' should not have name 'Todo.js'\n\n`);
-                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/entities/**' should not have name 'Todo.js'\n\n`);
                     expect(errorMessage).toContain(`- '${rootDir}/domain/entities/Todo.js'`);
                 }
             }
@@ -182,8 +180,7 @@ describe('shouldNot.haveName scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Rule: project files in directory '**/infra/repositories/**' should not have name '*Repository.js'\n\n`);
-                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/infra/repositories/**' should not have name '*Repository.js'\n\n`);
                     expect(errorMessage).toContain(`- '${rootDir}/infra/repositories/InMemoryTodoRepository.js'`);
                 }
             }
@@ -210,8 +207,7 @@ describe('shouldNot.haveName scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Rule: project files in directory '**/infra/repositories/**' should not have name 'InMemory*Repository.js'\n\n`);
-                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/infra/repositories/**' should not have name 'InMemory*Repository.js'\n\n`);
                     expect(errorMessage).toContain(`- '${rootDir}/infra/repositories/InMemoryTodoRepository.js'`);
                 }
             }
@@ -238,8 +234,7 @@ describe('shouldNot.haveName scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Rule: project files in directory '**/use-cases/**' should not have name '*.js'\n\n`);
-                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/use-cases/**' should not have name '*.js'\n\n`);
                     expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.js'`);
                     expect(errorMessage).toContain(`- '${rootDir}/use-cases/DeleteTodo.js'`);
                     expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetAllTodos.js'`);
@@ -270,8 +265,7 @@ describe('shouldNot.haveName scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Rule: project files in directory '**/use-cases/**' should not have name '*Todo*'\n\n`);
-                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/use-cases/**' should not have name '*Todo*'\n\n`);
                     expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.js'`);
                     expect(errorMessage).toContain(`- '${rootDir}/use-cases/DeleteTodo.js'`);
                     expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetAllTodos.js'`);
@@ -302,8 +296,7 @@ describe('shouldNot.haveName scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Rule: project files in directory '**/use-cases/**' should not have name 'Create*'\n\n`);
-                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/use-cases/**' should not have name 'Create*'\n\n`);
                     expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.js'`);
                 }
             }
@@ -330,8 +323,7 @@ describe('shouldNot.haveName scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Rule: project files in directory '**/use-cases/**' should not have name '*Todo.js'\n\n`);
-                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/use-cases/**' should not have name '*Todo.js'\n\n`);
                     expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.js'`);
                     expect(errorMessage).toContain(`- '${rootDir}/use-cases/DeleteTodo.js'`);
                     expect(errorMessage).toContain(`- '${rootDir}/use-cases/UpdateTodo.js'`);
@@ -360,8 +352,7 @@ describe('shouldNot.haveName scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Rule: project files in directory '**/domain/**' should not have name '*Todo*'\n\n`);
-                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/domain/**' should not have name '*Todo*'\n\n`);
                     expect(errorMessage).toContain(`- '${rootDir}/domain/entities/Todo.js'`);
                     expect(errorMessage).toContain(`- '${rootDir}/domain/repositories/TodoRepository.js'`);
                 }
@@ -391,7 +382,7 @@ describe('shouldNot.haveName scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/domain/**' should not have name ''\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/domain/**' should not have name ''\n\n`);
                     expect(errorMessage).toContain(`No pattern was provided for checking`);
                 }
             }
@@ -418,7 +409,8 @@ describe('shouldNot.haveName scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`File: '${rootDir}/domain/entities/Todo.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/entities/**' should not have name '*Todo.js'\n\n`);
+                    expect(errorMessage).toContain(`- '${rootDir}/domain/entities/Todo.js' - mismatch in 'mimeTypes': [**/*.ts]`);
                 }
             }
         });

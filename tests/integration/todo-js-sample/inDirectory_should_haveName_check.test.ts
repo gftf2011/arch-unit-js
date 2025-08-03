@@ -40,8 +40,7 @@ describe('should.haveName scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Rule: project files in directory '**/use-cases/**' should have name '*UseCase.js'\n\n`);                    
-                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/use-cases/**' should have name '*UseCase.js'\n\n`);
                     expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.js'`);
                     expect(errorMessage).toContain(`- '${rootDir}/use-cases/DeleteTodo.js'`);
                     expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetAllTodos.js'`);
@@ -72,8 +71,7 @@ describe('should.haveName scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Rule: project files in directory '**/entities/**' should have name '*Repository.js'\n\n`);
-                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/entities/**' should have name '*Repository.js'\n\n`);
                     expect(errorMessage).toContain(`- '${rootDir}/domain/entities/Todo.js'`);
                 }
             }
@@ -100,8 +98,7 @@ describe('should.haveName scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Rule: project files in directory '**/infra/repositories/**' should have name '*Entity.js'\n\n`);
-                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/infra/repositories/**' should have name '*Entity.js'\n\n`);
                     expect(errorMessage).toContain(`- '${rootDir}/infra/repositories/InMemoryTodoRepository.js'`);
                 }
             }
@@ -130,8 +127,7 @@ describe('should.haveName scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Rule: project files in directory '**/use-cases/**' should have name '*Todo.js'\n\n`);
-                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/use-cases/**' should have name '*Todo.js'\n\n`);
                     expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetAllTodos.js'`);
                     expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetTodoById.js'`);
                 }
@@ -282,7 +278,7 @@ describe('should.haveName scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/domain/**' should have name ''\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/domain/**' should have name ''\n\n`);
                     expect(errorMessage).toContain(`No pattern was provided for checking`);
                 }
             }
@@ -309,7 +305,8 @@ describe('should.haveName scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`File: '${rootDir}/domain/entities/Todo.js' - mismatch\nFile does not is in 'mimeTypes': [**/*.ts] - add desired file extension`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/entities/**' should have name '*Todo.js'\n\n`);
+                    expect(errorMessage).toContain(`- '${rootDir}/domain/entities/Todo.js' - mismatch in 'mimeTypes': [**/*.ts]`);
                 }
             }
         });

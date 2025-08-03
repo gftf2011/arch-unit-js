@@ -133,8 +133,7 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Rule: project files in directory '**/use-cases/**' - excluding files [!**/use-cases/index.ts] , should have L.O.C. greater or equal than: 10\n\n`);
-                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/use-cases/**' - excluding files [!**/use-cases/index.ts] , should have L.O.C. greater or equal than: 10\n\n`);
                     expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetAllTodos.ts'`);
                 }
             }
@@ -162,8 +161,7 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Rule: project files in directory '**/use-cases/**' should have L.O.C. greater or equal than: 20\n\n`);
-                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/use-cases/**' should have L.O.C. greater or equal than: 20\n\n`);
                     expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.ts'`);
                     expect(errorMessage).toContain(`- '${rootDir}/use-cases/DeleteTodo.ts'`);
                     expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetAllTodos.ts'`);
@@ -195,8 +193,7 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Rule: project files in directory '**/domain/**' should have L.O.C. greater or equal than: 30\n\n`);
-                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/domain/**' should have L.O.C. greater or equal than: 30\n\n`);
                     expect(errorMessage).toContain(`- '${rootDir}/domain/entities/Todo.ts'`);
                     expect(errorMessage).toContain(`- '${rootDir}/domain/entities/index.ts'`);
                     expect(errorMessage).toContain(`- '${rootDir}/domain/repositories/TodoRepository.ts'`);
@@ -226,8 +223,7 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Rule: project files in directory '**' should have L.O.C. greater or equal than: 50\n\n`);
-                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**' should have L.O.C. greater or equal than: 50\n\n`);
                     expect(errorMessage).toContain(`- '${rootDir}/domain/entities/Todo.ts'`);
                     expect(errorMessage).toContain(`- '${rootDir}/domain/entities/index.ts'`);
                     expect(errorMessage).toContain(`- '${rootDir}/domain/repositories/TodoRepository.ts'`);
@@ -265,8 +261,7 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Rule: project files in directory '**/entities/**' should have L.O.C. greater or equal than: 28\n\n`);
-                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/entities/**' should have L.O.C. greater or equal than: 28\n\n`);
                     expect(errorMessage).toContain(`- '${rootDir}/domain/entities/index.ts'`);
                 }
             }
@@ -294,8 +289,7 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Rule: project files in directory '**/main/**' should have L.O.C. greater or equal than: 41\n\n`);
-                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/main/**' should have L.O.C. greater or equal than: 41\n\n`);
                     expect(errorMessage).toContain(`- '${rootDir}/main/app.ts'`);
                 }
             }
@@ -324,7 +318,7 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/nonexistent/**' should have L.O.C. greater or equal than: 10\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/nonexistent/**' should have L.O.C. greater or equal than: 10\n\n`);
                     expect(errorMessage).toContain(`No files found in '[**/nonexistent/**]'`);
                 }
             }
@@ -351,7 +345,7 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/entities/**' should have L.O.C. greater or equal than: 0\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/entities/**' should have L.O.C. greater or equal than: 0\n\n`);
                     expect(errorMessage).toContain(`Threshold value must be greater than 0`);
                 }
             }
@@ -378,7 +372,7 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/entities/**' should have L.O.C. greater or equal than: -1\n`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/entities/**' should have L.O.C. greater or equal than: -1\n\n`);
                     expect(errorMessage).toContain(`Threshold value must be greater than 0`);
                 }
             }
@@ -441,17 +435,18 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
                 } catch (error) {
                     const errorMessage = (error as Error).message;
 
-                    expect(errorMessage).toContain(`File: '${rootDir}/domain/entities/Todo.ts' - mismatch\nFile does not is in 'mimeTypes': [**/*.js] - add desired file extension`);
-                    expect(errorMessage).toContain(`File: '${rootDir}/domain/entities/index.ts' - mismatch\nFile does not is in 'mimeTypes': [**/*.js] - add desired file extension`);
-                    expect(errorMessage).toContain(`File: '${rootDir}/domain/repositories/TodoRepository.ts' - mismatch\nFile does not is in 'mimeTypes': [**/*.js] - add desired file extension`);
-                    expect(errorMessage).toContain(`File: '${rootDir}/infra/repositories/InMemoryTodoRepository.ts' - mismatch\nFile does not is in 'mimeTypes': [**/*.js] - add desired file extension`);
-                    expect(errorMessage).toContain(`File: '${rootDir}/main/app.ts' - mismatch\nFile does not is in 'mimeTypes': [**/*.js] - add desired file extension`);
-                    expect(errorMessage).toContain(`File: '${rootDir}/use-cases/CreateTodo.ts' - mismatch\nFile does not is in 'mimeTypes': [**/*.js] - add desired file extension`);
-                    expect(errorMessage).toContain(`File: '${rootDir}/use-cases/DeleteTodo.ts' - mismatch\nFile does not is in 'mimeTypes': [**/*.js] - add desired file extension`);
-                    expect(errorMessage).toContain(`File: '${rootDir}/use-cases/GetAllTodos.ts' - mismatch\nFile does not is in 'mimeTypes': [**/*.js] - add desired file extension`);
-                    expect(errorMessage).toContain(`File: '${rootDir}/use-cases/GetTodoById.ts' - mismatch\nFile does not is in 'mimeTypes': [**/*.js] - add desired file extension`);
-                    expect(errorMessage).toContain(`File: '${rootDir}/use-cases/UpdateTodo.ts' - mismatch\nFile does not is in 'mimeTypes': [**/*.js] - add desired file extension`);
-                    expect(errorMessage).toContain(`File: '${rootDir}/use-cases/index.ts' - mismatch\nFile does not is in 'mimeTypes': [**/*.js] - add desired file extension`);
+                    expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/entities/**' should have L.O.C. greater or equal than: 10\n\n`);
+                    expect(errorMessage).toContain(`- '${rootDir}/domain/entities/Todo.ts' - mismatch in 'mimeTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/domain/entities/index.ts' - mismatch in 'mimeTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/domain/repositories/TodoRepository.ts' - mismatch in 'mimeTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/infra/repositories/InMemoryTodoRepository.ts' - mismatch in 'mimeTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/main/app.ts' - mismatch in 'mimeTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.ts' - mismatch in 'mimeTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/DeleteTodo.ts' - mismatch in 'mimeTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetAllTodos.ts' - mismatch in 'mimeTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetTodoById.ts' - mismatch in 'mimeTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/UpdateTodo.ts' - mismatch in 'mimeTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/index.ts' - mismatch in 'mimeTypes': [**/*.js]`);
                 }
             }
         });
