@@ -330,7 +330,6 @@ export class ProjectFilesInDirectoryOnlyHaveNameShouldSelector extends PatternCh
     }
 
     protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<void> {
-        // If no files are found, the rule passes (vacuous truth)
         if (nodes.size === 0) return;
         
         const errors: Error[] = [];
