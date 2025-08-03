@@ -27,14 +27,28 @@ describe('should.haveName scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
-                    .projectFiles()
-                    .inDirectory('**/use-cases/**')
-                    .should()
-                    .haveName('*UseCase.js')
-                    .check();
-        
-                expect(answer).toBe(false);
+                 try {
+                    await appInstance
+                        .projectFiles()
+                        .inDirectory('**/use-cases/**')
+                        .should()
+                        .haveName('*UseCase.js')
+                        .check();
+
+                    // If we get here, the test should fail
+                    expect(1).toBe(2);
+                } catch (error) {
+                    const errorMessage = (error as Error).message;
+
+                    expect(errorMessage).toContain(`Rule: project files in directory '**/use-cases/**' should have name '*UseCase.js'\n\n`);                    
+                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.js'`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/DeleteTodo.js'`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetAllTodos.js'`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetTodoById.js'`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/UpdateTodo.js'`);
+
+                }
             }
         });
 
@@ -46,14 +60,22 @@ describe('should.haveName scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
-                    .projectFiles()
-                    .inDirectory('**/entities/**')
-                    .should()
-                    .haveName('*Repository.js')
-                    .check();
-        
-                expect(answer).toBe(false);
+                try {
+                    await appInstance
+                        .projectFiles()
+                        .inDirectory('**/entities/**')
+                        .should()
+                        .haveName('*Repository.js')
+                        .check();
+                    // If we get here, the test should fail
+                    expect(1).toBe(2);
+                } catch (error) {
+                    const errorMessage = (error as Error).message;
+
+                    expect(errorMessage).toContain(`Rule: project files in directory '**/entities/**' should have name '*Repository.js'\n\n`);
+                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`- '${rootDir}/domain/entities/Todo.js'`);
+                }
             }
         });
 
@@ -65,14 +87,23 @@ describe('should.haveName scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
-                    .projectFiles()
-                    .inDirectory('**/infra/repositories/**')
-                    .should()
-                    .haveName('*Entity.js')
-                    .check();
-        
-                expect(answer).toBe(false);
+                try {
+                    await appInstance
+                        .projectFiles()
+                        .inDirectory('**/infra/repositories/**')
+                        .should()
+                        .haveName('*Entity.js')
+                        .check();
+
+                    // If we get here, the test should fail
+                    expect(1).toBe(2);
+                } catch (error) {
+                    const errorMessage = (error as Error).message;
+
+                    expect(errorMessage).toContain(`Rule: project files in directory '**/infra/repositories/**' should have name '*Entity.js'\n\n`);
+                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`- '${rootDir}/infra/repositories/InMemoryTodoRepository.js'`);
+                }
             }
         });
     });
@@ -86,14 +117,24 @@ describe('should.haveName scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
-                    .projectFiles()
-                    .inDirectory('**/use-cases/**')
-                    .should()
-                    .haveName('*Todo.js')
-                    .check();
-        
-                expect(answer).toBe(false);
+                try {
+                    await appInstance
+                        .projectFiles()
+                        .inDirectory('**/use-cases/**')
+                        .should()
+                        .haveName('*Todo.js')
+                        .check();
+
+                    // If we get here, the test should fail
+                    expect(1).toBe(2);
+                } catch (error) {
+                    const errorMessage = (error as Error).message;
+
+                    expect(errorMessage).toContain(`Rule: project files in directory '**/use-cases/**' should have name '*Todo.js'\n\n`);
+                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetAllTodos.js'`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetTodoById.js'`);
+                }
             }
         });
     });
@@ -107,14 +148,12 @@ describe('should.haveName scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**')
                     .should()
                     .haveName('*.js')
                     .check();
-        
-                expect(answer).toBe(true);
             }
         });
         
@@ -126,14 +165,12 @@ describe('should.haveName scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**/entities/**')
                     .should()
                     .haveName('*Todo.js')
                     .check();
-        
-                expect(answer).toBe(true);
             }
         });
 
@@ -145,14 +182,12 @@ describe('should.haveName scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**/entities/**')
                     .should()
                     .haveName('Todo.js')
                     .check();
-        
-                expect(answer).toBe(true);
             }
         });
 
@@ -164,14 +199,12 @@ describe('should.haveName scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**/infra/repositories/**')
                     .should()
                     .haveName('*Repository.js')
                     .check();
-        
-                expect(answer).toBe(true);
             }
         });
 
@@ -183,14 +216,12 @@ describe('should.haveName scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**/infra/repositories/**')
                     .should()
                     .haveName('InMemory*Repository.js')
                     .check();
-        
-                expect(answer).toBe(true);
             }
         });
 
@@ -202,14 +233,12 @@ describe('should.haveName scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**/use-cases/**')
                     .should()
                     .haveName('*.js')
                     .check();
-        
-                expect(answer).toBe(true);
             }
         });
 
@@ -221,14 +250,12 @@ describe('should.haveName scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**/use-cases/**')
                     .should()
                     .haveName('*Todo*')
                     .check();
-        
-                expect(answer).toBe(true);
             }
         });
     });

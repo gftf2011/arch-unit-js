@@ -27,14 +27,22 @@ describe('should.dependsOn scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
-                    .projectFiles()
-                    .inDirectory('**/entities/**')
-                    .should()
-                    .dependsOn(['inexistent-dependency'])
-                    .check();
-        
-                expect(answer).toBe(false);
+                try {
+                    await appInstance
+                        .projectFiles()
+                        .inDirectory('**/entities/**')
+                        .should()
+                        .dependsOn(['inexistent-dependency'])
+                        .check();
+                    // If we get here, the test should fail
+                    expect(1).toBe(2);
+                } catch (error) {
+                    const errorMessage = (error as Error).message;
+
+                    expect(errorMessage).toContain(`Rule: project files in directory '**/entities/**' should depends on '[inexistent-dependency]'\n\n`);
+                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`- '${rootDir}/domain/entities/Todo.js'`);
+                }
             }
         });
     });
@@ -48,14 +56,25 @@ describe('should.dependsOn scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
-                    .projectFiles()
-                    .inDirectory('**/use-cases/**')
-                    .should()
-                    .dependsOn(['inexistent-dependency'])
-                    .check();
-        
-                expect(answer).toBe(false);
+                try {
+                    await appInstance
+                        .projectFiles()
+                        .inDirectory('**/use-cases/**')
+                        .should()
+                        .dependsOn(['inexistent-dependency'])
+                        .check();
+                    // If we get here, the test should fail
+                    expect(1).toBe(2);
+                } catch (error) {
+                    const errorMessage = (error as Error).message;
+                    expect(errorMessage).toContain(`Rule: project files in directory '**/use-cases/**' should depends on '[inexistent-dependency]'\n\n`);
+                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.js'`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/DeleteTodo.js'`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetAllTodos.js'`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetTodoById.js'`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/UpdateTodo.js'`);
+                }
             }
         });
 
@@ -67,14 +86,25 @@ describe('should.dependsOn scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
-                    .projectFiles()
-                    .inDirectory('**/use-cases/**')
-                    .should()
-                    .dependsOn(['**/infra/**'])
-                    .check();
-        
-                expect(answer).toBe(false);
+                try {
+                    await appInstance
+                        .projectFiles()
+                        .inDirectory('**/use-cases/**')
+                        .should()
+                        .dependsOn(['**/infra/**'])
+                        .check();
+                    // If we get here, the test should fail
+                    expect(1).toBe(2);
+                } catch (error) {
+                    const errorMessage = (error as Error).message;
+                    expect(errorMessage).toContain(`Rule: project files in directory '**/use-cases/**' should depends on '[**/infra/**]'\n\n`);
+                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.js'`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/DeleteTodo.js'`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetAllTodos.js'`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetTodoById.js'`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/UpdateTodo.js'`);
+                }
             }
         });
     });
@@ -88,14 +118,22 @@ describe('should.dependsOn scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
-                    .projectFiles()
-                    .inDirectory('**/use-cases/**', ['!**/use-cases/DeleteTodo.js', '!**/use-cases/GetTodoById.js', '!**/use-cases/GetAllTodos.js', '!**/use-cases/UpdateTodo.js'])
-                    .should()
-                    .dependsOn(['**/domain/**', '**/infra/**'])
-                    .check();
-        
-                expect(answer).toBe(false);
+                try {
+                    await appInstance
+                        .projectFiles()
+                        .inDirectory('**/use-cases/**', ['!**/use-cases/DeleteTodo.js', '!**/use-cases/GetTodoById.js', '!**/use-cases/GetAllTodos.js', '!**/use-cases/UpdateTodo.js'])
+                        .should()
+                        .dependsOn(['**/domain/**', '**/infra/**'])
+                        .check();
+
+                    // If we get here, the test should fail
+                    expect(1).toBe(2);
+                } catch (error) {
+                    const errorMessage = (error as Error).message;
+                    expect(errorMessage).toContain(`Rule: project files in directory '**/use-cases/**' - excluding files [!**/use-cases/DeleteTodo.js, !**/use-cases/GetTodoById.js, !**/use-cases/GetAllTodos.js, !**/use-cases/UpdateTodo.js] , should depends on '[**/domain/**, **/infra/**]'\n\n`);
+                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.js'`);
+                }
             }
         });
 
@@ -107,14 +145,22 @@ describe('should.dependsOn scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
-                    .projectFiles()
-                    .inDirectory('**/main/**')
-                    .should()
-                    .dependsOn(['**/domain/**', '**/use-cases/**', 'inexistent'])
-                    .check();
-        
-                expect(answer).toBe(false);
+                try {
+                    await appInstance
+                        .projectFiles()
+                        .inDirectory('**/main/**')
+                        .should()
+                        .dependsOn(['**/domain/**', '**/use-cases/**', 'inexistent'])
+                        .check();
+
+                    // If we get here, the test should fail
+                    expect(1).toBe(2);
+                } catch (error) {
+                    const errorMessage = (error as Error).message;
+                    expect(errorMessage).toContain(`Rule: project files in directory '**/main/**' should depends on '[**/domain/**, **/use-cases/**, inexistent]'\n\n`);
+                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`- '${rootDir}/main/app.js'`);
+                }
             }
         });
     });
@@ -128,14 +174,12 @@ describe('should.dependsOn scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**/infra/**')
                     .should()
                     .dependsOn(['**/domain/**'])
                     .check();
-        
-                expect(answer).toBe(true);
             }
         });
 
@@ -147,14 +191,12 @@ describe('should.dependsOn scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**/use-cases/**', ['!**/use-cases/DeleteTodo.js', '!**/use-cases/GetTodoById.js', '!**/use-cases/GetAllTodos.js', '!**/use-cases/UpdateTodo.js'])
                     .should()
                     .dependsOn(['**/domain/**'])
                     .check();
-        
-                expect(answer).toBe(true);
             }
         });
 
@@ -166,14 +208,12 @@ describe('should.dependsOn scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**/main/**')
                     .should()
                     .dependsOn(['**/domain/**', '**/use-cases/**'])
                     .check();
-        
-                expect(answer).toBe(true);
             }
         });
 
@@ -185,14 +225,12 @@ describe('should.dependsOn scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**/main/**')
                     .should()
                     .dependsOn(['**/domain/**', '**/use-cases/**', '**/infra/**'])
                     .check();
-        
-                expect(answer).toBe(true);
             }
         });
     });

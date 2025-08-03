@@ -27,14 +27,12 @@ describe('should.onlyDependsOn scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**/entities/**')
                     .should()
                     .onlyDependsOn(['inexistent-dependency'])
                     .check();
-        
-                expect(answer).toBe(true);
             }
         });
     });
@@ -48,14 +46,23 @@ describe('should.onlyDependsOn scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
-                    .projectFiles()
-                    .inDirectory('**/use-cases/**')
-                    .should()
-                    .onlyDependsOn(['**/infra/**'])
-                    .check();
-        
-                expect(answer).toBe(false);
+                try {
+                    await appInstance
+                        .projectFiles()
+                        .inDirectory('**/use-cases/**')
+                        .should()
+                        .onlyDependsOn(['**/infra/**'])
+                        .check();
+
+                    // If we get here, the test should fail
+                    expect(1).toBe(2);
+                } catch (error) {
+                    const errorMessage = (error as Error).message;
+
+                    expect(errorMessage).toContain(`Rule: project files in directory '**/use-cases/**' should only depends on '[**/infra/**]'\n\n`);
+                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.js'`);
+                }
             }
         });
     });
@@ -69,14 +76,12 @@ describe('should.onlyDependsOn scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**/use-cases/**')
                     .should()
                     .onlyDependsOn(['**/domain/**', '**/infra/**'])
                     .check();
-        
-                expect(answer).toBe(true);
             }
         });
     });
@@ -90,14 +95,12 @@ describe('should.onlyDependsOn scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**/infra/**')
                     .should()
                     .onlyDependsOn(['**/domain/**'])
                     .check();
-        
-                expect(answer).toBe(true);
             }
         });
     });
@@ -111,14 +114,23 @@ describe('should.onlyDependsOn scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
-                    .projectFiles()
-                    .inDirectory('**/main/**')
-                    .should()
-                    .onlyDependsOn(['**/use-cases/**', '**/domain/**'])
-                    .check();
-        
-                expect(answer).toBe(false);
+                try {
+                    await appInstance
+                        .projectFiles()
+                        .inDirectory('**/main/**')
+                        .should()
+                        .onlyDependsOn(['**/use-cases/**', '**/domain/**'])
+                        .check();
+
+                    // If we get here, the test should fail
+                    expect(1).toBe(2);
+                } catch (error) {
+                    const errorMessage = (error as Error).message;
+
+                    expect(errorMessage).toContain(`Rule: project files in directory '**/main/**' should only depends on '[**/use-cases/**, **/domain/**]'\n\n`);
+                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`- '${rootDir}/main/app.js'`);
+                }
             }
         });
     });

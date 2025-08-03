@@ -26,14 +26,12 @@ describe('shouldNot.haveCicles scenarios', () => {
                 ignoreMatcher: excludeMatchers
             };
             const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-            const answer = await appInstance
+            await appInstance
                 .projectFiles()
                 .inDirectory('**')
                 .shouldNot()
                 .haveCicles()
                 .check();
-    
-            expect(answer).toBe(true);
         }
     });
 });

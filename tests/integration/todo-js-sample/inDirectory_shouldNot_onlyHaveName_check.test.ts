@@ -28,14 +28,12 @@ describe('shouldNot.onlyHaveName scenarios', () => {
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
-                const result = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**/entities/**')
                     .shouldNot()
                     .onlyHaveName('*UseCase.js')
                     .check();
-
-                expect(result).toBe(true);
             }
         });
 
@@ -48,14 +46,12 @@ describe('shouldNot.onlyHaveName scenarios', () => {
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
-                const result = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**/infra/repositories/**')
                     .shouldNot()
                     .onlyHaveName('*Entity.js')
                     .check();
-
-                expect(result).toBe(true);
             }
         });
     });
@@ -70,14 +66,12 @@ describe('shouldNot.onlyHaveName scenarios', () => {
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
-                const result = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**/use-cases/**')
                     .shouldNot()
                     .onlyHaveName('*Todo.js')
                     .check();
-
-                expect(result).toBe(true);
             }
         });
 
@@ -90,14 +84,12 @@ describe('shouldNot.onlyHaveName scenarios', () => {
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
-                const result = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**/use-cases/**')
                     .shouldNot()
                     .onlyHaveName('Get*.js')
                     .check();
-
-                expect(result).toBe(true);
             }
         });
     });

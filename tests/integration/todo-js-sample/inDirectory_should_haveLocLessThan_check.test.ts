@@ -28,14 +28,12 @@ describe('should.haveLocLessThan scenarios', () => {
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
-                const result = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**/use-cases/**')
                     .should()
                     .haveLocLessThan(50)
                     .check();
-
-                expect(result).toBe(true);
             }
         });
 
@@ -48,14 +46,12 @@ describe('should.haveLocLessThan scenarios', () => {
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
-                const result = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**/entities/**')
                     .should()
                     .haveLocLessThan(30)
                     .check();
-
-                expect(result).toBe(true);
             }
         });
 
@@ -68,14 +64,12 @@ describe('should.haveLocLessThan scenarios', () => {
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
-                const result = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**/domain/**')
                     .should()
                     .haveLocLessThan(40)
                     .check();
-
-                expect(result).toBe(true);
             }
         });
     });
@@ -90,18 +84,27 @@ describe('should.haveLocLessThan scenarios', () => {
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
-                const result = await appInstance
-                    .projectFiles()
-                    .inDirectory('**/use-cases/**')
-                    .should()
-                    .haveLocLessThan(30)
-                    .check();
+                try {
+                    await appInstance
+                        .projectFiles()
+                        .inDirectory('**/use-cases/**')
+                        .should()
+                        .haveLocLessThan(30)
+                        .check();
 
-                expect(result).toBe(false);
+                    // If we get here, the test should fail
+                    expect(1).toBe(2);
+                } catch (error) {
+                    const errorMessage = (error as Error).message;
+                    
+                    expect(errorMessage).toContain(`Rule: project files in directory '**/use-cases/**' should have L.O.C. less than: 30\n\n`);
+                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/UpdateTodo.js'`);
+                }
             }
         });
 
-        test('"domain" should have LOC less than 20 - should FAIL (multiple files exceed threshold)', async () => {
+        test('"domain" should have LOC less than 20 - should FAIL (Todo.js file exceeds threshold)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
                     mimeTypes: ['**/*.js'],
@@ -110,18 +113,26 @@ describe('should.haveLocLessThan scenarios', () => {
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
-                const result = await appInstance
-                    .projectFiles()
-                    .inDirectory('**/domain/**')
-                    .should()
-                    .haveLocLessThan(20)
-                    .check();
+                try {
+                    await appInstance
+                        .projectFiles()
+                        .inDirectory('**/domain/**')
+                        .should()
+                        .haveLocLessThan(20)
+                        .check();
 
-                expect(result).toBe(false);
+                    // If we get here, the test should fail
+                    expect(1).toBe(2);
+                } catch (error) {
+                    const errorMessage = (error as Error).message;
+                    expect(errorMessage).toContain(`Rule: project files in directory '**/domain/**' should have L.O.C. less than: 20\n\n`);
+                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`- '${rootDir}/domain/entities/Todo.js'`);
+                }
             }
         });
 
-        test('entire project should have LOC less than 10 - should FAIL (all files exceed threshold)', async () => {
+        test('entire project should have LOC less than 10 - should FAIL (most of files exceed threshold)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
                     mimeTypes: ['**/*.js'],
@@ -130,14 +141,30 @@ describe('should.haveLocLessThan scenarios', () => {
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
-                const result = await appInstance
-                    .projectFiles()
-                    .inDirectory('**')
-                    .should()
-                    .haveLocLessThan(10)
-                    .check();
+                try {
+                    await appInstance
+                        .projectFiles()
+                        .inDirectory('**')
+                        .should()
+                        .haveLocLessThan(10)
+                        .check();
 
-                expect(result).toBe(false);
+                    // If we get here, the test should fail
+                    expect(1).toBe(2);
+                } catch (error) {
+                    const errorMessage = (error as Error).message;
+
+                    expect(errorMessage).toContain(`Rule: project files in directory '**' should have L.O.C. less than: 10\n\n`);
+                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`- '${rootDir}/domain/entities/Todo.js'`);
+                    expect(errorMessage).toContain(`- '${rootDir}/domain/repositories/TodoRepository.js'`);
+                    expect(errorMessage).toContain(`- '${rootDir}/infra/repositories/InMemoryTodoRepository.js'`);
+                    expect(errorMessage).toContain(`- '${rootDir}/main/app.js'`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.js'`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/DeleteTodo.js'`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetTodoById.js'`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/UpdateTodo.js'`);
+                }
             }
         });
     });
@@ -233,14 +260,12 @@ describe('should.haveLocLessThan scenarios', () => {
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
-                const result = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**')
                     .should()
                     .haveLocLessThan(1000)
                     .check();
-
-                expect(result).toBe(true);
             }
         });
 

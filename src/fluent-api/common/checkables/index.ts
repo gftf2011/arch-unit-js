@@ -90,11 +90,11 @@ abstract class Checkable {
         }
     }
 
-    protected abstract checkPositiveRule(filteredFiles: Map<string, RootFile>): Promise<boolean>
+    protected abstract checkPositiveRule(filteredFiles: Map<string, RootFile>): Promise<void>
 
-    protected abstract checkNegativeRule(filteredFiles: Map<string, RootFile>): Promise<boolean>
+    protected abstract checkNegativeRule(filteredFiles: Map<string, RootFile>): Promise<void>
     
-    public async check(): Promise<boolean> {
+    public async check(): Promise<void> {
         const files = (await this.buildNodeGraph()).nodes;
 
         this.validateFilesExtension(files);
@@ -102,14 +102,16 @@ abstract class Checkable {
         this.validateIfAllDependenciesExistInProjectGraph(files);
 
         const filteredFiles = this.filter(files);
-        const result = this.props.negated
-            ? await this.checkNegativeRule(filteredFiles)
-            : await this.checkPositiveRule(filteredFiles);
-
-        this.clearFiles(files);
-        this.clearFiles(filteredFiles);
-
-        return result;
+        try {
+            this.props.negated
+                ? await this.checkNegativeRule(filteredFiles)
+                : await this.checkPositiveRule(filteredFiles);
+        } catch (error) {
+            throw new Error((error as Error).message);
+        } finally {
+            this.clearFiles(files);
+            this.clearFiles(filteredFiles);
+        }
     }
 }
 
@@ -118,13 +120,13 @@ export abstract class LOCAnalysisCheckable extends Checkable {
         super(props);
     }
 
-    public override async check(): Promise<boolean> {
+    public override async check(): Promise<void> {
         const isThresholdValid = this.props.analisisThreshold <= 0;
 
         if (isThresholdValid) {
             throw new Error(`Violation - ${this.props.ruleConstruction.join(' ')}\n` + `Threshold value must be greater than 0`);
         }
-        return super.check();
+        await super.check();
     }
 }
 
@@ -133,7 +135,7 @@ export abstract class PatternCheckable extends Checkable {
         super(props);
     }
 
-    public override async check(): Promise<boolean> {
+    public override async check(): Promise<void> {
         const hasAnyEmptyChecker = this.props.checkingPatterns.length === 0
             || this.props.filteringPatterns.length === 0
             || this.props.checkingPatterns.includes('')
@@ -142,7 +144,7 @@ export abstract class PatternCheckable extends Checkable {
         if (hasAnyEmptyChecker) {
             throw new Error(`Violation - ${this.props.ruleConstruction.join(' ')}\n` + `No pattern was provided for checking`);
         }
-        return super.check();
+        await super.check();
     }
 }
 
@@ -151,7 +153,7 @@ export abstract class PatternCiclesCheckable extends PatternCheckable {
         super(props);
     }
 
-    public override async check(): Promise<boolean> {
+    public override async check(): Promise<void> {
         const files = (await this.buildNodeGraph()).nodes;
 
         this.validateFilesExtension(files);
@@ -159,13 +161,15 @@ export abstract class PatternCiclesCheckable extends PatternCheckable {
         this.validateIfAllDependenciesExistInProjectGraph(files);
 
         const filteredFiles = this.filter(files);
-        const result = this.props.negated
-            ? await this.checkNegativeRule(filteredFiles)
-            : await this.checkPositiveRule(filteredFiles);
-
-        this.clearFiles(files);
-        this.clearFiles(filteredFiles);
-
-        return result;
+        try {
+            this.props.negated
+                ? await this.checkNegativeRule(filteredFiles)
+                : await this.checkPositiveRule(filteredFiles);
+        } catch (error) {
+            throw new Error((error as Error).message);
+        } finally {
+            this.clearFiles(files);
+            this.clearFiles(filteredFiles);
+        }
     }
 }

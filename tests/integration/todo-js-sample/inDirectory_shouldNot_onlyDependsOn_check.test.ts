@@ -27,14 +27,12 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**/entities/**')
                     .shouldNot()
                     .onlyDependsOn(['**/domain/**'])
                     .check();
-        
-                expect(answer).toBe(true);
             }
         });
     });
@@ -48,14 +46,12 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**/use-cases/**')
                     .shouldNot()
                     .onlyDependsOn(['**/infra/**'])
                     .check();
-        
-                expect(answer).toBe(true);
             }
         });
     });
@@ -69,14 +65,12 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**/main/**')
                     .shouldNot()
                     .onlyDependsOn(['**/domain/**'])
                     .check();
-        
-                expect(answer).toBe(true);
             }
         });
 
@@ -88,14 +82,12 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**/main/**')
                     .shouldNot()
                     .onlyDependsOn(['**/domain/**', '**/use-cases/**'])
                     .check();
-        
-                expect(answer).toBe(true);
             }
         });
     });
@@ -109,14 +101,23 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
-                    .projectFiles()
-                    .inDirectory('**/infra/**')
-                    .shouldNot()
-                    .onlyDependsOn(['**/domain/**'])
-                    .check();
-        
-                expect(answer).toBe(false);
+                try {
+                    await appInstance
+                        .projectFiles()
+                        .inDirectory('**/infra/**')
+                        .shouldNot()
+                        .onlyDependsOn(['**/domain/**'])
+                        .check();
+
+                    // If we get here, the test should fail
+                    expect(1).toBe(2);
+                } catch (error) {
+                    const errorMessage = (error as Error).message;
+
+                    expect(errorMessage).toContain(`Rule: project files in directory '**/infra/**' should not only depends on '[**/domain/**]'\n\n`);
+                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`- '${rootDir}/infra/repositories/InMemoryTodoRepository.js'`);
+                }
             }
         });
 
@@ -128,14 +129,23 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
                     ignoreMatcher: excludeMatchers
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-                const answer = await appInstance
-                    .projectFiles()
-                    .inDirectory('**/main/**')
-                    .shouldNot()
-                    .onlyDependsOn(['**/domain/**', '**/use-cases/**', '**/infra/**'])
-                    .check();
-        
-                expect(answer).toBe(false);
+                try {
+                    await appInstance
+                        .projectFiles()
+                        .inDirectory('**/main/**')
+                        .shouldNot()
+                        .onlyDependsOn(['**/domain/**', '**/use-cases/**', '**/infra/**'])
+                        .check();
+
+                    // If we get here, the test should fail
+                    expect(1).toBe(2);
+                } catch (error) {
+                    const errorMessage = (error as Error).message;
+
+                    expect(errorMessage).toContain(`Rule: project files in directory '**/main/**' should not only depends on '[**/domain/**, **/use-cases/**, **/infra/**]'\n\n`);
+                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`- '${rootDir}/main/app.js'`);
+                }
             }
         });
     });

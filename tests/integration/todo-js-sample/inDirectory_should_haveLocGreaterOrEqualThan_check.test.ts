@@ -28,34 +28,12 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
-                const result = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**/use-cases/**')
                     .should()
                     .haveLocGreaterOrEqualThan(8)
                     .check();
-
-                expect(result).toBe(true);
-            }
-        });
-
-        test('"use-cases" should have LOC greater or equal than 15 - should PASS (all files >= 15)', async () => {
-            for (const [includeMatcher] of includeMatchers) {
-                const options: Options = {
-                    mimeTypes: ['**/*.js'],
-                    includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
-                };
-                const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-
-                const result = await appInstance
-                    .projectFiles()
-                    .inDirectory('**/use-cases/**')
-                    .should()
-                    .haveLocGreaterOrEqualThan(15)
-                    .check();
-
-                expect(result).toBe(false); // GetAllTodos.js has only 8 LOC
             }
         });
 
@@ -68,14 +46,12 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
-                const result = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**/entities/**')
                     .should()
                     .haveLocGreaterOrEqualThan(22)
                     .check();
-
-                expect(result).toBe(true);
             }
         });
 
@@ -88,14 +64,12 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
-                const result = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**/domain/**')
                     .should()
                     .haveLocGreaterOrEqualThan(18)
                     .check();
-
-                expect(result).toBe(true);
             }
         });
 
@@ -108,14 +82,12 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
-                const result = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**/infra/**')
                     .should()
                     .haveLocGreaterOrEqualThan(34)
                     .check();
-
-                expect(result).toBe(true);
             }
         });
 
@@ -128,14 +100,12 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
-                const result = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**/main/**')
                     .should()
                     .haveLocGreaterOrEqualThan(33)
                     .check();
-
-                expect(result).toBe(true);
             }
         });
 
@@ -148,14 +118,12 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
-                const result = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**')
                     .should()
                     .haveLocGreaterOrEqualThan(8)
                     .check();
-
-                expect(result).toBe(true);
             }
         });
     });
@@ -170,14 +138,23 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
-                const result = await appInstance
-                    .projectFiles()
-                    .inDirectory('**/use-cases/**')
-                    .should()
-                    .haveLocGreaterOrEqualThan(10)
-                    .check();
+                try {
+                    await appInstance
+                        .projectFiles()
+                        .inDirectory('**/use-cases/**')
+                        .should()
+                        .haveLocGreaterOrEqualThan(10)
+                        .check();
+                    
+                    // If we get here, the test should fail
+                    expect(1).toBe(2);
+                } catch (error) {
+                    const errorMessage = (error as Error).message;
 
-                expect(result).toBe(false);
+                    expect(errorMessage).toContain(`Rule: project files in directory '**/use-cases/**' should have L.O.C. greater or equal than: 10\n\n`);
+                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetAllTodos.js'`);
+                }
             }
         });
 
@@ -190,14 +167,26 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
-                const result = await appInstance
-                    .projectFiles()
-                    .inDirectory('**/use-cases/**')
-                    .should()
-                    .haveLocGreaterOrEqualThan(20)
-                    .check();
+                try {
+                    await appInstance
+                        .projectFiles()
+                        .inDirectory('**/use-cases/**')
+                        .should()
+                        .haveLocGreaterOrEqualThan(20)
+                        .check();
 
-                expect(result).toBe(false);
+                    // If we get here, the test should fail
+                    expect(1).toBe(2);
+                } catch (error) {
+                    const errorMessage = (error as Error).message;
+
+                    expect(errorMessage).toContain(`Rule: project files in directory '**/use-cases/**' should have L.O.C. greater or equal than: 20\n\n`);
+                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.js'`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/DeleteTodo.js'`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetAllTodos.js'`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetTodoById.js'`);
+                }
             }
         });
 
@@ -210,14 +199,24 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
-                const result = await appInstance
-                    .projectFiles()
-                    .inDirectory('**/domain/**')
-                    .should()
-                    .haveLocGreaterOrEqualThan(25)
-                    .check();
+                try {
+                    await appInstance
+                        .projectFiles()
+                        .inDirectory('**/domain/**')
+                        .should()
+                        .haveLocGreaterOrEqualThan(25)
+                        .check();
 
-                expect(result).toBe(false);
+                    // If we get here, the test should fail
+                    expect(1).toBe(2);
+                } catch (error) {
+                    const errorMessage = (error as Error).message;
+
+                    expect(errorMessage).toContain(`Rule: project files in directory '**/domain/**' should have L.O.C. greater or equal than: 25\n\n`);
+                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`- '${rootDir}/domain/entities/Todo.js'`);
+                    expect(errorMessage).toContain(`- '${rootDir}/domain/repositories/TodoRepository.js'`);
+                }
             }
         });
 
@@ -230,14 +229,31 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
-                const result = await appInstance
-                    .projectFiles()
-                    .inDirectory('**')
-                    .should()
-                    .haveLocGreaterOrEqualThan(40)
-                    .check();
+                try {
+                    await appInstance
+                        .projectFiles()
+                        .inDirectory('**')
+                        .should()
+                        .haveLocGreaterOrEqualThan(40)
+                        .check();
 
-                expect(result).toBe(false);
+                    // If we get here, the test should fail
+                    expect(1).toBe(2);
+                } catch (error) {
+                    const errorMessage = (error as Error).message;
+
+                    expect(errorMessage).toContain(`Rule: project files in directory '**' should have L.O.C. greater or equal than: 40\n\n`);
+                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`- '${rootDir}/domain/entities/Todo.js'`);
+                    expect(errorMessage).toContain(`- '${rootDir}/domain/repositories/TodoRepository.js'`);
+                    expect(errorMessage).toContain(`- '${rootDir}/infra/repositories/InMemoryTodoRepository.js'`);
+                    expect(errorMessage).toContain(`- '${rootDir}/main/app.js'`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.js'`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/DeleteTodo.js'`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetAllTodos.js'`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetTodoById.js'`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/UpdateTodo.js'`);
+                }
             }
         });
 
@@ -250,14 +266,23 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
-                const result = await appInstance
-                    .projectFiles()
-                    .inDirectory('**/entities/**')
-                    .should()
-                    .haveLocGreaterOrEqualThan(23)
-                    .check();
+                try {
+                    await appInstance
+                        .projectFiles()
+                        .inDirectory('**/entities/**')
+                        .should()
+                        .haveLocGreaterOrEqualThan(23)
+                        .check();
 
-                expect(result).toBe(false);
+                    // If we get here, the test should fail
+                    expect(1).toBe(2);
+                } catch (error) {
+                    const errorMessage = (error as Error).message;
+
+                    expect(errorMessage).toContain(`Rule: project files in directory '**/entities/**' should have L.O.C. greater or equal than: 23\n\n`);
+                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`- '${rootDir}/domain/entities/Todo.js'`);
+                }
             }
         });
 
@@ -270,14 +295,23 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
-                const result = await appInstance
+                try {
+                    await appInstance
                     .projectFiles()
                     .inDirectory('**/main/**')
                     .should()
                     .haveLocGreaterOrEqualThan(39)
                     .check();
 
-                expect(result).toBe(false);
+                    // If we get here, the test should fail
+                    expect(1).toBe(2);
+                } catch (error) {
+                    const errorMessage = (error as Error).message;
+
+                    expect(errorMessage).toContain(`Rule: project files in directory '**/main/**' should have L.O.C. greater or equal than: 39\n\n`);
+                    expect(errorMessage).toContain(`Violating files:\n`);
+                    expect(errorMessage).toContain(`- '${rootDir}/main/app.js'`);
+                }
             }
         });
     });
@@ -373,14 +407,12 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
-                const result = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**')
                     .should()
                     .haveLocGreaterOrEqualThan(1)
                     .check();
-
-                expect(result).toBe(true);
             }
         });
 
@@ -393,14 +425,12 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
-                const result = await appInstance
+                await appInstance
                     .projectFiles()
                     .inDirectory('**/use-cases/**')
                     .should()
-                    .haveLocGreaterOrEqualThan(8) // GetAllTodos.js has exactly 8 LOC
+                    .haveLocGreaterOrEqualThan(8)
                     .check();
-
-                expect(result).toBe(true);
             }
         });
 

@@ -12,12 +12,26 @@ export class ProjectFilesInDirectoryLOCAnalysisLessThanShouldSelector extends LO
         super(props);
     }
 
-    protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<boolean> {
-        return Array.from(nodes.values()).every(file => file.loc < this.props.analisisThreshold);
+    protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<void> {
+        const errors: Error[] = [];
+        for (const [_, file] of nodes) {
+            if (file.loc >= this.props.analisisThreshold) errors.push(new Error(`- '${file.path}'`));
+        }
+        if (errors.length > 0) {
+            const errorMessage = this.props.ruleConstruction.join(' ') + '\n\nViolating files:\n' + errors.map(error => error.message).join('\n');
+            throw new Error(errorMessage);
+        }
     }
 
-    protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<boolean> {
-        return Array.from(nodes.values()).every(file => file.loc >= this.props.analisisThreshold);
+    protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
+        const errors: Error[] = [];
+        for (const [_, file] of nodes) {
+            if (file.loc < this.props.analisisThreshold) errors.push(new Error(`- '${file.path}'`));
+        }
+        if (errors.length > 0) {
+            const errorMessage = this.props.ruleConstruction.join(' ') + '\n\nViolating files:\n' + errors.map(error => error.message).join('\n');
+            throw new Error(errorMessage);
+        }
     }
 }
 
@@ -26,12 +40,26 @@ export class ProjectFilesInDirectoryLOCAnalysisLessThanOrEqualShouldSelector ext
         super(props);
     }
 
-    protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<boolean> {
-        return Array.from(nodes.values()).every(file => file.loc <= this.props.analisisThreshold);
+    protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<void> {
+        const errors: Error[] = [];
+        for (const [_, file] of nodes) {
+            if (file.loc > this.props.analisisThreshold) errors.push(new Error(`- '${file.path}'`));
+        }
+        if (errors.length > 0) {
+            const errorMessage = this.props.ruleConstruction.join(' ') + '\n\nViolating files:\n' + errors.map(error => error.message).join('\n');
+            throw new Error(errorMessage);
+        }
     }
 
-    protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<boolean> {
-        return Array.from(nodes.values()).every(file => file.loc > this.props.analisisThreshold);
+    protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
+        const errors: Error[] = [];
+        for (const [_, file] of nodes) {
+            if (file.loc <= this.props.analisisThreshold) errors.push(new Error(`- '${file.path}'`));
+        }
+        if (errors.length > 0) {
+            const errorMessage = this.props.ruleConstruction.join(' ') + '\n\nViolating files:\n' + errors.map(error => error.message).join('\n');
+            throw new Error(errorMessage);
+        }
     }
 }
 
@@ -40,12 +68,26 @@ export class ProjectFilesInDirectoryLOCAnalysisGreaterThanShouldSelector extends
         super(props);
     }
 
-    protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<boolean> {
-        return Array.from(nodes.values()).every(file => file.loc > this.props.analisisThreshold);
+    protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<void> {
+        const errors: Error[] = [];
+        for (const [_, file] of nodes) {
+            if (file.loc <= this.props.analisisThreshold) errors.push(new Error(`- '${file.path}'`));
+        }
+        if (errors.length > 0) {
+            const errorMessage = this.props.ruleConstruction.join(' ') + '\n\nViolating files:\n' + errors.map(error => error.message).join('\n');
+            throw new Error(errorMessage);
+        }
     }
 
-    protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<boolean> {
-        return Array.from(nodes.values()).every(file => file.loc <= this.props.analisisThreshold);
+    protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
+        const errors: Error[] = [];
+        for (const [_, file] of nodes) {
+            if (file.loc > this.props.analisisThreshold) errors.push(new Error(`- '${file.path}'`));
+        }
+        if (errors.length > 0) {
+            const errorMessage = this.props.ruleConstruction.join(' ') + '\n\nViolating files:\n' + errors.map(error => error.message).join('\n');
+            throw new Error(errorMessage);
+        }
     }
 }
 
@@ -54,12 +96,26 @@ export class ProjectFilesInDirectoryLOCAnalysisGreaterThanOrEqualShouldSelector 
         super(props);
     }
 
-    protected override async checkPositiveRule(filteredFiles: Map<string, RootFile>): Promise<boolean> {
-        return Array.from(filteredFiles.values()).every(file => file.loc >= this.props.analisisThreshold);
+    protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<void> {
+        const errors: Error[] = [];
+        for (const [_, file] of nodes) {
+            if (file.loc < this.props.analisisThreshold) errors.push(new Error(`- '${file.path}'`));
+        }
+        if (errors.length > 0) {
+            const errorMessage = this.props.ruleConstruction.join(' ') + '\n\nViolating files:\n' + errors.map(error => error.message).join('\n');
+            throw new Error(errorMessage);
+        }
     }
 
-    protected override async checkNegativeRule(filteredFiles: Map<string, RootFile>): Promise<boolean> {
-        return Array.from(filteredFiles.values()).every(file => file.loc < this.props.analisisThreshold);
+    protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
+        const errors: Error[] = [];
+        for (const [_, file] of nodes) {
+            if (file.loc >= this.props.analisisThreshold) errors.push(new Error(`- '${file.path}'`));
+        }
+        if (errors.length > 0) {
+            const errorMessage = this.props.ruleConstruction.join(' ') + '\n\nViolating files:\n' + errors.map(error => error.message).join('\n');
+            throw new Error(errorMessage);
+        }
     }
 }
 
@@ -68,13 +124,13 @@ export class ProjectFilesInDirectoryHaveCyclesShouldSelector extends PatternCicl
         super(props);
     }
     
-    protected override async checkPositiveRule(_: Map<string, RootFile>): Promise<boolean> {
-        throw new Error('IF YOU SEE THIS, YOU MUST BE A UTTERLY STUPID PERSON');
+    protected override async checkPositiveRule(_: Map<string, RootFile>): Promise<void> {
+        const errorMessage = this.props.ruleConstruction.join(' ') + '\n\nIF YOU SEE THIS, YOU MUST BE A UTTERLY STUPID PERSON';
+        throw new Error(errorMessage);
     }
 
-    protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<boolean> {
-        // If no files, no cycles possible
-        if (nodes.size === 0) return true;
+    protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
+        if (nodes.size === 0) return;
         
         // Color coding: 0 = white (unvisited), 1 = gray (visiting), 2 = black (visited)
         const colors = new Map<string, number>();
@@ -119,14 +175,11 @@ export class ProjectFilesInDirectoryHaveCyclesShouldSelector extends PatternCicl
         for (const [filePath] of nodes) {
             if (colors.get(filePath) === 0) { // If white (unvisited)
                 if (hasCycleDFS(filePath)) {
-                    return false; // Cycle found - rule fails
+                    throw new Error(this.props.ruleConstruction.join(' '));
                 }
             }
         }
-        
-        return true; // No cycles found - rule passes
     }
-    
 }
 
 export class ProjectFilesInDirectoryOnlyDependsOnShouldSelector extends PatternCheckable {
@@ -134,55 +187,50 @@ export class ProjectFilesInDirectoryOnlyDependsOnShouldSelector extends PatternC
         super(props);
     }
 
-    protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<boolean> {
-        for (const [_, file] of nodes) {
-            if (file.dependencies.length === 0) continue; // No dependencies is OK
-            
+    protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<void> {
+        const errors: Error[] = [];
+        const check = (file: RootFile): boolean => {
+            if (file.dependencies.length === 0) return true;
+
             const matchingDeps = file.dependencies.filter(dep => 
                 micromatch([dep.name], this.props.checkingPatterns).length > 0
             );
-            
-            // All dependencies must match patterns (exclusive match)
-            // Files can depend exclusively on ANY subset of the specified patterns
+
             if (matchingDeps.length !== file.dependencies.length) return false;
+
+            return true;
         }
-        return true;
+        for (const [_, file] of nodes) {
+            if (!check(file)) errors.push(new Error(`- '${file.path}'`));
+        }
+
+        if (errors.length > 0) {
+            const errorMessage = this.props.ruleConstruction.join(' ') + '\n\nViolating files:\n' + errors.map(error => error.message).join('\n');
+            throw new Error(errorMessage);
+        }
     }
   
-    protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<boolean> {
-        // shouldNot.onlyDependsOn passes when files do NOT exclusively depend only on specified patterns
-        
-        for (const [_, file] of nodes) {
-            // Files with no dependencies always pass (cannot violate exclusive dependency)
-            if (file.dependencies.length === 0) continue;
-            
+    protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
+        const errors: Error[] = [];
+        const check = (file: RootFile): boolean => {
+            if (file.dependencies.length === 0) return true;
+
             const matchingDeps = file.dependencies.filter(dep => 
                 micromatch([dep.name], this.props.checkingPatterns).length > 0
             );
-            
-            // If any file has additional non-matching dependencies, the rule passes
-            if (matchingDeps.length < file.dependencies.length) {
-                return true; // Pass - file has mixed dependencies
-            }
+
+            if (matchingDeps.length < file.dependencies.length) return true;
+
+            return false;
         }
-        
-        // If we reach here, all files with dependencies exclusively depend on matching patterns
-        // Now check if any file exclusively depends on the patterns (either ALL or SOME)
         for (const [_, file] of nodes) {
-            if (file.dependencies.length === 0) continue;
-            
-            const matchingDeps = file.dependencies.filter(dep => 
-                micromatch([dep.name], this.props.checkingPatterns).length > 0
-            );
-            
-            // If file has only matching dependencies, it's exclusively depending on patterns
-            if (matchingDeps.length === file.dependencies.length && file.dependencies.length > 0) {
-                return false; // Fail - found exclusive dependency
-            }
+            if (!check(file)) errors.push(new Error(`- '${file.path}'`));
         }
-        
-        // If no files have exclusive dependencies, the rule passes
-        return true;
+
+        if (errors.length > 0) {
+            const errorMessage = this.props.ruleConstruction.join(' ') + '\n\nViolating files:\n' + errors.map(error => error.message).join('\n');
+            throw new Error(errorMessage);
+        }
     }
 }
 
@@ -191,9 +239,9 @@ export class ProjectFilesInDirectoryDependsOnShouldSelector extends PatternCheck
         super(props);
     }
 
-    protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<boolean> {
-        for (const [_, file] of nodes) {
-            // Files with no dependencies fail the rule (cannot satisfy ALL patterns requirement)
+    protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<void> {
+        const errors: Error[] = [];
+        const check = (file: RootFile): boolean => {
             if (file.dependencies.length === 0) return false;
             
             // Check if ALL specified patterns are present in this file's dependencies
@@ -205,16 +253,23 @@ export class ProjectFilesInDirectoryDependsOnShouldSelector extends PatternCheck
                 // If any pattern is missing, the rule fails
                 if (!hasPattern) return false;
             }
+            return true;
         }
-        
-        // All files have ALL required patterns
-        return true;
+        for (const [_, file] of nodes) {
+            if (!check(file)) errors.push(new Error(`- '${file.path}'`));
+        }
+
+        if (errors.length > 0) {
+            const errorMessage = this.props.ruleConstruction.join(' ') + '\n\nViolating files:\n' + errors.map(error => error.message).join('\n');
+            throw new Error(errorMessage);
+        }
     }
 
-    protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<boolean> {
-        for (const [_, file] of nodes) {
+    protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
+        const errors: Error[] = [];
+        const check = (file: RootFile): boolean => {
             // Files with no dependencies pass the rule (no forbidden patterns can be present)
-            if (file.dependencies.length === 0) continue;
+            if (file.dependencies.length === 0) return true;
             
             // Check if ANY of the specified patterns are present in this file's dependencies
             for (const dependency of file.dependencies) {
@@ -225,10 +280,17 @@ export class ProjectFilesInDirectoryDependsOnShouldSelector extends PatternCheck
                 // If any forbidden pattern is found, the rule fails
                 if (hasAnyPattern) return false;
             }
+
+            return true;
         }
-        
-        // No files have any forbidden patterns
-        return true;
+        for (const [_, file] of nodes) {
+            if (!check(file)) errors.push(new Error(`- '${file.path}'`));
+        }
+
+        if (errors.length > 0) {
+            const errorMessage = this.props.ruleConstruction.join(' ') + '\n\nViolating files:\n' + errors.map(error => error.message).join('\n');
+            throw new Error(errorMessage);
+        }
     }
 }
 
@@ -245,10 +307,9 @@ export class ProjectFilesInDirectoryOnlyHaveNameShouldSelector extends PatternCh
         return;
     }
 
-    protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<boolean> {
-        // If no files are found, the rule passes (no exclusive naming possible)
-        if (nodes.size === 0) return true;
-        
+    protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
+        if (nodes.size === 0) return;
+
         let matchingFiles = 0;
         let totalFiles = nodes.size;
         
@@ -262,28 +323,30 @@ export class ProjectFilesInDirectoryOnlyHaveNameShouldSelector extends PatternCh
                 matchingFiles++;
             }
         }
-        
-        // Rule fails only when ALL files match the pattern (exclusive naming)
-        // Rule passes when NONE match or when SOME match (mixed naming)
-        return matchingFiles !== totalFiles;
+
+        if (matchingFiles === totalFiles) {
+            throw new Error(this.props.ruleConstruction.join(' '));
+        }
     }
 
-    protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<boolean> {
+    protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<void> {
         // If no files are found, the rule passes (vacuous truth)
-        if (nodes.size === 0) return true;
+        if (nodes.size === 0) return;
         
-        for (const [_, file] of nodes) {
+        const errors: Error[] = [];
+        const check = (file: RootFile): boolean => {
             const fileName = file.name;
-            
-            // Check if this file name matches the pattern
             const matches = micromatch([fileName], this.props.checkingPatterns).length > 0;
-            
-            // If any file doesn't match the pattern, the rule fails
-            if (!matches) return false;
+            return matches;
         }
-        
-        // All files match the pattern
-        return true;
+        for (const [_, file] of nodes) {
+            if (!check(file)) errors.push(new Error(`- '${file.path}'`));
+        }
+
+        if (errors.length > 0) {
+            const errorMessage = this.props.ruleConstruction.join(' ') + '\n\nViolating files:\n' + errors.map(error => error.message).join('\n');
+            throw new Error(errorMessage);
+        }
     }
 }
 
@@ -300,33 +363,37 @@ export class ProjectFilesInDirectoryHaveNameShouldSelector extends PatternChecka
         return;
     }
 
-    protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<boolean> {
-        for (const [_, file] of nodes) {
+    protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<void> {
+        const errors: Error[] = [];
+        const check = (file: RootFile): boolean => {
             const fileName = file.name;
-            
-            // Check if this file name matches the pattern
             const matches = micromatch([fileName], this.props.checkingPatterns).length > 0;
-            
-            // If any file doesn't match the pattern, the rule fails
-            if (!matches) return false;
+            return matches;
         }
-        
-        // All files match the pattern
-        return true;
+        for (const [_, file] of nodes) {
+            if (!check(file)) errors.push(new Error(`- '${file.path}'`));
+        }
+
+        if (errors.length > 0) {
+            const errorMessage = this.props.ruleConstruction.join(' ') + '\n\nViolating files:\n' + errors.map(error => error.message).join('\n');
+            throw new Error(errorMessage);
+        }
     }
 
-    protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<boolean> {
-        for (const [_, file] of nodes) {
+    protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
+        const errors: Error[] = [];
+        const check = (file: RootFile): boolean => {
             const fileName = file.name;
-            
-            // Check if this file name matches the pattern
             const matches = micromatch([fileName], this.props.checkingPatterns).length > 0;
-            
-            // If any file matches the pattern, the rule fails (shouldNot.haveName)
-            if (matches) return false;
+            return !matches;
         }
-        
-        // No files match the pattern - rule passes
-        return true;
+        for (const [_, file] of nodes) {
+            if (!check(file)) errors.push(new Error(`- '${file.path}'`));
+        }
+
+        if (errors.length > 0) {
+            const errorMessage = this.props.ruleConstruction.join(' ') + '\n\nViolating files:\n' + errors.map(error => error.message).join('\n');
+            throw new Error(errorMessage);
+        }
     }
 }
