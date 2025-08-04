@@ -113,6 +113,6 @@ export class FileFactory {
         if (isJavascriptRelatedFile(fileName) || isTypeScriptRelatedFile(fileName)) {
             return await JavascriptOrTypescriptRelatedFile.create(fileName, filePath).build(rootDir, extensions);
         }
-        return await JavascriptOrTypescriptRelatedFile.create(fileName, filePath).build(rootDir, extensions);
+        throw new Error(`Unsupported file type: ${fileName}`);
     }
 }

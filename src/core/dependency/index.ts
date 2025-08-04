@@ -92,6 +92,6 @@ export class DependencyFactory {
         if (comesFrom === 'javascript-or-typescript') {
             return JavascriptOrTypescriptRelatedDependency.create(rootDir, currentPath, dependency, extensions, resolvedWith, comesFrom);
         }
-        return JavascriptOrTypescriptRelatedDependency.create(rootDir, currentPath, dependency, extensions, resolvedWith, comesFrom);
+        throw new Error(`Unsupported dependency type: ${dependency}`);
     }
 }
