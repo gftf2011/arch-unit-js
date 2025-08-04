@@ -1,7 +1,7 @@
 import fsPromises from 'fs/promises';
 import path from 'path';
 import micromatch from 'micromatch';
-import { RootFile, JavascriptOrTypescriptRelatedFile } from '../file';
+import { RootFile, FileFactory } from '../file';
 import {
     extractExtensionFromGlobPattern,
     resolveRootDirPatternToGlobPattern
@@ -35,7 +35,8 @@ export class NodeGraph {
               if (entry.isDirectory()) {
                 await walk(fullPath, extensions);
               } else if (entry.isFile()) {
-                const file = await JavascriptOrTypescriptRelatedFile.create(entry.name, fullPath).build(startPath, extensions);
+
+                const file = await FileFactory.create(entry.name, fullPath, startPath, extensions);
                 nodes.set(file.path, file);
               }
             }
