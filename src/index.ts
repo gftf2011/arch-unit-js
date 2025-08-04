@@ -2,6 +2,7 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import { ComponentSelectorBuilder } from './fluent-api';
 import { Options } from './fluent-api/common/types';
+import { normalizeWindowsPath } from './utils/windows';
 /**
  * Returns the root directory of the project where the package was installed
  */
@@ -10,9 +11,9 @@ function getProjectRoot(): string {
   if (typeof import.meta !== 'undefined' && import.meta.url) {
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
-    return path.resolve(__dirname, '..', '..', '..');
+    return normalizeWindowsPath(path.resolve(__dirname, '..', '..', '..'));
   } else {
-    return path.resolve(__dirname, '..', '..', '..');
+    return normalizeWindowsPath(path.resolve(__dirname, '..', '..', '..'));
   }
 }
 

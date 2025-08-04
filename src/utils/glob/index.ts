@@ -37,36 +37,6 @@ export function extractExtensionFromGlobPattern(pattern: string): string | null 
 }
 
 /**
- * Normalizes Windows file paths to POSIX-style paths by replacing backslashes with forward slashes.
- *
- * This utility is useful for ensuring consistent path handling across different operating systems,
- * especially when working with glob patterns, file system operations, or tools that expect POSIX-style paths.
- *
- * On Windows, file paths use backslashes (e.g., 'C:\\Users\\user\\project'), while POSIX systems (Linux, macOS)
- * use forward slashes (e.g., '/home/user/project'). This function converts all backslashes in the input path
- * to forward slashes, making the path compatible with POSIX expectations.
- *
- * Note: This function does not modify forward slashes or resolve relative/absolute paths; it only replaces
- * backslashes with forward slashes.
- *
- * @param path - The file path string to normalize. Can be absolute or relative, and may contain backslashes.
- *
- * @returns The normalized path string with all backslashes replaced by forward slashes.
- *
- * @example
- * ```typescript
- * normalizeWindowsPath('C:\\Users\\user\\project')    // Returns 'C:/Users/user/project'
- * normalizeWindowsPath('folder\\subfolder\\file.txt') // Returns 'folder/subfolder/file.txt'
- * normalizeWindowsPath('/already/posix/path')         // Returns '/already/posix/path'
- * ```
- *
- * @since 1.0.0
- */
-function normalizeWindowsPath(path: string): string {
-    return path.replace(/\\/g, '/');
-}
-
-/**
  * Resolves glob patterns containing `<rootDir>` placeholders to absolute file system paths.
  *
  * This function processes an array of glob patterns and resolves any `<rootDir>` placeholders
@@ -123,17 +93,16 @@ function normalizeWindowsPath(path: string): string {
  * @since 1.0.0
  */
 export function resolveRootDirPatternToGlobPattern(patterns: string[], rootDir: string): string[] {
-    const normalizedRootDir = normalizeWindowsPath(rootDir);
     return patterns.map(pattern => {
         if (pattern.startsWith('!')) {
             const cleaned = pattern.replace('<rootDir>', '').replace(/^!/, '');
             const relative = cleaned.replace(/^\.?\//, '').replace(/\\/g, '/');
-            const newPattern = `!${path.resolve(normalizedRootDir, relative)}`;
+            const newPattern = `!${path.resolve(rootDir, relative)}`;
             return newPattern;
         }
         const cleaned = pattern.replace('<rootDir>', '');
         const relative = cleaned.replace(/^\.?\//, '').replace(/\\/g, '/');
-        const newPattern = path.resolve(normalizedRootDir, relative);
+        const newPattern = path.resolve(rootDir, relative);
         return newPattern;
     });
 }
