@@ -1,0 +1,81 @@
+name: Push & Merge into Dev Workflow
+
+on:
+  push:
+    branches: [ "dev" ]
+  pull_request:
+    branches: [ "dev" ]
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [22.x]
+    name: Cache Depedencies
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.JS Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          
+      - name: Clean Install Packages
+        run: |
+          npm ci
+          
+      - name: Cache "node-modules"
+        uses: actions/cache@v4
+        with:
+          path: ./node_modules
+          key: node-modules-${{ runner.os }}-${{ hashFiles('package.json') }}
+          restore-keys: |
+            node-modules-${{ runner.os }}-
+          
+      - name: Cache "package-lock.json"
+        uses: actions/cache@v4
+        with:
+          path: ./package-lock.json
+          key: package-lock-${{ runner.os }}-${{ hashFiles('package.json') }}
+          restore-keys: |
+            package-lock-${{ runner.os }}-
+
+  test-and-lint:
+    runs-on: ubuntu-latest
+    needs: install
+    strategy:
+      matrix: 
+        node-version: [ 18.x, 20.x, 22.x ]
+    name: Test Application
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.JS Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Use Cache "node-modules"
+        uses: actions/cache@v4
+        with:
+          path: ./node_modules
+          key: node-modules-${{ runner.os }}-${{ hashFiles('package.json') }}
+          restore-keys: |
+            node-modules-${{ runner.os }}-
+          
+      - name: Use Cache "package-lock.json"
+        uses: actions/cache@v4
+        with:
+          path: ./package-lock.json
+          key: package-lock-${{ runner.os }}-${{ hashFiles('package.json') }}
+          restore-keys: |
+            package-lock-${{ runner.os }}-
+
+      - name: Run Tests
+        run: |
+          npm run test
