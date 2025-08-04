@@ -1,4 +1,5 @@
 import path from 'path';
+import { normalizeWindowsPath } from '../windows';
 
 /**
  * Extracts the file extension from a glob pattern or file path.
@@ -48,7 +49,7 @@ export function extractExtensionFromGlobPattern(pattern: string): string | null 
  * - Replaces `<rootDir>` placeholder with the actual root directory path
  * - Removes leading `./` or `/` from relative patterns
  * - Converts backslashes to forward slashes for consistency
- * - Resolves relative paths to absolute paths using `path.resolve()`
+ * - Resolves relative paths to absolute paths using `path.posix.resolve()`
  * - Preserves negation prefix (`!`) for exclude patterns
  *
  * This is particularly useful in build tools, testing frameworks, and file processing utilities
@@ -93,16 +94,17 @@ export function extractExtensionFromGlobPattern(pattern: string): string | null 
  * @since 1.0.0
  */
 export function resolveRootDirPatternToGlobPattern(patterns: string[], rootDir: string): string[] {
+    const normalizedRootDir = normalizeWindowsPath(rootDir);
     return patterns.map(pattern => {
         if (pattern.startsWith('!')) {
             const cleaned = pattern.replace('<rootDir>', '').replace(/^!/, '');
-            const relative = cleaned.replace(/^\.?\//, '').replace(/\\/g, '/');
-            const newPattern = `!${path.resolve(rootDir, relative)}`;
+            const relative = cleaned.replace(/^\.?\//, '');
+            const newPattern = `!${path.posix.resolve(normalizedRootDir, relative)}`;
             return newPattern;
         }
         const cleaned = pattern.replace('<rootDir>', '');
-        const relative = cleaned.replace(/^\.?\//, '').replace(/\\/g, '/');
-        const newPattern = path.resolve(rootDir, relative);
+        const relative = cleaned.replace(/^\.?\//, '');
+        const newPattern = path.posix.resolve(normalizedRootDir, relative);
         return newPattern;
     });
 }

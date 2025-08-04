@@ -76,7 +76,14 @@ class JavascriptOrTypescriptRelatedFile extends RootFile {
           },
           ImportDeclaration({ node }) {
             totalImportedDependencies++;
-            dependencies.push(DependencyFactory.create(rootDir, path.dirname(filePath), node.source.value, extensions, 'import', 'javascript-or-typescript'));
+            dependencies.push(DependencyFactory.create(
+                rootDir,
+                path.posix.dirname(filePath),
+                node.source.value,
+                extensions,
+                'import',
+                'javascript-or-typescript'
+            ));
           },
           CallExpression({ node }) {
             if (
@@ -86,7 +93,14 @@ class JavascriptOrTypescriptRelatedFile extends RootFile {
               node.arguments[0].type === 'StringLiteral'
             ) {
                 totalRequiredDependencies++;
-                dependencies.push(DependencyFactory.create(rootDir, path.dirname(filePath), node.arguments[0].value, extensions, 'require', 'javascript-or-typescript'));
+                dependencies.push(DependencyFactory.create(
+                    rootDir,
+                    path.posix.dirname(filePath),
+                    node.arguments[0].value,
+                    extensions,
+                    'require',
+                    'javascript-or-typescript'
+                ));
             }
           },
           ExportDefaultDeclaration() {

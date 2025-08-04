@@ -9,7 +9,7 @@ export function isBuiltinModule(dependency: string): boolean {
 
 export function isPackageJsonDependency(rootDir: string, dependency: string): boolean {
     try {
-        const packageJsonPath = path.join(rootDir, 'package.json');
+        const packageJsonPath = path.posix.join(rootDir, 'package.json');
         fs.statSync(packageJsonPath);
         const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
         return Object.keys(packageJson.dependencies).includes(dependency);
@@ -20,7 +20,7 @@ export function isPackageJsonDependency(rootDir: string, dependency: string): bo
 
 export function isPackageJsonDevDependency(rootDir: string, dependency: string): boolean {
     try {
-        const packageJsonPath = path.join(rootDir, 'package.json');
+        const packageJsonPath = path.posix.join(rootDir, 'package.json');
         fs.statSync(packageJsonPath);
         const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
         return Object.keys(packageJson.devDependencies).includes(dependency);

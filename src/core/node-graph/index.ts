@@ -29,7 +29,7 @@ export class NodeGraph {
           const entries = await fsPromises.readdir(currentPath, { withFileTypes: true });
     
           for (const entry of entries) {
-            const fullPath = path.join(currentPath, entry.name);
+            const fullPath = path.posix.join(currentPath, entry.name);
 
             if (micromatch([fullPath], [...includePatterns, ...ignorePatterns]).length > 0) {
               if (entry.isDirectory()) {

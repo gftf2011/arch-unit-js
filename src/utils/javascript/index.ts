@@ -7,10 +7,10 @@ export function isTypescriptAtPathDependency(dependency: string): boolean {
 
 export function resolveIfTypescriptAtPathDependency(rootDir: string, dependency: string): string {
     try {
-        const typescriptPath = path.join(rootDir, 'tsconfig.json');
+        const typescriptPath = path.posix.join(rootDir, 'tsconfig.json');
         fs.statSync(typescriptPath);
         const typescriptFileContent = JSON.parse(fs.readFileSync(typescriptPath, 'utf8'));
-        const resolvedPath = path.resolve(rootDir, typescriptFileContent.compilerOptions.baseUrl, dependency.replace(/^@\/?|^@/, ''));
+        const resolvedPath = path.posix.resolve(rootDir, typescriptFileContent.compilerOptions.baseUrl, dependency.replace(/^@\/?|^@/, ''));
         return resolvedPath;
     } catch (error) {
         return dependency;
