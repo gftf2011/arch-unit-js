@@ -5,8 +5,7 @@ import {
     isPackageJsonDependency,
     isPackageJsonDevDependency,
     isTypescriptAtPathDependency,
-    resolveIfTypescriptAtPathDependency,
-    safePosixResolve
+    resolveIfTypescriptAtPathDependency
 } from '../../utils';
 
 export type JavascriptOrTypescriptRelatedDependencyType = 'node-builtin-module' | 'node-package' | 'node-dev-package' | 'valid-path' | 'invalid';
@@ -54,7 +53,7 @@ class JavascriptOrTypescriptRelatedDependency extends Dependency {
             if (isTypescriptAtPathDependency(dependency)) {
                 return resolveIfTypescriptAtPathDependency(rootDir, dependency);
             } else {
-                return safePosixResolve(currentPath, dependency);
+                return path.resolve(currentPath, dependency);
             }
         };
     
