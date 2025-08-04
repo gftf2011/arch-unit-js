@@ -48,7 +48,7 @@ export function extractExtensionFromGlobPattern(pattern: string): string | null 
  * - Replaces `<rootDir>` placeholder with the actual root directory path
  * - Removes leading `./` or `/` from relative patterns
  * - Converts backslashes to forward slashes for consistency
- * - Resolves relative paths to absolute paths using `path.posix.resolve()`
+ * - Resolves relative paths to absolute paths using `path.resolve()`
  * - Preserves negation prefix (`!`) for exclude patterns
  *
  * This is particularly useful in build tools, testing frameworks, and file processing utilities
@@ -97,12 +97,12 @@ export function resolveRootDirPatternToGlobPattern(patterns: string[], rootDir: 
         if (pattern.startsWith('!')) {
             const cleaned = pattern.replace('<rootDir>', '').replace(/^!/, '');
             const relative = cleaned.replace(/^\.?\//, '');
-            const newPattern = `!${path.posix.resolve(rootDir, relative)}`;
+            const newPattern = `!${path.resolve(rootDir, relative)}`;
             return newPattern;
         }
         const cleaned = pattern.replace('<rootDir>', '');
         const relative = cleaned.replace(/^\.?\//, '');
-        const newPattern = path.posix.resolve(rootDir, relative);
+        const newPattern = path.resolve(rootDir, relative);
         return newPattern;
     });
 }

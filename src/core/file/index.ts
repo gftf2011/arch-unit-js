@@ -78,7 +78,7 @@ class JavascriptOrTypescriptRelatedFile extends RootFile {
             totalImportedDependencies++;
             dependencies.push(DependencyFactory.create(
                 rootDir,
-                path.posix.dirname(filePath),
+                path.dirname(filePath),
                 node.source.value,
                 extensions,
                 'import',
@@ -95,7 +95,7 @@ class JavascriptOrTypescriptRelatedFile extends RootFile {
                 totalRequiredDependencies++;
                 dependencies.push(DependencyFactory.create(
                     rootDir,
-                    path.posix.dirname(filePath),
+                    path.dirname(filePath),
                     node.arguments[0].value,
                     extensions,
                     'require',

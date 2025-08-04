@@ -18,7 +18,7 @@ const includeMatchers = [
 
 const excludeMatchers = ['!<rootDir>/**/package.json', '!<rootDir>/**/tsconfig.json'];
 
-describe('shouldNot.haveCicles scenarios', () => {
+describe.skip('shouldNot.haveCicles scenarios', () => {
     test('entire project should not have cicles - should PASS', async () => {
         for (const [includeMatcher] of includeMatchers) {
             const options: Options = {

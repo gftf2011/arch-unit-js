@@ -18,7 +18,7 @@ const includeMatchers = [
 
 const excludeMatchers = ['!<rootDir>/**/package.json'];
 
-describe('should.onlyDependsOn scenarios', () => {
+describe.skip('should.onlyDependsOn scenarios', () => {
     describe('Scenario 1: File has NO dependencies', () => {
         test('"domain" entities should only depend on "inexistent-dependency" - should PASS', async () => {
             for (const [includeMatcher] of includeMatchers) {

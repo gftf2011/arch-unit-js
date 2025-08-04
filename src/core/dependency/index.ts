@@ -5,7 +5,8 @@ import {
     isPackageJsonDependency,
     isPackageJsonDevDependency,
     isTypescriptAtPathDependency,
-    resolveIfTypescriptAtPathDependency
+    resolveIfTypescriptAtPathDependency,
+    safePosixResolve
 } from '../../utils';
 
 export type JavascriptOrTypescriptRelatedDependencyType = 'node-builtin-module' | 'node-package' | 'node-dev-package' | 'valid-path' | 'invalid';
@@ -53,7 +54,7 @@ class JavascriptOrTypescriptRelatedDependency extends Dependency {
             if (isTypescriptAtPathDependency(dependency)) {
                 return resolveIfTypescriptAtPathDependency(rootDir, dependency);
             } else {
-                return path.posix.resolve(currentPath, dependency);
+                return safePosixResolve(currentPath, dependency);
             }
         };
     
@@ -62,13 +63,13 @@ class JavascriptOrTypescriptRelatedDependency extends Dependency {
         const candidates = [
             resolvedPathForCandidates,
             ...extensions.map(ext => `${resolvedPathForCandidates}${ext}`),
-            ...extensions.map(ext => path.posix.join(resolvedPathForCandidates, `index${ext}`)),
+            ...extensions.map(ext => path.join(resolvedPathForCandidates, `index${ext}`)),
         ];
     
         for (const candidate of candidates) {
             try {
                 const stat = fs.statSync(candidate);
-                if (stat.isFile()) return new JavascriptOrTypescriptRelatedDependency(path.posix.relative(rootDir, candidate), candidate, 'valid-path', resolvedWith, comesFrom);
+                if (stat.isFile()) return new JavascriptOrTypescriptRelatedDependency(path.relative(rootDir, candidate), candidate, 'valid-path', resolvedWith, comesFrom);
             } catch {
                 // do nothing
             }

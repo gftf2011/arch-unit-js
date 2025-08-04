@@ -36,7 +36,7 @@ export class NodeGraph {
           console.log(entries);
 
           for (const entry of entries) {
-            const fullPath = path.posix.join(currentPath, entry.name);
+            const fullPath = path.join(currentPath, entry.name);
 
             console.log('fullPath', fullPath);
 

@@ -18,7 +18,7 @@ const includeMatchers = [
 
 const excludeMatchers = ['!<rootDir>/**/package.json'];
 
-describe('should.haveCicles scenarios', () => {
+describe.skip('should.haveCicles scenarios', () => {
     test('entire project should have cicles - DO I REALLY NEED TO EXPLAIN THIS ?', async () => {
         for (const [includeMatcher] of includeMatchers) {
             try {

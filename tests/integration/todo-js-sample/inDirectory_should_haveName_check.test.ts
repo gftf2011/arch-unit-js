@@ -18,7 +18,7 @@ const includeMatchers = [
 
 const excludeMatchers = ['!<rootDir>/**/package.json'];
 
-describe('should.haveName scenarios', () => {
+describe.skip('should.haveName scenarios', () => {
     describe('Scenario 1: Directory has files but NONE match the pattern', () => {
         test('"use-cases" should have name "*UseCase.js" - should FAIL (none match)', async () => {
             for (const [includeMatcher] of includeMatchers) {

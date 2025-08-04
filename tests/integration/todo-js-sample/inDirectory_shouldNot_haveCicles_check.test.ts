@@ -1,9 +1,10 @@
 import path from 'path';
 import { Options } from '../../../src/fluent-api/common/types';
 import { ComponentSelectorBuilder } from '../../../src/fluent-api';
-import { normalizeWindowsPath } from '../../../src/utils/windows';
 
-const rootDir = normalizeWindowsPath(path.resolve(path.dirname(__filename), '..', '..', 'sample', 'todo-js-sample'));
+const rootDir = path.resolve(path.dirname(__filename), '..', '..', 'sample', 'todo-js-sample');
+
+console.log(rootDir);
 
 const includeMatchers = [
     [['<rootDir>/**']],

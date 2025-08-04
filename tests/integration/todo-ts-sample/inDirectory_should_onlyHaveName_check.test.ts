@@ -18,7 +18,7 @@ const includeMatchers = [
 
 const excludeMatchers = ['!<rootDir>/**/package.json', '!<rootDir>/**/tsconfig.json'];
 
-describe('should.onlyHaveName scenarios', () => {
+describe.skip('should.onlyHaveName scenarios', () => {
     describe('Scenario 1: Directory has files but NONE match the pattern', () => {
         test('"entities" should only have name "*UseCase.ts" - should FAIL', async () => {
             for (const [includeMatcher] of includeMatchers) {

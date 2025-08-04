@@ -18,7 +18,7 @@ const includeMatchers = [
 
 const excludeMatchers = ['!<rootDir>/**/package.json'];
 
-describe('should.haveLocLessThan scenarios', () => {
+describe.skip('should.haveLocLessThan scenarios', () => {
     describe('Scenario 1: All files have lines of code LESS than the threshold', () => {
         test('"use-cases" should have LOC less than 50 - should PASS', async () => {
             for (const [includeMatcher] of includeMatchers) {

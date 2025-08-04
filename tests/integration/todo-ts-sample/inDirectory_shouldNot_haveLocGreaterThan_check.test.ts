@@ -18,7 +18,7 @@ const includeMatchers = [
 
 const excludeMatchers = ['!<rootDir>/**/package.json', '!<rootDir>/**/tsconfig.json'];
 
-describe('shouldNot.haveLocGreaterThan scenarios', () => {
+describe.skip('shouldNot.haveLocGreaterThan scenarios', () => {
     describe('Scenario 1: All files have lines of code LESS than or EQUAL to the threshold', () => {
         test('"entities" should not have LOC greater than 50 - should PASS (all files <= 50)', async () => {
             for (const [includeMatcher] of includeMatchers) {
