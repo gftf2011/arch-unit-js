@@ -88,6 +88,14 @@ export class DependencyFactory {
         resolvedWith: DependencyResolvedWith,
         comesFrom: NodeDependencyComesFrom
     ): Dependency {
+
+        console.log('dependency', dependency);
+        console.log('currentPath', currentPath);
+        console.log('rootDir', rootDir);
+        console.log('extensions', extensions);
+        console.log('resolvedWith', resolvedWith);
+        console.log('comesFrom', comesFrom);
+
         if (comesFrom === 'javascript-or-typescript') {
             return JavascriptOrTypescriptRelatedDependency.create(rootDir, currentPath, dependency, extensions, resolvedWith, comesFrom);
         }
