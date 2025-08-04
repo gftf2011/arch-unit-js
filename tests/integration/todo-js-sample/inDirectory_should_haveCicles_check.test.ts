@@ -22,7 +22,7 @@ describe('should.haveCicles scenarios', () => {
         for (const [includeMatcher] of includeMatchers) {
             try {
                 const options: Options = {
-                    mimeTypes: ['**/*.js'],
+                    extensionTypes: ['**/*.js'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };

@@ -22,7 +22,7 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
         test('"domain/entities" should not only depend on "domain" - should PASS', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.ts'],
+                    extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -41,7 +41,7 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
         test('"use-cases" should not only depend on "infra" - should PASS', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.ts'],
+                    extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -58,7 +58,7 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
         test('"use-cases" should not only depend on "main" - should PASS (none match)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.ts'],
+                    extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -77,7 +77,7 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
         test('"main" should not only depend on "domain" - should PASS (has mixed dependencies)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.ts'],
+                    extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -94,7 +94,7 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
         test('"main" should not only depend on "domain" and "use-cases" - should PASS (has mixed dependencies)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.ts'],
+                    extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -111,7 +111,7 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
         test('"main" should not only depend on "use-cases" - should PASS (has mixed dependencies)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.ts'],
+                    extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -130,7 +130,7 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
         test('"infra" should not only depend on "domain" and "pg" - should FAIL', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.ts'],
+                    extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -157,7 +157,7 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
         test('"main" should not only depend on "domain", "use-cases" and "infra" and "uuid" - should FAIL', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.ts'],
+                    extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -184,7 +184,7 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
         test('"use-cases" excluding "index.ts" should not only depend on "domain" and "uuid" - should FAIL', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.ts'],
+                    extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -218,7 +218,7 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
             for (const [includeMatcher] of includeMatchers) {
                 try {
                     const options: Options = {
-                        mimeTypes: ['**/*.ts'],
+                        extensionTypes: ['**/*.ts'],
                         includeMatcher: [...includeMatcher],
                         ignoreMatcher: excludeMatchers
                     };
@@ -245,7 +245,7 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
             for (const [includeMatcher] of includeMatchers) {
                 try {
                     const options: Options = {
-                        mimeTypes: ['**/*.ts'],
+                        extensionTypes: ['**/*.ts'],
                         includeMatcher: [...includeMatcher],
                         ignoreMatcher: excludeMatchers
                     };
@@ -271,7 +271,7 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
         test('incorrect extension', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.js'],
+                    extensionTypes: ['**/*.js'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -290,16 +290,16 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
                     const errorMessage = (error as Error).message;
 
                     expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/infra/**' should not only depends on '[**/domain/**]'\n\n`);
-                    expect(errorMessage).toContain(`- '${rootDir}/domain/entities/Todo.ts' - mismatch in 'mimeTypes': [**/*.js]`);
-                    expect(errorMessage).toContain(`- '${rootDir}/domain/repositories/TodoRepository.ts' - mismatch in 'mimeTypes': [**/*.js]`);
-                    expect(errorMessage).toContain(`- '${rootDir}/infra/repositories/InMemoryTodoRepository.ts' - mismatch in 'mimeTypes': [**/*.js]`);
-                    expect(errorMessage).toContain(`- '${rootDir}/main/app.ts' - mismatch in 'mimeTypes': [**/*.js]`);
-                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.ts' - mismatch in 'mimeTypes': [**/*.js]`);
-                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/DeleteTodo.ts' - mismatch in 'mimeTypes': [**/*.js]`);
-                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetAllTodos.ts' - mismatch in 'mimeTypes': [**/*.js]`);
-                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetTodoById.ts' - mismatch in 'mimeTypes': [**/*.js]`);
-                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/UpdateTodo.ts' - mismatch in 'mimeTypes': [**/*.js]`);
-                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/index.ts' - mismatch in 'mimeTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/domain/entities/Todo.ts' - mismatch in 'extensionTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/domain/repositories/TodoRepository.ts' - mismatch in 'extensionTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/infra/repositories/InMemoryTodoRepository.ts' - mismatch in 'extensionTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/main/app.ts' - mismatch in 'extensionTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.ts' - mismatch in 'extensionTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/DeleteTodo.ts' - mismatch in 'extensionTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetAllTodos.ts' - mismatch in 'extensionTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetTodoById.ts' - mismatch in 'extensionTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/UpdateTodo.ts' - mismatch in 'extensionTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/index.ts' - mismatch in 'extensionTypes': [**/*.js]`);
                 }
             }
         });

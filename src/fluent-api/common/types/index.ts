@@ -1,5 +1,5 @@
 export type Options = {
-    mimeTypes: string[],
+    extensionTypes: string[],
     includeMatcher: string[],
     ignoreMatcher: string[]
 }

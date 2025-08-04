@@ -22,7 +22,7 @@ describe('shouldNot.haveLocLessThan scenarios', () => {
         test('"use-cases" should not have LOC less than 5 - should PASS', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.js'],
+                    extensionTypes: ['**/*.js'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -40,7 +40,7 @@ describe('shouldNot.haveLocLessThan scenarios', () => {
         test('"entities" should not have LOC less than 20 - should PASS', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.js'],
+                    extensionTypes: ['**/*.js'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -58,7 +58,7 @@ describe('shouldNot.haveLocLessThan scenarios', () => {
         test('"domain" should not have LOC less than 8 - should PASS', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.js'],
+                    extensionTypes: ['**/*.js'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -76,7 +76,7 @@ describe('shouldNot.haveLocLessThan scenarios', () => {
         test('entire project should not have LOC less than 9 - should PASS (GetAllTodos.js equals threshold)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.js'],
+                    extensionTypes: ['**/*.js'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -96,7 +96,7 @@ describe('shouldNot.haveLocLessThan scenarios', () => {
         test('"use-cases" should not have LOC less than 10 - should FAIL (GetAllTodos.js below threshold)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.js'],
+                    extensionTypes: ['**/*.js'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -124,7 +124,7 @@ describe('shouldNot.haveLocLessThan scenarios', () => {
         test('"use-cases" should not have LOC less than 20 - should FAIL (multiple files below threshold)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.js'],
+                    extensionTypes: ['**/*.js'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -155,7 +155,7 @@ describe('shouldNot.haveLocLessThan scenarios', () => {
         test('"entities" should not have LOC less than 30 - should FAIL (Todo.js below threshold)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.js'],
+                    extensionTypes: ['**/*.js'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -183,7 +183,7 @@ describe('shouldNot.haveLocLessThan scenarios', () => {
         test('"domain" should not have LOC less than 40 - should FAIL (all files below threshold)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.js'],
+                    extensionTypes: ['**/*.js'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -212,7 +212,7 @@ describe('shouldNot.haveLocLessThan scenarios', () => {
         test('entire project should not have LOC less than 50 - should FAIL (all files below threshold)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.js'],
+                    extensionTypes: ['**/*.js'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -251,7 +251,7 @@ describe('shouldNot.haveLocLessThan scenarios', () => {
             for (const [includeMatcher] of includeMatchers) {
                 try {
                     const options: Options = {
-                        mimeTypes: ['**/*.js'],
+                        extensionTypes: ['**/*.js'],
                         includeMatcher: [...includeMatcher],
                         ignoreMatcher: excludeMatchers
                     };
@@ -278,7 +278,7 @@ describe('shouldNot.haveLocLessThan scenarios', () => {
             for (const [includeMatcher] of includeMatchers) {
                 try {
                     const options: Options = {
-                        mimeTypes: ['**/*.js'],
+                        extensionTypes: ['**/*.js'],
                         includeMatcher: [...includeMatcher],
                         ignoreMatcher: excludeMatchers
                     };
@@ -305,7 +305,7 @@ describe('shouldNot.haveLocLessThan scenarios', () => {
             for (const [includeMatcher] of includeMatchers) {
                 try {
                     const options: Options = {
-                        mimeTypes: ['**/*.js'],
+                        extensionTypes: ['**/*.js'],
                         includeMatcher: [...includeMatcher],
                         ignoreMatcher: excludeMatchers
                     };
@@ -331,7 +331,7 @@ describe('shouldNot.haveLocLessThan scenarios', () => {
         test('very low threshold should always PASS (threshold of 1)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.js'],
+                    extensionTypes: ['**/*.js'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -349,7 +349,7 @@ describe('shouldNot.haveLocLessThan scenarios', () => {
         test('incorrect extension', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.ts'], // Looking for TypeScript in JavaScript project
+                    extensionTypes: ['**/*.ts'], // Looking for TypeScript in JavaScript project
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -368,15 +368,15 @@ describe('shouldNot.haveLocLessThan scenarios', () => {
                     const errorMessage = (error as Error).message;
 
                     expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/entities/**' should not have L.O.C. less than: 10\n\n`);
-                    expect(errorMessage).toContain(`- '${rootDir}/domain/entities/Todo.js' - mismatch in 'mimeTypes': [**/*.ts]`);
-                    expect(errorMessage).toContain(`- '${rootDir}/domain/repositories/TodoRepository.js' - mismatch in 'mimeTypes': [**/*.ts]`);
-                    expect(errorMessage).toContain(`- '${rootDir}/infra/repositories/InMemoryTodoRepository.js' - mismatch in 'mimeTypes': [**/*.ts]`);
-                    expect(errorMessage).toContain(`- '${rootDir}/main/app.js' - mismatch in 'mimeTypes': [**/*.ts]`);
-                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.js' - mismatch in 'mimeTypes': [**/*.ts]`);
-                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/DeleteTodo.js' - mismatch in 'mimeTypes': [**/*.ts]`);
-                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetAllTodos.js' - mismatch in 'mimeTypes': [**/*.ts]`);
-                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetTodoById.js' - mismatch in 'mimeTypes': [**/*.ts]`);
-                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/UpdateTodo.js' - mismatch in 'mimeTypes': [**/*.ts]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/domain/entities/Todo.js' - mismatch in 'extensionTypes': [**/*.ts]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/domain/repositories/TodoRepository.js' - mismatch in 'extensionTypes': [**/*.ts]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/infra/repositories/InMemoryTodoRepository.js' - mismatch in 'extensionTypes': [**/*.ts]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/main/app.js' - mismatch in 'extensionTypes': [**/*.ts]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.js' - mismatch in 'extensionTypes': [**/*.ts]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/DeleteTodo.js' - mismatch in 'extensionTypes': [**/*.ts]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetAllTodos.js' - mismatch in 'extensionTypes': [**/*.ts]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetTodoById.js' - mismatch in 'extensionTypes': [**/*.ts]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/UpdateTodo.js' - mismatch in 'extensionTypes': [**/*.ts]`);
                 }
             }
         });

@@ -22,7 +22,7 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
         test('"use-cases" should have LOC greater or equal than 7 excluding index.ts - should PASS (all files >= 7)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.ts'],
+                    extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -40,7 +40,7 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
         test('"domain" should have LOC greater or equal than 1 - should PASS (all files >= 1)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.ts'],
+                    extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -58,7 +58,7 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
         test('"infra" should have LOC greater or equal than 32 - should PASS (InMemoryTodoRepository.ts has exactly 32 LOC)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.ts'],
+                    extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -76,7 +76,7 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
         test('"main" should have LOC greater or equal than 37 - should PASS (app.ts has exactly 40 LOC)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.ts'],
+                    extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -94,7 +94,7 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
         test('entire project should have LOC greater or equal than 1 - should PASS (all files >= 1)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.ts'],
+                    extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -114,7 +114,7 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
         test('"use-cases" should have LOC greater or equal than 10 excluding index.ts - should FAIL (GetAllTodos.ts has only 8 LOC)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.ts'],
+                    extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -142,7 +142,7 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
         test('"use-cases" should have LOC greater or equal than 20 - should FAIL (multiple files below threshold)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.ts'],
+                    extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -174,7 +174,7 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
         test('"domain" should have LOC greater or equal than 30 - should FAIL (multiple files below threshold)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.ts'],
+                    extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -204,7 +204,7 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
         test('entire project should have LOC greater or equal than 50 - should FAIL (multiple files below threshold)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.ts'],
+                    extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -242,7 +242,7 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
         test('"entities" should have LOC greater or equal than 28 - should FAIL (Todo.ts has exactly 28 LOC - boundary case)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.ts'],
+                    extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -270,7 +270,7 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
         test('"main" should have LOC greater or equal than 41 - should FAIL (app.ts has exactly 40 LOC - boundary case)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.ts'],
+                    extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -301,7 +301,7 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
             for (const [includeMatcher] of includeMatchers) {
                 try {
                     const options: Options = {
-                        mimeTypes: ['**/*.ts'],
+                        extensionTypes: ['**/*.ts'],
                         includeMatcher: [...includeMatcher],
                         ignoreMatcher: excludeMatchers
                     };
@@ -328,7 +328,7 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
             for (const [includeMatcher] of includeMatchers) {
                 try {
                     const options: Options = {
-                        mimeTypes: ['**/*.ts'],
+                        extensionTypes: ['**/*.ts'],
                         includeMatcher: [...includeMatcher],
                         ignoreMatcher: excludeMatchers
                     };
@@ -355,7 +355,7 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
             for (const [includeMatcher] of includeMatchers) {
                 try {
                     const options: Options = {
-                        mimeTypes: ['**/*.ts'],
+                        extensionTypes: ['**/*.ts'],
                         includeMatcher: [...includeMatcher],
                         ignoreMatcher: excludeMatchers
                     };
@@ -381,7 +381,7 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
         test('very low threshold (1) should always PASS', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.ts'],
+                    extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -399,7 +399,7 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
         test('boundary case: threshold equal to smallest file LOC should PASS', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.ts'],
+                    extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -417,7 +417,7 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
         test('incorrect extension', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.js'], // Looking for JavaScript in TypeScript project
+                    extensionTypes: ['**/*.js'], // Looking for JavaScript in TypeScript project
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -436,17 +436,17 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
                     const errorMessage = (error as Error).message;
 
                     expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/entities/**' should have L.O.C. greater or equal than: 10\n\n`);
-                    expect(errorMessage).toContain(`- '${rootDir}/domain/entities/Todo.ts' - mismatch in 'mimeTypes': [**/*.js]`);
-                    expect(errorMessage).toContain(`- '${rootDir}/domain/entities/index.ts' - mismatch in 'mimeTypes': [**/*.js]`);
-                    expect(errorMessage).toContain(`- '${rootDir}/domain/repositories/TodoRepository.ts' - mismatch in 'mimeTypes': [**/*.js]`);
-                    expect(errorMessage).toContain(`- '${rootDir}/infra/repositories/InMemoryTodoRepository.ts' - mismatch in 'mimeTypes': [**/*.js]`);
-                    expect(errorMessage).toContain(`- '${rootDir}/main/app.ts' - mismatch in 'mimeTypes': [**/*.js]`);
-                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.ts' - mismatch in 'mimeTypes': [**/*.js]`);
-                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/DeleteTodo.ts' - mismatch in 'mimeTypes': [**/*.js]`);
-                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetAllTodos.ts' - mismatch in 'mimeTypes': [**/*.js]`);
-                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetTodoById.ts' - mismatch in 'mimeTypes': [**/*.js]`);
-                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/UpdateTodo.ts' - mismatch in 'mimeTypes': [**/*.js]`);
-                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/index.ts' - mismatch in 'mimeTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/domain/entities/Todo.ts' - mismatch in 'extensionTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/domain/entities/index.ts' - mismatch in 'extensionTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/domain/repositories/TodoRepository.ts' - mismatch in 'extensionTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/infra/repositories/InMemoryTodoRepository.ts' - mismatch in 'extensionTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/main/app.ts' - mismatch in 'extensionTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.ts' - mismatch in 'extensionTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/DeleteTodo.ts' - mismatch in 'extensionTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetAllTodos.ts' - mismatch in 'extensionTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetTodoById.ts' - mismatch in 'extensionTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/UpdateTodo.ts' - mismatch in 'extensionTypes': [**/*.js]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/use-cases/index.ts' - mismatch in 'extensionTypes': [**/*.js]`);
                 }
             }
         });

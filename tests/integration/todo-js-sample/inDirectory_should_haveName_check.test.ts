@@ -22,7 +22,7 @@ describe('should.haveName scenarios', () => {
         test('"use-cases" should have name "*UseCase.js" - should FAIL (none match)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.js'],
+                    extensionTypes: ['**/*.js'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -54,7 +54,7 @@ describe('should.haveName scenarios', () => {
         test('"domain/entities" should have name "*Repository.js" - should FAIL (none match)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.js'],
+                    extensionTypes: ['**/*.js'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -80,7 +80,7 @@ describe('should.haveName scenarios', () => {
         test('"infra/repositories" should have name "*Entity.js" - should FAIL (none match)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.js'],
+                    extensionTypes: ['**/*.js'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -109,7 +109,7 @@ describe('should.haveName scenarios', () => {
         test('"use-cases" should have name "*Todo.js" - should FAIL (only some match)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.js'],
+                    extensionTypes: ['**/*.js'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -139,7 +139,7 @@ describe('should.haveName scenarios', () => {
         test('entire project as (**) should have name with "*.js" - should PASS (all match)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.js'],
+                    extensionTypes: ['**/*.js'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -156,7 +156,7 @@ describe('should.haveName scenarios', () => {
         test('"domain/entities" should have name "*Todo.js" - should PASS (all match)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.js'],
+                    extensionTypes: ['**/*.js'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -173,7 +173,7 @@ describe('should.haveName scenarios', () => {
         test('"domain/entities" should have name "Todo.js" - should PASS (exact match)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.js'],
+                    extensionTypes: ['**/*.js'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -190,7 +190,7 @@ describe('should.haveName scenarios', () => {
         test('"infra/repositories" should have name "*Repository.js" - should PASS (all match)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.js'],
+                    extensionTypes: ['**/*.js'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -207,7 +207,7 @@ describe('should.haveName scenarios', () => {
         test('"infra/repositories" should have name "InMemory*Repository.js" - should PASS (all match)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.js'],
+                    extensionTypes: ['**/*.js'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -224,7 +224,7 @@ describe('should.haveName scenarios', () => {
         test('"use-cases" should have name "*.js" - should PASS (all match wildcard)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.js'],
+                    extensionTypes: ['**/*.js'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -241,7 +241,7 @@ describe('should.haveName scenarios', () => {
         test('"use-cases" should have name "*Todo*" - should PASS (all match)', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.js'],
+                    extensionTypes: ['**/*.js'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -261,7 +261,7 @@ describe('should.haveName scenarios', () => {
             for (const [includeMatcher] of includeMatchers) {
                 try {
                     const options: Options = {
-                        mimeTypes: ['**/*.js'],
+                        extensionTypes: ['**/*.js'],
                         includeMatcher: [...includeMatcher],
                         ignoreMatcher: excludeMatchers
                     };
@@ -287,7 +287,7 @@ describe('should.haveName scenarios', () => {
         test('incorrect extension', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
-                    mimeTypes: ['**/*.ts'],
+                    extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
                     ignoreMatcher: excludeMatchers
                 };
@@ -306,7 +306,7 @@ describe('should.haveName scenarios', () => {
                     const errorMessage = (error as Error).message;
 
                     expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/entities/**' should have name '*Todo.js'\n\n`);
-                    expect(errorMessage).toContain(`- '${rootDir}/domain/entities/Todo.js' - mismatch in 'mimeTypes': [**/*.ts]`);
+                    expect(errorMessage).toContain(`- '${rootDir}/domain/entities/Todo.js' - mismatch in 'extensionTypes': [**/*.ts]`);
                 }
             }
         });

@@ -17,9 +17,9 @@ function getProjectRoot(): string {
 }
 
 export const app = (options: Options = {
-  mimeTypes: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.jsx'],
+  extensionTypes: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.jsx'],
   includeMatcher: ['<rootDir>/.'],
-  ignoreMatcher: ['<rootDir>/node_modules/**']
+  ignoreMatcher: ['!<rootDir>/node_modules/**']
 }) => {
   const rootDir = getProjectRoot();
   return ComponentSelectorBuilder.create(rootDir, options);

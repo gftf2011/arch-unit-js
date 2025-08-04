@@ -21,7 +21,7 @@ describe('shouldNot.haveCicles scenarios', () => {
     test('entire project should not have cicles - should PASS', async () => {
         for (const [includeMatcher] of includeMatchers) {
             const options: Options = {
-                mimeTypes: ['**/*.js'],
+                extensionTypes: ['**/*.js'],
                 includeMatcher: [...includeMatcher],
                 ignoreMatcher: excludeMatchers
             };

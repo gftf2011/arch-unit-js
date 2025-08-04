@@ -26,7 +26,7 @@ npm install arch-unit-js
 import { ComponentSelectorBuilder } from 'arch-unit-js';
 
 const options = {
-  mimeTypes: ['**/*.ts', '**/*.js'],
+  extensionTypes: ['**/*.ts', '**/*.js'],
   includeMatcher: ['src/**'],
   ignoreMatcher: ['!**/node_modules/**']
 };

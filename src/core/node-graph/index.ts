@@ -16,11 +16,11 @@ export class NodeGraph {
         startPath: string,
         filesOrFoldersToInclude: string[],
         filesOrFoldersToIgnore: string[],
-        mimeTypes: string[]
+        extensionTypes: string[]
       ): Promise<NodeGraph> {
         const nodes: Map<string, RootFile> = new Map();
     
-        const extensions = mimeTypes.map(mimeType => extractExtensionFromGlobPattern(mimeType)) as string[];
+        const extensions = extensionTypes.map(mimeType => extractExtensionFromGlobPattern(mimeType)) as string[];
       
         const includePatterns = resolveRootDirPatternToGlobPattern(filesOrFoldersToInclude, startPath);
         const ignorePatterns = resolveRootDirPatternToGlobPattern(filesOrFoldersToIgnore, startPath);

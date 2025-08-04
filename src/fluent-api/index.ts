@@ -15,11 +15,11 @@ class PositiveMatchConditionSelectorBuilder {
     private readonly negated: boolean = false;
 
     constructor(
-        readonly rootDir: string,
-        readonly pattern: string,
-        readonly options: Options,
-        readonly excludePattern: string[],
-        readonly ruleConstruction: string[]
+        protected readonly rootDir: string,
+        protected readonly pattern: string,
+        protected readonly options: Options,
+        protected readonly excludePattern: string[],
+        protected readonly ruleConstruction: string[]
     ) {}
 
     haveLocGreaterOrEqualThan(threshold: number): ProjectFilesInDirectoryLOCAnalysisGreaterThanOrEqualShouldSelector {
@@ -137,11 +137,11 @@ class NegativeMatchConditionSelectorBuilder {
     private readonly negated: boolean = true;
 
     constructor(
-        readonly rootDir: string,
-        readonly pattern: string,
-        readonly options: Options,
-        readonly excludePattern: string[],
-        readonly ruleConstruction: string[]
+        protected readonly rootDir: string,
+        protected readonly pattern: string,
+        protected readonly options: Options,
+        protected readonly excludePattern: string[],
+        protected readonly ruleConstruction: string[]
     ) {}
 
     haveLocGreaterOrEqualThan(threshold: number): ProjectFilesInDirectoryLOCAnalysisGreaterThanOrEqualShouldSelector {
@@ -257,11 +257,11 @@ class NegativeMatchConditionSelectorBuilder {
 
 class ShouldSelectorBuilder {
   constructor(
-    readonly rootDir: string,
-    readonly pattern: string,
-    readonly options: Options,
-    readonly excludePattern: string[],
-    readonly ruleConstruction: string[]
+    protected readonly rootDir: string,
+    protected readonly pattern: string,
+    protected readonly options: Options,
+    protected readonly excludePattern: string[],
+    protected readonly ruleConstruction: string[]
 ) {}
 
   should(): PositiveMatchConditionSelectorBuilder {
@@ -286,7 +286,7 @@ class ShouldSelectorBuilder {
 }
 
 class ProjectFilesComponentSelector {
-    constructor(readonly rootDir: string, readonly options: Options, readonly ruleConstruction: string[]) {}
+    constructor(protected readonly rootDir: string, protected readonly options: Options, protected readonly ruleConstruction: string[]) {}
 
     inDirectory(pattern: string, excludePattern: string[] = []): ShouldSelectorBuilder {
         return new ShouldSelectorBuilder(
@@ -300,7 +300,7 @@ class ProjectFilesComponentSelector {
 }
 
 export class ComponentSelectorBuilder {
-  private constructor(readonly rootDir: string, readonly options: Options) {}
+  private constructor(protected readonly rootDir: string, protected readonly options: Options) {}
 
   static create(rootDir: string, options: Options): ComponentSelectorBuilder {
     return new ComponentSelectorBuilder(rootDir, options);

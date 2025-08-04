@@ -21,7 +21,7 @@ abstract class Checkable {
     }
 
     protected async buildNodeGraph(): Promise<NodeGraph> {
-        return NodeGraph.create(this.props.rootDir, this.props.options.includeMatcher, this.props.options.ignoreMatcher, this.props.options.mimeTypes);
+        return NodeGraph.create(this.props.rootDir, this.props.options.includeMatcher, this.props.options.ignoreMatcher, this.props.options.extensionTypes);
     }
 
     protected clearFiles(files: Map<string, RootFile>): void {
@@ -31,8 +31,8 @@ abstract class Checkable {
     protected validateFilesExtension(files: Map<string, RootFile>): void {
         const notificationHandler = NotificationHandler.create();
         for (const [_path, file] of files) {
-            if (micromatch([file.path], this.props.options.mimeTypes).length === 0) {
-                notificationHandler.addError(new Error(`- '${file.path}' - mismatch in 'mimeTypes': [${this.props.options.mimeTypes.join(', ')}]`));
+            if (micromatch([file.path], this.props.options.extensionTypes).length === 0) {
+                notificationHandler.addError(new Error(`- '${file.path}' - mismatch in 'extensionTypes': [${this.props.options.extensionTypes.join(', ')}]`));
             }
         }
 
