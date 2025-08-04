@@ -21,9 +21,14 @@ export class NodeGraph {
         const nodes: Map<string, RootFile> = new Map();
     
         const extensions = extensionTypes.map(mimeType => extractExtensionFromGlobPattern(mimeType)) as string[];
-      
+
+        console.log('extensions', extensions);
+
         const includePatterns = resolveRootDirPatternToGlobPattern(filesOrFoldersToInclude, startPath);
         const ignorePatterns = resolveRootDirPatternToGlobPattern(filesOrFoldersToIgnore, startPath);
+
+        console.log('includePatterns', includePatterns);
+        console.log('ignorePatterns', ignorePatterns);
 
         async function walk(currentPath: string, extensions: string[]) {
           const entries = await fsPromises.readdir(currentPath, { withFileTypes: true });
@@ -32,6 +37,8 @@ export class NodeGraph {
 
           for (const entry of entries) {
             const fullPath = path.posix.join(currentPath, entry.name);
+
+            console.log('fullPath', fullPath);
 
             if (micromatch([fullPath], [...includePatterns, ...ignorePatterns]).length > 0) {
               if (entry.isDirectory()) {
