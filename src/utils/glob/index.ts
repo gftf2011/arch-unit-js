@@ -1,5 +1,4 @@
 import path from 'path';
-import { normalizeWindowsPath } from '../windows';
 
 /**
  * Extracts the file extension from a glob pattern or file path.
@@ -94,17 +93,16 @@ export function extractExtensionFromGlobPattern(pattern: string): string | null 
  * @since 1.0.0
  */
 export function resolveRootDirPatternToGlobPattern(patterns: string[], rootDir: string): string[] {
-    const normalizedRootDir = normalizeWindowsPath(rootDir);
     return patterns.map(pattern => {
         if (pattern.startsWith('!')) {
             const cleaned = pattern.replace('<rootDir>', '').replace(/^!/, '');
             const relative = cleaned.replace(/^\.?\//, '');
-            const newPattern = `!${path.posix.resolve(normalizedRootDir, relative)}`;
+            const newPattern = `!${path.posix.resolve(rootDir, relative)}`;
             return newPattern;
         }
         const cleaned = pattern.replace('<rootDir>', '');
         const relative = cleaned.replace(/^\.?\//, '');
-        const newPattern = path.posix.resolve(normalizedRootDir, relative);
+        const newPattern = path.posix.resolve(rootDir, relative);
         return newPattern;
     });
 }

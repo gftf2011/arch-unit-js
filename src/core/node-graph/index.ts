@@ -4,6 +4,7 @@ import micromatch from 'micromatch';
 import { RootFile, FileFactory } from '../file';
 import {
     extractExtensionFromGlobPattern,
+    normalizeWindowsPath,
     resolveRootDirPatternToGlobPattern
 } from "../../utils";
 
@@ -43,7 +44,7 @@ export class NodeGraph {
           }
         }
 
-        await walk(startPath, extensions);
+        await walk(normalizeWindowsPath(startPath), extensions);
     
         return new NodeGraph(nodes);
     }
