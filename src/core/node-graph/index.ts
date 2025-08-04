@@ -4,7 +4,6 @@ import micromatch from 'micromatch';
 import { RootFile, FileFactory } from '../file';
 import {
     extractExtensionFromGlobPattern,
-    normalizeWindowsPath,
     resolveRootDirPatternToGlobPattern
 } from "../../utils";
 
@@ -19,13 +18,12 @@ export class NodeGraph {
         filesOrFoldersToIgnore: string[],
         extensionTypes: string[]
       ): Promise<NodeGraph> {
-        const normalizedStartPath = normalizeWindowsPath(startPath);
         const nodes: Map<string, RootFile> = new Map();
     
         const extensions = extensionTypes.map(mimeType => extractExtensionFromGlobPattern(mimeType)) as string[];
       
-        const includePatterns = resolveRootDirPatternToGlobPattern(filesOrFoldersToInclude, normalizedStartPath);
-        const ignorePatterns = resolveRootDirPatternToGlobPattern(filesOrFoldersToIgnore, normalizedStartPath);
+        const includePatterns = resolveRootDirPatternToGlobPattern(filesOrFoldersToInclude, startPath);
+        const ignorePatterns = resolveRootDirPatternToGlobPattern(filesOrFoldersToIgnore, startPath);
 
         async function walk(currentPath: string, extensions: string[]) {
           const entries = await fsPromises.readdir(currentPath, { withFileTypes: true });
@@ -38,14 +36,14 @@ export class NodeGraph {
                 await walk(fullPath, extensions);
               } else if (entry.isFile()) {
 
-                const file = await FileFactory.create(entry.name, fullPath, normalizedStartPath, extensions);
+                const file = await FileFactory.create(entry.name, fullPath, startPath, extensions);
                 nodes.set(file.path, file);
               }
             }
           }
         }
 
-        await walk(normalizedStartPath, extensions);
+        await walk(startPath, extensions);
     
         return new NodeGraph(nodes);
     }
