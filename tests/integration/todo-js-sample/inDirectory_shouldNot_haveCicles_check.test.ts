@@ -8,13 +8,13 @@ console.log(rootDir);
 
 const includeMatchers = [
     [['<rootDir>/**']],
-    [['<rootDir>/**/']],
-    [['./**']],
-    [['./**/']],
-    [['<rootDir>/domain/**', '<rootDir>/use-cases/**', '<rootDir>/infra/**', '<rootDir>/main/**']],
-    [['<rootDir>/domain/**/', '<rootDir>/use-cases/**/', '<rootDir>/infra/**/', '<rootDir>/main/**/']],
-    [['./domain/**', './use-cases/**', './infra/**', './main/**']],
-    [['./domain/**/', './use-cases/**/', './infra/**/', './main/**/']],
+    // [['<rootDir>/**/']],
+    // [['./**']],
+    // [['./**/']],
+    // [['<rootDir>/domain/**', '<rootDir>/use-cases/**', '<rootDir>/infra/**', '<rootDir>/main/**']],
+    // [['<rootDir>/domain/**/', '<rootDir>/use-cases/**/', '<rootDir>/infra/**/', '<rootDir>/main/**/']],
+    // [['./domain/**', './use-cases/**', './infra/**', './main/**']],
+    // [['./domain/**/', './use-cases/**/', './infra/**/', './main/**/']],
 ];
 
 const excludeMatchers = ['!<rootDir>/**/package.json'];
