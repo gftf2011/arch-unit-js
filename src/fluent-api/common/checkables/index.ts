@@ -98,6 +98,9 @@ abstract class Checkable {
     public async check(): Promise<void> {
         const files = (await this.buildNodeGraph()).nodes;
 
+        console.log(Array.from(files.keys()));
+        console.log(Array.from(files.values()));
+
         this.validateFilesExtension(files);
         this.validateFilesDependencies(files);
         this.validateIfAllDependenciesExistInProjectGraph(files);
