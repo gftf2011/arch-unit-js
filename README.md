@@ -23,7 +23,7 @@ npm install arch-unit-js
 ### Basic Usage
 
 ```typescript
-import { ComponentSelectorBuilder } from 'arch-unit-js';
+import { app } from 'arch-unit-js';
 
 const options = {
   extensionTypes: ['**/*.ts', '**/*.js'],
@@ -32,7 +32,7 @@ const options = {
 };
 
 // Enforce naming conventions
-await ComponentSelectorBuilder.create('./my-project', options)
+await app(options)
   .projectFiles()
   .inDirectory('**/controllers/**')
   .should()
@@ -40,7 +40,7 @@ await ComponentSelectorBuilder.create('./my-project', options)
   .check();
 
 // Control dependencies
-await ComponentSelectorBuilder.create('./my-project', options)
+await app(options)
   .projectFiles()
   .inDirectory('**/domain/**')
   .shouldNot()
