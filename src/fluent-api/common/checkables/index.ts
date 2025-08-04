@@ -4,7 +4,6 @@ import micromatch from 'micromatch';
 import { CheckableProps, LOCAnalysisProps, PatternCheckableProps } from '../types';
 import { NotificationHandler } from '../notification/handler';
 import { NotificationError } from '../errors/notification';
-import { normalizeWindowsPath } from '../../../utils/windows';
 
 abstract class Checkable {
     constructor(protected readonly props: CheckableProps) {}
@@ -12,12 +11,7 @@ abstract class Checkable {
     protected filter(map: Map<string, RootFile>): Map<string, RootFile> {
         const filters: string[] = this.props.filteringPatterns;
         const filteringPattern = [...filters, ...this.props.excludePattern];
-        
-        const filteredFiles = new Map([...map].filter(([path, _file]) => {
-            // Normalize the path to ensure consistent forward slashes
-            const normalizedPath = normalizeWindowsPath(path);
-            return micromatch([normalizedPath], filteringPattern).length > 0;
-        }));
+        const filteredFiles = new Map([...map].filter(([path, _file]) => micromatch([path], filteringPattern).length > 0));
 
         if (filteredFiles.size === 0) {
             throw new NotificationError(this.props.ruleConstruction, [new Error(`No files found in '[${filters.join(', ')}]'`)]);
@@ -97,9 +91,6 @@ abstract class Checkable {
     
     public async check(): Promise<void> {
         const files = (await this.buildNodeGraph()).nodes;
-
-        console.log(Array.from(files.keys()));
-        console.log(Array.from(files.values()));
 
         this.validateFilesExtension(files);
         this.validateFilesDependencies(files);

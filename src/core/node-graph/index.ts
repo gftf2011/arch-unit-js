@@ -27,7 +27,9 @@ export class NodeGraph {
 
         async function walk(currentPath: string, extensions: string[]) {
           const entries = await fsPromises.readdir(currentPath, { withFileTypes: true });
-    
+          
+          console.log(entries);
+
           for (const entry of entries) {
             const fullPath = path.posix.join(currentPath, entry.name);
 
