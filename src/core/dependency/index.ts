@@ -46,9 +46,7 @@ class JavascriptOrTypescriptRelatedDependency extends Dependency {
         comesFrom: JavascriptOrTypescriptRelatedDependencyComesFrom
     ): JavascriptOrTypescriptRelatedDependency {
         if (isBuiltinModule(dependency)) return new JavascriptOrTypescriptRelatedDependency(dependency, dependency, 'node-builtin-module', resolvedWith, comesFrom);
-    
         if (isPackageJsonDependency(rootDir, dependency)) return new JavascriptOrTypescriptRelatedDependency(dependency, dependency, 'node-package', resolvedWith, comesFrom);
-    
         if (isPackageJsonDevDependency(rootDir, dependency)) return new JavascriptOrTypescriptRelatedDependency(dependency, dependency, 'node-dev-package', resolvedWith, comesFrom);
     
         const fullPath = (rootDir: string, currentPath: string, dependency: string) => {
