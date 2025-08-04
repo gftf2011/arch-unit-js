@@ -4,6 +4,7 @@ import micromatch from 'micromatch';
 import { RootFile, FileFactory } from '../file';
 import {
     extractExtensionFromGlobPattern,
+    normalizeWindowsPath,
     resolveRootDirPatternToGlobPattern
 } from "../../utils";
 
@@ -38,7 +39,7 @@ export class NodeGraph {
           console.log(entries);
 
           for (const entry of entries) {
-            const fullPath = path.join(currentPath, entry.name);
+            const fullPath = normalizeWindowsPath(path.join(currentPath, entry.name));
 
             console.log('fullPath', fullPath);
 

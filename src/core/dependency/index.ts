@@ -5,6 +5,7 @@ import {
     isPackageJsonDependency,
     isPackageJsonDevDependency,
     isTypescriptAtPathDependency,
+    normalizeWindowsPath,
     resolveIfTypescriptAtPathDependency
 } from '../../utils';
 
@@ -53,7 +54,7 @@ class JavascriptOrTypescriptRelatedDependency extends Dependency {
             if (isTypescriptAtPathDependency(dependency)) {
                 return resolveIfTypescriptAtPathDependency(rootDir, dependency);
             } else {
-                return path.resolve(currentPath, dependency);
+                return normalizeWindowsPath(path.resolve(currentPath, dependency));
             }
         };
     
