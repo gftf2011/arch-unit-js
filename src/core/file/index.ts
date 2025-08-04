@@ -9,7 +9,7 @@ export abstract class RootFile {
     protected constructor(
         readonly name: string,
         readonly path: string,
-        readonly type: 'file' | 'javascript-typescript-file' | 'styling-css-scss-file',
+        readonly type: 'file' | 'javascript-typescript-file',
         readonly loc: number,
         readonly totalLines: number,
         readonly dependencies: Dependency[] = [],
