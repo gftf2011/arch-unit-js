@@ -1,9 +1,8 @@
 import path from 'path';
 import { Options } from '../../../src/fluent-api/common/types';
 import { ComponentSelectorBuilder } from '../../../src/fluent-api';
-import { normalizeWindowsPath } from '../../../src/utils/windows';
 
-const rootDir = normalizeWindowsPath(path.resolve(path.dirname(__filename), '..', '..', 'sample', 'todo-js-sample'));
+const rootDir = path.resolve(path.dirname(__filename), '..', '..', 'sample', 'todo-js-sample');
 
 const includeMatchers = [
     [['<rootDir>/**']],
@@ -18,9 +17,9 @@ const includeMatchers = [
 
 const excludeMatchers = ['!<rootDir>/**/package.json'];
 
-describe.skip('should.dependsOn scenarios', () => {
+describe('should.dependsOn scenarios', () => {
     describe('Scenario 1: File has NO dependencies', () => {
-        test('"domain/entities" should depend on "inexistent-dependency" - should FAIL', async () => {
+        test.only('"domain/entities" should depend on "inexistent-dependency" - should FAIL', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
                     extensionTypes: ['**/*.js'],

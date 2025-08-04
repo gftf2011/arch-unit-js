@@ -4,17 +4,15 @@ import { ComponentSelectorBuilder } from '../../../src/fluent-api';
 
 const rootDir = path.resolve(path.dirname(__filename), '..', '..', 'sample', 'todo-js-sample');
 
-console.log(rootDir);
-
 const includeMatchers = [
     [['<rootDir>/**']],
-    // [['<rootDir>/**/']],
-    // [['./**']],
-    // [['./**/']],
-    // [['<rootDir>/domain/**', '<rootDir>/use-cases/**', '<rootDir>/infra/**', '<rootDir>/main/**']],
-    // [['<rootDir>/domain/**/', '<rootDir>/use-cases/**/', '<rootDir>/infra/**/', '<rootDir>/main/**/']],
-    // [['./domain/**', './use-cases/**', './infra/**', './main/**']],
-    // [['./domain/**/', './use-cases/**/', './infra/**/', './main/**/']],
+    [['<rootDir>/**/']],
+    [['./**']],
+    [['./**/']],
+    [['<rootDir>/domain/**', '<rootDir>/use-cases/**', '<rootDir>/infra/**', '<rootDir>/main/**']],
+    [['<rootDir>/domain/**/', '<rootDir>/use-cases/**/', '<rootDir>/infra/**/', '<rootDir>/main/**/']],
+    [['./domain/**', './use-cases/**', './infra/**', './main/**']],
+    [['./domain/**/', './use-cases/**/', './infra/**/', './main/**/']],
 ];
 
 const excludeMatchers = ['!<rootDir>/**/package.json'];
