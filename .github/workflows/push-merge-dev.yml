@@ -11,36 +11,36 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [18.x, 20.x, 22.x]
     name: Cache Depedencies
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-        
+
       - name: Setup Node.JS Environment
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          
+
       - name: Install Packages
         run: |
           npm i
-          
+
       - name: Cache "node-modules"
         uses: actions/cache@v4
         with:
           path: ./node_modules
-          key: node-modules-${{ runner.os }}-${{ hashFiles('package.json') }}
+          key: node-modules-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
           restore-keys: |
-            node-modules-${{ runner.os }}-
-          
+            node-modules-${{ runner.os }}-${{ matrix.node-version }}-
+
       - name: Cache "package-lock.json"
         uses: actions/cache@v4
         with:
           path: ./package-lock.json
-          key: package-lock-${{ runner.os }}-${{ hashFiles('package.json') }}
+          key: package-lock-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
           restore-keys: |
-            package-lock-${{ runner.os }}-
+            package-lock-${{ runner.os }}-${{ matrix.node-version }}-
 
   test-and-lint:
     runs-on: ubuntu-latest
@@ -64,17 +64,17 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ./node_modules
-          key: node-modules-${{ runner.os }}-${{ hashFiles('package.json') }}
+          key: node-modules-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
           restore-keys: |
-            node-modules-${{ runner.os }}-
-          
+            node-modules-${{ runner.os }}-${{ matrix.node-version }}-
+
       - name: Use Cache "package-lock.json"
         uses: actions/cache@v4
         with:
           path: ./package-lock.json
-          key: package-lock-${{ runner.os }}-${{ hashFiles('package.json') }}
+          key: package-lock-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
           restore-keys: |
-            package-lock-${{ runner.os }}-
+            package-lock-${{ runner.os }}-${{ matrix.node-version }}-
 
       - name: Run Tests
         run: |
