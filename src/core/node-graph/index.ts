@@ -19,6 +19,8 @@ export class NodeGraph {
         extensionTypes: string[]
       ): Promise<NodeGraph> {
         const nodes: Map<string, RootFile> = new Map();
+        
+        console.log('startPath', startPath);
     
         const extensions = extensionTypes.map(mimeType => extractExtensionFromGlobPattern(mimeType)) as string[];
 
