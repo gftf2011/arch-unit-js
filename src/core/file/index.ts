@@ -1,5 +1,5 @@
 import fsPromises from 'fs/promises';
-import * as path from 'upath';
+import * as path from 'pathe';
 import traverse from '@babel/traverse';
 import { parse } from '@babel/parser';
 import { DependencyFactory, Dependency } from '../dependency';

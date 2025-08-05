@@ -1,4 +1,4 @@
-import * as path from 'upath';
+import * as path from 'pathe';
 
 /**
  * Extracts the file extension from a glob pattern or file path.

@@ -1,5 +1,5 @@
 import fsPromises from 'fs/promises';
-import * as path from 'upath';
+import * as path from 'pathe';
 import micromatch from 'micromatch';
 import { RootFile, FileFactory } from '../file';
 import {

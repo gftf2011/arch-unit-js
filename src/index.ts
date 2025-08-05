@@ -1,5 +1,5 @@
 import { fileURLToPath } from 'url';
-import path from 'path';
+import * as path from 'pathe';
 import { ComponentSelectorBuilder } from './fluent-api';
 import { Options } from './fluent-api/common/types';
 /**

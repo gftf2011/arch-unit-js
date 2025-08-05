@@ -1,4 +1,4 @@
-import * as path from 'upath';
+import * as path from 'pathe';
 import { Options } from '../../../src/fluent-api/common/types';
 import { ComponentSelectorBuilder } from '../../../src/fluent-api';
 

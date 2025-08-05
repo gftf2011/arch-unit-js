@@ -1,5 +1,5 @@
 import fs from 'fs';
-import * as path from 'upath';
+import * as path from 'pathe';
 import {
     isBuiltinModule,
     isPackageJsonDependency,
