@@ -3,7 +3,7 @@ import path from 'path';
 import traverse from '@babel/traverse';
 import { parse } from '@babel/parser';
 import { DependencyFactory, Dependency } from '../dependency';
-import { isJavascriptRelatedFile, isTypeScriptRelatedFile } from '../../utils';
+import { isJavascriptRelatedFile, isTypeScriptRelatedFile, normalizeWindowsPath } from '../../utils';
 
 export abstract class RootFile {
     protected constructor(
@@ -78,7 +78,7 @@ class JavascriptOrTypescriptRelatedFile extends RootFile {
             totalImportedDependencies++;
             dependencies.push(DependencyFactory.create(
                 rootDir,
-                path.dirname(filePath),
+                normalizeWindowsPath(path.dirname(filePath)),
                 node.source.value,
                 extensions,
                 'import',
@@ -95,7 +95,7 @@ class JavascriptOrTypescriptRelatedFile extends RootFile {
                 totalRequiredDependencies++;
                 dependencies.push(DependencyFactory.create(
                     rootDir,
-                    path.dirname(filePath),
+                    normalizeWindowsPath(path.dirname(filePath)),
                     node.arguments[0].value,
                     extensions,
                     'require',

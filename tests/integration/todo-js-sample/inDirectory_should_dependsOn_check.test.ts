@@ -5,6 +5,8 @@ import { normalizeWindowsPath } from '../../../src/utils';
 
 const rootDir = normalizeWindowsPath(path.resolve(path.dirname(__filename), '..', '..', 'sample', 'todo-js-sample'));
 
+console.log(rootDir);
+
 const includeMatchers = [
     [['<rootDir>/**']],
     [['<rootDir>/**/']],
