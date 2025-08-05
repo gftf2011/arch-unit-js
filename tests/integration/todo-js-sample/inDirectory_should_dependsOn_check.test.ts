@@ -5,8 +5,6 @@ import { normalizeWindowsPath } from '../../../src/utils';
 
 const rootDir = normalizeWindowsPath(path.resolve(path.dirname(__filename), '..', '..', 'sample', 'todo-js-sample'));
 
-console.log(rootDir);
-
 const includeMatchers = [
     [['<rootDir>/**']],
     [['<rootDir>/**/']],
@@ -22,7 +20,7 @@ const excludeMatchers = ['!<rootDir>/**/package.json'];
 
 describe('should.dependsOn scenarios', () => {
     describe('Scenario 1: File has NO dependencies', () => {
-        test.only('"domain/entities" should depend on "inexistent-dependency" - should FAIL', async () => {
+        test('"domain/entities" should depend on "inexistent-dependency" - should FAIL', async () => {
             for (const [includeMatcher] of includeMatchers) {
                 const options: Options = {
                     extensionTypes: ['**/*.js'],

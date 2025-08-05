@@ -151,9 +151,6 @@ export abstract class PatternCiclesCheckable extends PatternCheckable {
     public override async check(): Promise<void> {
         const files = (await this.buildNodeGraph()).nodes;
 
-        console.log('keys', JSON.stringify(Array.from(files.keys()), null, 2));
-        console.log('values', JSON.stringify(Array.from(files.values()), null, 2));
-
         this.validateFilesExtension(files);
         this.validateFilesDependencies(files);
         this.validateIfAllDependenciesExistInProjectGraph(files);
