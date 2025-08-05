@@ -18,7 +18,7 @@ const includeMatchers = [
 
 const excludeMatchers = ['!<rootDir>/**/package.json', '!<rootDir>/**/tsconfig.json'];
 
-describe.skip('shouldNot.dependsOn scenarios', () => {
+describe('shouldNot.dependsOn scenarios', () => {
     describe('Scenario 1: File has NO dependencies', () => {
         test('"domain/entities" should not depend on "inexistent-dependency" - should PASS (no dependencies)', async () => {
             for (const [includeMatcher] of includeMatchers) {
