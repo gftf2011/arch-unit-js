@@ -1,10 +1,9 @@
 import fsPromises from 'fs/promises';
-import path from 'path';
+import * as path from 'upath';
 import micromatch from 'micromatch';
 import { RootFile, FileFactory } from '../file';
 import {
     extractExtensionFromGlobPattern,
-    normalizeWindowsPath,
     resolveRootDirPatternToGlobPattern
 } from "../../utils";
 
@@ -30,7 +29,7 @@ export class NodeGraph {
           const entries = await fsPromises.readdir(currentPath, { withFileTypes: true });
           
           for (const entry of entries) {
-            const fullPath = normalizeWindowsPath(path.join(currentPath, entry.name));
+            const fullPath = path.join(currentPath, entry.name);
 
             if (micromatch([fullPath], [...includePatterns, ...ignorePatterns]).length > 0) {
               if (entry.isDirectory()) {

@@ -1,5 +1,4 @@
-import path from 'path';
-import { normalizeWindowsPath } from '../windows';
+import * as path from 'upath';
 
 /**
  * Extracts the file extension from a glob pattern or file path.
@@ -98,12 +97,12 @@ export function resolveRootDirPatternToGlobPattern(patterns: string[], rootDir: 
         if (pattern.startsWith('!')) {
             const cleaned = pattern.replace('<rootDir>', '').replace(/^!/, '');
             const relative = cleaned.replace(/^\.?\//, '');
-            const newPattern = `!${normalizeWindowsPath(path.resolve(rootDir, relative))}`;
+            const newPattern = `!${path.resolve(rootDir, relative)}`;
             return newPattern;
         }
         const cleaned = pattern.replace('<rootDir>', '');
         const relative = cleaned.replace(/^\.?\//, '');
-        const newPattern = normalizeWindowsPath(path.resolve(rootDir, relative));
+        const newPattern = path.resolve(rootDir, relative);
         return newPattern;
     });
 }

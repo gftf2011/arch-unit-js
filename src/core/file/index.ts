@@ -1,9 +1,9 @@
 import fsPromises from 'fs/promises';
-import path from 'path';
+import * as path from 'upath';
 import traverse from '@babel/traverse';
 import { parse } from '@babel/parser';
 import { DependencyFactory, Dependency } from '../dependency';
-import { isJavascriptRelatedFile, isTypeScriptRelatedFile, normalizeWindowsPath } from '../../utils';
+import { isJavascriptRelatedFile, isTypeScriptRelatedFile } from '../../utils';
 
 export abstract class RootFile {
     protected constructor(
@@ -78,7 +78,7 @@ class JavascriptOrTypescriptRelatedFile extends RootFile {
             totalImportedDependencies++;
             dependencies.push(DependencyFactory.create(
                 rootDir,
-                normalizeWindowsPath(path.dirname(filePath)),
+                path.dirname(filePath),
                 node.source.value,
                 extensions,
                 'import',
@@ -95,7 +95,7 @@ class JavascriptOrTypescriptRelatedFile extends RootFile {
                 totalRequiredDependencies++;
                 dependencies.push(DependencyFactory.create(
                     rootDir,
-                    normalizeWindowsPath(path.dirname(filePath)),
+                    path.dirname(filePath),
                     node.arguments[0].value,
                     extensions,
                     'require',

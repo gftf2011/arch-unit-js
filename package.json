@@ -48,6 +48,7 @@
   "dependencies": {
     "@babel/parser": "7.28.0",
     "@babel/traverse": "7.28.0",
-    "micromatch": "^4.0.8"
+    "micromatch": "4.0.8",
+    "upath": "2.0.1"
   }
 }

@@ -10,7 +10,6 @@ import {
     ProjectFilesInDirectoryLOCAnalysisGreaterThanShouldSelector,
     ProjectFilesInDirectoryLOCAnalysisGreaterThanOrEqualShouldSelector
 } from './checkers';
-import { normalizeWindowsPath } from '../utils';
 
 class PositiveMatchConditionSelectorBuilder {
     private readonly negated: boolean = false;
@@ -304,7 +303,7 @@ export class ComponentSelectorBuilder {
   private constructor(protected readonly rootDir: string, protected readonly options: Options) {}
 
   static create(rootDir: string, options: Options): ComponentSelectorBuilder {
-    return new ComponentSelectorBuilder(normalizeWindowsPath(rootDir), options);
+    return new ComponentSelectorBuilder(rootDir, options);
   }
 
   projectFiles(): ProjectFilesComponentSelector {
