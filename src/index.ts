@@ -1,38 +1,26 @@
-#!/usr/bin/env node
-
+import { fileURLToPath } from 'url';
 import path from 'path';
-import yargs from 'yargs';
-import { hideBin } from 'yargs/helpers';
-import { ast } from './core/ast';
+import { ComponentSelectorBuilder } from './fluent-api';
+import { Options } from './fluent-api/common/types';
+/**
+ * Returns the root directory of the project where the package was installed
+ */
+function getProjectRoot(): string {
+  // Check if import.meta is available (ES modules)
+  if (typeof import.meta !== 'undefined' && import.meta.url) {
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+    return path.resolve(__dirname, '..', '..', '..');
+  } else {
+    return path.resolve(__dirname, '..', '..', '..');
+  }
+}
 
-yargs(hideBin(process.argv))
-  .scriptName('arch-unit')
-  .command('print <dirPath>', 'Print the AST of the project', (yargs) => {
-    yargs
-    .positional('dirPath', {
-      type: 'string',
-      describe: 'The path to the project to be printed',
-      demandOption: true,
-    })
-    .option('normalized', {
-      alias: 'n',
-      type: 'boolean',
-      default: false,
-      describe: 'Print full normalized (absolute) paths from "files dependencies"'
-    });
-  }, (argv) => {
-    const dirPath = argv.dirPath as string;
-    if (!dirPath) {
-      console.error('Please provide a valid <dirPath> argument');
-      process.exit(1);
-    }
-    const projectPath = path.resolve(process.cwd(), dirPath);
-    const normalized = argv.normalized as boolean;
-    const tree = ast.tree.generate(projectPath, normalized);
-    console.log(JSON.stringify(tree, null, 2));
-  })
-  .help()
-  .alias('h', 'help')
-  .alias('v', 'version')
-  .version('1.0.0')
-  .argv;
+export const app = (options: Options = {
+  extensionTypes: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.jsx'],
+  includeMatcher: ['<rootDir>/.'],
+  ignoreMatcher: ['!<rootDir>/node_modules/**']
+}) => {
+  const rootDir = getProjectRoot();
+  return ComponentSelectorBuilder.create(rootDir, options);
+};
