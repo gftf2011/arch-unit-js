@@ -1,18 +1,7 @@
 import * as path from 'pathe';
 import { nodejs, glob } from '../../utils';
 import micromatch from 'micromatch';
-import {
-    DependencyType,
-    DependencyResolvedWith,
-    DependencyComesFrom,
-} from '../common/types';
-
-export type DependencyProps = {
-    name: string;
-    type: DependencyType;
-    resolvedWith: DependencyResolvedWith;
-    comesFrom: DependencyComesFrom;
-}
+import { DependencyProps } from '../common/types';
 
 export abstract class Dependency {
     protected constructor (public readonly props: DependencyProps) {}

@@ -9,6 +9,13 @@ export type JavascriptRelatedDependencyType = 'node-builtin-module' | 'node-pack
 export type JavascriptRelatedDependencyResolvedWith = 'require' | 'import';
 export type JavascriptRelatedDependencyComesFrom = 'javascript';
 
+export type DependencyProps = {
+    name: string;
+    type: DependencyType;
+    resolvedWith: DependencyResolvedWith;
+    comesFrom: DependencyComesFrom;
+}
+
 export type DependencyType = 'unknown' | JavascriptRelatedDependencyType;
 export type DependencyResolvedWith = JavascriptRelatedDependencyResolvedWith;
 export type DependencyComesFrom = JavascriptRelatedDependencyComesFrom;
