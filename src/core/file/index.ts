@@ -3,26 +3,26 @@ import * as path from 'pathe';
 import traverse from '@babel/traverse';
 import { parse } from '@babel/parser';
 import { DependencyFactory, Dependency } from '../dependency';
-import { isJavascriptRelatedFile, isTypeScriptRelatedFile } from '../../utils';
+import { javascript } from '../../utils';
 
 export abstract class RootFile {
     protected constructor(
         readonly name: string,
         readonly path: string,
-        readonly type: 'file' | 'javascript-typescript-file',
+        readonly type: 'file' | 'javascript-file',
         readonly loc: number,
         readonly totalLines: number,
         readonly dependencies: Dependency[] = [],
     ) {}
 
-    public abstract build(rootDir: string, extensions: string[]): Promise<RootFile>;
+    public abstract build(rootDir: string, extensions: string[], availableFiles: string[]): Promise<RootFile>;
 }
 
-class JavascriptOrTypescriptRelatedFile extends RootFile {
+class JavascriptRelatedFile extends RootFile {
     private constructor(
         readonly name: string,
         readonly path: string,
-        readonly type: 'javascript-typescript-file',
+        readonly type: 'javascript-file',
         readonly loc: number,
         readonly totalLines: number,
         readonly dependencies: Dependency[] = [],
@@ -33,11 +33,11 @@ class JavascriptOrTypescriptRelatedFile extends RootFile {
         super(name, path, type, loc, totalLines);
     }
 
-    public static create(fileName: string, filePath: string): JavascriptOrTypescriptRelatedFile {
-        return new JavascriptOrTypescriptRelatedFile(fileName, filePath, 'javascript-typescript-file', 0, 0, [], 0, 0, false);
+    public static create(fileName: string, filePath: string): JavascriptRelatedFile {
+        return new JavascriptRelatedFile(fileName, filePath, 'javascript-file', 0, 0, [], 0, 0, false);
     }
 
-    public override async build(rootDir: string, extensions: string[]): Promise<JavascriptOrTypescriptRelatedFile> {
+    public override async build(rootDir: string, availableFiles: string[]): Promise<JavascriptRelatedFile> {
         const fileName = this.name;
         const filePath = this.path;
         
@@ -80,9 +80,9 @@ class JavascriptOrTypescriptRelatedFile extends RootFile {
                 rootDir,
                 path.dirname(filePath),
                 node.source.value,
-                extensions,
+                availableFiles,
                 'import',
-                'javascript-or-typescript'
+                'javascript'
             ));
           },
           CallExpression({ node }) {
@@ -97,9 +97,9 @@ class JavascriptOrTypescriptRelatedFile extends RootFile {
                     rootDir,
                     path.dirname(filePath),
                     node.arguments[0].value,
-                    extensions,
+                    availableFiles,
                     'require',
-                    'javascript-or-typescript'
+                    'javascript'
                 ));
             }
           },
@@ -108,10 +108,10 @@ class JavascriptOrTypescriptRelatedFile extends RootFile {
           },
         });
 
-        return new JavascriptOrTypescriptRelatedFile(
+        return new JavascriptRelatedFile(
             fileName,
             filePath,
-            'javascript-typescript-file',
+            'javascript-file',
             countLogicalCodeLines(code),
             code.split('\n').length,
             dependencies,
@@ -123,9 +123,14 @@ class JavascriptOrTypescriptRelatedFile extends RootFile {
 }
 
 export class FileFactory {
-    public static async create(fileName: string, filePath: string, rootDir: string, extensions: string[]): Promise<RootFile> {
-        if (isJavascriptRelatedFile(fileName) || isTypeScriptRelatedFile(fileName)) {
-            return await JavascriptOrTypescriptRelatedFile.create(fileName, filePath).build(rootDir, extensions);
+    public static async create(
+        fileName: string,
+        filePath: string,
+        rootDir: string,
+        availableFiles: string[]
+    ): Promise<RootFile> {
+        if (javascript.isJavascriptRelatedFile(fileName)) {
+            return await JavascriptRelatedFile.create(fileName, filePath).build(rootDir, availableFiles);
         }
         throw new Error(`Unsupported file type: ${fileName}`);
     }

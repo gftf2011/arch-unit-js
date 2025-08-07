@@ -1,40 +1,5 @@
+import fs from 'fs';
 import * as path from 'pathe';
-
-/**
- * Extracts the file extension from a glob pattern or file path.
- * 
- * This function analyzes a pattern string and extracts the file extension
- * from the end of the pattern. It's designed to work with both glob patterns
- * (like "\*\*\/\*.ts" or "src/\*\*\/\*.js") and regular file paths (like "file.txt").
- * 
- * The function uses a regex pattern that matches:
- * - A literal dot (.)
- * - Followed by one or more characters that are not dots, backslashes, forward slashes,
- *   colons, asterisks, question marks, quotes, angle brackets, pipes, or newlines
- * - At the end of the string ($)
- * 
- * @param pattern - The glob pattern or file path to extract the extension from.
- *                  Examples: "\*\*\/\*.ts", "src/\*\*\/\*.js", "file.txt", "\*.{ts,js}"
- * 
- * @returns The file extension including the dot (e.g., ".ts", ".js", ".txt") if found,
- *          or null if no valid extension is detected at the end of the pattern.
- * 
- * @example
- * ```typescript
- * extractExtensionFromGlobPattern("\*\*\/\*.ts")     // Returns ".ts"
- * extractExtensionFromGlobPattern("src/\*\*\/\*.js") // Returns ".js"
- * extractExtensionFromGlobPattern("file.txt")        // Returns ".txt"
- * extractExtensionFromGlobPattern("*.{ts,js}")       // Returns ".js" (matches last extension)
- * extractExtensionFromGlobPattern("no-extension")    // Returns null
- * extractExtensionFromGlobPattern("folder/")         // Returns null
- * ```
- * 
- * @since 1.0.0
- */
-export function extractExtensionFromGlobPattern(pattern: string): string | null {
-    const match = pattern.match(/\.[^.\\/:*?"<>|\r\n]+$/);
-    return match ? match[0] : null;
-}
 
 /**
  * Resolves glob patterns containing `<rootDir>` placeholders to absolute file system paths.
@@ -105,4 +70,15 @@ export function resolveRootDirPatternToGlobPattern(patterns: string[], rootDir: 
         const newPattern = path.resolve(rootDir, relative);
         return newPattern;
     });
+}
+
+export function createGlobToJavascriptRelatedDependency(dependency: string): string {
+    let dependencyGlob: string = dependency;
+    try {
+        const stat = fs.statSync(dependencyGlob);
+        dependencyGlob = stat.isDirectory() ? `${dependencyGlob}/index**` : `${dependencyGlob}**`;
+    } catch (error) {
+        dependencyGlob = `${dependencyGlob}**`;
+    }
+    return dependencyGlob;
 }

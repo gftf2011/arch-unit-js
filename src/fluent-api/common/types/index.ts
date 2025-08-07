@@ -1,7 +1,8 @@
 export type Options = {
     extensionTypes: string[],
     includeMatcher: string[],
-    ignoreMatcher: string[]
+    ignoreMatcher: string[],
+    typescriptPath?: string,
 }
 
 export type CheckableProps = {

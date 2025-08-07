@@ -340,8 +340,8 @@ describe('should.dependsOn scenarios', () => {
                 const errorMessage = (error as Error).message;
 
                 expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/domain/**' should depends on '[**/infra/**]'\n\n`);
-                expect(errorMessage).toContain(`Check if dependencies in file: '${rootDir}/infra/repositories/InMemoryTodoRepository.js' - are being reached by the 'includeMatcher'`);
-                expect(errorMessage).toContain(`  - '${rootDir}/domain/repositories/TodoRepository.js'`);
+                expect(errorMessage).toContain(`Check if dependencies in file: '${rootDir}/infra/repositories/InMemoryTodoRepository.js' - are listed in package.json OR if dependency path is valid OR are reached by 'includeMatcher'`);
+                expect(errorMessage).toContain(`  - '../../domain/repositories/TodoRepository'`);
             }
         });
     });

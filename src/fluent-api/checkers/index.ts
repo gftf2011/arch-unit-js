@@ -295,10 +295,6 @@ export class ProjectFilesInDirectoryOnlyHaveNameShouldSelector extends PatternCh
         return;
     }
 
-    protected override validateIfAllDependenciesExistInProjectGraph(_: Map<string, RootFile>): void {
-        return;
-    }
-
     protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
         if (nodes.size === 0) return;
 
@@ -346,10 +342,6 @@ export class ProjectFilesInDirectoryHaveNameShouldSelector extends PatternChecka
     }
 
     protected override validateFilesDependencies(_: Map<string, RootFile>): void {
-        return;
-    }
-
-    protected override validateIfAllDependenciesExistInProjectGraph(_: Map<string, RootFile>): void {
         return;
     }
 
