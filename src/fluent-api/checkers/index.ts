@@ -154,8 +154,8 @@ export class ProjectFilesInDirectoryHaveCyclesShouldSelector extends PatternCicl
             if (file && file.dependencies) {
                 for (const dependency of file.dependencies) {
                     // Only check dependencies that exist in our graph (internal dependencies)
-                    if (nodes.has(dependency.name)) {
-                        if (hasCycleDFS(dependency.name)) {
+                    if (nodes.has(dependency.props.name)) {
+                        if (hasCycleDFS(dependency.props.name)) {
                             return true; // Cycle detected
                         }
                     }
@@ -189,7 +189,7 @@ export class ProjectFilesInDirectoryOnlyDependsOnShouldSelector extends PatternC
             if (file.dependencies.length === 0) return true;
 
             const matchingDeps = file.dependencies.filter(dep => 
-                micromatch([dep.name], this.props.checkingPatterns).length > 0
+                micromatch([dep.props.name], this.props.checkingPatterns).length > 0
             );
 
             if (matchingDeps.length !== file.dependencies.length) return false;
@@ -211,7 +211,7 @@ export class ProjectFilesInDirectoryOnlyDependsOnShouldSelector extends PatternC
             if (file.dependencies.length === 0) return true;
 
             const matchingDeps = file.dependencies.filter(dep => 
-                micromatch([dep.name], this.props.checkingPatterns).length > 0
+                micromatch([dep.props.name], this.props.checkingPatterns).length > 0
             );
 
             if (matchingDeps.length < file.dependencies.length) return true;
@@ -241,7 +241,7 @@ export class ProjectFilesInDirectoryDependsOnShouldSelector extends PatternCheck
             // Check if ALL specified patterns are present in this file's dependencies
             for (const pattern of this.props.checkingPatterns) {
                 const hasPattern = file.dependencies.some(dep => 
-                    micromatch([dep.name], [pattern]).length > 0
+                    micromatch([dep.props.name], [pattern]).length > 0
                 );
                 
                 // If any pattern is missing, the rule fails
@@ -267,7 +267,7 @@ export class ProjectFilesInDirectoryDependsOnShouldSelector extends PatternCheck
             // Check if ANY of the specified patterns are present in this file's dependencies
             for (const dependency of file.dependencies) {
                 const hasAnyPattern = this.props.checkingPatterns.some(pattern => 
-                    micromatch([dependency.name], [pattern]).length > 0
+                    micromatch([dependency.props.name], [pattern]).length > 0
                 );
                 
                 // If any forbidden pattern is found, the rule fails

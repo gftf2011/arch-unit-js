@@ -47,8 +47,8 @@ abstract class Checkable {
             const filePath = file.path;
             const dependenciesErrors: Error[] = [];
             for (const dependency of file.dependencies) {
-                if (dependency.type === 'invalid') {
-                    dependenciesErrors.push(new Error(`  - '${dependency.name}'`));
+                if (dependency.props.type === 'invalid') {
+                    dependenciesErrors.push(new Error(`  - '${dependency.props.name}'`));
                 }
             }
 
