@@ -1,15 +1,14 @@
-import fs from 'fs';
 import * as path from 'pathe';
 import { nodejs, glob } from '../../utils';
 import micromatch from 'micromatch';
-
-export type JavascriptRelatedDependencyType = 'node-builtin-module' | 'node-package' | 'node-dev-package' | 'valid-path' | 'invalid';
-export type JavascriptRelatedDependencyResolvedWith = 'require' | 'import';
-export type JavascriptRelatedDependencyComesFrom = 'javascript';
-
-export type DependencyType = JavascriptRelatedDependencyType;
-export type DependencyResolvedWith = JavascriptRelatedDependencyResolvedWith;
-export type NodeDependencyComesFrom = JavascriptRelatedDependencyComesFrom;
+import {
+    DependencyType,
+    DependencyResolvedWith,
+    NodeDependencyComesFrom,
+    JavascriptRelatedDependencyType,
+    JavascriptRelatedDependencyResolvedWith,
+    JavascriptRelatedDependencyComesFrom
+} from '../common/types';
 
 export abstract class Dependency {
     protected constructor (
