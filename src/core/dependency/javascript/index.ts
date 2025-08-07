@@ -1,4 +1,8 @@
-import { Dependency, DependencyProps } from "../common";
+import {
+    Dependency,
+    DependencyProps,
+    ResolvableDependencyProps
+} from "../common";
 import {
     BuildinModuleResolvable,
     InvalidDependencyResolvable,
@@ -19,17 +23,13 @@ export class JavascriptRelatedDependency extends Dependency {
         });
     }
 
-    public override resolve(
-        rootDir: string,
-        fileDir: string,
-        availableFiles: string[]
-    ): JavascriptRelatedDependency {
+    public override resolve(resolvableProps: ResolvableDependencyProps): JavascriptRelatedDependency {
         const iterator = new ResolvableIterator();
-        iterator.add(new BuildinModuleResolvable({ ...this.props }, { rootDir, fileDir, availableFiles }));
-        iterator.add(new PackageJsonDependencyResolvable({ ...this.props }, { rootDir, fileDir, availableFiles }));
-        iterator.add(new PackageJsonDevDependencyResolvable({ ...this.props }, { rootDir, fileDir, availableFiles }));
-        iterator.add(new ValidPathDependencyResolvable({ ...this.props }, { rootDir, fileDir, availableFiles }));
-        iterator.add(new InvalidDependencyResolvable({ ...this.props }, { rootDir, fileDir, availableFiles }));
+        iterator.add(new BuildinModuleResolvable({ ...this.props }, { ...resolvableProps }));
+        iterator.add(new PackageJsonDependencyResolvable({ ...this.props }, { ...resolvableProps }));
+        iterator.add(new PackageJsonDevDependencyResolvable({ ...this.props }, { ...resolvableProps }));
+        iterator.add(new ValidPathDependencyResolvable({ ...this.props }, { ...resolvableProps }));
+        iterator.add(new InvalidDependencyResolvable({ ...this.props }, { ...resolvableProps }));
 
         while (!iterator.resolved()) iterator.next();
 

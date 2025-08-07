@@ -89,7 +89,7 @@ export class JavascriptRelatedFile extends RootFile {
           },
         });
 
-        dependencies.forEach(dependency => dependency.resolve(rootDir, path.dirname(filePath), availableFiles));
+        dependencies.forEach(dependency => dependency.resolve({ rootDir, fileDir: path.dirname(filePath), availableFiles }));
 
         return new JavascriptRelatedFile(
             fileName,

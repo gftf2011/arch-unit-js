@@ -32,5 +32,5 @@ export type ResolvableResponse = {
 export abstract class Dependency {
     protected constructor (public readonly props: DependencyProps) {}
 
-    public abstract resolve(rootDir: string, fileDir: string, availableFiles: string[]): Dependency;
+    public abstract resolve(resolvableProps: ResolvableDependencyProps): Dependency;
 }
