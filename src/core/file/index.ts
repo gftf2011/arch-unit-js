@@ -2,6 +2,7 @@ import fsPromises from 'fs/promises';
 import * as path from 'pathe';
 import traverse from '@babel/traverse';
 import { parse } from '@babel/parser';
+import { FileType } from '../common/types';
 import { DependencyFactory, Dependency } from '../dependency';
 import { javascript } from '../../utils';
 
@@ -9,7 +10,7 @@ export abstract class RootFile {
     protected constructor(
         readonly name: string,
         readonly path: string,
-        readonly type: 'file' | 'javascript-file',
+        readonly type: FileType,
         readonly loc: number,
         readonly totalLines: number,
         readonly dependencies: Dependency[] = [],
@@ -76,14 +77,11 @@ class JavascriptRelatedFile extends RootFile {
           },
           ImportDeclaration({ node }) {
             totalImportedDependencies++;
-            dependencies.push(DependencyFactory.create(
-                rootDir,
-                path.dirname(filePath),
-                node.source.value,
-                availableFiles,
-                'import',
-                'javascript'
-            ));
+            dependencies.push(DependencyFactory.create({
+                name: node.source.value,
+                resolvedWith: 'import',
+                comesFrom: 'javascript'
+            }));
           },
           CallExpression({ node }) {
             if (
@@ -93,20 +91,19 @@ class JavascriptRelatedFile extends RootFile {
               node.arguments[0].type === 'StringLiteral'
             ) {
                 totalRequiredDependencies++;
-                dependencies.push(DependencyFactory.create(
-                    rootDir,
-                    path.dirname(filePath),
-                    node.arguments[0].value,
-                    availableFiles,
-                    'require',
-                    'javascript'
-                ));
+                dependencies.push(DependencyFactory.create({
+                    name: node.arguments[0].value,
+                    resolvedWith: 'require',
+                    comesFrom: 'javascript'
+                }));
             }
           },
           ExportDefaultDeclaration() {
             hasDefaultExport = true;
           },
         });
+
+        dependencies.forEach(dependency => dependency.resolve(rootDir, path.dirname(filePath), availableFiles));
 
         return new JavascriptRelatedFile(
             fileName,

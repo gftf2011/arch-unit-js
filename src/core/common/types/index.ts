@@ -1,7 +1,7 @@
 // FILES RELATED TYPES
 
-export type FileType = 'file' | JavascriptOrTypescriptRelatedFileType;
 export type JavascriptOrTypescriptRelatedFileType = 'javascript-file' | 'typescript-file';
+export type FileType = 'file' | JavascriptOrTypescriptRelatedFileType;
 
 // DEPENDENCIES RELATED TYPES
 
@@ -11,4 +11,4 @@ export type JavascriptRelatedDependencyComesFrom = 'javascript';
 
 export type DependencyType = 'unknown' | JavascriptRelatedDependencyType;
 export type DependencyResolvedWith = JavascriptRelatedDependencyResolvedWith;
-export type NodeDependencyComesFrom = JavascriptRelatedDependencyComesFrom;
+export type DependencyComesFrom = JavascriptRelatedDependencyComesFrom;

@@ -4,14 +4,14 @@ import micromatch from 'micromatch';
 import {
     DependencyType,
     DependencyResolvedWith,
-    NodeDependencyComesFrom,
+    DependencyComesFrom,
 } from '../common/types';
 
 export type DependencyProps = {
     name: string;
     type: DependencyType;
     resolvedWith: DependencyResolvedWith;
-    comesFrom: NodeDependencyComesFrom;
+    comesFrom: DependencyComesFrom;
 }
 
 export abstract class Dependency {
@@ -63,23 +63,10 @@ class JavascriptRelatedDependency extends Dependency {
 }
 
 export class DependencyFactory {
-    public static create(
-        rootDir: string,
-        currentPath: string,
-        name: string,
-        availableFiles: string[],
-        resolvedWith: DependencyResolvedWith,
-        comesFrom: NodeDependencyComesFrom
-    ): Dependency {
-        if (comesFrom === 'javascript') {
-            const dependency = JavascriptRelatedDependency.create({
-                name,
-                resolvedWith,
-                comesFrom
-            });
-            dependency.resolve(rootDir, currentPath, availableFiles);
-            return dependency;
+    public static create(props: Omit<DependencyProps, 'type'>): Dependency {
+        if (props.comesFrom === 'javascript') {
+            return JavascriptRelatedDependency.create(props);
         }
-        throw new Error(`Unsupported dependency type: ${name}`);
+        throw new Error(`Unsupported dependency type: ${props.name}`);
     }
 }
