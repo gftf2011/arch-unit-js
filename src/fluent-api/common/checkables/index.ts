@@ -31,8 +31,8 @@ abstract class Checkable {
     protected validateFilesExtension(files: Map<string, RootFile>): void {
         const notificationHandler = NotificationHandler.create();
         for (const [_path, file] of files) {
-            if (micromatch([file.path], this.props.options.extensionTypes).length === 0) {
-                notificationHandler.addError(new Error(`- '${file.path}' - mismatch in 'extensionTypes': [${this.props.options.extensionTypes.join(', ')}]`));
+            if (micromatch([file.props.path], this.props.options.extensionTypes).length === 0) {
+                notificationHandler.addError(new Error(`- '${file.props.path}' - mismatch in 'extensionTypes': [${this.props.options.extensionTypes.join(', ')}]`));
             }
         }
 
@@ -44,9 +44,9 @@ abstract class Checkable {
     protected validateFilesDependencies(files: Map<string, RootFile>): void {
         const notificationHandler = NotificationHandler.create();
         for (const [_path, file] of files) {
-            const filePath = file.path;
+            const filePath = file.props.path;
             const dependenciesErrors: Error[] = [];
-            for (const dependency of file.dependencies) {
+            for (const dependency of file.props.dependencies) {
                 if (dependency.props.type === 'invalid') {
                     dependenciesErrors.push(new Error(`  - '${dependency.props.name}'`));
                 }

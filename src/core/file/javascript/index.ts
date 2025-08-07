@@ -3,30 +3,35 @@ import * as path from 'pathe';
 import traverse from '@babel/traverse';
 import { parse } from '@babel/parser';
 import { Dependency, DependencyFactory } from "../../dependency";
-import { RootFile } from "../common";
+import { RootFile, RootFileProps } from "../common";
+
+export type JavascriptRelatedFileProps = RootFileProps & {
+    totalRequiredDependencies: number,
+    totalImportedDependencies: number,
+    hasDefaultExport: boolean,
+}
 
 export class JavascriptRelatedFile extends RootFile {
-    private constructor(
-        readonly name: string,
-        readonly path: string,
-        readonly type: 'javascript-file',
-        readonly loc: number,
-        readonly totalLines: number,
-        readonly dependencies: Dependency[],
-        readonly totalRequiredDependencies: number,
-        readonly totalImportedDependencies: number,
-        readonly hasDefaultExport: boolean,
-    ) {
-        super(name, path, type, loc, totalLines);
+    private constructor(public props: JavascriptRelatedFileProps) {
+        super(props);
     }
 
     public static create(fileName: string, filePath: string): JavascriptRelatedFile {
-        return new JavascriptRelatedFile(fileName, filePath, 'javascript-file', 0, 0, [], 0, 0, false);
+        return new JavascriptRelatedFile({
+            name: fileName,
+            path: filePath,
+            type: 'javascript-file',
+            loc: 0,
+            totalLines: 0,
+            dependencies: [],
+            totalRequiredDependencies: 0,
+            totalImportedDependencies: 0,
+            hasDefaultExport: false,
+        });
     }
 
     public override async build(rootDir: string, availableFiles: string[]): Promise<JavascriptRelatedFile> {
-        const fileName = this.name;
-        const filePath = this.path;
+        const filePath = this.props.path;
         
         const code = await fsPromises.readFile(filePath, 'utf-8');
     
@@ -91,16 +96,13 @@ export class JavascriptRelatedFile extends RootFile {
 
         dependencies.forEach(dependency => dependency.resolve({ rootDir, fileDir: path.dirname(filePath), availableFiles }));
 
-        return new JavascriptRelatedFile(
-            fileName,
-            filePath,
-            'javascript-file',
-            countLogicalCodeLines(code),
-            code.split('\n').length,
-            dependencies,
-            totalRequiredDependencies,
-            totalImportedDependencies,
-            hasDefaultExport,
-        );
+        this.props.loc = countLogicalCodeLines(code);
+        this.props.totalLines = code.split('\n').length;
+        this.props.dependencies = dependencies;
+        this.props.totalRequiredDependencies = totalRequiredDependencies;
+        this.props.totalImportedDependencies = totalImportedDependencies;
+        this.props.hasDefaultExport = hasDefaultExport;
+
+        return this;
     }
 }

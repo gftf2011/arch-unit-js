@@ -49,7 +49,7 @@ export class NodeGraph {
               } else if (entry.isFile()) {
 
                 const file = await FileFactory.create(entry.name, fullPath, startPath, availableFiles);
-                nodes.set(file.path, file);
+                nodes.set(file.props.path, file);
               }
             }
           }
