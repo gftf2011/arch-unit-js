@@ -13,8 +13,19 @@ export type DependencyProps = {
     comesFrom: DependencyComesFrom;
 }
 
+export type ResolvableDependencyProps = {
+    rootDir: string,
+    fileDir: string,
+    availableFiles: string[]
+}
+
+export type ResolvableResponse = {
+    status: 'resolved' | 'unresolved';
+    depProps: DependencyProps;
+}
+
 export abstract class Dependency {
     protected constructor (public readonly props: DependencyProps) {}
 
-    public abstract resolve(rootDir: string, fileDir: string, availableFiles: string[]): void;
+    public abstract resolve(rootDir: string, fileDir: string, availableFiles: string[]): Dependency;
 }

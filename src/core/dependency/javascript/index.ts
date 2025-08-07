@@ -1,7 +1,5 @@
-import * as path from 'pathe';
-import { nodejs, glob } from "../../../utils";
-import micromatch from 'micromatch';
 import { Dependency, DependencyProps } from "../common";
+import { BuildinModuleResolvable, InvalidDependencyResolvable, PackageJsonDependencyResolvable, PackageJsonDevDependencyResolvable, ResolvableIterator, ValidPathDependencyResolvable } from './resolvables';
 
 export class JavascriptRelatedDependency extends Dependency {
     private constructor(public props: DependencyProps) {
@@ -18,29 +16,19 @@ export class JavascriptRelatedDependency extends Dependency {
         rootDir: string,
         fileDir: string,
         availableFiles: string[]
-    ): void {
-        if (nodejs.isBuiltinModule(this.props.name)) {
-            this.props.type = 'node-builtin-module';
-            return;
-        }
-        if (nodejs.isPackageJsonDependency(rootDir, this.props.name)) {
-            this.props.type = 'node-package';
-            return;
-        }
-        if (nodejs.isPackageJsonDevDependency(rootDir, this.props.name)) {
-            this.props.type = 'node-dev-package';
-            return;
-        }
+    ): JavascriptRelatedDependency {
+        const iterator = new ResolvableIterator();
+        iterator.add(new BuildinModuleResolvable({ ...this.props }, { rootDir, fileDir, availableFiles }));
+        iterator.add(new PackageJsonDependencyResolvable({ ...this.props }, { rootDir, fileDir, availableFiles }));
+        iterator.add(new PackageJsonDevDependencyResolvable({ ...this.props }, { rootDir, fileDir, availableFiles }));
+        iterator.add(new ValidPathDependencyResolvable({ ...this.props }, { rootDir, fileDir, availableFiles }));
+        iterator.add(new InvalidDependencyResolvable({ ...this.props }, { rootDir, fileDir, availableFiles }));
 
-        const dependencyResolvedPath = path.resolve(fileDir, this.props.name);
-        const resolvedDependencyGlobPattern: string = glob.createGlobToJavascriptRelatedDependency(dependencyResolvedPath);
-        const resolvedDependency = micromatch([...availableFiles], [resolvedDependencyGlobPattern])[0];
+        while (!iterator.resolved()) iterator.next();
 
-        if (resolvedDependency) {
-            this.props.name = resolvedDependency;
-            this.props.type = 'valid-path';
-        } else {
-            this.props.type = 'invalid';
-        }
+        this.props.type = iterator.get()?.depProps.type || 'unknown';
+        this.props.name = iterator.get()?.depProps.name || this.props.name;
+
+        return this;
     }
 }
