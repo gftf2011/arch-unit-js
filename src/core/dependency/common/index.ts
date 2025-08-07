@@ -1,0 +1,20 @@
+export type JavascriptRelatedDependencyType = 'node-builtin-module' | 'node-package' | 'node-dev-package' | 'valid-path' | 'invalid';
+export type JavascriptRelatedDependencyResolvedWith = 'require' | 'import';
+export type JavascriptRelatedDependencyComesFrom = 'javascript';
+
+export type DependencyType = 'unknown' | JavascriptRelatedDependencyType;
+export type DependencyResolvedWith = JavascriptRelatedDependencyResolvedWith;
+export type DependencyComesFrom = JavascriptRelatedDependencyComesFrom;
+
+export type DependencyProps = {
+    name: string;
+    type: DependencyType;
+    resolvedWith: DependencyResolvedWith;
+    comesFrom: DependencyComesFrom;
+}
+
+export abstract class Dependency {
+    protected constructor (public readonly props: DependencyProps) {}
+
+    public abstract resolve(rootDir: string, fileDir: string, availableFiles: string[]): void;
+}
