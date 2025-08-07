@@ -1,5 +1,12 @@
 import { Dependency, DependencyProps } from "../common";
-import { BuildinModuleResolvable, InvalidDependencyResolvable, PackageJsonDependencyResolvable, PackageJsonDevDependencyResolvable, ResolvableIterator, ValidPathDependencyResolvable } from './resolvables';
+import {
+    BuildinModuleResolvable,
+    InvalidDependencyResolvable,
+    PackageJsonDependencyResolvable,
+    PackageJsonDevDependencyResolvable,
+    ValidPathDependencyResolvable
+} from './resolvables';
+import { ResolvableIterator } from './iterators';
 
 export class JavascriptRelatedDependency extends Dependency {
     private constructor(public props: DependencyProps) {

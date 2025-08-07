@@ -19,6 +19,11 @@ export type ResolvableDependencyProps = {
     availableFiles: string[]
 }
 
+export abstract class Resolvable {
+    constructor(public depProps: DependencyProps, public resolvableProps: ResolvableDependencyProps) {}
+    abstract resolve(): ResolvableResponse;
+}
+
 export type ResolvableResponse = {
     status: 'resolved' | 'unresolved';
     depProps: DependencyProps;
