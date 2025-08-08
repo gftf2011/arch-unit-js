@@ -73,8 +73,6 @@ export class TypescriptPathDependencyResolvable extends Resolvable {
                         this.resolvableProps.extensions
                     );
 
-                    console.log('resolvedMatchPath', resolvedMatchPath);
-
                     if (resolvedMatchPath) {
                         const normalizedResolvedMatchPath = path.normalize(resolvedMatchPath);
                         const dependencyCandidates = javascript.generateDependenciesCandidates(normalizedResolvedMatchPath, this.resolvableProps.extensions);
