@@ -4,6 +4,15 @@ import traverse from '@babel/traverse';
 import { parse } from '@babel/parser';
 import { Dependency, DependencyFactory } from "../../dependency";
 import { RootFile, RootFileBuildableProps, RootFileProps } from "../common";
+import {
+    CallExpressionInfo,
+    DefaultExportInfo,
+    EnterInfo,
+    ImportDeclarationInfo,
+    createCallExpressionVisitor,
+    createDefaultExportVisitor,
+    createImportDeclarationVisitor,
+} from './visitors';
 
 export type JavascriptRelatedFileProps = RootFileProps & {
     totalRequiredDependencies: number,
@@ -40,8 +49,6 @@ export class JavascriptRelatedFile extends RootFile {
           plugins: ['typescript', 'jsx']    // allows parsing TypeScript & JSX syntax
         });
 
-        const codeLines = new Set<number>();
-
         const countLogicalCodeLines = (code: string): number => {
             const lines = code.split('\n');
             return lines.filter(line => {
@@ -56,43 +63,42 @@ export class JavascriptRelatedFile extends RootFile {
         let hasDefaultExport = false;
       
         const dependencies: Dependency[] = [];
-      
+
+        const defaultExportInfo: DefaultExportInfo = { hasDefaultExport: false };
+        const importDeclarationInfo: ImportDeclarationInfo = {
+            totalImportedDependencies: 0,
+            addDependency: (dependencyName: string) => {
+                dependencies.push(
+                    DependencyFactory.create({
+                        name: dependencyName,
+                        resolvedWith: 'import',
+                        comesFrom: 'javascript',
+                    })
+                );
+            },
+        };
+        const callExpressionInfo: CallExpressionInfo = {
+            totalRequiredDependencies: 0,
+            addDependency: (dependencyName: string) => {
+                dependencies.push(
+                    DependencyFactory.create({
+                        name: dependencyName,
+                        resolvedWith: 'require',
+                        comesFrom: 'javascript',
+                    })
+                );
+            },
+        };
+
         traverse(ast, {
-          enter({ node }) {
-            const loc = node.loc;
-            if (loc) {
-                for (let i = loc.start.line; i <= loc.end.line; i++) {
-                    codeLines.add(i);
-                }
-            }
-          },
-          ImportDeclaration({ node }) {
-            totalImportedDependencies++;
-            dependencies.push(DependencyFactory.create({
-                name: node.source.value,
-                resolvedWith: 'import',
-                comesFrom: 'javascript'
-            }));
-          },
-          CallExpression({ node }) {
-            if (
-              node.callee.type === 'Identifier' &&
-              node.callee.name === 'require' &&
-              node.arguments.length === 1 &&
-              node.arguments[0].type === 'StringLiteral'
-            ) {
-                totalRequiredDependencies++;
-                dependencies.push(DependencyFactory.create({
-                    name: node.arguments[0].value,
-                    resolvedWith: 'require',
-                    comesFrom: 'javascript'
-                }));
-            }
-          },
-          ExportDefaultDeclaration() {
-            hasDefaultExport = true;
-          },
+          ...createDefaultExportVisitor(defaultExportInfo),
+          ...createImportDeclarationVisitor(importDeclarationInfo),
+          ...createCallExpressionVisitor(callExpressionInfo),
         });
+
+        hasDefaultExport = defaultExportInfo.hasDefaultExport;
+        totalImportedDependencies = importDeclarationInfo.totalImportedDependencies;
+        totalRequiredDependencies = callExpressionInfo.totalRequiredDependencies;
 
         dependencies.forEach(dependency => dependency.resolve({
             rootDir: buildableProps.rootDir,
