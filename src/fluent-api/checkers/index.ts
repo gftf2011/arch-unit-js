@@ -17,7 +17,7 @@ export class ProjectFilesInDirectoryLOCAnalysisLessThanShouldSelector extends LO
     protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<void> {
         const notificationHandler = NotificationHandler.create();
         for (const [_, file] of nodes) {
-            if (file.loc >= this.props.analisisThreshold) notificationHandler.addError(new Error(`- '${file.path}'`));
+            if (file.props.loc >= this.props.analisisThreshold) notificationHandler.addError(new Error(`- '${file.props.path}'`));
         }
         if (notificationHandler.hasErrors()) {
             throw new NotificationError(this.props.ruleConstruction, notificationHandler.getErrors());
@@ -27,7 +27,7 @@ export class ProjectFilesInDirectoryLOCAnalysisLessThanShouldSelector extends LO
     protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
         const notificationHandler = NotificationHandler.create();
         for (const [_, file] of nodes) {
-            if (file.loc < this.props.analisisThreshold) notificationHandler.addError(new Error(`- '${file.path}'`));
+            if (file.props.loc < this.props.analisisThreshold) notificationHandler.addError(new Error(`- '${file.props.path}'`));
         }
         if (notificationHandler.hasErrors()) {
             throw new NotificationError(this.props.ruleConstruction, notificationHandler.getErrors());
@@ -43,7 +43,7 @@ export class ProjectFilesInDirectoryLOCAnalysisLessThanOrEqualShouldSelector ext
     protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<void> {
         const notificationHandler = NotificationHandler.create();
         for (const [_, file] of nodes) {
-            if (file.loc > this.props.analisisThreshold) notificationHandler.addError(new Error(`- '${file.path}'`));
+            if (file.props.loc > this.props.analisisThreshold) notificationHandler.addError(new Error(`- '${file.props.path}'`));
         }
         if (notificationHandler.hasErrors()) {
             throw new NotificationError(this.props.ruleConstruction, notificationHandler.getErrors());
@@ -53,7 +53,7 @@ export class ProjectFilesInDirectoryLOCAnalysisLessThanOrEqualShouldSelector ext
     protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
         const notificationHandler = NotificationHandler.create();
         for (const [_, file] of nodes) {
-            if (file.loc <= this.props.analisisThreshold) notificationHandler.addError(new Error(`- '${file.path}'`));
+            if (file.props.loc <= this.props.analisisThreshold) notificationHandler.addError(new Error(`- '${file.props.path}'`));
         }
         if (notificationHandler.hasErrors()) {
             throw new NotificationError(this.props.ruleConstruction, notificationHandler.getErrors());
@@ -69,7 +69,7 @@ export class ProjectFilesInDirectoryLOCAnalysisGreaterThanShouldSelector extends
     protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<void> {
         const notificationHandler = NotificationHandler.create();
         for (const [_, file] of nodes) {
-            if (file.loc <= this.props.analisisThreshold) notificationHandler.addError(new Error(`- '${file.path}'`));
+            if (file.props.loc <= this.props.analisisThreshold) notificationHandler.addError(new Error(`- '${file.props.path}'`));
         }
         if (notificationHandler.hasErrors()) {
             throw new NotificationError(this.props.ruleConstruction, notificationHandler.getErrors());
@@ -79,7 +79,7 @@ export class ProjectFilesInDirectoryLOCAnalysisGreaterThanShouldSelector extends
     protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
         const notificationHandler = NotificationHandler.create();
         for (const [_, file] of nodes) {
-            if (file.loc > this.props.analisisThreshold) notificationHandler.addError(new Error(`- '${file.path}'`));
+            if (file.props.loc > this.props.analisisThreshold) notificationHandler.addError(new Error(`- '${file.props.path}'`));
         }
         if (notificationHandler.hasErrors()) {
             throw new NotificationError(this.props.ruleConstruction, notificationHandler.getErrors());
@@ -95,7 +95,7 @@ export class ProjectFilesInDirectoryLOCAnalysisGreaterThanOrEqualShouldSelector 
     protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<void> {
         const notificationHandler = NotificationHandler.create();
         for (const [_, file] of nodes) {
-            if (file.loc < this.props.analisisThreshold) notificationHandler.addError(new Error(`- '${file.path}'`));
+            if (file.props.loc < this.props.analisisThreshold) notificationHandler.addError(new Error(`- '${file.props.path}'`));
         }
         if (notificationHandler.hasErrors()) {
             throw new NotificationError(this.props.ruleConstruction, notificationHandler.getErrors());
@@ -105,7 +105,7 @@ export class ProjectFilesInDirectoryLOCAnalysisGreaterThanOrEqualShouldSelector 
     protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
         const notificationHandler = NotificationHandler.create();
         for (const [_, file] of nodes) {
-            if (file.loc >= this.props.analisisThreshold) notificationHandler.addError(new Error(`- '${file.path}'`));
+            if (file.props.loc >= this.props.analisisThreshold) notificationHandler.addError(new Error(`- '${file.props.path}'`));
         }
         if (notificationHandler.hasErrors()) {
             throw new NotificationError(this.props.ruleConstruction, notificationHandler.getErrors());
@@ -151,11 +151,11 @@ export class ProjectFilesInDirectoryHaveCyclesShouldSelector extends PatternCicl
             
             // Check all dependencies
             const file = nodes.get(filePath);
-            if (file && file.dependencies) {
-                for (const dependency of file.dependencies) {
+            if (file && file.props.dependencies) {
+                for (const dependency of file.props.dependencies) {
                     // Only check dependencies that exist in our graph (internal dependencies)
-                    if (nodes.has(dependency.name)) {
-                        if (hasCycleDFS(dependency.name)) {
+                    if (nodes.has(dependency.props.name)) {
+                        if (hasCycleDFS(dependency.props.name)) {
                             return true; // Cycle detected
                         }
                     }
@@ -186,18 +186,18 @@ export class ProjectFilesInDirectoryOnlyDependsOnShouldSelector extends PatternC
     protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<void> {
         const notificationHandler = NotificationHandler.create();
         const check = (file: RootFile): boolean => {
-            if (file.dependencies.length === 0) return true;
+            if (file.props.dependencies.length === 0) return true;
 
-            const matchingDeps = file.dependencies.filter(dep => 
-                micromatch([dep.name], this.props.checkingPatterns).length > 0
+            const matchingDeps = file.props.dependencies.filter(dep => 
+                micromatch([dep.props.name], this.props.checkingPatterns).length > 0
             );
 
-            if (matchingDeps.length !== file.dependencies.length) return false;
+            if (matchingDeps.length !== file.props.dependencies.length) return false;
 
             return true;
         }
         for (const [_, file] of nodes) {
-            if (!check(file)) notificationHandler.addError(new Error(`- '${file.path}'`));
+            if (!check(file)) notificationHandler.addError(new Error(`- '${file.props.path}'`));
         }
 
         if (notificationHandler.hasErrors()) {
@@ -208,18 +208,18 @@ export class ProjectFilesInDirectoryOnlyDependsOnShouldSelector extends PatternC
     protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
         const notificationHandler = NotificationHandler.create();
         const check = (file: RootFile): boolean => {
-            if (file.dependencies.length === 0) return true;
+            if (file.props.dependencies.length === 0) return true;
 
-            const matchingDeps = file.dependencies.filter(dep => 
-                micromatch([dep.name], this.props.checkingPatterns).length > 0
+            const matchingDeps = file.props.dependencies.filter(dep => 
+                micromatch([dep.props.name], this.props.checkingPatterns).length > 0
             );
 
-            if (matchingDeps.length < file.dependencies.length) return true;
+            if (matchingDeps.length < file.props.dependencies.length) return true;
 
             return false;
         }
         for (const [_, file] of nodes) {
-            if (!check(file)) notificationHandler.addError(new Error(`- '${file.path}'`));
+            if (!check(file)) notificationHandler.addError(new Error(`- '${file.props.path}'`));
         }
 
         if (notificationHandler.hasErrors()) {
@@ -236,12 +236,12 @@ export class ProjectFilesInDirectoryDependsOnShouldSelector extends PatternCheck
     protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<void> {
         const notificationHandler = NotificationHandler.create();
         const check = (file: RootFile): boolean => {
-            if (file.dependencies.length === 0) return false;
+            if (file.props.dependencies.length === 0) return false;
             
             // Check if ALL specified patterns are present in this file's dependencies
             for (const pattern of this.props.checkingPatterns) {
-                const hasPattern = file.dependencies.some(dep => 
-                    micromatch([dep.name], [pattern]).length > 0
+                const hasPattern = file.props.dependencies.some(dep => 
+                    micromatch([dep.props.name], [pattern]).length > 0
                 );
                 
                 // If any pattern is missing, the rule fails
@@ -250,7 +250,7 @@ export class ProjectFilesInDirectoryDependsOnShouldSelector extends PatternCheck
             return true;
         }
         for (const [_, file] of nodes) {
-            if (!check(file)) notificationHandler.addError(new Error(`- '${file.path}'`));
+            if (!check(file)) notificationHandler.addError(new Error(`- '${file.props.path}'`));
         }
 
         if (notificationHandler.hasErrors()) {
@@ -262,12 +262,12 @@ export class ProjectFilesInDirectoryDependsOnShouldSelector extends PatternCheck
         const notificationHandler = NotificationHandler.create();
         const check = (file: RootFile): boolean => {
             // Files with no dependencies pass the rule (no forbidden patterns can be present)
-            if (file.dependencies.length === 0) return true;
+            if (file.props.dependencies.length === 0) return true;
             
             // Check if ANY of the specified patterns are present in this file's dependencies
-            for (const dependency of file.dependencies) {
+            for (const dependency of file.props.dependencies) {
                 const hasAnyPattern = this.props.checkingPatterns.some(pattern => 
-                    micromatch([dependency.name], [pattern]).length > 0
+                    micromatch([dependency.props.name], [pattern]).length > 0
                 );
                 
                 // If any forbidden pattern is found, the rule fails
@@ -277,7 +277,7 @@ export class ProjectFilesInDirectoryDependsOnShouldSelector extends PatternCheck
             return true;
         }
         for (const [_, file] of nodes) {
-            if (!check(file)) notificationHandler.addError(new Error(`- '${file.path}'`));
+            if (!check(file)) notificationHandler.addError(new Error(`- '${file.props.path}'`));
         }
 
         if (notificationHandler.hasErrors()) {
@@ -295,10 +295,6 @@ export class ProjectFilesInDirectoryOnlyHaveNameShouldSelector extends PatternCh
         return;
     }
 
-    protected override validateIfAllDependenciesExistInProjectGraph(_: Map<string, RootFile>): void {
-        return;
-    }
-
     protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
         if (nodes.size === 0) return;
 
@@ -306,13 +302,13 @@ export class ProjectFilesInDirectoryOnlyHaveNameShouldSelector extends PatternCh
         
         const notificationHandler = NotificationHandler.create();
         for (const [_, file] of nodes) {
-            const fileName = file.name;
+            const fileName = file.props.name;
             
             // Check if this file name matches the pattern
             const matches = micromatch([fileName], this.props.checkingPatterns).length > 0;
             
             if (matches) {
-                notificationHandler.addError(new Error(`- '${file.path}'`));
+                notificationHandler.addError(new Error(`- '${file.props.path}'`));
             }
         }
 
@@ -326,12 +322,12 @@ export class ProjectFilesInDirectoryOnlyHaveNameShouldSelector extends PatternCh
         
         const notificationHandler = NotificationHandler.create();
         const check = (file: RootFile): boolean => {
-            const fileName = file.name;
+            const fileName = file.props.name;
             const matches = micromatch([fileName], this.props.checkingPatterns).length > 0;
             return matches;
         }
         for (const [_, file] of nodes) {
-            if (!check(file)) notificationHandler.addError(new Error(`- '${file.path}'`));
+            if (!check(file)) notificationHandler.addError(new Error(`- '${file.props.path}'`));
         }
 
         if (notificationHandler.getErrors().length > 0) {
@@ -349,19 +345,15 @@ export class ProjectFilesInDirectoryHaveNameShouldSelector extends PatternChecka
         return;
     }
 
-    protected override validateIfAllDependenciesExistInProjectGraph(_: Map<string, RootFile>): void {
-        return;
-    }
-
     protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<void> {
         const notificationHandler = NotificationHandler.create();
         const check = (file: RootFile): boolean => {
-            const fileName = file.name;
+            const fileName = file.props.name;
             const matches = micromatch([fileName], this.props.checkingPatterns).length > 0;
             return matches;
         }
         for (const [_, file] of nodes) {
-            if (!check(file)) notificationHandler.addError(new Error(`- '${file.path}'`));
+            if (!check(file)) notificationHandler.addError(new Error(`- '${file.props.path}'`));
         }
 
         if (notificationHandler.getErrors().length > 0) {
@@ -372,12 +364,12 @@ export class ProjectFilesInDirectoryHaveNameShouldSelector extends PatternChecka
     protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
         const notificationHandler = NotificationHandler.create();
         const check = (file: RootFile): boolean => {
-            const fileName = file.name;
+            const fileName = file.props.name;
             const matches = micromatch([fileName], this.props.checkingPatterns).length > 0;
             return !matches;
         }
         for (const [_, file] of nodes) {
-            if (!check(file)) notificationHandler.addError(new Error(`- '${file.path}'`));
+            if (!check(file)) notificationHandler.addError(new Error(`- '${file.props.path}'`));
         }
 
         if (notificationHandler.getErrors().length > 0) {

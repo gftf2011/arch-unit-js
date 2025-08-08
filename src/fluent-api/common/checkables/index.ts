@@ -21,7 +21,13 @@ abstract class Checkable {
     }
 
     protected async buildNodeGraph(): Promise<NodeGraph> {
-        return NodeGraph.create(this.props.rootDir, this.props.options.includeMatcher, this.props.options.ignoreMatcher, this.props.options.extensionTypes);
+        return NodeGraph.create(
+            this.props.rootDir,
+            this.props.options.includeMatcher,
+            this.props.options.ignoreMatcher,
+            this.props.options.extensionTypes,
+            this.props.options.typescriptPath
+        );
     }
 
     protected clearFiles(files: Map<string, RootFile>): void {
@@ -31,8 +37,8 @@ abstract class Checkable {
     protected validateFilesExtension(files: Map<string, RootFile>): void {
         const notificationHandler = NotificationHandler.create();
         for (const [_path, file] of files) {
-            if (micromatch([file.path], this.props.options.extensionTypes).length === 0) {
-                notificationHandler.addError(new Error(`- '${file.path}' - mismatch in 'extensionTypes': [${this.props.options.extensionTypes.join(', ')}]`));
+            if (micromatch([file.props.path], this.props.options.extensionTypes).length === 0) {
+                notificationHandler.addError(new Error(`- '${file.props.path}' - mismatch in 'extensionTypes': [${this.props.options.extensionTypes.join(', ')}]`));
             }
         }
 
@@ -44,38 +50,16 @@ abstract class Checkable {
     protected validateFilesDependencies(files: Map<string, RootFile>): void {
         const notificationHandler = NotificationHandler.create();
         for (const [_path, file] of files) {
-            const filePath = file.path;
+            const filePath = file.props.path;
             const dependenciesErrors: Error[] = [];
-            for (const dependency of file.dependencies) {
-                if (dependency.type === 'invalid') {
-                    dependenciesErrors.push(new Error(`  - '${dependency.name}'`));
+            for (const dependency of file.props.dependencies) {
+                if (dependency.props.type === 'invalid') {
+                    dependenciesErrors.push(new Error(`  - '${dependency.props.name}'`));
                 }
             }
 
             if (dependenciesErrors.length > 0) {
-                const error = new Error(`Check if dependencies in file: '${filePath}' - are listed in package.json OR if dependency path is valid`);
-                notificationHandler.addErrors([error, ...dependenciesErrors]);
-            }
-        }
-
-        if (notificationHandler.getErrors().length > 0) {
-            throw new NotificationError(this.props.ruleConstruction, notificationHandler.getErrors());
-        }
-    }
-
-    protected validateIfAllDependenciesExistInProjectGraph(files: Map<string, RootFile>): void {
-        const notificationHandler = NotificationHandler.create();
-        for (const [_path, file] of files) {
-            const filePath = file.path;
-            const dependenciesErrors: Error[] = [];
-            for (const dependency of file.dependencies) {
-                if (dependency.type === 'valid-path' && !files.has(dependency.fullName)) {
-                    dependenciesErrors.push(new Error(`  - '${dependency.fullName}'`));
-                }
-            }
-
-            if (dependenciesErrors.length > 0) {
-                const error = new Error(`Check if dependencies in file: '${filePath}' - are being reached by the 'includeMatcher'`);
+                const error = new Error(`Check if dependencies in file: '${filePath}' - are listed in package.json OR if dependency path is valid OR are reached by 'includeMatcher'`);
                 notificationHandler.addErrors([error, ...dependenciesErrors]);
             }
         }
@@ -94,7 +78,6 @@ abstract class Checkable {
 
         this.validateFilesExtension(files);
         this.validateFilesDependencies(files);
-        this.validateIfAllDependenciesExistInProjectGraph(files);
 
         const filteredFiles = this.filter(files);
         try {
@@ -153,7 +136,6 @@ export abstract class PatternCiclesCheckable extends PatternCheckable {
 
         this.validateFilesExtension(files);
         this.validateFilesDependencies(files);
-        this.validateIfAllDependenciesExistInProjectGraph(files);
 
         const filteredFiles = this.filter(files);
         try {

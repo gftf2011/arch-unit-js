@@ -1,22 +1,4 @@
-import fs from 'fs';
-import path from 'path';
-import { normalizeWindowsPath } from '../windows';
-
-export function isTypescriptAtPathDependency(dependency: string): boolean {
-    return dependency.startsWith('@');
-}
-
-export function resolveIfTypescriptAtPathDependency(rootDir: string, dependency: string): string {
-    try {
-        const typescriptPath = path.join(rootDir, 'tsconfig.json');
-        fs.statSync(typescriptPath);
-        const typescriptFileContent = JSON.parse(fs.readFileSync(typescriptPath, 'utf8'));
-        const resolvedPath = normalizeWindowsPath(path.resolve(rootDir, typescriptFileContent.compilerOptions.baseUrl, dependency.replace(/^@\/?|^@/, '')));
-        return resolvedPath;
-    } catch (error) {
-        return dependency;
-    }
-}
+import * as fs from 'fs';
 
 export function isTypeScriptRelatedFile(fileName: string): boolean {
     const extensions = ['.ts', '.mts', '.cts', '.d.ts', '.tsx'];
@@ -26,4 +8,23 @@ export function isTypeScriptRelatedFile(fileName: string): boolean {
 export function isJavascriptRelatedFile(fileName: string): boolean {
     const extensions = ['.js', '.mjs', '.cjs', 'jsx'];
     return extensions.some(ext => fileName.endsWith(ext));
+}
+
+export function generateDependenciesCandidates(pathName: string, extensions: string[]): string[] {
+    const pathNameAsIs: string = pathName;
+    const pathNameAsDirectoryToIndex: string[] = extensions.map(ext => pathName + `/index${ext}`);
+    const pathNameAsFile: string[] = extensions.map(ext => pathName + `${ext}`);
+    return [pathNameAsIs, ...pathNameAsDirectoryToIndex, ...pathNameAsFile];
+}
+
+export function getDependencyCandidateIfExists(candidates: string[]): string | null {
+    for (const candidate of candidates) {
+        try {
+            const stat = fs.statSync(candidate);
+            if (stat.isFile()) return candidate;
+        } catch {
+            // do nothing
+        }
+    }
+    return null;
 }

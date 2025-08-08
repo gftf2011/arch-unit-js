@@ -1,4 +1,3 @@
-const Todo = require('../domain/entities/Todo');
 const InMemoryTodoRepository = require('../infra/repositories/InMemoryTodoRepository');
 const CreateTodo = require('../use-cases/CreateTodo');
 const GetAllTodos = require('../use-cases/GetAllTodos');
@@ -17,6 +16,7 @@ class TodoApp {
   }
 
   async create(title, description) {
+    const Todo = require('../domain/entities/Todo');
     return await this.createTodo.execute(title, description);
   }
 

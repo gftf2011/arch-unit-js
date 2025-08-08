@@ -1,9 +1,8 @@
-import path from 'path';
+import * as path from 'pathe';
 import { Options } from '../../../src/fluent-api/common/types';
 import { ComponentSelectorBuilder } from '../../../src/fluent-api';
-import { normalizeWindowsPath } from '../../../src/utils/windows';
 
-const rootDir = normalizeWindowsPath(path.resolve(path.dirname(__filename), '..', '..', 'sample', 'todo-js-sample'));
+const rootDir = path.resolve(path.dirname(__filename), '..', '..', 'sample', 'todo-js-sample');
 
 const includeMatchers = [
     [['<rootDir>/**']],
@@ -410,8 +409,8 @@ describe('shouldNot.dependsOn scenarios', () => {
                 const errorMessage = (error as Error).message;
 
                 expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/domain/**' should not depends on '[**/infra/**]'\n\n`);
-                expect(errorMessage).toContain(`Check if dependencies in file: '${rootDir}/infra/repositories/InMemoryTodoRepository.js' - are being reached by the 'includeMatcher'`);
-                expect(errorMessage).toContain(`- '${rootDir}/domain/repositories/TodoRepository.js'`);
+                expect(errorMessage).toContain(`Check if dependencies in file: '${rootDir}/infra/repositories/InMemoryTodoRepository.js' - are listed in package.json OR if dependency path is valid OR are reached by 'includeMatcher'`);
+                expect(errorMessage).toContain(`- '../../domain/repositories/TodoRepository'`);
             }
         });
     });
