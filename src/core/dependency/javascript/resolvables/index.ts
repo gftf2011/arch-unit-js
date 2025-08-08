@@ -61,10 +61,6 @@ export class TypescriptPathDependencyResolvable extends Resolvable {
                 if (tsconfigPaths.resultType === 'success') {
                     const { absoluteBaseUrl, paths } = tsconfigPaths;
 
-                    console.log('absoluteBaseUrl', absoluteBaseUrl);
-                    console.log('paths', paths);
-                    console.log('normalized absoluteBaseUrl', path.normalize(absoluteBaseUrl));
-
                     const matchPath = tsConfigPaths.createMatchPath(
                         path.normalize(absoluteBaseUrl),  // baseUrl from tsconfig
                         paths                             // paths from tsconfig
@@ -77,8 +73,11 @@ export class TypescriptPathDependencyResolvable extends Resolvable {
                         this.resolvableProps.extensions
                     );
 
+                    console.log('resolvedMatchPath', resolvedMatchPath);
+
                     if (resolvedMatchPath) {
-                        const dependencyCandidates = javascript.generateDependenciesCandidates(resolvedMatchPath, this.resolvableProps.extensions);
+                        const normalizedResolvedMatchPath = path.normalize(resolvedMatchPath);
+                        const dependencyCandidates = javascript.generateDependenciesCandidates(normalizedResolvedMatchPath, this.resolvableProps.extensions);
                         const dependencyCandidateIfExists = javascript.getDependencyCandidateIfExists(dependencyCandidates);
 
                         if (dependencyCandidateIfExists) {
