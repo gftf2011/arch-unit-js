@@ -56,11 +56,6 @@ export class JavascriptRelatedFile extends RootFile {
             }).length;
         }
 
-        let totalRequiredDependencies = 0;
-        let totalImportedDependencies = 0;
-
-        let hasDefaultExport = false;
-      
         const dependencies: Dependency[] = [];
 
         const defaultExportInfo: DefaultExportInfo = { hasDefaultExport: false };
@@ -95,10 +90,6 @@ export class JavascriptRelatedFile extends RootFile {
           ...createCallExpressionVisitor(callExpressionInfo),
         });
 
-        hasDefaultExport = defaultExportInfo.hasDefaultExport;
-        totalImportedDependencies = importDeclarationInfo.totalImportedDependencies;
-        totalRequiredDependencies = callExpressionInfo.totalRequiredDependencies;
-
         dependencies.forEach(dependency => dependency.resolve({
             rootDir: buildableProps.rootDir,
             fileDir: path.dirname(filePath),
@@ -108,9 +99,9 @@ export class JavascriptRelatedFile extends RootFile {
         this.props.loc = countLogicalCodeLines(code);
         this.props.totalLines = code.split('\n').length;
         this.props.dependencies = dependencies;
-        this.props.totalRequiredDependencies = totalRequiredDependencies;
-        this.props.totalImportedDependencies = totalImportedDependencies;
-        this.props.hasDefaultExport = hasDefaultExport;
+        this.props.totalRequiredDependencies = callExpressionInfo.totalRequiredDependencies;
+        this.props.totalImportedDependencies = importDeclarationInfo.totalImportedDependencies;
+        this.props.hasDefaultExport = defaultExportInfo.hasDefaultExport;
 
         return this;
     }
