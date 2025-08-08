@@ -12,8 +12,13 @@ export type RootFileProps = {
     dependencies: Dependency[],
 }
 
+export type RootFileBuildableProps = {
+    rootDir: string,
+    availableFiles: string[],
+}
+
 export abstract class RootFile {
     protected constructor(public props: RootFileProps) {}
 
-    public abstract build(rootDir: string, extensions: string[], availableFiles: string[]): Promise<RootFile>;
+    public abstract build(buildableProps: RootFileBuildableProps): Promise<RootFile>;
 }

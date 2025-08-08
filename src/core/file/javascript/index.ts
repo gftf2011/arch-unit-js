@@ -3,7 +3,7 @@ import * as path from 'pathe';
 import traverse from '@babel/traverse';
 import { parse } from '@babel/parser';
 import { Dependency, DependencyFactory } from "../../dependency";
-import { RootFile, RootFileProps } from "../common";
+import { RootFile, RootFileBuildableProps, RootFileProps } from "../common";
 
 export type JavascriptRelatedFileProps = RootFileProps & {
     totalRequiredDependencies: number,
@@ -30,7 +30,7 @@ export class JavascriptRelatedFile extends RootFile {
         });
     }
 
-    public override async build(rootDir: string, availableFiles: string[]): Promise<JavascriptRelatedFile> {
+    public override async build(buildableProps: RootFileBuildableProps): Promise<JavascriptRelatedFile> {
         const filePath = this.props.path;
         
         const code = await fsPromises.readFile(filePath, 'utf-8');
@@ -94,7 +94,11 @@ export class JavascriptRelatedFile extends RootFile {
           },
         });
 
-        dependencies.forEach(dependency => dependency.resolve({ rootDir, fileDir: path.dirname(filePath), availableFiles }));
+        dependencies.forEach(dependency => dependency.resolve({
+            rootDir: buildableProps.rootDir,
+            fileDir: path.dirname(filePath),
+            availableFiles: buildableProps.availableFiles
+        }));
 
         this.props.loc = countLogicalCodeLines(code);
         this.props.totalLines = code.split('\n').length;

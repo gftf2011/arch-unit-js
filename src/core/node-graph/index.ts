@@ -47,8 +47,7 @@ export class NodeGraph {
               if (entry.isDirectory()) {
                 await walk(fullPath);
               } else if (entry.isFile()) {
-
-                const file = await FileFactory.create(entry.name, fullPath, startPath, availableFiles);
+                const file = await FileFactory.create(entry.name, fullPath).build({ rootDir: startPath, availableFiles });
                 nodes.set(file.props.path, file);
               }
             }

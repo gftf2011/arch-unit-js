@@ -3,14 +3,12 @@ import { RootFile } from "../common";
 import { JavascriptRelatedFile } from "../javascript";
 
 export class FileFactory {
-    public static async create(
+    public static create(
         fileName: string,
         filePath: string,
-        rootDir: string,
-        availableFiles: string[]
-    ): Promise<RootFile> {
+    ): RootFile {
         if (javascript.isJavascriptRelatedFile(fileName)) {
-            return await JavascriptRelatedFile.create(fileName, filePath).build(rootDir, availableFiles);
+            return JavascriptRelatedFile.create(fileName, filePath);
         }
         throw new Error(`Unsupported file type: ${fileName}`);
     }
