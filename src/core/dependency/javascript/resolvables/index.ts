@@ -62,8 +62,8 @@ export class TypescriptPathDependencyResolvable extends Resolvable {
                     const { absoluteBaseUrl, paths } = tsconfigPaths;
 
                     const matchPath = tsConfigPaths.createMatchPath(
-                        absoluteBaseUrl,  // baseUrl from tsconfig
-                        paths             // paths from tsconfig
+                        path.normalize(absoluteBaseUrl),  // baseUrl from tsconfig
+                        paths                             // paths from tsconfig
                     );
 
                     const resolvedMatchPath = matchPath(

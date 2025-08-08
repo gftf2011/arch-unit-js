@@ -1,5 +1,5 @@
 import fs from 'fs';
-import path from 'path';
+import * as path from 'pathe';
 import module from 'module';
 
 export function isBuiltinModule(dependency: string): boolean {
