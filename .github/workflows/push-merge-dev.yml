@@ -8,220 +8,36 @@ on:
 
 jobs:
   install-ubuntu:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x]
-    name: Cache Depedencies
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.JS Environment
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Install Packages
-        run: |
-          npm i
-
-      - name: Cache "node-modules"
-        uses: actions/cache@v4
-        with:
-          path: ./node_modules
-          key: node-modules-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
-          restore-keys: |
-            node-modules-${{ runner.os }}-${{ matrix.node-version }}-
-
-      - name: Cache "package-lock.json"
-        uses: actions/cache@v4
-        with:
-          path: ./package-lock.json
-          key: package-lock-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
-          restore-keys: |
-            package-lock-${{ runner.os }}-${{ matrix.node-version }}-
-
-  test-ubuntu:
-    runs-on: ubuntu-latest
-    needs: install-ubuntu
-    strategy:
-      matrix: 
-        node-version: [ 18.x, 20.x, 22.x ]
-    name: Test Application
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Node.JS Environment
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Use Cache "node-modules"
-        uses: actions/cache@v4
-        with:
-          path: ./node_modules
-          key: node-modules-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
-          restore-keys: |
-            node-modules-${{ runner.os }}-${{ matrix.node-version }}-
-
-      - name: Use Cache "package-lock.json"
-        uses: actions/cache@v4
-        with:
-          path: ./package-lock.json
-          key: package-lock-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
-          restore-keys: |
-            package-lock-${{ runner.os }}-${{ matrix.node-version }}-
-
-      - name: Run Tests
-        run: |
-          npm run test
-  
-  # install-macos:
-  #   runs-on: macos-latest
-  #   strategy:
-  #     matrix:
-  #       node-version: [18.x, 20.x, 22.x]
-  #   name: Cache Depedencies
-  #   steps:
-  #     - name: Checkout Repository
-  #       uses: actions/checkout@v4
-
-  #     - name: Setup Node.JS Environment
-  #       uses: actions/setup-node@v4
-  #       with:
-  #         node-version: ${{ matrix.node-version }}
-
-  #     - name: Install Packages
-  #       run: |
-  #         npm i
-
-  #     - name: Cache "node-modules"
-  #       uses: actions/cache@v4
-  #       with:
-  #         path: ./node_modules
-  #         key: node-modules-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
-  #         restore-keys: |
-  #           node-modules-${{ runner.os }}-${{ matrix.node-version }}-
-
-  #     - name: Cache "package-lock.json"
-  #       uses: actions/cache@v4
-  #       with:
-  #         path: ./package-lock.json
-  #         key: package-lock-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
-  #         restore-keys: |
-  #           package-lock-${{ runner.os }}-${{ matrix.node-version }}-
-
-  # test-macos:
-  #   runs-on: macos-latest
-  #   needs: install-macos
-  #   strategy:
-  #     matrix: 
-  #       node-version: [ 18.x, 20.x, 22.x ]
-  #   name: Test Application
-  #   steps:
-  #     - name: Checkout Repository
-  #       uses: actions/checkout@v4
-  #       with:
-  #         fetch-depth: 0
-
-  #     - name: Setup Node.JS Environment
-  #       uses: actions/setup-node@v4
-  #       with:
-  #         node-version: ${{ matrix.node-version }}
-
-  #     - name: Use Cache "node-modules"
-  #       uses: actions/cache@v4
-  #       with:
-  #         path: ./node_modules
-  #         key: node-modules-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
-  #         restore-keys: |
-  #           node-modules-${{ runner.os }}-${{ matrix.node-version }}-
-
-  #     - name: Use Cache "package-lock.json"
-  #       uses: actions/cache@v4
-  #       with:
-  #         path: ./package-lock.json
-  #         key: package-lock-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
-  #         restore-keys: |
-  #           package-lock-${{ runner.os }}-${{ matrix.node-version }}-
-
-  #     - name: Run Tests
-  #       run: |
-  #         npm run test
-
+    uses: ./.github/workflows/install.yml
+    with:
+      os: ubuntu-latest
+      node-versions: '["18.x", "20.x", "22.x"]'
   install-windows:
-    runs-on: windows-latest
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x]
-    name: Cache Depedencies
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.JS Environment
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Install Packages
-        run: |
-          npm i
-
-      - name: Cache "node-modules"
-        uses: actions/cache@v4
-        with:
-          path: ./node_modules
-          key: node-modules-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
-          restore-keys: |
-            node-modules-${{ runner.os }}-${{ matrix.node-version }}-
-
-      - name: Cache "package-lock.json"
-        uses: actions/cache@v4
-        with:
-          path: ./package-lock.json
-          key: package-lock-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
-          restore-keys: |
-            package-lock-${{ runner.os }}-${{ matrix.node-version }}-
-
+    uses: ./.github/workflows/install.yml
+    with:
+      os: windows-latest
+      node-versions: '["18.x", "20.x", "22.x"]'
+  # install-macos:
+  #   uses: ./.github/workflows/install.yml
+  #   with:
+  #     os: macos-latest
+  #     node-versions: '["18.x", "20.x", "22.x"]'
+  
+  test-ubuntu:
+    uses: ./.github/workflows/test.yml
+    with:
+      os: ubuntu-latest
+      node-versions: '["18.x", "20.x", "22.x"]'
+    needs: install-ubuntu
   test-windows:
-    runs-on: windows-latest
+    uses: ./.github/workflows/test.yml
+    with:
+      os: windows-latest
+      node-versions: '["18.x", "20.x", "22.x"]'
     needs: install-windows
-    strategy:
-      matrix: 
-        node-version: [ 18.x, 20.x, 22.x ]
-    name: Test Application
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Node.JS Environment
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Use Cache "node-modules"
-        uses: actions/cache@v4
-        with:
-          path: ./node_modules
-          key: node-modules-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
-          restore-keys: |
-            node-modules-${{ runner.os }}-${{ matrix.node-version }}-
-
-      - name: Use Cache "package-lock.json"
-        uses: actions/cache@v4
-        with:
-          path: ./package-lock.json
-          key: package-lock-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
-          restore-keys: |
-            package-lock-${{ runner.os }}-${{ matrix.node-version }}-
-
-      - name: Run Tests
-        run: |
-          npm run test
+  # test-macos:
+  #   uses: ./.github/workflows/test.yml
+  #   with:
+  #     os: macos-latest
+  #     node-versions: '["18.x", "20.x", "22.x"]'
+  #   needs: install-macos

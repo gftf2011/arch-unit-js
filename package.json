@@ -18,6 +18,7 @@
     }
   },
   "scripts": {
+    "pack": "npm pack && sha256sum *.tgz > checksum.txt",
     "build:tsc": "tsc",
     "build:types": "npx tsc --emitDeclarationOnly",
     "build": "node esbuild.config.js && npm run build:types",
