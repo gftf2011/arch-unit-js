@@ -16,7 +16,7 @@ jobs:
     runs-on: ${{ inputs.os }}
     strategy:
       matrix: 
-        node-version: ${{ fromJson(inputs.node_versions) }}
+        node-version: ${{ fromJson(inputs.node-versions) }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
