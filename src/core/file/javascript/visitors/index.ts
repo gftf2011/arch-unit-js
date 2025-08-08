@@ -32,6 +32,7 @@ export function createImportDeclarationVisitor(info: ImportDeclarationInfo): Vis
 
 export type CallExpressionInfo = {
     totalRequiredDependencies: number;
+    totalDinamicImportedDependencies: number;
     addDependency: (dependencyName: string) => void;
 };
 
@@ -39,6 +40,30 @@ export function createCallExpressionVisitor(info: CallExpressionInfo): Visitor {
     return {
         CallExpression(path: NodePath<t.CallExpression>) {
             const node = path.node;
+
+            // Handle dynamic import('...')
+            if (node.callee.type === 'Import') {
+                const arg = (node.arguments[0] as t.Expression | undefined);
+
+                let value: string | undefined;
+                let resolvable = false;
+
+                if (arg && arg.type === 'StringLiteral') {
+                    value = arg.value;
+                    resolvable = true;
+                } else if (arg && arg.type === 'TemplateLiteral' && arg.expressions.length === 0) {
+                    value = arg.quasis[0]?.value.cooked ?? '';
+                    resolvable = true;
+                }
+
+                if (resolvable && value) {
+                    info.totalDinamicImportedDependencies++;
+                    info.addDependency(value);
+                }
+                return;
+            }
+
+            // Handle require('...')
             if (
                 node.callee.type === 'Identifier' &&
                 node.callee.name === 'require' &&
@@ -51,4 +76,3 @@ export function createCallExpressionVisitor(info: CallExpressionInfo): Visitor {
         },
     };
 }
-

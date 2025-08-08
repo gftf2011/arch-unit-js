@@ -16,6 +16,7 @@ import {
 export type JavascriptRelatedFileProps = RootFileProps & {
     totalRequiredDependencies: number,
     totalImportedDependencies: number,
+    totalDinamicImportedDependencies: number,
     hasDefaultExport: boolean,
 }
 
@@ -34,6 +35,7 @@ export class JavascriptRelatedFile extends RootFile {
             dependencies: [],
             totalRequiredDependencies: 0,
             totalImportedDependencies: 0,
+            totalDinamicImportedDependencies: 0,
             hasDefaultExport: false,
         });
     }
@@ -44,8 +46,8 @@ export class JavascriptRelatedFile extends RootFile {
         const code = await fsPromises.readFile(filePath, 'utf-8');
     
         const ast = parse(code, {
-          sourceType: 'unambiguous', // supports both ESM & CJS
-          plugins: ['typescript', 'jsx']    // allows parsing TypeScript & JSX syntax
+          sourceType: 'unambiguous',                         // supports both ESM & CJS
+          plugins: ['typescript', 'jsx', 'dynamicImport']    // allows parsing TypeScript & JSX syntax
         });
 
         const countLogicalCodeLines = (code: string): number => {
@@ -73,6 +75,7 @@ export class JavascriptRelatedFile extends RootFile {
         };
         const callExpressionInfo: CallExpressionInfo = {
             totalRequiredDependencies: 0,
+            totalDinamicImportedDependencies: 0,
             addDependency: (dependencyName: string) => {
                 dependencies.push(
                     DependencyFactory.create({
@@ -103,6 +106,7 @@ export class JavascriptRelatedFile extends RootFile {
         this.props.dependencies = dependencies;
         this.props.totalRequiredDependencies = callExpressionInfo.totalRequiredDependencies;
         this.props.totalImportedDependencies = importDeclarationInfo.totalImportedDependencies;
+        this.props.totalDinamicImportedDependencies = callExpressionInfo.totalDinamicImportedDependencies;
         this.props.hasDefaultExport = defaultExportInfo.hasDefaultExport;
 
         return this;
