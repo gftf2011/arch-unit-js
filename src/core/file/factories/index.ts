@@ -7,7 +7,7 @@ export class FileFactory {
         fileName: string,
         filePath: string,
     ): RootFile {
-        if (javascript.isJavascriptRelatedFile(fileName)) {
+        if (javascript.isJavascriptRelatedFile(fileName) || javascript.isTypeScriptRelatedFile(fileName)) {
             return JavascriptRelatedFile.create(fileName, filePath);
         }
         throw new Error(`Unsupported file type: ${fileName}`);

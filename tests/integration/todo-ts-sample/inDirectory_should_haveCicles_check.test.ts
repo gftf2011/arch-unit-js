@@ -17,6 +17,8 @@ const includeMatchers = [
 
 const excludeMatchers = ['!<rootDir>/**/package.json', '!<rootDir>/**/tsconfig.json'];
 
+const typescriptPath = '<rootDir>/tsconfig.json';
+
 describe('should.haveCicles scenarios', () => {
     test('entire project should have cicles - DO I REALLY NEED TO EXPLAIN THIS ?', async () => {
         for (const [includeMatcher] of includeMatchers) {
@@ -24,7 +26,8 @@ describe('should.haveCicles scenarios', () => {
                 const options: Options = {
                     extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
+                    ignoreMatcher: excludeMatchers,
+                    typescriptPath
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                 await appInstance

@@ -17,6 +17,8 @@ const includeMatchers = [
 
 const excludeMatchers = ['!<rootDir>/**/package.json', '!<rootDir>/**/tsconfig.json'];
 
+const typescriptPath = '<rootDir>/tsconfig.json';
+
 describe('should.haveLocLessOrEqualThan scenarios', () => {
     describe('Scenario 1: All files have lines of code LESS than or EQUAL to the threshold', () => {
         test('"use-cases" should have LOC less or equal than 50 - should PASS', async () => {
@@ -24,7 +26,8 @@ describe('should.haveLocLessOrEqualThan scenarios', () => {
                 const options: Options = {
                     extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
+                    ignoreMatcher: excludeMatchers,
+                    typescriptPath
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
@@ -42,7 +45,8 @@ describe('should.haveLocLessOrEqualThan scenarios', () => {
                 const options: Options = {
                     extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
+                    ignoreMatcher: excludeMatchers,
+                    typescriptPath
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
@@ -60,7 +64,8 @@ describe('should.haveLocLessOrEqualThan scenarios', () => {
                 const options: Options = {
                     extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
+                    ignoreMatcher: excludeMatchers,
+                    typescriptPath
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
@@ -78,7 +83,8 @@ describe('should.haveLocLessOrEqualThan scenarios', () => {
                 const options: Options = {
                     extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
+                    ignoreMatcher: excludeMatchers,
+                    typescriptPath
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
@@ -96,7 +102,8 @@ describe('should.haveLocLessOrEqualThan scenarios', () => {
                 const options: Options = {
                     extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
+                    ignoreMatcher: excludeMatchers,
+                    typescriptPath
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
@@ -116,7 +123,8 @@ describe('should.haveLocLessOrEqualThan scenarios', () => {
                 const options: Options = {
                     extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
+                    ignoreMatcher: excludeMatchers,
+                    typescriptPath
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
@@ -144,7 +152,8 @@ describe('should.haveLocLessOrEqualThan scenarios', () => {
                 const options: Options = {
                     extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
+                    ignoreMatcher: excludeMatchers,
+                    typescriptPath
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
@@ -173,7 +182,8 @@ describe('should.haveLocLessOrEqualThan scenarios', () => {
                 const options: Options = {
                     extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
+                    ignoreMatcher: excludeMatchers,
+                    typescriptPath
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
@@ -205,7 +215,8 @@ describe('should.haveLocLessOrEqualThan scenarios', () => {
                 const options: Options = {
                     extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
+                    ignoreMatcher: excludeMatchers,
+                    typescriptPath
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
@@ -230,7 +241,8 @@ describe('should.haveLocLessOrEqualThan scenarios', () => {
                 const options: Options = {
                     extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
+                    ignoreMatcher: excludeMatchers,
+                    typescriptPath
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
@@ -258,7 +270,8 @@ describe('should.haveLocLessOrEqualThan scenarios', () => {
                     const options: Options = {
                         extensionTypes: ['**/*.ts'],
                         includeMatcher: [...includeMatcher],
-                        ignoreMatcher: excludeMatchers
+                        ignoreMatcher: excludeMatchers,
+                        typescriptPath
                     };
                     const appInstance = ComponentSelectorBuilder.create(rootDir, options);
     
@@ -285,7 +298,8 @@ describe('should.haveLocLessOrEqualThan scenarios', () => {
                     const options: Options = {
                         extensionTypes: ['**/*.ts'],
                         includeMatcher: [...includeMatcher],
-                        ignoreMatcher: excludeMatchers
+                        ignoreMatcher: excludeMatchers,
+                        typescriptPath
                     };
                     const appInstance = ComponentSelectorBuilder.create(rootDir, options);
     
@@ -311,7 +325,8 @@ describe('should.haveLocLessOrEqualThan scenarios', () => {
                 const options: Options = {
                     extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
+                    ignoreMatcher: excludeMatchers,
+                    typescriptPath
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
@@ -329,7 +344,8 @@ describe('should.haveLocLessOrEqualThan scenarios', () => {
                 const options: Options = {
                     extensionTypes: ['**/*.js'], // Looking for JavaScript in TypeScript project
                     includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
+                    ignoreMatcher: excludeMatchers,
+                    typescriptPath
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 

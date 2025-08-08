@@ -17,6 +17,8 @@ const includeMatchers = [
 
 const excludeMatchers = ['!<rootDir>/**/package.json', '!<rootDir>/**/tsconfig.json'];
 
+const typescriptPath = '<rootDir>/tsconfig.json';
+
 describe('shouldNot.dependsOn scenarios', () => {
     describe('Scenario 1: File has NO dependencies', () => {
         test('"domain/entities" should not depend on "inexistent-dependency" - should PASS (no dependencies)', async () => {
@@ -24,7 +26,8 @@ describe('shouldNot.dependsOn scenarios', () => {
                 const options: Options = {
                     extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
+                    ignoreMatcher: excludeMatchers,
+                    typescriptPath
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                 await appInstance
@@ -41,7 +44,8 @@ describe('shouldNot.dependsOn scenarios', () => {
                 const options: Options = {
                     extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
+                    ignoreMatcher: excludeMatchers,
+                    typescriptPath
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                 await appInstance
@@ -60,7 +64,8 @@ describe('shouldNot.dependsOn scenarios', () => {
                 const options: Options = {
                     extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
+                    ignoreMatcher: excludeMatchers,
+                    typescriptPath
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                 await appInstance
@@ -77,7 +82,8 @@ describe('shouldNot.dependsOn scenarios', () => {
                 const options: Options = {
                     extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
+                    ignoreMatcher: excludeMatchers,
+                    typescriptPath
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                 await appInstance
@@ -94,7 +100,8 @@ describe('shouldNot.dependsOn scenarios', () => {
                 const options: Options = {
                     extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
+                    ignoreMatcher: excludeMatchers,
+                    typescriptPath
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                 await appInstance
@@ -111,7 +118,8 @@ describe('shouldNot.dependsOn scenarios', () => {
                 const options: Options = {
                     extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
+                    ignoreMatcher: excludeMatchers,
+                    typescriptPath
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                 await appInstance
@@ -128,7 +136,8 @@ describe('shouldNot.dependsOn scenarios', () => {
                 const options: Options = {
                     extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
+                    ignoreMatcher: excludeMatchers,
+                    typescriptPath
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                 await appInstance
@@ -147,7 +156,8 @@ describe('shouldNot.dependsOn scenarios', () => {
                 const options: Options = {
                     extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
+                    ignoreMatcher: excludeMatchers,
+                    typescriptPath
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                 try {
@@ -174,7 +184,8 @@ describe('shouldNot.dependsOn scenarios', () => {
                 const options: Options = {
                     extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
+                    ignoreMatcher: excludeMatchers,
+                    typescriptPath
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                 try {
@@ -205,7 +216,8 @@ describe('shouldNot.dependsOn scenarios', () => {
                 const options: Options = {
                     extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
+                    ignoreMatcher: excludeMatchers,
+                    typescriptPath
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                 try {
@@ -236,7 +248,8 @@ describe('shouldNot.dependsOn scenarios', () => {
                 const options: Options = {
                     extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
+                    ignoreMatcher: excludeMatchers,
+                    typescriptPath
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                 try {
@@ -263,7 +276,8 @@ describe('shouldNot.dependsOn scenarios', () => {
                 const options: Options = {
                     extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
+                    ignoreMatcher: excludeMatchers,
+                    typescriptPath
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                 try {
@@ -290,7 +304,8 @@ describe('shouldNot.dependsOn scenarios', () => {
                 const options: Options = {
                     extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
+                    ignoreMatcher: excludeMatchers,
+                    typescriptPath
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                 try {
@@ -317,7 +332,8 @@ describe('shouldNot.dependsOn scenarios', () => {
                 const options: Options = {
                     extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
+                    ignoreMatcher: excludeMatchers,
+                    typescriptPath
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                 try {
@@ -344,7 +360,8 @@ describe('shouldNot.dependsOn scenarios', () => {
                 const options: Options = {
                     extensionTypes: ['**/*.ts'],
                     includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
+                    ignoreMatcher: excludeMatchers,
+                    typescriptPath
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                 try {
@@ -381,7 +398,8 @@ describe('shouldNot.dependsOn scenarios', () => {
                     const options: Options = {
                         extensionTypes: ['**/*.ts'],
                         includeMatcher: [...includeMatcher],
-                        ignoreMatcher: excludeMatchers
+                        ignoreMatcher: excludeMatchers,
+                        typescriptPath
                     };
                     const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                     await appInstance
@@ -408,7 +426,8 @@ describe('shouldNot.dependsOn scenarios', () => {
                     const options: Options = {
                         extensionTypes: ['**/*.ts'],
                         includeMatcher: [...includeMatcher],
-                        ignoreMatcher: excludeMatchers
+                        ignoreMatcher: excludeMatchers,
+                        typescriptPath
                     };
                     const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                     await appInstance
@@ -435,7 +454,8 @@ describe('shouldNot.dependsOn scenarios', () => {
                     const options: Options = {
                         extensionTypes: ['**/*.ts'],
                         includeMatcher: [...includeMatcher],
-                        ignoreMatcher: excludeMatchers
+                        ignoreMatcher: excludeMatchers,
+                        typescriptPath
                     };
                     const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                     await appInstance
@@ -461,7 +481,8 @@ describe('shouldNot.dependsOn scenarios', () => {
                 const options: Options = {
                     extensionTypes: ['**/*.js'], // Looking for JavaScript in TypeScript project
                     includeMatcher: [...includeMatcher],
-                    ignoreMatcher: excludeMatchers
+                    ignoreMatcher: excludeMatchers,
+                    typescriptPath
                 };
                 const appInstance = ComponentSelectorBuilder.create(rootDir, options);
                 try {
@@ -512,10 +533,11 @@ describe('shouldNot.dependsOn scenarios', () => {
                 expect(1).toBe(2);
             } catch (error) {
                 const errorMessage = (error as Error).message;
+
                 expect(errorMessage).toContain(`Violation - Rule: project files in directory '**/domain/**' should not depends on '[**/infra/**]'\n\n`);
-                expect(errorMessage).toContain(`Check if dependencies in file: '${rootDir}/infra/repositories/InMemoryTodoRepository.ts' - are being reached by the 'includeMatcher'`);
-                expect(errorMessage).toContain(`- '${rootDir}/domain/repositories/TodoRepository.ts'`);
-                expect(errorMessage).toContain(`- '${rootDir}/domain/entities/index.ts'`);
+                expect(errorMessage).toContain(`Check if dependencies in file: '${rootDir}/infra/repositories/InMemoryTodoRepository.ts' - are listed in package.json OR if dependency path is valid OR are reached by 'includeMatcher'`);
+                expect(errorMessage).toContain(`- '@/domain/repositories/TodoRepository'`);
+                expect(errorMessage).toContain(`- '@/domain/entities'`);
             }
         });
     });

@@ -1,11 +1,13 @@
+import fs from 'fs';
 import * as path from 'pathe';
+import * as tsConfigPaths from 'tsconfig-paths';
 import {
     DependencyProps,
     Resolvable,
     ResolvableDependencyProps,
     ResolvableResponse
 } from "../../common";
-import { nodejs, glob } from "../../../../utils";
+import { nodejs, glob, javascript } from "../../../../utils";
 import micromatch from 'micromatch';
 
 export class BuildinModuleResolvable extends Resolvable {
@@ -47,19 +49,68 @@ export class PackageJsonDevDependencyResolvable extends Resolvable {
     }
 }
 
+export class TypescriptPathDependencyResolvable extends Resolvable {
+    constructor(depProps: DependencyProps, resolvableProps: ResolvableDependencyProps) {
+        super(depProps, resolvableProps);
+    }
+    public override resolve(): ResolvableResponse {
+        try {
+            const stat = fs.statSync(this.resolvableProps.typescriptPath as string);
+            if (stat.isFile()) {
+                const tsconfigPaths = tsConfigPaths.loadConfig(this.resolvableProps.typescriptPath as string);
+                if (tsconfigPaths.resultType === 'success') {
+                    const { absoluteBaseUrl, paths } = tsconfigPaths;
+
+                    const matchPath = tsConfigPaths.createMatchPath(
+                        absoluteBaseUrl,  // baseUrl from tsconfig
+                        paths             // paths from tsconfig
+                    );
+
+                    const resolvedMatchPath = matchPath(
+                        this.depProps.name,
+                        undefined,
+                        undefined,
+                        this.resolvableProps.extensions
+                    );
+
+                    if (resolvedMatchPath) {
+                        const dependencyCandidates = javascript.generateDependenciesCandidates(resolvedMatchPath, this.resolvableProps.extensions);
+                        const dependencyCandidateIfExists = javascript.getDependencyCandidateIfExists(dependencyCandidates);
+
+                        if (dependencyCandidateIfExists) {
+                            const dependency = micromatch(this.resolvableProps.availableFiles, [dependencyCandidateIfExists])[0];
+                            if (dependency) {
+                                this.depProps.type = 'valid-path';
+                                this.depProps.name = dependency;
+                                return { status: 'resolved', depProps: { ...this.depProps } };
+                            }
+                        }
+                    }
+                }
+            }
+            return { status: 'unresolved', depProps: { ...this.depProps } };
+        } catch (error) {
+            return { status: 'unresolved', depProps: { ...this.depProps } };
+        }
+    }
+}
+
 export class ValidPathDependencyResolvable extends Resolvable {
     constructor(depProps: DependencyProps, resolvableProps: ResolvableDependencyProps) {
         super(depProps, resolvableProps);
     }
     public override resolve(): ResolvableResponse {
         const dependencyResolvedPath = path.resolve(this.resolvableProps.fileDir, this.depProps.name);
-        const resolvedDependencyGlobPattern: string = glob.createGlobToJavascriptRelatedDependency(dependencyResolvedPath);
-        const resolvedDependency = micromatch([...this.resolvableProps.availableFiles], [resolvedDependencyGlobPattern])[0];
+        const dependencyCandidates = javascript.generateDependenciesCandidates(dependencyResolvedPath, this.resolvableProps.extensions);
+        const dependencyCandidateIfExists = javascript.getDependencyCandidateIfExists(dependencyCandidates);
 
-        if (resolvedDependency) {
-            this.depProps.type = 'valid-path';
-            this.depProps.name = resolvedDependency;
-            return { status: 'resolved', depProps: { ...this.depProps } };
+        if (dependencyCandidateIfExists) {
+            const dependency = micromatch(this.resolvableProps.availableFiles, [dependencyCandidateIfExists])[0];
+            if (dependency) {
+                this.depProps.type = 'valid-path';
+                this.depProps.name = dependency;
+                return { status: 'resolved', depProps: { ...this.depProps } };
+            }
         }
         return { status: 'unresolved', depProps: this.depProps };
     }

@@ -93,7 +93,9 @@ export class JavascriptRelatedFile extends RootFile {
         dependencies.forEach(dependency => dependency.resolve({
             rootDir: buildableProps.rootDir,
             fileDir: path.dirname(filePath),
-            availableFiles: buildableProps.availableFiles
+            availableFiles: buildableProps.availableFiles,
+            extensions: buildableProps.extensions,
+            ...(buildableProps.typescriptPath ? { typescriptPath: buildableProps.typescriptPath } : {})
         }));
 
         this.props.loc = countLogicalCodeLines(code);

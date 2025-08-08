@@ -8,6 +8,7 @@ import {
     InvalidDependencyResolvable,
     PackageJsonDependencyResolvable,
     PackageJsonDevDependencyResolvable,
+    TypescriptPathDependencyResolvable,
     ValidPathDependencyResolvable
 } from './resolvables';
 import { ResolvableIterator } from './iterators';
@@ -29,6 +30,7 @@ export class JavascriptRelatedDependency extends Dependency {
         iterator.add(new PackageJsonDependencyResolvable({ ...this.props }, { ...resolvableProps }));
         iterator.add(new PackageJsonDevDependencyResolvable({ ...this.props }, { ...resolvableProps }));
         iterator.add(new ValidPathDependencyResolvable({ ...this.props }, { ...resolvableProps }));
+        iterator.add(new TypescriptPathDependencyResolvable({ ...this.props }, { ...resolvableProps }));
         iterator.add(new InvalidDependencyResolvable({ ...this.props }, { ...resolvableProps }));
 
         while (!iterator.resolved()) iterator.next();

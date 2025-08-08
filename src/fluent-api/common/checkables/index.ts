@@ -21,7 +21,13 @@ abstract class Checkable {
     }
 
     protected async buildNodeGraph(): Promise<NodeGraph> {
-        return NodeGraph.create(this.props.rootDir, this.props.options.includeMatcher, this.props.options.ignoreMatcher);
+        return NodeGraph.create(
+            this.props.rootDir,
+            this.props.options.includeMatcher,
+            this.props.options.ignoreMatcher,
+            this.props.options.extensionTypes,
+            this.props.options.typescriptPath
+        );
     }
 
     protected clearFiles(files: Map<string, RootFile>): void {

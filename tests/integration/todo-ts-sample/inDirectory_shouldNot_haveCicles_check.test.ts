@@ -17,13 +17,16 @@ const includeMatchers = [
 
 const excludeMatchers = ['!<rootDir>/**/package.json', '!<rootDir>/**/tsconfig.json'];
 
+const typescriptPath = '<rootDir>/tsconfig.json';
+
 describe('shouldNot.haveCicles scenarios', () => {
     test('entire project should not have cicles - should PASS', async () => {
         for (const [includeMatcher] of includeMatchers) {
             const options: Options = {
                 extensionTypes: ['**/*.ts'],
                 includeMatcher: [...includeMatcher],
-                ignoreMatcher: excludeMatchers
+                ignoreMatcher: excludeMatchers,
+                typescriptPath
             };
             const appInstance = ComponentSelectorBuilder.create(rootDir, options);
             await appInstance

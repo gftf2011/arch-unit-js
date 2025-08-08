@@ -15,6 +15,8 @@ export type RootFileProps = {
 export type RootFileBuildableProps = {
     rootDir: string,
     availableFiles: string[],
+    extensions: string[],
+    typescriptPath?: string,
 }
 
 export abstract class RootFile {

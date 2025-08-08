@@ -13,11 +13,17 @@ export class NodeGraph {
         startPath: string,
         filesOrFoldersToInclude: string[],
         filesOrFoldersToIgnore: string[],
+        extensionTypes: string[],
+        typescriptPath?: string,
       ): Promise<NodeGraph> {
         const nodes: Map<string, RootFile> = new Map();
 
-        const includePatterns = glob.resolveRootDirPatternToGlobPattern(filesOrFoldersToInclude, startPath);
-        const ignorePatterns = glob.resolveRootDirPatternToGlobPattern(filesOrFoldersToIgnore, startPath);
+        const extensions = extensionTypes.map(mimeType => glob.extractExtensionFromGlobPattern(mimeType)) as string[];
+
+        const includePatterns = glob.resolveRootDirPatterns(filesOrFoldersToInclude, startPath);
+        const ignorePatterns = glob.resolveRootDirPatterns(filesOrFoldersToIgnore, startPath);
+
+        const typescriptPathResolved = typescriptPath ? glob.resolveRootDirPattern(typescriptPath, startPath) : typescriptPath;
 
         const availableFiles: string[] = [];
 
@@ -47,7 +53,12 @@ export class NodeGraph {
               if (entry.isDirectory()) {
                 await walk(fullPath);
               } else if (entry.isFile()) {
-                const file = await FileFactory.create(entry.name, fullPath).build({ rootDir: startPath, availableFiles });
+                const file = await FileFactory.create(entry.name, fullPath).build({
+                  rootDir: startPath,
+                  availableFiles,
+                  extensions,
+                  ...(typescriptPathResolved ? { typescriptPath: typescriptPathResolved } : {})
+                });
                 nodes.set(file.props.path, file);
               }
             }

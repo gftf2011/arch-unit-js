@@ -16,7 +16,9 @@ export type DependencyProps = {
 export type ResolvableDependencyProps = {
     rootDir: string,
     fileDir: string,
-    availableFiles: string[]
+    availableFiles: string[],
+    extensions: string[],
+    typescriptPath?: string,
 }
 
 export abstract class Resolvable {
