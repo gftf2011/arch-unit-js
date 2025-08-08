@@ -7,7 +7,6 @@ import { RootFile, RootFileBuildableProps, RootFileProps } from "../common";
 import {
     CallExpressionInfo,
     DefaultExportInfo,
-    EnterInfo,
     ImportDeclarationInfo,
     createCallExpressionVisitor,
     createDefaultExportVisitor,
