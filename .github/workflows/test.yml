@@ -1,0 +1,49 @@
+name: Test Application Workflow
+
+on:
+  workflow_call:
+    inputs:
+      os:
+        required: true
+        type: string
+      node-versions:
+        required: true
+        type: string
+
+jobs:
+  test:
+    name: Test Application on ${{ inputs.os }}
+    runs-on: ${{ inputs.os }}
+    strategy:
+      matrix: 
+        node-version: ${{ fromJson(inputs.node-versions) }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.JS Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Use Cache "node-modules"
+        uses: actions/cache@v4
+        with:
+          path: ./node_modules
+          key: node-modules-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
+          restore-keys: |
+            node-modules-${{ runner.os }}-${{ matrix.node-version }}-
+
+      - name: Use Cache "package-lock.json"
+        uses: actions/cache@v4
+        with:
+          path: ./package-lock.json
+          key: package-lock-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
+          restore-keys: |
+            package-lock-${{ runner.os }}-${{ matrix.node-version }}-
+
+      - name: Run Tests
+        run: |
+          npm run test

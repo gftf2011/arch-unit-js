@@ -140,3 +140,6 @@ vite.config.ts.timestamp-*
 
 # package-lock.json
 package-lock.json
+
+# checksum.txt
+checksum.txt
