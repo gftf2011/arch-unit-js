@@ -5,9 +5,12 @@
 <br>
 
 <div align="center">
-  [![ESLint](https://img.shields.io/badge/ESLint-configured-blue?logo=eslint)](https://eslint.org/)
-  [![Prettier](https://img.shields.io/badge/Prettier-configured-ff69b4?logo=prettier)](https://prettier.io/)
+  <img src='https://img.shields.io/badge/ESLint-configured-blue?logo=eslint' alt='Coverage Status' />
+  <img src='https://img.shields.io/badge/Prettier-configured-ff69b4?logo=prettier' alt='Quality Gate Status' />
 <div>
+
+<br>
+
 A JavaScript/TypeScript library for enforcing architectural rules and constraints in your codebase. Inspired by ArchUnit for Java, this tool provides a fluent API to define and validate architectural boundaries, naming conventions, and dependency rules.
 
 > **Note**: Currently supports backend projects only.
