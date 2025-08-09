@@ -7,6 +7,9 @@
   <a href="https://prettier.io/">
     <img src="https://img.shields.io/badge/Prettier-configured-ff69b4?logo=prettier" alt="Prettier" />
   </a>
+  <a href="https://www.npmjs.com/package/arch-unit-js">
+    <img src="https://img.shields.io/npm/v/arch-unit-js.svg" alt="npm version" />
+  </a>
 </div>
 
 <div align="center">
