@@ -1,6 +1,12 @@
 <div align="center">
   <h1 style="font-size:4.5rem;"> ArchUnit JS</h1>
+</div>
 
+<div align="center">
+  <img src="https://github.com/gftf2011/clean-node-todolist/blob/main/.github/images/background.png" alt="Banner" style="max-width: 100%; height: auto;" />
+</div>
+
+<div align="center">
   <a href="https://eslint.org/">
     <img src="https://img.shields.io/badge/ESLint-configured-blue?logo=eslint" alt="ESLint" />
   </a>
@@ -12,67 +18,85 @@
   </a>
 </div>
 
-<div align="center">
-  <img src="https://github.com/gftf2011/clean-node-todolist/blob/main/.github/images/background.png" alt="Banner" style="max-width: 100%; height: auto;" />
-</div>
+<br/>
 
-<div align="left">
-  <h2>About</h2>
-</div>
+## :page_facing_up: About
 
 A JavaScript/TypeScript library for enforcing architectural rules and constraints in your codebase. Inspired by ArchUnit for Java, this tool provides a fluent API to define and validate architectural boundaries, naming conventions, and dependency rules. It is agnostic about the testing framework and supports for several OSs !
 
 > **Note**: Backend-focused (frontend support coming soon).
 
-<div align="left">
-  <h2>Features</h2>
+<br/>
+
+## :hammer_and_wrench: Supported OS
+
+- [x] Mac OS
+- [x] Linux
+- [x] Windows - WSL
+
+<br/>
+
+## :ledger: Features
 
 - **Dependency Rules**: Control which modules can depend on others (`dependsOn`, `onlyDependsOn`)
 - **Naming Conventions**: Enforce consistent file naming patterns (`haveName`, `onlyHaveName`)
 - **Code Metrics**: Validate lines of code thresholds (`haveLocLessThan`, `haveLocGreaterThan`)
 - **Cycle Detection**: Prevent circular dependencies (`shouldNot.haveCycles`)
 - **Fluent API**: Intuitive, readable syntax for defining architectural rules
-</div>
-
-<div align=left">
-  <h3><strong>Getting Started:</strong></h3>
-<h2>Installation</h2>
-
-```bash
-npm install arch-unit-js
-```
-
-</div>
 
 <br/>
 
-<div align="left">
-  <h2>Basic Usage</h2>
+## :racing_car: Getting Started
 
-```typescript
-import { app } from 'arch-unit-js';
+### - Installation
+
+Install using __npm__
+```bash
+npm install arch-unit-js
+```
+### - Basic JavaScript Scenario
+
+Let's get started by writing a simple function that generates a __UUID__ using the lib _uuid_. First, create a `uuid.js` file, inside a `utils` directory:
+```javascript
+// file path: ./utils/uuid.js
+const { v4 as uuidv4 } = require('uuid');
+
+export function generateUUID() {
+  return uuidv4();
+}
+```
+Then create a test file `utils-arch.spec.js` in a `tests` directory, where we are going to test that all files inside the `utils` directory should have the _uuid_ lib inside:
+```javascript
+// file path: ./tests/utils-arch.spec.js
+const { app } = require('arch-unit-js');
 
 const options = {
-  extensionTypes: ['**/*.ts', '**/*.js'],
-  includeMatcher: ['src/**'],
-  ignoreMatcher: ['!**/node_modules/**'],
+  extensionTypes: ['**/*.js'],             // Positive Glob pattern, where you specify all extension types your application has
+  includeMatcher: ['<rootDir>/**'],        // Positive Glob pattern, where you specify all files and directories based on the project <rootDir>
+  ignoreMatcher: ['!**/node_modules/**'],  // Negative Glob pattern, where you specify all files and directories you do NOT want to check
 };
 
-// Enforce naming conventions
-await app(options)
-  .projectFiles()
-  .inDirectory('**/controllers/**')
-  .should()
-  .haveName('*Controller.ts')
-  .check();
-
-// Control dependencies
-await app(options)
-  .projectFiles()
-  .inDirectory('**/domain/**')
-  .shouldNot()
-  .dependsOn(['**/infrastructure/**'])
-  .check();
+// We are using Jest, but you can use any other testing library
+describe('Architecture Test', () => {
+  it('"./utils/uuid.js" file should depend on "uuid" lib', async () => {
+    await app(options)
+      .projectFiles()
+      .inDirectory('**/utils/**')
+      .should()
+      .dependsOn('uuid')
+      .check(); // No need to expect, if the dependency is not found it throws an error
+  });
+});
 ```
+Now run the test and congrats 🥳, you just tested your application topology !
 
-</div>
+<br/>
+
+## :memo: License
+
+This project is under MIT license. See the [LICENSE](https://github.com/gftf2011/arch-unit-js/blob/main/LICENSE) file for more details.
+
+---
+
+Made with lots of 🔥🔥🔥 by [Gabriel Ferrari Tarallo Ferraz](https://www.linkedin.com/in/gabriel-ferrari-tarallo-ferraz/)
+
