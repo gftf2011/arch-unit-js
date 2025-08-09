@@ -2,8 +2,6 @@
   <h1>ArchUnit JS<h1>
 </div>
 
-<br>
-
 <div align="center">
   <img src='https://img.shields.io/badge/ESLint-configured-blue?logo=eslint' alt='Coverage Status' />
   <img src='https://img.shields.io/badge/Prettier-configured-ff69b4?logo=prettier' alt='Quality Gate Status' />
