@@ -47,66 +47,10 @@ jobs:
       os: ubuntu-latest
       node-versions: '["22.x"]'
     needs: [install-ubuntu, test-windows]
-  
+
   publish-beta-ubuntu:
-    name: Publish Package To Beta on ubuntu-latest
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [22.x]
+    uses: ./.github/workflows/publish.yml
+    with:
+      os: ubuntu-latest
+      node-versions: '["22.x"]'
     needs: [build-ubuntu]
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Node.JS Environment
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          registry-url: 'https://registry.npmjs.org'
-
-      - name: Use Cache "node-modules"
-        uses: actions/cache@v4
-        with:
-          path: ./node_modules
-          key: node-modules-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
-          restore-keys: |
-            node-modules-${{ runner.os }}-${{ matrix.node-version }}-
-
-      - name: Use Cache "package-lock.json"
-        uses: actions/cache@v4
-        with:
-          path: ./package-lock.json
-          key: package-lock-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
-          restore-keys: |
-            package-lock-${{ runner.os }}-${{ matrix.node-version }}-
-
-      - name: Use Cache "dist"
-        uses: actions/cache@v4
-        with:
-          path: ./dist
-          key: dist-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
-          restore-keys: |
-            dist-${{ runner.os }}-${{ matrix.node-version }}-
-
-      - name: Download Package Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: npm-package-ubuntu-latest-${{ matrix.node-version }}
-          path: .
-
-      - name: Download Checksum Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: checksum-ubuntu-latest-${{ matrix.node-version }}
-          path: .
-
-      - name: Validate Package Checksum
-        run: sha256sum -c checksum.txt
-
-      - name: Publish Package To Beta
-        run: npm publish --tag beta
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
