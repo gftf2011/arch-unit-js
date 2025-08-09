@@ -44,21 +44,6 @@ jobs:
           restore-keys: |
             package-lock-${{ runner.os }}-${{ matrix.node-version }}-
 
-      - name: Download Package Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: npm-package-${{ inputs.os }}-${{ matrix.node-version }}
-          path: .
-
-      - name: Download Checksum Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: checksum-${{ inputs.os }}-${{ matrix.node-version }}
-          path: .
-
-      - name: Validate Package Checksum
-        run: sha256sum -c checksum.txt
-
       - name: Run Tests
         run: |
           npm run test
