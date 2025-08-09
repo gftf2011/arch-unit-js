@@ -11,8 +11,6 @@
   <img src="https://github.com/gftf2011/clean-node-todolist/blob/main/.github/images/background.png" />
 </div>
 
-<br>
-
 A JavaScript/TypeScript library for enforcing architectural rules and constraints in your codebase. Inspired by ArchUnit for Java, this tool provides a fluent API to define and validate architectural boundaries, naming conventions, and dependency rules.
 
 > **Note**: Currently supports backend projects only.
