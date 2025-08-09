@@ -16,12 +16,16 @@
   <img src="https://github.com/gftf2011/clean-node-todolist/blob/main/.github/images/background.png" alt="Banner" style="max-width: 100%; height: auto;" />
 </div>
 
+<div align="left">
+  <h2>About</h2>
+</div>
+
 A JavaScript/TypeScript library for enforcing architectural rules and constraints in your codebase. Inspired by ArchUnit for Java, this tool provides a fluent API to define and validate architectural boundaries, naming conventions, and dependency rules. It is agnostic about the testing framework and supports for several OSs !
 
 > **Note**: Backend-focused (frontend support coming soon).
 
 <div align="left">
-<h2>Features</h2>
+  <h2>Features</h2>
 
 - **Dependency Rules**: Control which modules can depend on others (`dependsOn`, `onlyDependsOn`)
 - **Naming Conventions**: Enforce consistent file naming patterns (`haveName`, `onlyHaveName`)
@@ -31,18 +35,19 @@ A JavaScript/TypeScript library for enforcing architectural rules and constraint
 </div>
 
 <div align=left">
-<h3><strong>Getting Started:</strong></h3>
+  <h3><strong>Getting Started:</strong></h3>
 <h2>Installation</h2>
 
 ```bash
 npm install arch-unit-js
 ```
+
 </div>
 
 <br/>
 
 <div align="left">
-<h2>Basic Usage</h2>
+  <h2>Basic Usage</h2>
 
 ```typescript
 import { app } from 'arch-unit-js';
@@ -69,4 +74,5 @@ await app(options)
   .dependsOn(['**/infrastructure/**'])
   .check();
 ```
+
 </div>
