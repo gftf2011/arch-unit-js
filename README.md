@@ -25,6 +25,7 @@ A JavaScript/TypeScript library for enforcing architectural rules and constraint
 - **Fluent API**: Intuitive, readable syntax for defining architectural rules
 </div>
 
+<div align=left">
 ## Getting Started
 
 ### Installation
@@ -32,7 +33,9 @@ A JavaScript/TypeScript library for enforcing architectural rules and constraint
 ```bash
 npm install arch-unit-js
 ```
+</div>
 
+<div align="left">
 ### Basic Usage
 
 ```typescript
@@ -60,3 +63,4 @@ await app(options)
   .dependsOn(['**/infrastructure/**'])
   .check();
 ```
+</div>
