@@ -69,6 +69,6 @@ jobs:
         run: sha256sum -c checksum.txt
 
       - name: Publish Package To Beta
-        run: npm publish --tag beta --access public
+        run: npm publish --tag beta
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
