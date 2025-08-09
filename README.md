@@ -29,6 +29,9 @@
   <a href="https://www.npmjs.com/package/arch-unit-js">
     <img src="https://img.shields.io/npm/v/arch-unit-js.svg" alt="npm version" />
   </a>
+  <a href="https://github.com/gftf2011/arch-unit-js/actions/workflows/test.yml">
+    <img src="https://github.com/gftf2011/arch-unit-js/actions/workflows/test.yml/badge.svg?branch=main" alt="CI Status" />
+  </a>
 </div>
 
 <br/>
