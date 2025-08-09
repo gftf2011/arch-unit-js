@@ -3,6 +3,7 @@ name: Merge into Main Workflow
 on:
   pull_request:
     branches: ['main']
+    types: ['closed']
 
 jobs:
   install-ubuntu:
@@ -44,7 +45,7 @@ jobs:
     with:
       os: ubuntu-latest
       node-versions: '["22.x"]'
-    needs: [install-ubuntu, test-windows]
+    needs: [test-ubuntu, test-windows]
 
   publish-ubuntu:
     uses: ./.github/workflows/publish.yml

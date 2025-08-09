@@ -13,6 +13,9 @@ on:
 jobs:
   test:
     name: Test Application on ${{ inputs.os }}
+    if: >
+      (github.event_name == 'push') ||
+      (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
     runs-on: ${{ inputs.os }}
     strategy:
       matrix:
@@ -44,6 +47,8 @@ jobs:
           restore-keys: |
             package-lock-${{ runner.os }}-${{ matrix.node-version }}-
 
-      - name: Run Tests
+      - name: Run Tests & Lint Check
         run: |
           npm run test
+          npm run lint
+          npm run format:check
