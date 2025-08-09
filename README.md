@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>ArchUnit JS<h1>
+  <h1 style="font-size:3.5rem;">ArchUnit JS</h1>
 </div>
 
 <div align="center">
