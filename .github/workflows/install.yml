@@ -53,11 +53,11 @@ jobs:
       - name: Upload Package Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: npm-package-${{ inputs.os }}
+          name: npm-package-${{ inputs.os }}-${{ matrix.node-version }}
           path: '*.tgz'
 
       - name: Upload Checksum Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: checksum-${{ inputs.os }}
+          name: checksum-${{ inputs.os }}-${{ matrix.node-version }}
           path: 'checksum.txt'
