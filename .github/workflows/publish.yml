@@ -73,7 +73,7 @@ jobs:
 
       - name: Validate Package Checksum
         run: sha256sum -c checksum.txt
-      
+
       - name: Publish Package
         if: >
           (github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.head_ref == 'dev' && github.base_ref == 'main')

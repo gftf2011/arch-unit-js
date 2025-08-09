@@ -63,13 +63,16 @@ A JavaScript/TypeScript library for enforcing architectural rules and constraint
 
 ### - Installation
 
-Install using __npm__
+Install using **npm**
+
 ```bash
 npm install arch-unit-js
 ```
+
 ### - Basic JavaScript Scenario
 
-Let's get started by writing a simple function that generates a __UUID__ using the lib _uuid_. First, create a `uuid.js` file, inside a `utils` directory:
+Let's get started by writing a simple function that generates a **UUID** using the lib _uuid_. First, create a `uuid.js` file, inside a `utils` directory:
+
 ```javascript
 // file path: ./utils/uuid.js
 const { v4 as uuidv4 } = require('uuid');
@@ -78,29 +81,27 @@ export function generateUUID() {
   return uuidv4();
 }
 ```
+
 Then create a test file `utils-arch.spec.js` in a `tests` directory, where we are going to test that all files inside the `utils` directory should have the _uuid_ lib inside:
+
 ```javascript
 // file path: ./tests/utils-arch.spec.js
 const { app } = require('arch-unit-js');
 
 const options = {
-  extensionTypes: ['**/*.js'],             // Positive Glob pattern, where you specify all extension types your application has
-  includeMatcher: ['<rootDir>/**'],        // Positive Glob pattern, where you specify all files and directories based on the project <rootDir>
-  ignoreMatcher: ['!**/node_modules/**'],  // Negative Glob pattern, where you specify all files and directories you do NOT want to check
+  extensionTypes: ['**/*.js'], // Positive Glob pattern, where you specify all extension types your application has
+  includeMatcher: ['<rootDir>/**'], // Positive Glob pattern, where you specify all files and directories based on the project <rootDir>
+  ignoreMatcher: ['!**/node_modules/**'], // Negative Glob pattern, where you specify all files and directories you do NOT want to check
 };
 
 // We are using Jest, but you can use any other testing library
 describe('Architecture Test', () => {
   it('"./utils/uuid.js" file should depend on "uuid" lib', async () => {
-    await app(options)
-      .projectFiles()
-      .inDirectory('**/utils/**')
-      .should()
-      .dependsOn('uuid')
-      .check(); // No need to expect, if the dependency is not found it throws an error
+    await app(options).projectFiles().inDirectory('**/utils/**').should().dependsOn('uuid').check(); // No need to expect, if the dependency is not found it throws an error
   });
 });
 ```
+
 Now run the test and congrats 🥳, you just tested your application topology !
 
 <br/>
@@ -135,4 +136,3 @@ This project is under MIT license. See the [LICENSE](https://github.com/gftf2011
 ---
 
 Made with lots of 🔥🔥🔥 by [Gabriel Ferrari Tarallo Ferraz](https://www.linkedin.com/in/gabriel-ferrari-tarallo-ferraz/)
-
