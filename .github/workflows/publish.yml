@@ -71,6 +71,16 @@ jobs:
       - name: Validate Package Checksum
         run: sha256sum -c checksum.txt
 
+      - name: Append -beta to package.json version
+        run: |
+          # Get current version
+          VERSION=$(node -p "require('./package.json').version")
+          # Append -beta, e.g. 1.2.3-beta
+          NEW_VERSION="${VERSION}-beta"
+          echo "New version: $NEW_VERSION"
+          # Update package.json version without creating a git tag
+          npm version "$NEW_VERSION" --no-git-tag-version
+
       - name: Publish Package To Beta
         run: npm publish --tag beta --access public
         env:
