@@ -35,22 +35,6 @@ jobs:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.org'
 
-      - name: Use Cache "node-modules"
-        uses: actions/cache@v4
-        with:
-          path: ./node_modules
-          key: node-modules-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
-          restore-keys: |
-            node-modules-${{ runner.os }}-${{ matrix.node-version }}-
-
-      - name: Use Cache "package-lock.json"
-        uses: actions/cache@v4
-        with:
-          path: ./package-lock.json
-          key: package-lock-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
-          restore-keys: |
-            package-lock-${{ runner.os }}-${{ matrix.node-version }}-
-
       - name: Use Cache "dist"
         uses: actions/cache@v4
         with:
@@ -59,19 +43,17 @@ jobs:
           restore-keys: |
             dist-${{ runner.os }}-${{ matrix.node-version }}-
 
-      - name: Download Package Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: npm-package-${{ inputs.os }}-${{ matrix.node-version }}
-          path: .
-
       - name: Download Checksum Artifact
         uses: actions/download-artifact@v4
         with:
           name: checksum-${{ inputs.os }}-${{ matrix.node-version }}
           path: .
+      
+      - name: Generate TAR package file
+        run: |
+          npm pack
 
-      - name: Validate Package Checksum
+      - name: Validate "dist" Checksum
         run: sha256sum -c checksum.txt
 
       - name: Publish Package

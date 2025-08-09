@@ -25,3 +25,9 @@ yarn.lock
 # Git
 .git/
 .gitignore 
+
+# Business files
+business/
+
+# Checksum files
+checksum.txt
