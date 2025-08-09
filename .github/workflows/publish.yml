@@ -48,7 +48,7 @@ jobs:
         with:
           name: checksum-${{ inputs.os }}-${{ matrix.node-version }}
           path: .
-      
+
       - name: Generate TAR package file
         run: |
           npm pack
