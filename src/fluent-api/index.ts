@@ -79,7 +79,7 @@ class PositiveMatchConditionSelectorBuilder {
     });
   }
 
-  haveCicles(): ProjectFilesInDirectoryHaveCyclesShouldSelector {
+  haveCycles(): ProjectFilesInDirectoryHaveCyclesShouldSelector {
     return new ProjectFilesInDirectoryHaveCyclesShouldSelector({
       negated: this.negated,
       rootDir: this.rootDir,
@@ -87,7 +87,7 @@ class PositiveMatchConditionSelectorBuilder {
       checkingPatterns: [],
       options: this.options,
       excludePattern: this.excludePattern,
-      ruleConstruction: [...this.ruleConstruction, `have cicles`],
+      ruleConstruction: [...this.ruleConstruction, `have cycles`],
     });
   }
 
@@ -213,7 +213,7 @@ class NegativeMatchConditionSelectorBuilder {
     });
   }
 
-  haveCicles(): ProjectFilesInDirectoryHaveCyclesShouldSelector {
+  haveCycles(): ProjectFilesInDirectoryHaveCyclesShouldSelector {
     return new ProjectFilesInDirectoryHaveCyclesShouldSelector({
       negated: this.negated,
       rootDir: this.rootDir,
@@ -221,7 +221,7 @@ class NegativeMatchConditionSelectorBuilder {
       checkingPatterns: [],
       options: this.options,
       excludePattern: this.excludePattern,
-      ruleConstruction: [...this.ruleConstruction, `have cicles`],
+      ruleConstruction: [...this.ruleConstruction, `have cycles`],
     });
   }
 

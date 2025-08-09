@@ -142,7 +142,7 @@ export abstract class PatternCheckable extends Checkable {
   }
 }
 
-export abstract class PatternCiclesCheckable extends PatternCheckable {
+export abstract class PatternCyclesCheckable extends PatternCheckable {
   constructor(protected readonly props: PatternCheckableProps) {
     super(props);
   }

@@ -108,7 +108,7 @@ Now run the test and congrats 🥳, you just tested your application topology !
 ## :notebook: API Documentation
 
 - [Project Files in Directory Should NOT Depend On Specified Patterns](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inDirectory_shouldNot_dependsOn_check.md)
-- [Project Files in Directory Should NOT Have Cycles](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inDirectory_shouldNot_haveCicles_check.md)
+- [Project Files in Directory Should NOT Have Cycles](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inDirectory_shouldNot_haveCycles_check.md)
 - [Project Files in Directory Should NOT Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inDirectory_shouldNot_haveLocGreaterOrEqualThan_check.md)
 - [Project Files in Directory Should NOT Have Greater L.O.C. (Lines Of Code) Than Specified Value](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inDirectory_shouldNot_haveLocGreaterThan_check.md)
 - [Project Files in Directory Should NOT Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inDirectory_shouldNot_haveLocLessOrEqualThan_check.md)
@@ -117,7 +117,7 @@ Now run the test and congrats 🥳, you just tested your application topology !
 - [Project Files in Directory Should NOT Only Depend On Specific Patterns](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inDirectory_shouldNot_onlyDependsOn_check.md)
 - [Project Files in Directory Should NOT Only Have Names with Specified Pattern](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inDirectory_shouldNot_onlyHaveName_check.md)
 - [Project Files in Directory Should Depend On Specified Patterns](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inDirectory_should_dependsOn_check.md)
-- [Project Files in Directory Should Have Cycles](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inDirectory_should_haveCicles_check.md)
+- [Project Files in Directory Should Have Cycles](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inDirectory_should_haveCycles_check.md)
 - [Project Files in Directory Should Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inDirectory_should_haveLocGreaterOrEqualThan_check.md)
 - [Project Files in Directory Should Have Greater L.O.C. (Lines Of Code) Than Specified Value](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inDirectory_should_haveLocGreaterThan_check.md)
 - [Project Files in Directory Should Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inDirectory_should_haveLocLessOrEqualThan_check.md)

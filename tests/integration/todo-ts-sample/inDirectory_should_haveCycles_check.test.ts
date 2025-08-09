@@ -27,17 +27,26 @@ const excludeMatchers = ['!<rootDir>/**/package.json', '!<rootDir>/**/tsconfig.j
 
 const typescriptPath = '<rootDir>/tsconfig.json';
 
-describe('shouldNot.haveCicles scenarios', () => {
-  test('entire project should not have cicles - should PASS', async () => {
+describe('should.haveCycles scenarios', () => {
+  test('entire project should have cycles - DO I REALLY NEED TO EXPLAIN THIS ?', async () => {
     for (const [includeMatcher] of includeMatchers) {
-      const options: Options = {
-        extensionTypes: ['**/*.ts'],
-        includeMatcher: [...includeMatcher],
-        ignoreMatcher: excludeMatchers,
-        typescriptPath,
-      };
-      const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-      await appInstance.projectFiles().inDirectory('**').shouldNot().haveCicles().check();
+      try {
+        const options: Options = {
+          extensionTypes: ['**/*.ts'],
+          includeMatcher: [...includeMatcher],
+          ignoreMatcher: excludeMatchers,
+          typescriptPath,
+        };
+        const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+        await appInstance.projectFiles().inDirectory('**').should().haveCycles().check();
+
+        expect(1).toBe(2);
+      } catch (error) {
+        const errorMessage = (error as Error).message;
+        expect(errorMessage).toBe(
+          "Violation - Rule: project files in directory '**' should have cycles\n\nIF YOU SEE THIS, YOU MUST BE A UTTERLY STUPID PERSON",
+        );
+      }
     }
   });
 });

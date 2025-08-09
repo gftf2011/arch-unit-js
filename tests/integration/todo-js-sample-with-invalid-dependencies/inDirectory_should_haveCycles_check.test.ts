@@ -15,7 +15,7 @@ const includeMatchers = ['<rootDir>/**'];
 
 const excludeMatchers = ['!<rootDir>/**/package.json'];
 
-describe('shouldNot.haveCicles scenarios', () => {
+describe('should.haveCycles scenarios', () => {
   it('should throw an error if the dependency is not found', async () => {
     const options: Options = {
       extensionTypes: ['**/*.js'],
@@ -24,14 +24,14 @@ describe('shouldNot.haveCicles scenarios', () => {
     };
     const appInstance = ComponentSelectorBuilder.create(rootDir, options);
     try {
-      await appInstance.projectFiles().inDirectory('**').shouldNot().haveCicles().check();
+      await appInstance.projectFiles().inDirectory('**').should().haveCycles().check();
       // If we get here, the test should fail
       expect(1).toBe(2);
     } catch (error) {
       const errorMessage = (error as Error).message;
 
       expect(errorMessage).toContain(
-        `Violation - Rule: project files in directory '**' should not have cicles\n\n`,
+        `Violation - Rule: project files in directory '**' should have cycles\n\n`,
       );
       expect(errorMessage).toContain(
         `Check if dependencies in file: '${rootDir}/app.js' - are listed in package.json OR if dependency path is valid OR are reached by 'includeMatcher'\n`,

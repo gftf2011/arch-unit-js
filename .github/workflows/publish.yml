@@ -72,6 +72,7 @@ jobs:
         run: sha256sum -c checksum.txt
 
       - name: Append -beta to package.json version
+        if: ${{ github.ref == 'refs/heads/dev' }}
         run: |
           # Get current version
           VERSION=$(node -p "require('./package.json').version")
@@ -82,6 +83,7 @@ jobs:
           npm version "$NEW_VERSION" --no-git-tag-version
 
       - name: Publish Package To Beta
+        if: ${{ github.ref == 'refs/heads/dev' }}
         run: npm publish --tag beta --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
