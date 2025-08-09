@@ -94,13 +94,13 @@ jobs:
       - name: Download Package Artifact
         uses: actions/download-artifact@v4
         with:
-          name: npm-package-${{ inputs.os }}-${{ matrix.node-version }}
+          name: npm-package-ubuntu-latest-${{ matrix.node-version }}
           path: .
 
       - name: Download Checksum Artifact
         uses: actions/download-artifact@v4
         with:
-          name: checksum-${{ inputs.os }}-${{ matrix.node-version }}
+          name: checksum-ubuntu-latest-${{ matrix.node-version }}
           path: .
 
       - name: Validate Package Checksum
