@@ -2,6 +2,18 @@
   <h1 style="font-size:4.5rem;"> ArchUnit JS</h1>
 </div>
 
+<br/>
+
+<div align="center">
+  <a href="#page_facing_up-about">About</a> •
+  <a href="#hammer_and_wrench-supported-os">Supported OS</a> • 
+  <a href="#ledger-features">Features</a> •
+  <a href="#racing_car-getting-started">Getting Started</a> •
+  <a href="#memo-license">License</a>
+</div>
+
+<br/>
+
 <div align="center">
   <img src="https://github.com/gftf2011/clean-node-todolist/blob/main/.github/images/background.png" alt="Banner" style="max-width: 100%; height: auto;" />
 </div>
@@ -22,7 +34,7 @@
 
 ## :page_facing_up: About
 
-A JavaScript/TypeScript library for enforcing architectural rules and constraints in your codebase. Inspired by ArchUnit for Java, this tool provides a fluent API to define and validate architectural boundaries, naming conventions, and dependency rules. It is agnostic about the testing framework and supports for several OSs !
+A JavaScript/TypeScript library for enforcing architectural rules and constraints in your codebase. Inspired by ArchUnit for Java, this tool provides a fluent API to define and validate architectural boundaries, naming conventions, and dependency rules. It is agnostic about the testing framework and supports for several OS systems !
 
 > **Note**: Backend-focused (frontend support coming soon).
 
