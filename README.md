@@ -1,8 +1,13 @@
-# ArchUnit JS
+<div align="center">
+  <h1>ArchUnit JS<h1>
+</div>
 
-[![ESLint](https://img.shields.io/badge/ESLint-configured-blue?logo=eslint)](https://eslint.org/)
-[![Prettier](https://img.shields.io/badge/Prettier-configured-ff69b4?logo=prettier)](https://prettier.io/)
+<br>
 
+<div align="center">
+  [![ESLint](https://img.shields.io/badge/ESLint-configured-blue?logo=eslint)](https://eslint.org/)
+  [![Prettier](https://img.shields.io/badge/Prettier-configured-ff69b4?logo=prettier)](https://prettier.io/)
+<div>
 A JavaScript/TypeScript library for enforcing architectural rules and constraints in your codebase. Inspired by ArchUnit for Java, this tool provides a fluent API to define and validate architectural boundaries, naming conventions, and dependency rules.
 
 > **Note**: Currently supports backend projects only.
