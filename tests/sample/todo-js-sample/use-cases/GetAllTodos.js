@@ -8,4 +8,4 @@ class GetAllTodos {
   }
 }
 
-module.exports = GetAllTodos; 
+module.exports = GetAllTodos;

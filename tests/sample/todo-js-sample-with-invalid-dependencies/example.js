@@ -24,9 +24,9 @@ async function runExample() {
 
     // Update todo
     console.log('\n4. Updating todo...');
-    const updatedTodo = await app.update(todo1.id, { 
+    const updatedTodo = await app.update(todo1.id, {
       title: 'Buy groceries and medicine',
-      completed: true 
+      completed: true,
     });
     console.log('Updated:', updatedTodo.title, '- Completed:', updatedTodo.completed);
 
@@ -39,10 +39,9 @@ async function runExample() {
     console.log('\n6. Final todos...');
     const finalTodos = await app.getAll();
     console.log('Remaining todos:', finalTodos.length);
-
   } catch (error) {
     console.error('Error:', error.message);
   }
 }
 
-runExample(); 
+runExample();

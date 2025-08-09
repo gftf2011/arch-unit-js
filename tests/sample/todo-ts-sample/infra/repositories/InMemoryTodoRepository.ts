@@ -11,7 +11,7 @@ export class InMemoryTodoRepository extends TodoRepository {
   }
 
   override async findById(id: string): Promise<ITodo | null> {
-    return this.todos.find(todo => todo.id === id) || null;
+    return this.todos.find((todo) => todo.id === id) || null;
   }
 
   override async findAll(): Promise<ITodo[]> {
@@ -19,7 +19,7 @@ export class InMemoryTodoRepository extends TodoRepository {
   }
 
   override async update(id: string, updatedTodo: ITodo): Promise<ITodo | null> {
-    const index = this.todos.findIndex(todo => todo.id === id);
+    const index = this.todos.findIndex((todo) => todo.id === id);
     if (index !== -1) {
       this.todos[index] = updatedTodo;
       return updatedTodo;
@@ -28,11 +28,11 @@ export class InMemoryTodoRepository extends TodoRepository {
   }
 
   override async delete(id: string): Promise<boolean> {
-    const index = this.todos.findIndex(todo => todo.id === id);
+    const index = this.todos.findIndex((todo) => todo.id === id);
     if (index !== -1) {
       this.todos.splice(index, 1);
       return true;
     }
     return false;
   }
-} 
+}

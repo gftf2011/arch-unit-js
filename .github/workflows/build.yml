@@ -43,11 +43,11 @@ jobs:
           key: package-lock-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
           restore-keys: |
             package-lock-${{ runner.os }}-${{ matrix.node-version }}-
-      
+
       - name: Build Distribuition
         run: |
           npm run build
-      
+
       - name: Cache "dist"
         uses: actions/cache@v4
         with:

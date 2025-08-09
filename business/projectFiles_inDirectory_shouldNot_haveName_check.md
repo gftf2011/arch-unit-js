@@ -14,14 +14,17 @@ This rule ensures naming flexibility by preventing files from conforming to the 
 ## All Possible Scenarios
 
 **Scenario 1**: Directory has files but NONE match the pattern
+
 - **Result**: ✅ PASS - No files match the specified pattern
 
 **Scenario 2**: Directory has files and ANY files match the pattern
+
 - **Result**: ❌ FAIL - Files match the specified pattern (violates the rule)
 
 ## Scenario Examples
 
 ### Scenario 1: Directory has files but NONE match the pattern
+
 ```
 project/
 ├── src/
@@ -39,6 +42,7 @@ project/
 ```
 
 **Directory Content:**
+
 ```
 src/application/use-cases/
 ├── helper.ts
@@ -47,17 +51,15 @@ src/application/use-cases/
 ```
 
 **API Usage:**
+
 ```typescript
-projectFiles()
-  .inDirectory('**/use-cases/**')
-  .shouldNot()
-  .haveName('*UseCase.ts')
-  .check()
+projectFiles().inDirectory('**/use-cases/**').shouldNot().haveName('*UseCase.ts').check();
 ```
 
 **Result**: ✅ PASS - No files match the `*UseCase.ts` pattern
 
 ### Scenario 2: Directory has files and ANY files match the pattern
+
 ```
 project/
 ├── src/
@@ -79,6 +81,7 @@ project/
 ```
 
 **Directory Content (Mixed):**
+
 ```
 src/application/use-cases-mixed/
 ├── CreateUserUseCase.ts  // matches pattern
@@ -87,6 +90,7 @@ src/application/use-cases-mixed/
 ```
 
 **Directory Content (All Match):**
+
 ```
 src/application/use-cases-all/
 ├── CreateUserUseCase.ts  // matches pattern
@@ -95,18 +99,11 @@ src/application/use-cases-all/
 ```
 
 **API Usage:**
-```typescript
-projectFiles()
-  .inDirectory('**/use-cases-mixed/**')
-  .shouldNot()
-  .haveName('*UseCase.ts')
-  .check()
 
-projectFiles()
-  .inDirectory('**/use-cases-all/**')
-  .shouldNot()
-  .haveName('*UseCase.ts')
-  .check()
+```typescript
+projectFiles().inDirectory('**/use-cases-mixed/**').shouldNot().haveName('*UseCase.ts').check();
+
+projectFiles().inDirectory('**/use-cases-all/**').shouldNot().haveName('*UseCase.ts').check();
 ```
 
 **Result**: ❌ FAIL - Both directories fail: `use-cases-mixed` has some files matching, `use-cases-all` has all files matching the pattern

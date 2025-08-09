@@ -28,4 +28,4 @@ export abstract class TodoRepository implements ITodoRepository {
   async delete(id: string): Promise<boolean> {
     throw new Error('Method not implemented');
   }
-} 
+}

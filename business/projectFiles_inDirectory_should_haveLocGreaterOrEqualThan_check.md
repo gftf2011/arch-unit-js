@@ -8,6 +8,7 @@
 - It is OK if ALL files have lines of code greater than or equal to the threshold
 
 This rule enforces minimum code complexity and prevents:
+
 - Trivial or placeholder files with insufficient implementation
 - Incomplete or stub implementations
 - Files that should contain more substantial logic
@@ -21,14 +22,17 @@ This rule enforces minimum code complexity and prevents:
 ## All Possible Scenarios
 
 **Scenario 1**: All files have lines of code GREATER than or EQUAL to the threshold
+
 - **Result**: ✅ PASS - All files meet the minimum size requirement
 
 **Scenario 2**: ANY files have lines of code LESS than the threshold
+
 - **Result**: ❌ FAIL - Files violate the minimum size requirement
 
 ## Scenario Examples
 
 ### Scenario 1: All files have lines of code GREATER than or EQUAL to the threshold
+
 ```
 project/
 ├── src/
@@ -41,6 +45,7 @@ project/
 ```
 
 **File Content:**
+
 ```typescript
 // src/services/EmailService.ts (18 lines of code - above threshold)
 /**
@@ -49,28 +54,33 @@ project/
 import { User } from '../models/User';
 import { Template } from '../models/Template';
 
-export class EmailService {                                  // LOC 1
-  private apiKey: string;                                    // LOC 2
-  private baseUrl: string;                                   // LOC 3
+export class EmailService {
+  // LOC 1
+  private apiKey: string; // LOC 2
+  private baseUrl: string; // LOC 3
 
-  constructor(apiKey: string) {                              // LOC 4
-    this.apiKey = apiKey;                                    // LOC 5
-    this.baseUrl = 'https://email-api.example.com';         // LOC 6
-  }                                                          // LOC 7
+  constructor(apiKey: string) {
+    // LOC 4
+    this.apiKey = apiKey; // LOC 5
+    this.baseUrl = 'https://email-api.example.com'; // LOC 6
+  } // LOC 7
 
-  async sendWelcomeEmail(user: User): Promise<boolean> {     // LOC 8
-    const template = this.getWelcomeTemplate(user.name);    // LOC 9
-    return await this.sendEmail(user.email, template);      // LOC 10
-  }                                                          // LOC 11
+  async sendWelcomeEmail(user: User): Promise<boolean> {
+    // LOC 8
+    const template = this.getWelcomeTemplate(user.name); // LOC 9
+    return await this.sendEmail(user.email, template); // LOC 10
+  } // LOC 11
 
-  async sendPasswordResetEmail(user: User, token: string): Promise<boolean> { // LOC 12
+  async sendPasswordResetEmail(user: User, token: string): Promise<boolean> {
+    // LOC 12
     const template = this.getPasswordResetTemplate(user.name, token); // LOC 13
-    return await this.sendEmail(user.email, template);      // LOC 14
-  }                                                          // LOC 15
+    return await this.sendEmail(user.email, template); // LOC 14
+  } // LOC 15
 
-  private getWelcomeTemplate(name: string): Template {      // LOC 16
-    return { subject: 'Welcome!', body: `Hello ${name}` };  // LOC 17
-  }                                                          // LOC 18
+  private getWelcomeTemplate(name: string): Template {
+    // LOC 16
+    return { subject: 'Welcome!', body: `Hello ${name}` }; // LOC 17
+  } // LOC 18
 
   private getPasswordResetTemplate(name: string, token: string): Template {
     return { subject: 'Reset Password', body: `Hi ${name}, reset: ${token}` };
@@ -86,41 +96,44 @@ export class EmailService {                                  // LOC 1
 /**
  * Payment processing service
  */
-export class PaymentService {                               // LOC 1
-  private apiKey: string;                                   // LOC 2
+export class PaymentService {
+  // LOC 1
+  private apiKey: string; // LOC 2
 
-  constructor(apiKey: string) {                             // LOC 3
-    this.apiKey = apiKey;                                   // LOC 4
-  }                                                         // LOC 5
+  constructor(apiKey: string) {
+    // LOC 3
+    this.apiKey = apiKey; // LOC 4
+  } // LOC 5
 
-  async processPayment(amount: number): Promise<boolean> {  // LOC 6
-    const payload = this.createPayload(amount);             // LOC 7
-    return await this.sendRequest(payload);                 // LOC 8
-  }                                                         // LOC 9
+  async processPayment(amount: number): Promise<boolean> {
+    // LOC 6
+    const payload = this.createPayload(amount); // LOC 7
+    return await this.sendRequest(payload); // LOC 8
+  } // LOC 9
 
-  private createPayload(amount: number): any {              // LOC 10
+  private createPayload(amount: number): any {
+    // LOC 10
     return { amount, currency: 'USD', apiKey: this.apiKey }; // LOC 11
-  }                                                         // LOC 12
+  } // LOC 12
 
-  private async sendRequest(payload: any): Promise<boolean> { // LOC 13
-    // Implementation would go here                         
-    return true;                                            // LOC 14
-  }                                                         // LOC 15
+  private async sendRequest(payload: any): Promise<boolean> {
+    // LOC 13
+    // Implementation would go here
+    return true; // LOC 14
+  } // LOC 15
 }
 ```
 
 **API Usage:**
+
 ```typescript
-projectFiles()
-  .inDirectory('**/src/**')
-  .should()
-  .haveLocGreaterOrEqualThan(15)
-  .check()
+projectFiles().inDirectory('**/src/**').should().haveLocGreaterOrEqualThan(15).check();
 ```
 
 **Result**: ✅ PASS - All files (25, 18, 15, 45 LOC) are greater than or equal to 15 lines of code
 
 ### Scenario 2: ANY files have lines of code LESS than the threshold
+
 ```
 project/
 ├── src/
@@ -136,83 +149,95 @@ project/
 ```
 
 **File Content:**
+
 ```typescript
 // src/services/StubService.ts (only 13 lines of code - below threshold)
 /**
  * Placeholder service - needs implementation
  */
-export class StubService {                                   // LOC 1
-  constructor() {                                            // LOC 2
-    // TODO: Add initialization logic                        
-  }                                                          // LOC 3
+export class StubService {
+  // LOC 1
+  constructor() {
+    // LOC 2
+    // TODO: Add initialization logic
+  } // LOC 3
 
-  async process(): Promise<void> {                           // LOC 4
-    // TODO: Implement processing logic                      
-    throw new Error('Not implemented');                     // LOC 5
-  }                                                          // LOC 6
+  async process(): Promise<void> {
+    // LOC 4
+    // TODO: Implement processing logic
+    throw new Error('Not implemented'); // LOC 5
+  } // LOC 6
 
-  validate(): boolean {                                      // LOC 7
-    return false;                                            // LOC 8
-  }                                                          // LOC 9
+  validate(): boolean {
+    // LOC 7
+    return false; // LOC 8
+  } // LOC 9
 
-  getStatus(): string {                                      // LOC 10
-    return 'pending';                                        // LOC 11
-  }                                                          // LOC 12
-}                                                            // LOC 13
+  getStatus(): string {
+    // LOC 10
+    return 'pending'; // LOC 11
+  } // LOC 12
+} // LOC 13
 
 // src/services/PaymentService.ts (exactly 15 lines of code - equals threshold)
 /**
  * Payment processing service
  */
-export class PaymentService {                               // LOC 1
-  private apiKey: string;                                   // LOC 2
+export class PaymentService {
+  // LOC 1
+  private apiKey: string; // LOC 2
 
-  constructor(apiKey: string) {                             // LOC 3
-    this.apiKey = apiKey;                                   // LOC 4
-  }                                                         // LOC 5
+  constructor(apiKey: string) {
+    // LOC 3
+    this.apiKey = apiKey; // LOC 4
+  } // LOC 5
 
-  async processPayment(amount: number): Promise<boolean> {  // LOC 6
-    const payload = this.createPayload(amount);             // LOC 7
-    return await this.sendRequest(payload);                 // LOC 8
-  }                                                         // LOC 9
+  async processPayment(amount: number): Promise<boolean> {
+    // LOC 6
+    const payload = this.createPayload(amount); // LOC 7
+    return await this.sendRequest(payload); // LOC 8
+  } // LOC 9
 
-  private createPayload(amount: number): any {              // LOC 10
+  private createPayload(amount: number): any {
+    // LOC 10
     return { amount, currency: 'USD', apiKey: this.apiKey }; // LOC 11
-  }                                                         // LOC 12
+  } // LOC 12
 
-  private async sendRequest(payload: any): Promise<boolean> { // LOC 13
-    // Implementation would go here                         
-    return true;                                            // LOC 14
-  }                                                         // LOC 15
+  private async sendRequest(payload: any): Promise<boolean> {
+    // LOC 13
+    // Implementation would go here
+    return true; // LOC 14
+  } // LOC 15
 }
 
 // src/utils/Helpers.ts (only 9 lines of code - below threshold)
 // Simple utility functions
-export function formatDate(date: Date): string {            // LOC 1
-  return date.toISOString().split('T')[0];                  // LOC 2
-}                                                            // LOC 3
+export function formatDate(date: Date): string {
+  // LOC 1
+  return date.toISOString().split('T')[0]; // LOC 2
+} // LOC 3
 
-export function generateId(): string {                      // LOC 4
-  return Math.random().toString(36).substr(2, 9);          // LOC 5
-}                                                            // LOC 6
+export function generateId(): string {
+  // LOC 4
+  return Math.random().toString(36).substr(2, 9); // LOC 5
+} // LOC 6
 
-export function isEmpty(value: any): boolean {              // LOC 7
-  return value == null || value === '';                     // LOC 8
-}                                                           // LOC 9
+export function isEmpty(value: any): boolean {
+  // LOC 7
+  return value == null || value === ''; // LOC 8
+} // LOC 9
 ```
 
 **API Usage:**
+
 ```typescript
-projectFiles()
-  .inDirectory('**/src/**')
-  .should()
-  .haveLocGreaterOrEqualThan(15)
-  .check()
+projectFiles().inDirectory('**/src/**').should().haveLocGreaterOrEqualThan(15).check();
 ```
 
 **Result**: ❌ FAIL - Multiple files violate the constraint: StubService.ts (13 LOC), Helpers.ts (9 LOC) are less than the 15-line minimum
 
 ### Key Difference from `should.haveLocGreaterThan`:
+
 - **`should.haveLocGreaterThan(15)`**: Files must have > 15 LOC (exclusive minimum)
 - **`should.haveLocGreaterOrEqualThan(15)`**: Files can have ≥ 15 LOC (inclusive minimum)
 

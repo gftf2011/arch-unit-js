@@ -8,6 +8,7 @@
 - It is OK if ALL files have lines of code greater than or equal to the threshold
 
 This rule enforces minimum code complexity and prevents:
+
 - Trivial or placeholder files with insufficient implementation
 - Incomplete or stub implementations
 - Files that should contain more substantial logic
@@ -21,14 +22,17 @@ This rule enforces minimum code complexity and prevents:
 ## All Possible Scenarios
 
 **Scenario 1**: All files have lines of code GREATER than or EQUAL to the threshold
+
 - **Result**: ✅ PASS - All files meet the minimum size requirement
 
 **Scenario 2**: ANY files have lines of code LESS than the threshold
+
 - **Result**: ❌ FAIL - Files violate the minimum size requirement
 
 ## Scenario Examples
 
 ### Scenario 1: All files have lines of code GREATER than or EQUAL to the threshold
+
 ```
 project/
 ├── src/
@@ -41,6 +45,7 @@ project/
 ```
 
 **File Content:**
+
 ```typescript
 // src/services/EmailService.ts (exactly 15 lines of code)
 /**
@@ -49,25 +54,30 @@ project/
 import { User } from '../models/User';
 import { Template } from '../models/Template';
 
-export class EmailService {                                  // LOC 1
-  private apiKey: string;                                    // LOC 2
-  private baseUrl: string;                                   // LOC 3
+export class EmailService {
+  // LOC 1
+  private apiKey: string; // LOC 2
+  private baseUrl: string; // LOC 3
 
-  constructor(apiKey: string) {                              // LOC 4
-    this.apiKey = apiKey;                                    // LOC 5
-    this.baseUrl = 'https://email-api.example.com';         // LOC 6
-  }                                                          // LOC 7
+  constructor(apiKey: string) {
+    // LOC 4
+    this.apiKey = apiKey; // LOC 5
+    this.baseUrl = 'https://email-api.example.com'; // LOC 6
+  } // LOC 7
 
-  async sendWelcomeEmail(user: User): Promise<boolean> {     // LOC 8
-    const template = this.getWelcomeTemplate(user.name);    // LOC 9
-    return await this.sendEmail(user.email, template);      // LOC 10
-  }                                                          // LOC 11
+  async sendWelcomeEmail(user: User): Promise<boolean> {
+    // LOC 8
+    const template = this.getWelcomeTemplate(user.name); // LOC 9
+    return await this.sendEmail(user.email, template); // LOC 10
+  } // LOC 11
 
-  private getWelcomeTemplate(name: string): Template {      // LOC 12
-    return { subject: 'Welcome!', body: `Hello ${name}` };  // LOC 13
-  }                                                          // LOC 14
+  private getWelcomeTemplate(name: string): Template {
+    // LOC 12
+    return { subject: 'Welcome!', body: `Hello ${name}` }; // LOC 13
+  } // LOC 14
 
-  private async sendEmail(to: string, template: Template) { // LOC 15
+  private async sendEmail(to: string, template: Template) {
+    // LOC 15
     // Implementation would go here
     return true;
   }
@@ -75,17 +85,15 @@ export class EmailService {                                  // LOC 1
 ```
 
 **API Usage:**
+
 ```typescript
-projectFiles()
-  .inDirectory('**/src/**')
-  .shouldNot()
-  .haveLocLessThan(15)
-  .check()
+projectFiles().inDirectory('**/src/**').shouldNot().haveLocLessThan(15).check();
 ```
 
 **Result**: ✅ PASS - All files (25, 15, 32, 45 LOC) are greater than or equal to 15 lines of code
 
 ### Scenario 2: ANY files have lines of code LESS than the threshold
+
 ```
 project/
 ├── src/
@@ -100,40 +108,42 @@ project/
 ```
 
 **File Content:**
+
 ```typescript
 // src/services/StubService.ts (only 8 lines of code - below threshold)
 /**
  * Placeholder service - needs implementation
  */
-export class StubService {                                   // LOC 1
-  constructor() {                                            // LOC 2
-    // TODO: Add initialization logic                        
-  }                                                          // LOC 3
+export class StubService {
+  // LOC 1
+  constructor() {
+    // LOC 2
+    // TODO: Add initialization logic
+  } // LOC 3
 
-  async process(): Promise<void> {                           // LOC 4
-    // TODO: Implement processing logic                      
-    throw new Error('Not implemented');                     // LOC 5
-  }                                                          // LOC 6
+  async process(): Promise<void> {
+    // LOC 4
+    // TODO: Implement processing logic
+    throw new Error('Not implemented'); // LOC 5
+  } // LOC 6
 
-  validate(): boolean {                                      // LOC 7
-    return false;                                            // LOC 8
-  }                                                          // LOC 9
+  validate(): boolean {
+    // LOC 7
+    return false; // LOC 8
+  } // LOC 9
 }
 
 // src/utils/Constants.ts (only 3 lines of code - below threshold)
 // Application constants
-export const API_URL = 'https://api.example.com';          // LOC 1
-export const TIMEOUT = 5000;                                // LOC 2
-export const VERSION = '1.0.0';                             // LOC 3
+export const API_URL = 'https://api.example.com'; // LOC 1
+export const TIMEOUT = 5000; // LOC 2
+export const VERSION = '1.0.0'; // LOC 3
 ```
 
 **API Usage:**
+
 ```typescript
-projectFiles()
-  .inDirectory('**/src/**')
-  .shouldNot()
-  .haveLocLessThan(15)
-  .check()
+projectFiles().inDirectory('**/src/**').shouldNot().haveLocLessThan(15).check();
 ```
 
 **Result**: ❌ FAIL - Multiple files violate the constraint: StubService.ts (8 LOC), Constants.ts (3 LOC) are below the 15-line minimum

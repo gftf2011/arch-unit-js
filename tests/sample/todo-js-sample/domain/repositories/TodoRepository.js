@@ -20,4 +20,4 @@ class TodoRepository {
   }
 }
 
-module.exports = TodoRepository; 
+module.exports = TodoRepository;

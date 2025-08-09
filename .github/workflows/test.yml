@@ -1,4 +1,4 @@
-name: Test Application Workflow
+name: Test & Lint Check Application Workflow
 
 on:
   workflow_call:
@@ -15,7 +15,7 @@ jobs:
     name: Test Application on ${{ inputs.os }}
     runs-on: ${{ inputs.os }}
     strategy:
-      matrix: 
+      matrix:
         node-version: ${{ fromJson(inputs.node-versions) }}
     steps:
       - name: Checkout Repository

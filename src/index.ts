@@ -1,5 +1,6 @@
-import { fileURLToPath } from 'url';
 import * as path from 'pathe';
+import { fileURLToPath } from 'url';
+
 import { ComponentSelectorBuilder } from './fluent-api';
 import { Options } from './fluent-api/common/types';
 /**
@@ -16,11 +17,13 @@ function getProjectRoot(): string {
   }
 }
 
-export const app = (options: Options = {
-  extensionTypes: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.jsx'],
-  includeMatcher: ['<rootDir>/.'],
-  ignoreMatcher: ['!<rootDir>/node_modules/**']
-}) => {
+export const app = (
+  options: Options = {
+    extensionTypes: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.jsx'],
+    includeMatcher: ['<rootDir>/.'],
+    ignoreMatcher: ['!<rootDir>/node_modules/**'],
+  },
+) => {
   const rootDir = getProjectRoot();
   return ComponentSelectorBuilder.create(rootDir, options);
 };

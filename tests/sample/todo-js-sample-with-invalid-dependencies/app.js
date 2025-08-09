@@ -36,4 +36,4 @@ class TodoApp {
   }
 }
 
-module.exports = TodoApp; 
+module.exports = TodoApp;

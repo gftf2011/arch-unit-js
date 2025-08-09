@@ -25,5 +25,5 @@
  * @since 1.0.0
  */
 export function normalizeWindowsPath(path: string): string {
-    return path.replace(/\\/g, '/');
+  return path.replace(/\\/g, '/');
 }

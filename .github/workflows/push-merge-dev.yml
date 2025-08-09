@@ -2,9 +2,9 @@ name: Push & Merge into Dev Workflow
 
 on:
   push:
-    branches: [ "dev" ]
+    branches: ['dev']
   pull_request:
-    branches: [ "dev" ]
+    branches: ['dev']
 
 jobs:
   install-ubuntu:
@@ -22,7 +22,7 @@ jobs:
   #   with:
   #     os: macos-latest
   #     node-versions: '["18.x", "20.x", "22.x"]'
-  
+
   test-ubuntu:
     uses: ./.github/workflows/test.yml
     with:
