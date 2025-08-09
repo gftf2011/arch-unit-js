@@ -1,4 +1,4 @@
-name: Build Distribuition Workflow
+name: Lint Check Application Workflow
 
 on:
   workflow_call:
@@ -11,8 +11,8 @@ on:
         type: string
 
 jobs:
-  build:
-    name: Build Distribuition on ${{ inputs.os }}
+  test:
+    name: Check Lint on ${{ inputs.os }}
     if: >
       (github.event_name == 'push') ||
       (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
@@ -47,30 +47,7 @@ jobs:
           restore-keys: |
             package-lock-${{ runner.os }}-${{ matrix.node-version }}-
 
-      - name: Build Distribuition
+      - name: Run Lint Check
         run: |
-          npm run build
-
-      - name: Cache "dist"
-        uses: actions/cache@v4
-        with:
-          path: ./dist
-          key: dist-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
-          restore-keys: |
-            dist-${{ runner.os }}-${{ matrix.node-version }}-
-
-      - name: Pack Package And Generate Checksum
-        run: |
-          npm run pack
-
-      - name: Upload Package Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: npm-package-${{ inputs.os }}-${{ matrix.node-version }}
-          path: '*.tgz'
-
-      - name: Upload Checksum Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: checksum-${{ inputs.os }}-${{ matrix.node-version }}
-          path: 'checksum.txt'
+          npm run lint
+          npm run format:check

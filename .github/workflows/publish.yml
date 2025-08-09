@@ -16,6 +16,9 @@ on:
 jobs:
   publish:
     name: Publish Package on ${{ inputs.os }}
+    if: >
+      (github.event_name == 'push') ||
+      (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
     runs-on: ${{ inputs.os }}
     strategy:
       matrix:
@@ -70,10 +73,10 @@ jobs:
 
       - name: Validate Package Checksum
         run: sha256sum -c checksum.txt
-      
+
       - name: Publish Package
         if: >
-          (github.event_name == 'pull_request' && github.head_ref == 'dev' && github.base_ref == 'main')
+          (github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.head_ref == 'dev' && github.base_ref == 'main')
         run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -81,7 +84,7 @@ jobs:
       - name: Append -beta to package.json version
         if: >
           (github.event_name == 'push' && github.ref == 'refs/heads/dev') ||
-          (github.event_name == 'pull_request' && github.base_ref == 'dev')
+          (github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.base_ref == 'dev')
         run: |
           # Get current version
           VERSION=$(node -p "require('./package.json').version")
@@ -94,7 +97,7 @@ jobs:
       - name: Publish Package To Beta
         if: >
           (github.event_name == 'push' && github.ref == 'refs/heads/dev') ||
-          (github.event_name == 'pull_request' && github.base_ref == 'dev')
+          (github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.base_ref == 'dev')
         run: npm publish --tag beta --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -3,6 +3,7 @@ name: Merge into Main Workflow
 on:
   pull_request:
     branches: ['main']
+    types: ['closed']
 
 jobs:
   install-ubuntu:
@@ -15,36 +16,56 @@ jobs:
     with:
       os: windows-latest
       node-versions: '["18.x", "20.x", "22.x"]'
-  # install-macos:
-  #   uses: ./.github/workflows/install.yml
-  #   with:
-  #     os: macos-latest
-  #     node-versions: '["18.x", "20.x", "22.x"]'
+  install-macos:
+    uses: ./.github/workflows/install.yml
+    with:
+      os: macos-latest
+      node-versions: '["18.x", "20.x", "22.x"]'
+
+  lint-ubuntu:
+    uses: ./.github/workflows/lint.yml
+    with:
+      os: ubuntu-latest
+      node-versions: '["22.x"]'
+    needs: [install-ubuntu]
+  lint-windows:
+    uses: ./.github/workflows/lint.yml
+    with:
+      os: windows-latest
+      node-versions: '["22.x"]'
+    needs: [install-windows]
+  lint-macos:
+    uses: ./.github/workflows/lint.yml
+    with:
+      os: macos-latest
+      node-versions: '["22.x"]'
+    needs: [install-macos]
 
   test-ubuntu:
     uses: ./.github/workflows/test.yml
     with:
       os: ubuntu-latest
       node-versions: '["18.x", "20.x", "22.x"]'
-    needs: install-ubuntu
+    needs: [lint-ubuntu]
   test-windows:
     uses: ./.github/workflows/test.yml
     with:
       os: windows-latest
       node-versions: '["18.x", "20.x", "22.x"]'
-    needs: install-windows
-  # test-macos:
-  #   uses: ./.github/workflows/test.yml
-  #   with:
-  #     os: macos-latest
-  #     node-versions: '["18.x", "20.x", "22.x"]'
-  #   needs: install-macos
+    needs: [lint-windows]
+  test-macos:
+    uses: ./.github/workflows/test.yml
+    with:
+      os: macos-latest
+      node-versions: '["18.x", "20.x", "22.x"]'
+    needs: [lint-macos]
+
   build-ubuntu:
     uses: ./.github/workflows/build.yml
     with:
       os: ubuntu-latest
       node-versions: '["22.x"]'
-    needs: [install-ubuntu, test-windows]
+    needs: [test-ubuntu, test-windows, test-macos]
 
   publish-ubuntu:
     uses: ./.github/workflows/publish.yml
