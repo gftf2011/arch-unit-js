@@ -2,6 +2,10 @@ name: Publish Distribuition Workflow
 
 on:
   workflow_call:
+    secrets:
+      NPM_TOKEN:
+        required: true
+        type: string
     inputs:
       os:
         required: true
@@ -69,6 +73,6 @@ jobs:
         run: sha256sum -c checksum.txt
 
       - name: Publish Package To Beta
-        run: npm publish --tag beta
+        run: npm publish --tag beta --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
