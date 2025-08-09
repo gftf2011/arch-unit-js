@@ -17,7 +17,6 @@ jobs:
     strategy:
       matrix:
         node-version: ${{ fromJson(inputs.node-versions) }}
-    needs: [build-ubuntu]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
