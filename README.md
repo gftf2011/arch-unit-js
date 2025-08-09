@@ -9,6 +9,7 @@
   <a href="#hammer_and_wrench-supported-os">Supported OS</a> • 
   <a href="#ledger-features">Features</a> •
   <a href="#racing_car-getting-started">Getting Started</a> •
+  <a href="#notebook-api-documentation">API Documentation</a> •
   <a href="#memo-license">License</a>
 </div>
 
