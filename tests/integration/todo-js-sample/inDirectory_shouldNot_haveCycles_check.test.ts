@@ -25,8 +25,8 @@ const includeMatchers = [
 
 const excludeMatchers = ['!<rootDir>/**/package.json'];
 
-describe('shouldNot.haveCicles scenarios', () => {
-  test('entire project should not have cicles - should PASS', async () => {
+describe('shouldNot.haveCycles scenarios', () => {
+  test('entire project should not have cycles - should PASS', async () => {
     for (const [includeMatcher] of includeMatchers) {
       const options: Options = {
         extensionTypes: ['**/*.js'],
@@ -34,7 +34,7 @@ describe('shouldNot.haveCicles scenarios', () => {
         ignoreMatcher: excludeMatchers,
       };
       const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-      await appInstance.projectFiles().inDirectory('**').shouldNot().haveCicles().check();
+      await appInstance.projectFiles().inDirectory('**').shouldNot().haveCycles().check();
     }
   });
 });

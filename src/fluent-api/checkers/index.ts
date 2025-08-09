@@ -3,7 +3,7 @@ import micromatch from 'micromatch';
 import { RootFile } from '../../core/file';
 import {
   LOCAnalysisCheckable,
-  PatternCiclesCheckable,
+  PatternCyclesCheckable,
   PatternCheckable,
 } from '../common/checkables';
 import { NotificationError } from '../common/errors/notification';
@@ -122,7 +122,7 @@ export class ProjectFilesInDirectoryLOCAnalysisGreaterThanOrEqualShouldSelector 
   }
 }
 
-export class ProjectFilesInDirectoryHaveCyclesShouldSelector extends PatternCiclesCheckable {
+export class ProjectFilesInDirectoryHaveCyclesShouldSelector extends PatternCyclesCheckable {
   constructor(protected readonly props: PatternCheckableProps) {
     super(props);
   }
