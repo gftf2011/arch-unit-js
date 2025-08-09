@@ -45,3 +45,19 @@ jobs:
           key: package-lock-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
           restore-keys: |
             package-lock-${{ runner.os }}-${{ matrix.node-version }}-
+
+      - name: Pack Package And Generate Checksum
+        run: |
+          npm run pack
+
+      - name: Upload Package Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: npm-package-${{ inputs.os }}
+          path: '*.tgz'
+
+      - name: Upload Checksum Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: checksum-${{ inputs.os }}
+          path: 'checksum.txt'
