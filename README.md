@@ -1,20 +1,12 @@
 <div align="center">
-<<<<<<< Updated upstream
-  <h1 style="font-size:3.5rem;"> ArchUnit JS</h1>
-=======
-  <h1>ArchUnit JS</h1>
-  <p>Architectural rules for JS/TS projects — inspired by ArchUnit</p>
+  <h1 style="font-size:4.5rem;"> ArchUnit JS</h1>
 
-  <a href="https://github.com/gftf2011/arch-unit-js/actions/workflows/test.yml">
-    <img src="https://github.com/gftf2011/arch-unit-js/actions/workflows/test.yml/badge.svg?branch=main" alt="CI Status" />
-  </a>
   <a href="https://eslint.org/">
     <img src="https://img.shields.io/badge/ESLint-configured-blue?logo=eslint" alt="ESLint" />
   </a>
   <a href="https://prettier.io/">
     <img src="https://img.shields.io/badge/Prettier-configured-ff69b4?logo=prettier" alt="Prettier" />
   </a>
->>>>>>> Stashed changes
 </div>
 
 <div align="center">
@@ -36,17 +28,18 @@ A JavaScript/TypeScript library for enforcing architectural rules and constraint
 </div>
 
 <div align=left">
-## Getting Started
-
-### Installation
+<h3><strong>Getting Started:</strong></h3>
+<h2>Installation</h2>
 
 ```bash
 npm install arch-unit-js
 ```
 </div>
 
+<br/>
+
 <div align="left">
-### Basic Usage
+<h2>Basic Usage</h2>
 
 ```typescript
 import { app } from 'arch-unit-js';
