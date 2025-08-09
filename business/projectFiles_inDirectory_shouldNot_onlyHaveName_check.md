@@ -15,17 +15,21 @@ This rule ensures naming flexibility by preventing exclusive use of the specifie
 ## All Possible Scenarios
 
 **Scenario 1**: Directory has files but NONE match the pattern
+
 - **Result**: ✅ PASS - No files match the pattern
 
 **Scenario 2**: Directory has files and SOME match the pattern
+
 - **Result**: ✅ PASS - Mixed naming patterns
 
 **Scenario 3**: Directory has files and ALL files match the pattern
+
 - **Result**: ❌ FAIL - Exclusive naming not allowed
 
 ## Scenario Examples
 
 ### Scenario 1: Directory has files but NONE match the pattern
+
 ```
 project/
 ├── src/
@@ -43,6 +47,7 @@ project/
 ```
 
 **Directory Content:**
+
 ```
 src/application/use-cases/
 ├── helper.ts
@@ -51,17 +56,15 @@ src/application/use-cases/
 ```
 
 **API Usage:**
+
 ```typescript
-projectFiles()
-  .inDirectory('**/use-cases/**')
-  .shouldNot()
-  .onlyHaveName('*UseCase.ts')
-  .check()
+projectFiles().inDirectory('**/use-cases/**').shouldNot().onlyHaveName('*UseCase.ts').check();
 ```
 
 **Result**: ✅ PASS - No files match the `*UseCase.ts` pattern
 
 ### Scenario 2: Directory has files and SOME match the pattern
+
 ```
 project/
 ├── src/
@@ -79,6 +82,7 @@ project/
 ```
 
 **Directory Content:**
+
 ```
 src/application/use-cases/
 ├── CreateUserUseCase.ts
@@ -87,17 +91,15 @@ src/application/use-cases/
 ```
 
 **API Usage:**
+
 ```typescript
-projectFiles()
-  .inDirectory('**/use-cases/**')
-  .shouldNot()
-  .onlyHaveName('*UseCase.ts')
-  .check()
+projectFiles().inDirectory('**/use-cases/**').shouldNot().onlyHaveName('*UseCase.ts').check();
 ```
 
 **Result**: ✅ PASS - Mixed naming patterns: some match, some don't
 
 ### Scenario 3: Directory has files and ALL files match the pattern
+
 ```
 project/
 ├── src/
@@ -115,6 +117,7 @@ project/
 ```
 
 **Directory Content:**
+
 ```
 src/application/use-cases/
 ├── CreateUserUseCase.ts
@@ -123,12 +126,9 @@ src/application/use-cases/
 ```
 
 **API Usage:**
+
 ```typescript
-projectFiles()
-  .inDirectory('**/use-cases/**')
-  .shouldNot()
-  .onlyHaveName('*UseCase.ts')
-  .check()
+projectFiles().inDirectory('**/use-cases/**').shouldNot().onlyHaveName('*UseCase.ts').check();
 ```
 
 **Result**: ❌ FAIL - All files match the `*UseCase.ts` pattern

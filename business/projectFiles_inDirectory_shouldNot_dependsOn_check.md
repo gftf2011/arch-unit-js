@@ -16,17 +16,21 @@ This rule ensures architectural isolation by preventing dependencies on specifie
 ## All Possible Scenarios
 
 **Scenario 1**: File has NO dependencies
+
 - **Result**: ✅ PASS - No patterns are present
 
 **Scenario 2**: File has dependencies but NONE match the patterns
+
 - **Result**: ✅ PASS - No patterns are present
 
 **Scenario 3**: File has dependencies and ANY patterns are present
+
 - **Result**: ❌ FAIL - Patterns are present (violates the rule)
 
 ## Scenario Examples
 
 ### Scenario 1: File has NO dependencies
+
 ```
 project/
 ├── src/
@@ -42,27 +46,30 @@ project/
 ```
 
 **File Content:**
+
 ```typescript
 // src/application/use-cases/EmptyUseCase.ts
 export class EmptyUseCase {
   execute() {
-    return "Hello World";
+    return 'Hello World';
   }
 }
 ```
 
 **API Usage:**
+
 ```typescript
 projectFiles()
   .inDirectory('**/use-cases/**')
   .shouldNot()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
-  .check()
+  .check();
 ```
 
 **Result**: ✅ PASS - `EmptyUseCase.ts` has no dependencies
 
 ### Scenario 2: File has dependencies but NONE match the patterns
+
 ```
 project/
 ├── src/
@@ -79,6 +86,7 @@ project/
 ```
 
 **File Content:**
+
 ```typescript
 // src/application/use-cases/SafeUseCase.ts
 import { helper } from '../utils/helper';
@@ -92,17 +100,19 @@ export class SafeUseCase {
 ```
 
 **API Usage:**
+
 ```typescript
 projectFiles()
   .inDirectory('**/use-cases/**')
   .shouldNot()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
-  .check()
+  .check();
 ```
 
 **Result**: ✅ PASS - `SafeUseCase.ts` imports from `utils` and `config`, not from `domain` or `infrastructure`
 
 ### Scenario 3: File has dependencies and ANY patterns are present
+
 ```
 project/
 ├── src/
@@ -124,6 +134,7 @@ project/
 ```
 
 **File Content:**
+
 ```typescript
 // src/application/use-cases/ViolatingUseCase.ts
 import { User } from '../domain/entities/User';
@@ -163,7 +174,7 @@ export class ComplexViolatingUseCase {
     const user = new User(userData);
     const processedData = helper.process(userData);
     const config = settings.getConfig();
-    
+
     await this.db.save(user);
     return { user, processedData, config };
   }
@@ -171,12 +182,13 @@ export class ComplexViolatingUseCase {
 ```
 
 **API Usage:**
+
 ```typescript
 projectFiles()
   .inDirectory('**/use-cases/**')
   .shouldNot()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
-  .check()
+  .check();
 ```
 
 **Result**: ❌ FAIL - All files violate the rule: `ViolatingUseCase.ts` has some patterns, `FullyViolatingUseCase.ts` has all patterns, `ComplexViolatingUseCase.ts` has all patterns + extra dependencies

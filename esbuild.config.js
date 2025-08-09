@@ -14,7 +14,7 @@ const buildConfig = {
   target: 'node16',
   external: ['@babel/parser', '@babel/traverse'], // External dependencies
   sourcemap: true,
-  minify: false
+  minify: false,
 };
 
 // Build CommonJS version
@@ -34,4 +34,4 @@ esbuild.buildSync({
   outfile: 'dist/index.mjs',
 });
 
-console.log('✅ Build completed: CommonJS (index.js), ES Module (index.mjs)'); 
+console.log('✅ Build completed: CommonJS (index.js), ES Module (index.mjs)');

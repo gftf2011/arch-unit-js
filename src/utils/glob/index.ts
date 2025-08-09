@@ -38,7 +38,7 @@ import * as path from 'pathe';
  *   '!<rootDir>/dist/**'
  * ];
  * const rootDir = '/home/user/my-project';
- * 
+ *
  * const resolved = resolveRootDirPatterns(patterns, rootDir);
  * // Returns:
  * // [
@@ -47,7 +47,7 @@ import * as path from 'pathe';
  * //   '/home/user/my-project/tests/*.test.ts',
  * //   '!/home/user/my-project/dist'
  * // ]
- * 
+ *
  * // Windows paths are normalized
  * const windowsPatterns = ['<rootDir>\\\\src\\\\**'];
  * const windowsRoot = 'C:\\\\Users\\\\user\\\\project';
@@ -58,41 +58,41 @@ import * as path from 'pathe';
  * @since 1.0.0
  */
 export function resolveRootDirPatterns(patterns: string[], rootDir: string): string[] {
-    return patterns.map(pattern => resolveRootDirPattern(pattern, rootDir));
+  return patterns.map((pattern) => resolveRootDirPattern(pattern, rootDir));
 }
 
 export function resolveRootDirPattern(pattern: string, rootDir: string): string {
-    if (pattern.startsWith('!')) {
-        const cleaned = pattern.replace('<rootDir>', '').replace(/^!/, '');
-        const relative = cleaned.replace(/^\.?\//, '');
-        const newPattern = `!${path.resolve(rootDir, relative)}`;
-        return newPattern;
-    }
-    const cleaned = pattern.replace('<rootDir>', '');
+  if (pattern.startsWith('!')) {
+    const cleaned = pattern.replace('<rootDir>', '').replace(/^!/, '');
     const relative = cleaned.replace(/^\.?\//, '');
-    const newPattern = path.resolve(rootDir, relative);
+    const newPattern = `!${path.resolve(rootDir, relative)}`;
     return newPattern;
+  }
+  const cleaned = pattern.replace('<rootDir>', '');
+  const relative = cleaned.replace(/^\.?\//, '');
+  const newPattern = path.resolve(rootDir, relative);
+  return newPattern;
 }
 
 /**
  * Extracts the file extension from a glob pattern or file path.
- * 
+ *
  * This function analyzes a pattern string and extracts the file extension
  * from the end of the pattern. It's designed to work with both glob patterns
  * (like "\*\*\/\*.ts" or "src/\*\*\/\*.js") and regular file paths (like "file.txt").
- * 
+ *
  * The function uses a regex pattern that matches:
  * - A literal dot (.)
  * - Followed by one or more characters that are not dots, backslashes, forward slashes,
  *   colons, asterisks, question marks, quotes, angle brackets, pipes, or newlines
  * - At the end of the string ($)
- * 
+ *
  * @param pattern - The glob pattern or file path to extract the extension from.
  *                  Examples: "\*\*\/\*.ts", "src/\*\*\/\*.js", "file.txt", "\*.{ts,js}"
- * 
+ *
  * @returns The file extension including the dot (e.g., ".ts", ".js", ".txt") if found,
  *          or null if no valid extension is detected at the end of the pattern.
- * 
+ *
  * @example
  * ```typescript
  * extractExtensionFromGlobPattern("\*\*\/\*.ts")     // Returns ".ts"
@@ -102,25 +102,25 @@ export function resolveRootDirPattern(pattern: string, rootDir: string): string 
  * extractExtensionFromGlobPattern("no-extension")    // Returns null
  * extractExtensionFromGlobPattern("folder/")         // Returns null
  * ```
- * 
+ *
  * @since 1.0.0
  */
 export function extractExtensionFromGlobPattern(pattern: string): string | null {
-    const match = pattern.match(/\.[^.\\/:*?"<>|\r\n]+$/);
-    return match ? match[0] : null;
+  const match = pattern.match(/\.[^.\\/:*?"<>|\r\n]+$/);
+  return match ? match[0] : null;
 }
 
 export function createGlobToJavascriptRelatedDependency(dependency: string): string {
-    let dependencyGlob: string = dependency;
-    try {
-        const stat = fs.statSync(dependencyGlob);
-        dependencyGlob = stat.isDirectory() ? `${dependencyGlob}/index**` : `${dependencyGlob}**`;
-    } catch (error) {
-        dependencyGlob = `${dependencyGlob}**`;
-    }
-    return dependencyGlob;
+  let dependencyGlob: string = dependency;
+  try {
+    const stat = fs.statSync(dependencyGlob);
+    dependencyGlob = stat.isDirectory() ? `${dependencyGlob}/index**` : `${dependencyGlob}**`;
+  } catch (_error) {
+    dependencyGlob = `${dependencyGlob}**`;
+  }
+  return dependencyGlob;
 }
 
 export function transfromWildcardToGlob(wildcard: string): string {
-    return wildcard.replace(/\*/g, '**');
+  return wildcard.replace(/\*/g, '**');
 }

@@ -17,20 +17,25 @@ This rule ensures architectural flexibility by preventing overly restrictive cou
 ## All Possible Scenarios
 
 **Scenario 1**: File has NO dependencies
+
 - **Result**: ✅ PASS - No dependencies means no violations
 
 **Scenario 2**: File has dependencies but NONE match the patterns
+
 - **Result**: ✅ PASS - No patterns are present, so no exclusive dependency
 
 **Scenario 3**: File has mixed dependencies
+
 - **Result**: ✅ PASS - Mixed dependencies, not exclusive
 
 **Scenario 4**: File has exclusive dependencies to specified patterns
+
 - **Result**: ❌ FAIL - Exclusive dependencies are not allowed
 
 ## Scenario Examples
 
 ### Scenario 1: File has NO dependencies
+
 ```
 project/
 ├── src/
@@ -46,27 +51,30 @@ project/
 ```
 
 **File Content:**
+
 ```typescript
 // src/application/use-cases/EmptyUseCase.ts
 export class EmptyUseCase {
   execute() {
-    return "Hello World";
+    return 'Hello World';
   }
 }
 ```
 
 **API Usage:**
+
 ```typescript
 projectFiles()
   .inDirectory('**/use-cases/**')
   .shouldNot()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
-  .check()
+  .check();
 ```
 
 **Result**: ✅ PASS - `EmptyUseCase.ts` has no dependencies, so it cannot violate the exclusive dependency rule
 
 ### Scenario 2: File has dependencies but NONE match the patterns
+
 ```
 project/
 ├── src/
@@ -83,6 +91,7 @@ project/
 ```
 
 **File Content:**
+
 ```typescript
 // src/application/use-cases/SafeUseCase.ts
 import { helper } from '../utils/helper';
@@ -96,17 +105,19 @@ export class SafeUseCase {
 ```
 
 **API Usage:**
+
 ```typescript
 projectFiles()
   .inDirectory('**/use-cases/**')
   .shouldNot()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
-  .check()
+  .check();
 ```
 
 **Result**: ✅ PASS - `SafeUseCase.ts` imports from `utils` and `config`, not from `domain` or `infrastructure`
 
 ### Scenario 3: File has mixed dependencies
+
 ```
 project/
 ├── src/
@@ -127,6 +138,7 @@ project/
 ```
 
 **File Content:**
+
 ```typescript
 // src/application/use-cases/MixedUseCase.ts
 import { User } from '../domain/entities/User';
@@ -150,7 +162,7 @@ export class FlexibleUseCase {
   async execute(userData: any) {
     const user = new User(userData);
     const processedData = helper.process(userData);
-    
+
     await this.db.save(user);
     return { user, processedData };
   }
@@ -158,17 +170,19 @@ export class FlexibleUseCase {
 ```
 
 **API Usage:**
+
 ```typescript
 projectFiles()
   .inDirectory('**/use-cases/**')
   .shouldNot()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
-  .check()
+  .check();
 ```
 
 **Result**: ✅ PASS - Both files have mixed dependencies: `MixedUseCase.ts` has some patterns + extra, `FlexibleUseCase.ts` has all patterns + extra (not exclusive)
 
 ### Scenario 4: File has exclusive dependencies to specified patterns
+
 ```
 project/
 ├── src/
@@ -187,6 +201,7 @@ project/
 ```
 
 **File Content:**
+
 ```typescript
 // src/application/use-cases/ExclusiveUseCase.ts
 import { User } from '../domain/entities/User';
@@ -214,12 +229,13 @@ export class CreateUserUseCase {
 ```
 
 **API Usage:**
+
 ```typescript
 projectFiles()
   .inDirectory('**/use-cases/**')
   .shouldNot()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
-  .check()
+  .check();
 ```
 
 **Result**: ❌ FAIL - Files have exclusive dependencies: `ExclusiveUseCase.ts` depends only on all patterns, other files depend only on some patterns (exclusive dependencies not allowed)

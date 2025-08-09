@@ -7,4 +7,4 @@ export class GetAllTodos {
   async execute(): Promise<ITodo[]> {
     return await this.todoRepository.findAll();
   }
-} 
+}

@@ -8,6 +8,7 @@
 - It is OK if ALL files have lines of code less than or equal to the threshold
 
 This rule promotes:
+
 - Better code readability and comprehension
 - Easier code review and debugging processes
 - Reduced complexity and improved modularity
@@ -22,14 +23,17 @@ This rule promotes:
 ## All Possible Scenarios
 
 **Scenario 1**: All files have lines of code LESS than or EQUAL to the threshold
+
 - **Result**: ✅ PASS - All files meet the size constraint
 
 **Scenario 2**: ANY files have lines of code GREATER than the threshold
+
 - **Result**: ❌ FAIL - Files violate the size constraint
 
 ## Scenario Examples
 
 ### Scenario 1: All files have lines of code LESS than or EQUAL to the threshold
+
 ```
 project/
 ├── src/
@@ -42,6 +46,7 @@ project/
 ```
 
 **File Content:**
+
 ```typescript
 // src/utils/StringHelper.ts (8 lines of actual code)
 /**
@@ -49,55 +54,61 @@ project/
  * Provides common string manipulation methods
  */
 export class StringHelper {
-  static capitalize(str: string): string {                    // LOC 1
-    return str.charAt(0).toUpperCase() + str.slice(1);       // LOC 2
-  }                                                           // LOC 3
+  static capitalize(str: string): string {
+    // LOC 1
+    return str.charAt(0).toUpperCase() + str.slice(1); // LOC 2
+  } // LOC 3
 
-  static truncate(str: string, length: number): string {     // LOC 4
+  static truncate(str: string, length: number): string {
+    // LOC 4
     return str.length > length ? str.substring(0, length) + '...' : str; // LOC 5
-  }                                                           // LOC 6
+  } // LOC 6
 
-  static isEmpty(str: string): boolean {                      // LOC 7
-    return !str || str.trim().length === 0;                  // LOC 8
-  }                                                           // LOC 9
+  static isEmpty(str: string): boolean {
+    // LOC 7
+    return !str || str.trim().length === 0; // LOC 8
+  } // LOC 9
 }
 
 // src/utils/MathHelper.ts (exactly 15 lines of code - equals threshold)
 /**
  * Mathematical utility helper class
  */
-export class MathHelper {                                     // LOC 1
-  static add(a: number, b: number): number {                 // LOC 2
-    return a + b;                                             // LOC 3
-  }                                                           // LOC 4
+export class MathHelper {
+  // LOC 1
+  static add(a: number, b: number): number {
+    // LOC 2
+    return a + b; // LOC 3
+  } // LOC 4
 
-  static subtract(a: number, b: number): number {            // LOC 5
-    return a - b;                                             // LOC 6
-  }                                                           // LOC 7
+  static subtract(a: number, b: number): number {
+    // LOC 5
+    return a - b; // LOC 6
+  } // LOC 7
 
-  static multiply(a: number, b: number): number {            // LOC 8
-    return a * b;                                             // LOC 9
-  }                                                           // LOC 10
+  static multiply(a: number, b: number): number {
+    // LOC 8
+    return a * b; // LOC 9
+  } // LOC 10
 
-  static divide(a: number, b: number): number {              // LOC 11
-    if (b === 0) throw new Error('Division by zero');        // LOC 12
-    return a / b;                                             // LOC 13
-  }                                                           // LOC 14
-}                                                             // LOC 15
+  static divide(a: number, b: number): number {
+    // LOC 11
+    if (b === 0) throw new Error('Division by zero'); // LOC 12
+    return a / b; // LOC 13
+  } // LOC 14
+} // LOC 15
 ```
 
 **API Usage:**
+
 ```typescript
-projectFiles()
-  .inDirectory('**/src/**')
-  .should()
-  .haveLocLessOrEqualThan(15)
-  .check()
+projectFiles().inDirectory('**/src/**').should().haveLocLessOrEqualThan(15).check();
 ```
 
 **Result**: ✅ PASS - All files (8, 12, 15, 4 LOC) are less than or equal to 15 lines of code
 
 ### Scenario 2: ANY files have lines of code GREATER than the threshold
+
 ```
 project/
 ├── src/
@@ -111,6 +122,7 @@ project/
 ```
 
 **File Content:**
+
 ```typescript
 // src/services/EmailService.ts (exactly 10 lines of code - equals threshold)
 /**
@@ -118,55 +130,59 @@ project/
  */
 import { User } from '../models/User';
 
-export class EmailService {                                  // LOC 1
-  private apiKey: string;                                    // LOC 2
+export class EmailService {
+  // LOC 1
+  private apiKey: string; // LOC 2
 
-  constructor(apiKey: string) {                              // LOC 3
-    this.apiKey = apiKey;                                    // LOC 4
-  }                                                          // LOC 5
+  constructor(apiKey: string) {
+    // LOC 3
+    this.apiKey = apiKey; // LOC 4
+  } // LOC 5
 
-  async sendWelcomeEmail(user: User): Promise<boolean> {     // LOC 6
-    const template = `Welcome ${user.name}!`;               // LOC 7
-    return await this.sendEmail(user.email, template);      // LOC 8
-  }                                                          // LOC 9
+  async sendWelcomeEmail(user: User): Promise<boolean> {
+    // LOC 6
+    const template = `Welcome ${user.name}!`; // LOC 7
+    return await this.sendEmail(user.email, template); // LOC 8
+  } // LOC 9
 
-  private async sendEmail(to: string, template: string) {   // LOC 10
+  private async sendEmail(to: string, template: string) {
+    // LOC 10
     // Implementation would go here
     return true;
   }
 }
 
 // src/components/DataTable.ts (45 lines of actual code - exceeds threshold)
-export class DataTable {                                    // LOC 1
-  private data: any[];                                       // LOC 2
-  private currentPage: number = 1;                           // LOC 3
-  private sortColumn: string | null = null;                 // LOC 4
-  private sortDirection: 'asc' | 'desc' = 'asc';            // LOC 5
-  
-  constructor(data: any[]) {                                 // LOC 6
-    this.data = data;                                        // LOC 7
-  }                                                          // LOC 8
+export class DataTable {
+  // LOC 1
+  private data: any[]; // LOC 2
+  private currentPage: number = 1; // LOC 3
+  private sortColumn: string | null = null; // LOC 4
+  private sortDirection: 'asc' | 'desc' = 'asc'; // LOC 5
+
+  constructor(data: any[]) {
+    // LOC 6
+    this.data = data; // LOC 7
+  } // LOC 8
 
   // ... 37 more lines of complex table implementation
   // Including sorting, filtering, pagination, rendering logic
   // Multiple private methods for data manipulation
   // Event handlers for user interactions
   // Complex state management
-}                                                            // LOC 45
+} // LOC 45
 ```
 
 **API Usage:**
+
 ```typescript
-projectFiles()
-  .inDirectory('**/src/**')
-  .should()
-  .haveLocLessOrEqualThan(10)
-  .check()
+projectFiles().inDirectory('**/src/**').should().haveLocLessOrEqualThan(10).check();
 ```
 
 **Result**: ❌ FAIL - Multiple files violate the constraint: DataTable.ts (45 LOC), LegacyProcessor.ts (78 LOC) exceed the 10-line threshold
 
 ### Key Difference from `haveLocLessThan`:
+
 - **`should.haveLocLessThan(10)`**: Files must have < 10 LOC (exclusive)
 - **`should.haveLocLessOrEqualThan(10)`**: Files can have ≤ 10 LOC (inclusive)
 

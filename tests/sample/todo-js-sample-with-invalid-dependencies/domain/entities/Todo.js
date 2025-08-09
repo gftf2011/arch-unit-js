@@ -24,4 +24,4 @@ class Todo {
   }
 }
 
-module.exports = Todo; 
+module.exports = Todo;

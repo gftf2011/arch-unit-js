@@ -12,7 +12,7 @@ export class Todo implements ITodo {
     public title: string,
     public description: string,
     public completed: boolean = false,
-    public createdAt: Date = new Date()
+    public createdAt: Date = new Date(),
   ) {}
 
   markAsCompleted(): void {
@@ -30,4 +30,4 @@ export class Todo implements ITodo {
   updateDescription(description: string): void {
     this.description = description;
   }
-} 
+}

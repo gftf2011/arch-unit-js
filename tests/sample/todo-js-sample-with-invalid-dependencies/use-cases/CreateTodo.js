@@ -13,9 +13,9 @@ class CreateTodo {
 
     const id = Date.now().toString();
     const todo = new Todo(id, title.trim(), description || '');
-    
+
     return await this.todoRepository.create(todo);
   }
 }
 
-module.exports = CreateTodo; 
+module.exports = CreateTodo;

@@ -8,6 +8,7 @@
 - It is OK if ALL files have lines of code less than the threshold
 
 This rule promotes:
+
 - Better code readability and comprehension
 - Easier code review and debugging processes
 - Reduced complexity and improved modularity
@@ -22,14 +23,17 @@ This rule promotes:
 ## All Possible Scenarios
 
 **Scenario 1**: All files have lines of code LESS than the threshold
+
 - **Result**: ✅ PASS - All files meet the size constraint
 
 **Scenario 2**: ANY files have lines of code GREATER than or EQUAL to the threshold
+
 - **Result**: ❌ FAIL - Files violate the size constraint
 
 ## Scenario Examples
 
 ### Scenario 1: All files have lines of code LESS than the threshold
+
 ```
 project/
 ├── src/
@@ -42,6 +46,7 @@ project/
 ```
 
 **File Content:**
+
 ```typescript
 // src/utils/StringHelper.ts (8 lines of actual code)
 /**
@@ -49,39 +54,41 @@ project/
  * Provides common string manipulation methods
  */
 export class StringHelper {
-  static capitalize(str: string): string {                    // LOC 1
-    return str.charAt(0).toUpperCase() + str.slice(1);        // LOC 2
-  }                                                           // LOC 3
+  static capitalize(str: string): string {
+    // LOC 1
+    return str.charAt(0).toUpperCase() + str.slice(1); // LOC 2
+  } // LOC 3
 
-  static truncate(str: string, length: number): string {      // LOC 4
+  static truncate(str: string, length: number): string {
+    // LOC 4
     return str.length > length ? str.substring(0, length) + '...' : str; // LOC 5
-  }                                                           // LOC 6
+  } // LOC 6
 
-  static isEmpty(str: string): boolean {                      // LOC 7
-    return !str || str.trim().length === 0;                   // LOC 8
-  }                                                           // LOC 9
+  static isEmpty(str: string): boolean {
+    // LOC 7
+    return !str || str.trim().length === 0; // LOC 8
+  } // LOC 9
 }
 
 // src/constants/AppConstants.ts (4 lines of actual code)
 // Application configuration constants
-export const API_CONFIG = {                                   // LOC 1
-  BASE_URL: 'https://api.example.com',                        // LOC 2
-  TIMEOUT: 5000                                               // LOC 3
-};                                                            // LOC 4
+export const API_CONFIG = {
+  // LOC 1
+  BASE_URL: 'https://api.example.com', // LOC 2
+  TIMEOUT: 5000, // LOC 3
+}; // LOC 4
 ```
 
 **API Usage:**
+
 ```typescript
-projectFiles()
-  .inDirectory('**/src/**')
-  .should()
-  .haveLocLessThan(15)
-  .check()
+projectFiles().inDirectory('**/src/**').should().haveLocLessThan(15).check();
 ```
 
 **Result**: ✅ PASS - All files (8, 12, 6, 4 LOC) are less than 15 lines of code
 
 ### Scenario 2: ANY files have lines of code GREATER than or EQUAL to the threshold
+
 ```
 project/
 ├── src/
@@ -95,6 +102,7 @@ project/
 ```
 
 **File Content:**
+
 ```typescript
 // src/services/EmailService.ts (exactly 10 lines of code)
 /**
@@ -102,41 +110,43 @@ project/
  */
 import { User } from '../models/User';
 
-export class EmailService {                                  // LOC 1
-  private apiKey: string;                                    // LOC 2
+export class EmailService {
+  // LOC 1
+  private apiKey: string; // LOC 2
 
-  constructor(apiKey: string) {                              // LOC 3
-    this.apiKey = apiKey;                                    // LOC 4
-  }                                                          // LOC 5
+  constructor(apiKey: string) {
+    // LOC 3
+    this.apiKey = apiKey; // LOC 4
+  } // LOC 5
 
-  async sendWelcomeEmail(user: User): Promise<boolean> {     // LOC 6
-    const template = `Welcome ${user.name}!`;                // LOC 7
-    return await this.sendEmail(user.email, template);       // LOC 8
-  }                                                          // LOC 9
+  async sendWelcomeEmail(user: User): Promise<boolean> {
+    // LOC 6
+    const template = `Welcome ${user.name}!`; // LOC 7
+    return await this.sendEmail(user.email, template); // LOC 8
+  } // LOC 9
 
-  private async sendEmail(to: string, template: string) {    // LOC 10
+  private async sendEmail(to: string, template: string) {
+    // LOC 10
     // Implementation would go here
     return true;
   }
 }
 
 // src/components/DataTable.ts (45 lines of actual code)
-export class DataTable {                                     // LOC 1
-  private data: any[];                                       // LOC 2
-  private currentPage: number = 1;                           // LOC 3
+export class DataTable {
+  // LOC 1
+  private data: any[]; // LOC 2
+  private currentPage: number = 1; // LOC 3
   // ... 42 more lines of actual code
   // Complex implementation with sorting, filtering, pagination
   // Multiple private methods and extensive state management
-}                                                            // LOC 45
+} // LOC 45
 ```
 
 **API Usage:**
+
 ```typescript
-projectFiles()
-  .inDirectory('**/src/**')
-  .should()
-  .haveLocLessThan(10)
-  .check()
+projectFiles().inDirectory('**/src/**').should().haveLocLessThan(10).check();
 ```
 
 **Result**: ❌ FAIL - Multiple files violate the constraint: EmailService.ts (10 LOC - equal to threshold), DataTable.ts (45 LOC), LegacyProcessor.ts (78 LOC)

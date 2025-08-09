@@ -15,4 +15,4 @@ export class CreateTodo {
     await this.todoRepository.create(todo);
     return todo;
   }
-} 
+}

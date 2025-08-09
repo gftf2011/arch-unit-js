@@ -17,4 +17,4 @@ class GetTodoById {
   }
 }
 
-module.exports = GetTodoById; 
+module.exports = GetTodoById;

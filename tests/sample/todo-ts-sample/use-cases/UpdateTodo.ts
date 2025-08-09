@@ -26,7 +26,7 @@ export class UpdateTodo {
       todo.title,
       todo.description,
       todo.completed,
-      todo.createdAt
+      todo.createdAt,
     );
 
     if (updates.title !== undefined) {
@@ -48,6 +48,6 @@ export class UpdateTodo {
       }
     }
 
-    return await this.todoRepository.update(id, todoInstance) as Todo;
+    return (await this.todoRepository.update(id, todoInstance)) as Todo;
   }
-} 
+}
