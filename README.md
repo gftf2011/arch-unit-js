@@ -15,6 +15,7 @@ A JavaScript/TypeScript library for enforcing architectural rules and constraint
 
 > **Note**: Currently supports backend projects only.
 
+<div align="left">
 ## Features
 
 - **Dependency Rules**: Control which modules can depend on others (`dependsOn`, `onlyDependsOn`)
@@ -22,6 +23,7 @@ A JavaScript/TypeScript library for enforcing architectural rules and constraint
 - **Code Metrics**: Validate lines of code thresholds (`haveLocLessThan`, `haveLocGreaterThan`)
 - **Cycle Detection**: Prevent circular dependencies (`shouldNot.haveCycles`)
 - **Fluent API**: Intuitive, readable syntax for defining architectural rules
+</div>
 
 ## Getting Started
 
