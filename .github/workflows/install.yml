@@ -51,13 +51,13 @@ jobs:
           npm run pack
 
       - name: Upload Package Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: npm-package-${{ inputs.os }}
           path: '*.tgz'
 
       - name: Upload Checksum Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: checksum-${{ inputs.os }}
           path: 'checksum.txt'
