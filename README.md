@@ -16,7 +16,7 @@ A JavaScript/TypeScript library for enforcing architectural rules and constraint
 > **Note**: Currently supports backend projects only.
 
 <div align="left">
-## Features
+<h2>Features</h2>
 
 - **Dependency Rules**: Control which modules can depend on others (`dependsOn`, `onlyDependsOn`)
 - **Naming Conventions**: Enforce consistent file naming patterns (`haveName`, `onlyHaveName`)
