@@ -1,4 +1,4 @@
-# Project Files with File Should Depend On Specified Patterns
+# Project Files in File Should Depend On Specified Patterns
 
 ## Business Rule Description
 
@@ -16,7 +16,7 @@ This rule ensures complete architectural compliance by requiring the target file
 
 ## All Possible Scenarios
 
-- Selected file = a single concrete file path (via `withFile(...)`)
+- Selected file = a single concrete file path (via `inFile(...)`)
 
 **Scenario 1**: File has NO dependencies
 
@@ -67,7 +67,7 @@ export class EmptyUseCase {
 
 ```typescript
 projectFiles()
-  .withFile('**/use-cases/EmptyUseCase.ts')
+  .inFile('**/use-cases/EmptyUseCase.ts')
   .should()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
@@ -112,7 +112,7 @@ export class WrongUseCase {
 
 ```typescript
 projectFiles()
-  .withFile('**/use-cases/WrongUseCase.ts')
+  .inFile('**/use-cases/WrongUseCase.ts')
   .should()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
@@ -159,7 +159,7 @@ export class PartialUseCase {
 
 ```typescript
 projectFiles()
-  .withFile('**/use-cases/PartialUseCase.ts')
+  .inFile('**/use-cases/PartialUseCase.ts')
   .should()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
@@ -207,7 +207,7 @@ export class CorrectUseCase {
 
 ```typescript
 projectFiles()
-  .withFile('**/use-cases/CorrectUseCase.ts')
+  .inFile('**/use-cases/CorrectUseCase.ts')
   .should()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();

@@ -16,7 +16,7 @@ const excludeMatchers = [
 
 const typescriptPath = '<rootDir>/tsconfig.json';
 
-describe('withFile.should.haveLocGreaterOrEqualThan scenarios (NestJS clean sample)', () => {
+describe('inFile.should.haveLocGreaterOrEqualThan scenarios (NestJS clean sample)', () => {
   describe('Scenario 1: File has lines of code GREATER than or EQUAL to the threshold', () => {
     test('"use-cases/create-todo.usecase.ts" should have LOC >= 1 - should PASS', async () => {
       for (const includeMatcher of includeMatchers) {
@@ -29,7 +29,7 @@ describe('withFile.should.haveLocGreaterOrEqualThan scenarios (NestJS clean samp
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
           .projectFiles()
-          .withFile('**/use-cases/create-todo.usecase.ts')
+          .inFile('**/use-cases/create-todo.usecase.ts')
           .should()
           .haveLocGreaterOrEqualThan(1)
           .check();
@@ -47,7 +47,7 @@ describe('withFile.should.haveLocGreaterOrEqualThan scenarios (NestJS clean samp
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
           .projectFiles()
-          .withFile('**/domain/todo.entity.ts')
+          .inFile('**/domain/todo.entity.ts')
           .should()
           .haveLocGreaterOrEqualThan(1)
           .check();
@@ -68,7 +68,7 @@ describe('withFile.should.haveLocGreaterOrEqualThan scenarios (NestJS clean samp
         try {
           await appInstance
             .projectFiles()
-            .withFile('**/use-cases/create-todo.usecase.ts')
+            .inFile('**/use-cases/create-todo.usecase.ts')
             .should()
             .haveLocGreaterOrEqualThan(100)
             .check();
@@ -79,7 +79,7 @@ describe('withFile.should.haveLocGreaterOrEqualThan scenarios (NestJS clean samp
           const errorMessage = (error as Error).message;
 
           expect(errorMessage).toContain(
-            `project files with file '**/use-cases/create-todo.usecase.ts' should have L.O.C. greater or equal than: 100`,
+            `project files in file '**/use-cases/create-todo.usecase.ts' should have L.O.C. greater or equal than: 100`,
           );
         }
       }
@@ -97,7 +97,7 @@ describe('withFile.should.haveLocGreaterOrEqualThan scenarios (NestJS clean samp
         await expect(
           appInstance
             .projectFiles()
-            .withFile('**/main.ts')
+            .inFile('**/main.ts')
             .should()
             .haveLocGreaterOrEqualThan(200)
             .check(),
@@ -118,7 +118,7 @@ describe('withFile.should.haveLocGreaterOrEqualThan scenarios (NestJS clean samp
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
           .projectFiles()
-          .withFile('**/domain/todo.entity.ts')
+          .inFile('**/domain/todo.entity.ts')
           .should()
           .haveLocGreaterOrEqualThan(36)
           .check();
@@ -137,7 +137,7 @@ describe('withFile.should.haveLocGreaterOrEqualThan scenarios (NestJS clean samp
           const appInstance = ComponentSelectorBuilder.create(rootDir, options);
           await appInstance
             .projectFiles()
-            .withFile('**/domain/todo.entity.ts')
+            .inFile('**/domain/todo.entity.ts')
             .should()
             .haveLocGreaterOrEqualThan(0)
             .check();
@@ -147,7 +147,7 @@ describe('withFile.should.haveLocGreaterOrEqualThan scenarios (NestJS clean samp
         } catch (error) {
           const errorMessage = (error as Error).message;
           expect(errorMessage).toContain(
-            `project files with file '**/domain/todo.entity.ts' should have L.O.C. greater or equal than: 0`,
+            `project files in file '**/domain/todo.entity.ts' should have L.O.C. greater or equal than: 0`,
           );
           expect(errorMessage).toContain(`Threshold value must be greater than 0`);
         }
@@ -166,7 +166,7 @@ describe('withFile.should.haveLocGreaterOrEqualThan scenarios (NestJS clean samp
           const appInstance = ComponentSelectorBuilder.create(rootDir, options);
           await appInstance
             .projectFiles()
-            .withFile('**/domain/todo.entity.ts')
+            .inFile('**/domain/todo.entity.ts')
             .should()
             .haveLocGreaterOrEqualThan(-1)
             .check();
@@ -176,7 +176,7 @@ describe('withFile.should.haveLocGreaterOrEqualThan scenarios (NestJS clean samp
         } catch (error) {
           const errorMessage = (error as Error).message;
           expect(errorMessage).toContain(
-            `project files with file '**/domain/todo.entity.ts' should have L.O.C. greater or equal than: -1`,
+            `project files in file '**/domain/todo.entity.ts' should have L.O.C. greater or equal than: -1`,
           );
           expect(errorMessage).toContain(`Threshold value must be greater than 0`);
         }
@@ -195,7 +195,7 @@ describe('withFile.should.haveLocGreaterOrEqualThan scenarios (NestJS clean samp
         await expect(
           appInstance
             .projectFiles()
-            .withFile('**/nonexistent/file.ts')
+            .inFile('**/nonexistent/file.ts')
             .should()
             .haveLocGreaterOrEqualThan(10)
             .check(),
@@ -214,7 +214,7 @@ describe('withFile.should.haveLocGreaterOrEqualThan scenarios (NestJS clean samp
       await expect(
         appInstance
           .projectFiles()
-          .withFile('**/use-cases/create-todo.usecase.ts')
+          .inFile('**/use-cases/create-todo.usecase.ts')
           .should()
           .haveLocGreaterOrEqualThan(1)
           .check(),

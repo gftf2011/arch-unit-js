@@ -1,4 +1,4 @@
-# Project Files with File Should NOT Have Cycles
+# Project Files in File Should NOT Have Cycles
 
 ## Business Rule Description
 
@@ -17,7 +17,7 @@ This rule preserves architectural integrity by ensuring the chosen file is not i
 
 ## All Possible Scenarios
 
-- Selected file = one concrete file path (via `withFile(...)`)
+- Selected file = one concrete file path (via `inFile(...)`)
 
 **Scenario 1**: Selected file has NO dependencies
 
@@ -66,7 +66,7 @@ export class User {
 **API Usage:**
 
 ```typescript
-projectFiles().withFile('**/domain/entities/User.ts').shouldNot().haveCycles().check();
+projectFiles().inFile('**/domain/entities/User.ts').shouldNot().haveCycles().check();
 ```
 
 **Result**: ✅ PASS — No dependencies, so no cycles
@@ -102,7 +102,7 @@ export class CreateUser {
 **API Usage:**
 
 ```typescript
-projectFiles().withFile('**/application/use-cases/CreateUser.ts').shouldNot().haveCycles().check();
+projectFiles().inFile('**/application/use-cases/CreateUser.ts').shouldNot().haveCycles().check();
 ```
 
 **Result**: ✅ PASS — Selected file has no cyclic path back to itself
@@ -146,7 +146,7 @@ export class PaymentService {
 **API Usage:**
 
 ```typescript
-await projectFiles().withFile('**/services/OrderService.ts').shouldNot().haveCycles().check(); // ❌ FAIL — OrderService participates in a direct cycle
+await projectFiles().inFile('**/services/OrderService.ts').shouldNot().haveCycles().check(); // ❌ FAIL — OrderService participates in a direct cycle
 ```
 
 **Result**: ❌ FAIL — OrderService ↔ PaymentService
@@ -189,7 +189,7 @@ export class ProfileModule {
 **API Usage:**
 
 ```typescript
-await projectFiles().withFile('**/modules/ProfileModule.ts').shouldNot().haveCycles().check(); // ❌ FAIL — ProfileModule is in an indirect cycle
+await projectFiles().inFile('**/modules/ProfileModule.ts').shouldNot().haveCycles().check(); // ❌ FAIL — ProfileModule is in an indirect cycle
 ```
 
 **Result**: ❌ FAIL — AuthModule → UserModule → ProfileModule → AuthModule
@@ -220,7 +220,7 @@ export class Recursive {
 **API Usage:**
 
 ```typescript
-await projectFiles().withFile('**/components/Recursive.ts').shouldNot().haveCycles().check();
+await projectFiles().inFile('**/components/Recursive.ts').shouldNot().haveCycles().check();
 ```
 
 **Result**: ❌ FAIL — File references itself directly, forming a cycle

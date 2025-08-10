@@ -27,13 +27,13 @@ describe('should.haveCycles scenarios', () => {
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-        await appInstance.projectFiles().withFile('**/*.ts').should().haveCycles().check();
+        await appInstance.projectFiles().inFile('**/*.ts').should().haveCycles().check();
 
         expect(1).toBe(2);
       } catch (error) {
         const errorMessage = (error as Error).message;
         expect(errorMessage).toBe(
-          "Violation - Rule: project files with file '**/*.ts' should have cycles\n\nIF YOU SEE THIS, YOU MUST BE A UTTERLY STUPID PERSON",
+          "Violation - Rule: project files in file '**/*.ts' should have cycles\n\nIF YOU SEE THIS, YOU MUST BE A UTTERLY STUPID PERSON",
         );
       }
     }

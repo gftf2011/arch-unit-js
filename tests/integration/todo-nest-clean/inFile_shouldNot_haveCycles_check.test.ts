@@ -26,7 +26,7 @@ describe('shouldNot.haveCycles scenarios', () => {
         typescriptPath,
       };
       const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-      await appInstance.projectFiles().withFile('**/*.ts').shouldNot().haveCycles().check();
+      await appInstance.projectFiles().inFile('**/*.ts').shouldNot().haveCycles().check();
     }
   });
 });

@@ -1,4 +1,4 @@
-# Project Files with File Should NOT Depend On Specified Patterns
+# Project Files in File Should NOT Depend On Specified Patterns
 
 ## Business Rule Description
 
@@ -15,7 +15,7 @@ This rule ensures architectural isolation by preventing the selected file from d
 
 ## All Possible Scenarios
 
-- Selected file = a single concrete file path (via `withFile(...)`)
+- Selected file = a single concrete file path (via `inFile(...)`)
 
 **Scenario 1**: File has NO dependencies
 
@@ -62,7 +62,7 @@ export class EmptyUseCase {
 
 ```typescript
 projectFiles()
-  .withFile('**/use-cases/EmptyUseCase.ts')
+  .inFile('**/use-cases/EmptyUseCase.ts')
   .shouldNot()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
@@ -107,7 +107,7 @@ export class SafeUseCase {
 
 ```typescript
 projectFiles()
-  .withFile('**/use-cases/SafeUseCase.ts')
+  .inFile('**/use-cases/SafeUseCase.ts')
   .shouldNot()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
@@ -192,19 +192,19 @@ export class ComplexViolatingUseCase {
 ```typescript
 // Any of the following should FAIL
 await projectFiles()
-  .withFile('**/use-cases/ViolatingUseCase.ts')
+  .inFile('**/use-cases/ViolatingUseCase.ts')
   .shouldNot()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
 
 await projectFiles()
-  .withFile('**/use-cases/FullyViolatingUseCase.ts')
+  .inFile('**/use-cases/FullyViolatingUseCase.ts')
   .shouldNot()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
 
 await projectFiles()
-  .withFile('**/use-cases/ComplexViolatingUseCase.ts')
+  .inFile('**/use-cases/ComplexViolatingUseCase.ts')
   .shouldNot()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();

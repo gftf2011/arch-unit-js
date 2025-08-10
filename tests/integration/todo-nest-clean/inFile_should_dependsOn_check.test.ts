@@ -16,7 +16,7 @@ const excludeMatchers = [
 
 const typescriptPath = '<rootDir>/tsconfig.json';
 
-describe('withFile.should.dependsOn scenarios (NestJS clean sample)', () => {
+describe('inFile.should.dependsOn scenarios (NestJS clean sample)', () => {
   describe('Scenario 1: File has NO dependencies', () => {
     test('"domain/todo.entity.ts" should depend on "repositories" - should FAIL', async () => {
       for (const includeMatcher of includeMatchers) {
@@ -30,7 +30,7 @@ describe('withFile.should.dependsOn scenarios (NestJS clean sample)', () => {
         await expect(
           appInstance
             .projectFiles()
-            .withFile('**/domain/todo.entity.ts')
+            .inFile('**/domain/todo.entity.ts')
             .should()
             .dependsOn(['**/repositories/**'])
             .check(),
@@ -52,7 +52,7 @@ describe('withFile.should.dependsOn scenarios (NestJS clean sample)', () => {
         await expect(
           appInstance
             .projectFiles()
-            .withFile('**/use-cases/create-todo.usecase.ts')
+            .inFile('**/use-cases/create-todo.usecase.ts')
             .should()
             .dependsOn(['**/modules/**'])
             .check(),
@@ -74,7 +74,7 @@ describe('withFile.should.dependsOn scenarios (NestJS clean sample)', () => {
         await expect(
           appInstance
             .projectFiles()
-            .withFile('**/use-cases/list-todos.usecase.ts')
+            .inFile('**/use-cases/list-todos.usecase.ts')
             .should()
             .dependsOn(['**/domain/**', '**/repositories/**'])
             .check(),
@@ -95,7 +95,7 @@ describe('withFile.should.dependsOn scenarios (NestJS clean sample)', () => {
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
           .projectFiles()
-          .withFile('**/use-cases/create-todo.usecase.ts')
+          .inFile('**/use-cases/create-todo.usecase.ts')
           .should()
           .dependsOn(['**/domain/**', '**/repositories/**'])
           .check();
@@ -113,7 +113,7 @@ describe('withFile.should.dependsOn scenarios (NestJS clean sample)', () => {
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
           .projectFiles()
-          .withFile('**/main.ts')
+          .inFile('**/main.ts')
           .should()
           .dependsOn(['**/modules/**', 'reflect-metadata'])
           .check();
@@ -134,7 +134,7 @@ describe('withFile.should.dependsOn scenarios (NestJS clean sample)', () => {
         await expect(
           appInstance
             .projectFiles()
-            .withFile('**/domain/todo.entity.ts')
+            .inFile('**/domain/todo.entity.ts')
             .should()
             .dependsOn([])
             .check(),
@@ -154,7 +154,7 @@ describe('withFile.should.dependsOn scenarios (NestJS clean sample)', () => {
         await expect(
           appInstance
             .projectFiles()
-            .withFile('**/use-cases/create-todo.usecase.ts')
+            .inFile('**/use-cases/create-todo.usecase.ts')
             .should()
             .dependsOn(['**/domain/**', ''])
             .check(),

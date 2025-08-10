@@ -1,4 +1,4 @@
-# Project Files with File Should Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value
+# Project Files in File Should Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value
 
 ## Business Rule Description
 
@@ -19,7 +19,7 @@ This rule enforces a minimum implementation size for a specific file, helping to
 
 ## All Possible Scenarios
 
-- Selected file = one concrete file path (via `withFile(...)`)
+- Selected file = one concrete file path (via `inFile(...)`)
 
 **Scenario 1**: File has lines of code GREATER than or EQUAL to the threshold
 
@@ -82,11 +82,7 @@ export class EmailService {
 **API Usage:**
 
 ```typescript
-projectFiles()
-  .withFile('**/services/EmailService.ts')
-  .should()
-  .haveLocGreaterOrEqualThan(15)
-  .check();
+projectFiles().inFile('**/services/EmailService.ts').should().haveLocGreaterOrEqualThan(15).check();
 ```
 
 **Result**: ✅ PASS - `EmailService.ts` has 19 LOC which is ≥ 15
@@ -135,11 +131,7 @@ export class StubService {
 **API Usage:**
 
 ```typescript
-projectFiles()
-  .withFile('**/services/StubService.ts')
-  .should()
-  .haveLocGreaterOrEqualThan(15)
-  .check();
+projectFiles().inFile('**/services/StubService.ts').should().haveLocGreaterOrEqualThan(15).check();
 ```
 
 **Result**: ❌ FAIL - `StubService.ts` has 13 LOC which is < 15

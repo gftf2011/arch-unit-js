@@ -19,7 +19,7 @@ const excludeMatchers = [
 
 const typescriptPath = '<rootDir>/tsconfig.json';
 
-describe('withFile.shouldNot.dependsOn scenarios (NestJS clean sample)', () => {
+describe('inFile.shouldNot.dependsOn scenarios (NestJS clean sample)', () => {
   describe('Scenario 1: File has NO dependencies', () => {
     test('"domain/todo.entity.ts" should not depend on "repositories" and "uuid" - should PASS', async () => {
       for (const includeMatcher of includeMatchers) {
@@ -32,7 +32,7 @@ describe('withFile.shouldNot.dependsOn scenarios (NestJS clean sample)', () => {
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
           .projectFiles()
-          .withFile('**/domain/todo.entity.ts')
+          .inFile('**/domain/todo.entity.ts')
           .shouldNot()
           .dependsOn(['**/repositories/**', 'uuid'])
           .check();
@@ -52,7 +52,7 @@ describe('withFile.shouldNot.dependsOn scenarios (NestJS clean sample)', () => {
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
           .projectFiles()
-          .withFile('**/use-cases/create-todo.usecase.ts')
+          .inFile('**/use-cases/create-todo.usecase.ts')
           .shouldNot()
           .dependsOn(['**/modules/**'])
           .check();
@@ -70,7 +70,7 @@ describe('withFile.shouldNot.dependsOn scenarios (NestJS clean sample)', () => {
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
           .projectFiles()
-          .withFile('**/use-cases/list-todos.usecase.ts')
+          .inFile('**/use-cases/list-todos.usecase.ts')
           .shouldNot()
           .dependsOn(['**/modules/**'])
           .check();
@@ -91,7 +91,7 @@ describe('withFile.shouldNot.dependsOn scenarios (NestJS clean sample)', () => {
         await expect(
           appInstance
             .projectFiles()
-            .withFile('**/use-cases/create-todo.usecase.ts')
+            .inFile('**/use-cases/create-todo.usecase.ts')
             .shouldNot()
             .dependsOn(['**/repositories/**'])
             .check(),
@@ -111,7 +111,7 @@ describe('withFile.shouldNot.dependsOn scenarios (NestJS clean sample)', () => {
         await expect(
           appInstance
             .projectFiles()
-            .withFile('**/use-cases/create-todo.usecase.ts')
+            .inFile('**/use-cases/create-todo.usecase.ts')
             .shouldNot()
             .dependsOn(['**/domain/**', 'pg'])
             .check(),
@@ -131,7 +131,7 @@ describe('withFile.shouldNot.dependsOn scenarios (NestJS clean sample)', () => {
         await expect(
           appInstance
             .projectFiles()
-            .withFile('**/repositories/in-memory-todo.repository.ts')
+            .inFile('**/repositories/in-memory-todo.repository.ts')
             .shouldNot()
             .dependsOn(['**/domain/**'])
             .check(),
@@ -151,7 +151,7 @@ describe('withFile.shouldNot.dependsOn scenarios (NestJS clean sample)', () => {
         await expect(
           appInstance
             .projectFiles()
-            .withFile('**/main.ts')
+            .inFile('**/main.ts')
             .shouldNot()
             .dependsOn(['@nestjs/core'])
             .check(),
@@ -173,7 +173,7 @@ describe('withFile.shouldNot.dependsOn scenarios (NestJS clean sample)', () => {
         await expect(
           appInstance
             .projectFiles()
-            .withFile('**/domain/todo.entity.ts')
+            .inFile('**/domain/todo.entity.ts')
             .shouldNot()
             .dependsOn([])
             .check(),
@@ -193,7 +193,7 @@ describe('withFile.shouldNot.dependsOn scenarios (NestJS clean sample)', () => {
         await expect(
           appInstance
             .projectFiles()
-            .withFile('**/use-cases/create-todo.usecase.ts')
+            .inFile('**/use-cases/create-todo.usecase.ts')
             .shouldNot()
             .dependsOn(['**/domain/**', ''])
             .check(),
@@ -213,7 +213,7 @@ describe('withFile.shouldNot.dependsOn scenarios (NestJS clean sample)', () => {
         await expect(
           appInstance
             .projectFiles()
-            .withFile('**/nonexistent/path/file.ts')
+            .inFile('**/nonexistent/path/file.ts')
             .shouldNot()
             .dependsOn(['uuid'])
             .check(),

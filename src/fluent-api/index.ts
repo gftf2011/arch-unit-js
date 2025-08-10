@@ -312,10 +312,10 @@ class ProjectFilesComponentSelector {
     ]);
   }
 
-  withFile(pattern: string, excludePattern: string[] = []): ShouldSelectorBuilder {
+  inFile(pattern: string, excludePattern: string[] = []): ShouldSelectorBuilder {
     return new ShouldSelectorBuilder(this.rootDir, pattern, this.options, excludePattern, [
       ...this.ruleConstruction,
-      `with file '${pattern}'` +
+      `in file '${pattern}'` +
         (excludePattern.length > 0 ? ` - excluding files [${excludePattern.join(', ')}] ,` : ''),
     ]);
   }
