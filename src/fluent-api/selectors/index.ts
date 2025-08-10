@@ -10,7 +10,7 @@ import { NotificationError } from '../common/errors/notification';
 import { NotificationHandler } from '../common/notification/handler';
 import { LOCAnalysisProps, PatternCheckableProps } from '../common/types';
 
-export class ProjectFilesInDirectoryLOCAnalysisLessThanShouldSelector extends LOCAnalysisCheckable {
+export class LOCAnalysisLessThanShouldSelector extends LOCAnalysisCheckable {
   constructor(protected readonly props: LOCAnalysisProps) {
     super(props);
   }
@@ -38,7 +38,7 @@ export class ProjectFilesInDirectoryLOCAnalysisLessThanShouldSelector extends LO
   }
 }
 
-export class ProjectFilesInDirectoryLOCAnalysisLessThanOrEqualShouldSelector extends LOCAnalysisCheckable {
+export class LOCAnalysisLessThanOrEqualShouldSelector extends LOCAnalysisCheckable {
   constructor(protected readonly props: LOCAnalysisProps) {
     super(props);
   }
@@ -66,7 +66,7 @@ export class ProjectFilesInDirectoryLOCAnalysisLessThanOrEqualShouldSelector ext
   }
 }
 
-export class ProjectFilesInDirectoryLOCAnalysisGreaterThanShouldSelector extends LOCAnalysisCheckable {
+export class LOCAnalysisGreaterThanShouldSelector extends LOCAnalysisCheckable {
   constructor(protected readonly props: LOCAnalysisProps) {
     super(props);
   }
@@ -94,7 +94,7 @@ export class ProjectFilesInDirectoryLOCAnalysisGreaterThanShouldSelector extends
   }
 }
 
-export class ProjectFilesInDirectoryLOCAnalysisGreaterThanOrEqualShouldSelector extends LOCAnalysisCheckable {
+export class LOCAnalysisGreaterThanOrEqualShouldSelector extends LOCAnalysisCheckable {
   constructor(protected readonly props: LOCAnalysisProps) {
     super(props);
   }
@@ -122,7 +122,7 @@ export class ProjectFilesInDirectoryLOCAnalysisGreaterThanOrEqualShouldSelector 
   }
 }
 
-export class ProjectFilesInDirectoryHaveCyclesShouldSelector extends PatternCyclesCheckable {
+export class HaveCyclesShouldSelector extends PatternCyclesCheckable {
   constructor(protected readonly props: PatternCheckableProps) {
     super(props);
   }
@@ -188,7 +188,7 @@ export class ProjectFilesInDirectoryHaveCyclesShouldSelector extends PatternCycl
   }
 }
 
-export class ProjectFilesInDirectoryOnlyDependsOnShouldSelector extends PatternCheckable {
+export class OnlyDependsOnShouldSelector extends PatternCheckable {
   constructor(protected readonly props: PatternCheckableProps) {
     super(props);
   }
@@ -238,7 +238,7 @@ export class ProjectFilesInDirectoryOnlyDependsOnShouldSelector extends PatternC
   }
 }
 
-export class ProjectFilesInDirectoryDependsOnShouldSelector extends PatternCheckable {
+export class DependsOnShouldSelector extends PatternCheckable {
   constructor(protected readonly props: PatternCheckableProps) {
     super(props);
   }
@@ -296,7 +296,7 @@ export class ProjectFilesInDirectoryDependsOnShouldSelector extends PatternCheck
   }
 }
 
-export class ProjectFilesInDirectoryOnlyHaveNameShouldSelector extends PatternCheckable {
+export class OnlyHaveNameShouldSelector extends PatternCheckable {
   constructor(protected readonly props: PatternCheckableProps) {
     super(props);
   }
@@ -346,7 +346,7 @@ export class ProjectFilesInDirectoryOnlyHaveNameShouldSelector extends PatternCh
   }
 }
 
-export class ProjectFilesInDirectoryHaveNameShouldSelector extends PatternCheckable {
+export class HaveNameShouldSelector extends PatternCheckable {
   constructor(protected readonly props: PatternCheckableProps) {
     super(props);
   }

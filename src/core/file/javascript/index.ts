@@ -42,7 +42,7 @@ export class JavascriptRelatedFile extends RootFile {
   }
 
   public override async build(
-    buildableProps: RootFileBuildableProps,
+    buildableProps: RootFileBuildableProps
   ): Promise<JavascriptRelatedFile> {
     const filePath = this.props.path;
 
@@ -50,7 +50,11 @@ export class JavascriptRelatedFile extends RootFile {
 
     const ast = parse(code, {
       sourceType: 'unambiguous', // supports both ESM & CJS
-      plugins: ['typescript', 'jsx', 'dynamicImport'], // allows parsing TypeScript & JSX syntax
+      plugins: [
+        'decorators-legacy',
+        'typescript',
+        'jsx',
+      ], // allows parsing TypeScript & JSX syntax incl. parameter decorators
     });
 
     const countLogicalCodeLines = (code: string): number => {

@@ -1,15 +1,15 @@
-import {
-  ProjectFilesInDirectoryHaveNameShouldSelector,
-  ProjectFilesInDirectoryOnlyDependsOnShouldSelector,
-  ProjectFilesInDirectoryOnlyHaveNameShouldSelector,
-  ProjectFilesInDirectoryDependsOnShouldSelector,
-  ProjectFilesInDirectoryHaveCyclesShouldSelector,
-  ProjectFilesInDirectoryLOCAnalysisLessThanShouldSelector,
-  ProjectFilesInDirectoryLOCAnalysisLessThanOrEqualShouldSelector,
-  ProjectFilesInDirectoryLOCAnalysisGreaterThanShouldSelector,
-  ProjectFilesInDirectoryLOCAnalysisGreaterThanOrEqualShouldSelector,
-} from './checkers';
 import { Options } from './common/types';
+import {
+  DependsOnShouldSelector,
+  HaveCyclesShouldSelector,
+  HaveNameShouldSelector,
+  LOCAnalysisGreaterThanOrEqualShouldSelector,
+  LOCAnalysisGreaterThanShouldSelector,
+  LOCAnalysisLessThanOrEqualShouldSelector,
+  LOCAnalysisLessThanShouldSelector,
+  OnlyDependsOnShouldSelector,
+  OnlyHaveNameShouldSelector,
+} from './selectors';
 
 class PositiveMatchConditionSelectorBuilder {
   private readonly negated: boolean = false;
@@ -22,10 +22,8 @@ class PositiveMatchConditionSelectorBuilder {
     protected readonly ruleConstruction: string[],
   ) {}
 
-  haveLocGreaterOrEqualThan(
-    threshold: number,
-  ): ProjectFilesInDirectoryLOCAnalysisGreaterThanOrEqualShouldSelector {
-    return new ProjectFilesInDirectoryLOCAnalysisGreaterThanOrEqualShouldSelector({
+  haveLocGreaterOrEqualThan(threshold: number): LOCAnalysisGreaterThanOrEqualShouldSelector {
+    return new LOCAnalysisGreaterThanOrEqualShouldSelector({
       negated: this.negated,
       rootDir: this.rootDir,
       filteringPatterns: [this.pattern],
@@ -39,10 +37,8 @@ class PositiveMatchConditionSelectorBuilder {
     });
   }
 
-  haveLocGreaterThan(
-    threshold: number,
-  ): ProjectFilesInDirectoryLOCAnalysisGreaterThanShouldSelector {
-    return new ProjectFilesInDirectoryLOCAnalysisGreaterThanShouldSelector({
+  haveLocGreaterThan(threshold: number): LOCAnalysisGreaterThanShouldSelector {
+    return new LOCAnalysisGreaterThanShouldSelector({
       negated: this.negated,
       rootDir: this.rootDir,
       filteringPatterns: [this.pattern],
@@ -53,10 +49,8 @@ class PositiveMatchConditionSelectorBuilder {
     });
   }
 
-  haveLocLessOrEqualThan(
-    threshold: number,
-  ): ProjectFilesInDirectoryLOCAnalysisLessThanOrEqualShouldSelector {
-    return new ProjectFilesInDirectoryLOCAnalysisLessThanOrEqualShouldSelector({
+  haveLocLessOrEqualThan(threshold: number): LOCAnalysisLessThanOrEqualShouldSelector {
+    return new LOCAnalysisLessThanOrEqualShouldSelector({
       negated: this.negated,
       rootDir: this.rootDir,
       filteringPatterns: [this.pattern],
@@ -67,8 +61,8 @@ class PositiveMatchConditionSelectorBuilder {
     });
   }
 
-  haveLocLessThan(threshold: number): ProjectFilesInDirectoryLOCAnalysisLessThanShouldSelector {
-    return new ProjectFilesInDirectoryLOCAnalysisLessThanShouldSelector({
+  haveLocLessThan(threshold: number): LOCAnalysisLessThanShouldSelector {
+    return new LOCAnalysisLessThanShouldSelector({
       negated: this.negated,
       rootDir: this.rootDir,
       filteringPatterns: [this.pattern],
@@ -79,8 +73,8 @@ class PositiveMatchConditionSelectorBuilder {
     });
   }
 
-  haveCycles(): ProjectFilesInDirectoryHaveCyclesShouldSelector {
-    return new ProjectFilesInDirectoryHaveCyclesShouldSelector({
+  haveCycles(): HaveCyclesShouldSelector {
+    return new HaveCyclesShouldSelector({
       negated: this.negated,
       rootDir: this.rootDir,
       filteringPatterns: [this.pattern],
@@ -91,9 +85,9 @@ class PositiveMatchConditionSelectorBuilder {
     });
   }
 
-  dependsOn(pattern: string[] | string): ProjectFilesInDirectoryDependsOnShouldSelector {
+  dependsOn(pattern: string[] | string): DependsOnShouldSelector {
     const patternArray = typeof pattern === 'string' ? [pattern] : pattern;
-    return new ProjectFilesInDirectoryDependsOnShouldSelector({
+    return new DependsOnShouldSelector({
       negated: this.negated,
       rootDir: this.rootDir,
       filteringPatterns: [this.pattern],
@@ -104,9 +98,9 @@ class PositiveMatchConditionSelectorBuilder {
     });
   }
 
-  onlyDependsOn(pattern: string[] | string): ProjectFilesInDirectoryOnlyDependsOnShouldSelector {
+  onlyDependsOn(pattern: string[] | string): OnlyDependsOnShouldSelector {
     const patternArray = typeof pattern === 'string' ? [pattern] : pattern;
-    return new ProjectFilesInDirectoryOnlyDependsOnShouldSelector({
+    return new OnlyDependsOnShouldSelector({
       negated: this.negated,
       rootDir: this.rootDir,
       filteringPatterns: [this.pattern],
@@ -120,8 +114,8 @@ class PositiveMatchConditionSelectorBuilder {
     });
   }
 
-  onlyHaveName(pattern: string): ProjectFilesInDirectoryOnlyHaveNameShouldSelector {
-    return new ProjectFilesInDirectoryOnlyHaveNameShouldSelector({
+  onlyHaveName(pattern: string): OnlyHaveNameShouldSelector {
+    return new OnlyHaveNameShouldSelector({
       negated: this.negated,
       rootDir: this.rootDir,
       filteringPatterns: [this.pattern],
@@ -132,8 +126,8 @@ class PositiveMatchConditionSelectorBuilder {
     });
   }
 
-  haveName(pattern: string): ProjectFilesInDirectoryHaveNameShouldSelector {
-    return new ProjectFilesInDirectoryHaveNameShouldSelector({
+  haveName(pattern: string): HaveNameShouldSelector {
+    return new HaveNameShouldSelector({
       negated: this.negated,
       rootDir: this.rootDir,
       filteringPatterns: [this.pattern],
@@ -156,10 +150,8 @@ class NegativeMatchConditionSelectorBuilder {
     protected readonly ruleConstruction: string[],
   ) {}
 
-  haveLocGreaterOrEqualThan(
-    threshold: number,
-  ): ProjectFilesInDirectoryLOCAnalysisGreaterThanOrEqualShouldSelector {
-    return new ProjectFilesInDirectoryLOCAnalysisGreaterThanOrEqualShouldSelector({
+  haveLocGreaterOrEqualThan(threshold: number): LOCAnalysisGreaterThanOrEqualShouldSelector {
+    return new LOCAnalysisGreaterThanOrEqualShouldSelector({
       negated: this.negated,
       rootDir: this.rootDir,
       filteringPatterns: [this.pattern],
@@ -173,10 +165,8 @@ class NegativeMatchConditionSelectorBuilder {
     });
   }
 
-  haveLocGreaterThan(
-    threshold: number,
-  ): ProjectFilesInDirectoryLOCAnalysisGreaterThanShouldSelector {
-    return new ProjectFilesInDirectoryLOCAnalysisGreaterThanShouldSelector({
+  haveLocGreaterThan(threshold: number): LOCAnalysisGreaterThanShouldSelector {
+    return new LOCAnalysisGreaterThanShouldSelector({
       negated: this.negated,
       rootDir: this.rootDir,
       filteringPatterns: [this.pattern],
@@ -187,10 +177,8 @@ class NegativeMatchConditionSelectorBuilder {
     });
   }
 
-  haveLocLessOrEqualThan(
-    threshold: number,
-  ): ProjectFilesInDirectoryLOCAnalysisLessThanOrEqualShouldSelector {
-    return new ProjectFilesInDirectoryLOCAnalysisLessThanOrEqualShouldSelector({
+  haveLocLessOrEqualThan(threshold: number): LOCAnalysisLessThanOrEqualShouldSelector {
+    return new LOCAnalysisLessThanOrEqualShouldSelector({
       negated: this.negated,
       rootDir: this.rootDir,
       filteringPatterns: [this.pattern],
@@ -201,8 +189,8 @@ class NegativeMatchConditionSelectorBuilder {
     });
   }
 
-  haveLocLessThan(threshold: number): ProjectFilesInDirectoryLOCAnalysisLessThanShouldSelector {
-    return new ProjectFilesInDirectoryLOCAnalysisLessThanShouldSelector({
+  haveLocLessThan(threshold: number): LOCAnalysisLessThanShouldSelector {
+    return new LOCAnalysisLessThanShouldSelector({
       negated: this.negated,
       rootDir: this.rootDir,
       filteringPatterns: [this.pattern],
@@ -213,8 +201,8 @@ class NegativeMatchConditionSelectorBuilder {
     });
   }
 
-  haveCycles(): ProjectFilesInDirectoryHaveCyclesShouldSelector {
-    return new ProjectFilesInDirectoryHaveCyclesShouldSelector({
+  haveCycles(): HaveCyclesShouldSelector {
+    return new HaveCyclesShouldSelector({
       negated: this.negated,
       rootDir: this.rootDir,
       filteringPatterns: [this.pattern],
@@ -225,9 +213,9 @@ class NegativeMatchConditionSelectorBuilder {
     });
   }
 
-  dependsOn(pattern: string[] | string): ProjectFilesInDirectoryDependsOnShouldSelector {
+  dependsOn(pattern: string[] | string): DependsOnShouldSelector {
     const patternArray = typeof pattern === 'string' ? [pattern] : pattern;
-    return new ProjectFilesInDirectoryDependsOnShouldSelector({
+    return new DependsOnShouldSelector({
       negated: this.negated,
       rootDir: this.rootDir,
       filteringPatterns: [this.pattern],
@@ -238,9 +226,9 @@ class NegativeMatchConditionSelectorBuilder {
     });
   }
 
-  onlyDependsOn(pattern: string[] | string): ProjectFilesInDirectoryOnlyDependsOnShouldSelector {
+  onlyDependsOn(pattern: string[] | string): OnlyDependsOnShouldSelector {
     const patternArray = typeof pattern === 'string' ? [pattern] : pattern;
-    return new ProjectFilesInDirectoryOnlyDependsOnShouldSelector({
+    return new OnlyDependsOnShouldSelector({
       negated: this.negated,
       rootDir: this.rootDir,
       filteringPatterns: [this.pattern],
@@ -254,8 +242,8 @@ class NegativeMatchConditionSelectorBuilder {
     });
   }
 
-  onlyHaveName(pattern: string): ProjectFilesInDirectoryOnlyHaveNameShouldSelector {
-    return new ProjectFilesInDirectoryOnlyHaveNameShouldSelector({
+  onlyHaveName(pattern: string): OnlyHaveNameShouldSelector {
+    return new OnlyHaveNameShouldSelector({
       negated: this.negated,
       rootDir: this.rootDir,
       filteringPatterns: [this.pattern],
@@ -266,8 +254,8 @@ class NegativeMatchConditionSelectorBuilder {
     });
   }
 
-  haveName(pattern: string): ProjectFilesInDirectoryHaveNameShouldSelector {
-    return new ProjectFilesInDirectoryHaveNameShouldSelector({
+  haveName(pattern: string): HaveNameShouldSelector {
+    return new HaveNameShouldSelector({
       negated: this.negated,
       rootDir: this.rootDir,
       filteringPatterns: [this.pattern],
@@ -320,6 +308,14 @@ class ProjectFilesComponentSelector {
     return new ShouldSelectorBuilder(this.rootDir, pattern, this.options, excludePattern, [
       ...this.ruleConstruction,
       `in directory '${pattern}'` +
+        (excludePattern.length > 0 ? ` - excluding files [${excludePattern.join(', ')}] ,` : ''),
+    ]);
+  }
+
+  withFile(pattern: string, excludePattern: string[] = []): ShouldSelectorBuilder {
+    return new ShouldSelectorBuilder(this.rootDir, pattern, this.options, excludePattern, [
+      ...this.ruleConstruction,
+      `with file '${pattern}'` +
         (excludePattern.length > 0 ? ` - excluding files [${excludePattern.join(', ')}] ,` : ''),
     ]);
   }
