@@ -7,10 +7,15 @@ const rootDir = path.resolve(path.dirname(__filename), '..', '..', 'sample', 'to
 
 const includeMatchers: string[][] = [
   ['<rootDir>/**'],
-//   ['./**'],
+  //   ['./**'],
 ];
 
-const excludeMatchers = ['!<rootDir>/**/package.json', '!<rootDir>/**/tsconfig.json', '!<rootDir>/**/.swcrc', '!<rootDir>/**/tsconfig.build.json'];
+const excludeMatchers = [
+  '!<rootDir>/**/package.json',
+  '!<rootDir>/**/tsconfig.json',
+  '!<rootDir>/**/.swcrc',
+  '!<rootDir>/**/tsconfig.build.json',
+];
 
 const typescriptPath = '<rootDir>/tsconfig.json';
 
@@ -108,7 +113,7 @@ describe('withFile.shouldNot.dependsOn scenarios (NestJS clean sample)', () => {
             .projectFiles()
             .withFile('**/use-cases/create-todo.usecase.ts')
             .shouldNot()
-            .dependsOn(['**/domain/**', "pg"])
+            .dependsOn(['**/domain/**', 'pg'])
             .check(),
         ).rejects.toThrow();
       }

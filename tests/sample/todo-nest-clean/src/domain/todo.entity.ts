@@ -9,11 +9,21 @@ export type TodoProps = {
 export class TodoEntity {
   constructor(private props: TodoProps) {}
 
-  get id(): string { return this.props.id; }
-  get title(): string { return this.props.title; }
-  get completed(): boolean { return this.props.completed; }
-  get createdAt(): Date { return this.props.createdAt; }
-  get updatedAt(): Date { return this.props.updatedAt; }
+  get id(): string {
+    return this.props.id;
+  }
+  get title(): string {
+    return this.props.title;
+  }
+  get completed(): boolean {
+    return this.props.completed;
+  }
+  get createdAt(): Date {
+    return this.props.createdAt;
+  }
+  get updatedAt(): Date {
+    return this.props.updatedAt;
+  }
 
   rename(title: string): void {
     this.props.title = title;
@@ -28,4 +38,4 @@ export class TodoEntity {
   toJSON() {
     return { ...this.props };
   }
-} 
+}

@@ -12,4 +12,4 @@ export class GetTodo {
     if (!todo) throw new NotFoundException('Todo not found');
     return todo.toJSON();
   }
-} 
+}

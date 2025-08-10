@@ -4,4 +4,4 @@ import { TodoModule } from './todo/todo.module';
 @Module({
   imports: [TodoModule],
 })
-export class AppModule {} 
+export class AppModule {}

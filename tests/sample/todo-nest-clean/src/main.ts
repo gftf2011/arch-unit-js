@@ -11,4 +11,4 @@ async function bootstrap(): Promise<void> {
   console.log('Todo API running on http://localhost:3001');
 }
 
-bootstrap(); 
+bootstrap();

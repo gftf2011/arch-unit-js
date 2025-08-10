@@ -12,6 +12,7 @@ abstract class Checkable {
   protected filter(map: Map<string, RootFile>): Map<string, RootFile> {
     const filters: string[] = this.props.filteringPatterns;
     const filteringPattern = [...filters, ...this.props.excludePattern];
+
     const filteredFiles = new Map(
       [...map].filter(([path, _file]) => micromatch([path], filteringPattern).length > 0),
     );

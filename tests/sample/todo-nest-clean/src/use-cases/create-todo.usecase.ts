@@ -20,4 +20,4 @@ export class CreateTodo {
     await this.repo.create(todo);
     return todo.toJSON();
   }
-} 
+}

@@ -5,4 +5,4 @@ export class CreateTodoDto {
   @IsNotEmpty()
   @MaxLength(100)
   title!: string;
-} 
+}

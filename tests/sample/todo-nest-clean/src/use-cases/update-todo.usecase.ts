@@ -14,4 +14,4 @@ export class UpdateTodo {
     await this.repo.update(todo);
     return todo.toJSON();
   }
-} 
+}

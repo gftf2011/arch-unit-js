@@ -30,4 +30,4 @@ export class InMemoryTodoRepository implements TodoRepository {
   async delete(id: string): Promise<void> {
     this.store.delete(id);
   }
-} 
+}

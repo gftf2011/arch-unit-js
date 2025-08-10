@@ -9,4 +9,4 @@ export class ListTodos {
     const todos = await this.repo.findAll();
     return todos.map((t) => t.toJSON());
   }
-} 
+}

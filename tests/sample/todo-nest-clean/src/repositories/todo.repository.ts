@@ -7,4 +7,4 @@ export abstract class TodoRepository {
   abstract findById(id: string): Promise<TodoEntity | null>;
   abstract update(todo: TodoEntity): Promise<void>;
   abstract delete(id: string): Promise<void>;
-} 
+}

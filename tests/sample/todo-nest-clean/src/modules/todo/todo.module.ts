@@ -9,13 +9,6 @@ import { DeleteTodo } from '../../use-cases/delete-todo.usecase';
 
 @Module({
   controllers: [TodoController],
-  providers: [
-    InMemoryTodoRepository,
-    CreateTodo,
-    ListTodos,
-    GetTodo,
-    UpdateTodo,
-    DeleteTodo,
-  ],
+  providers: [InMemoryTodoRepository, CreateTodo, ListTodos, GetTodo, UpdateTodo, DeleteTodo],
 })
-export class TodoModule {} 
+export class TodoModule {}

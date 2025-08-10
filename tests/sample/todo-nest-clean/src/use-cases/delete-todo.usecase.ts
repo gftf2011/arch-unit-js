@@ -10,4 +10,4 @@ export class DeleteTodo {
   async execute({ id }: Input) {
     await this.repo.delete(id);
   }
-} 
+}
