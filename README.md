@@ -48,7 +48,7 @@ A JavaScript/TypeScript library for enforcing architectural rules and constraint
 
 - [x] Mac OS
 - [x] Linux
-- [x] Windows - WSL
+- [x] Windows
 
 <br/>
 
