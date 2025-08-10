@@ -95,7 +95,7 @@ describe('inFile.should.dependsOn scenarios (NestJS clean sample)', () => {
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
           .projectFiles()
-          .inFile('**/use-cases/create-todo.usecase.ts')
+          .inFile('src/use-cases/create-todo.usecase.ts')
           .should()
           .dependsOn(['**/domain/**', '**/repositories/**'])
           .check();

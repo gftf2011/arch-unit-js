@@ -2,6 +2,7 @@ import micromatch from 'micromatch';
 
 import { RootFile } from '../../../core/file';
 import { NodeGraph } from '../../../core/node-graph';
+import { glob } from '../../../utils';
 import { NotificationError } from '../errors/notification';
 import { NotificationHandler } from '../notification/handler';
 import { CheckableProps, LOCAnalysisProps, PatternCheckableProps } from '../types';
@@ -11,7 +12,10 @@ abstract class Checkable {
 
   protected filter(map: Map<string, RootFile>): Map<string, RootFile> {
     const filters: string[] = this.props.filteringPatterns;
-    const filteringPattern = [...filters, ...this.props.excludePattern];
+    const filteringPattern = glob.resolveRootDirPatterns(
+      [...filters, ...this.props.excludePattern],
+      this.props.rootDir,
+    );
 
     const filteredFiles = new Map(
       [...map].filter(([path, _file]) => micromatch([path], filteringPattern).length > 0),

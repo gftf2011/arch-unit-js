@@ -199,6 +199,26 @@ describe('should.dependsOn scenarios', () => {
   });
 
   describe('Scenario 4: File has dependencies and ALL patterns are present', () => {
+    test('"infra" and "use-cases" should depend on "domain" - should PASS', async () => {
+      for (const [includeMatcher] of includeMatchers) {
+        const options: Options = {
+          extensionTypes: ['**/*.ts'],
+          includeMatcher: [...includeMatcher],
+          ignoreMatcher: excludeMatchers,
+          typescriptPath,
+        };
+        const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+        await appInstance
+          .projectFiles()
+          .inDirectory('**/infra/**')
+          .and()
+          .inDirectory('**/use-cases/**', ['!use-cases/index.ts'])
+          .should()
+          .dependsOn(['**/domain/**'])
+          .check();
+      }
+    });
+
     test('"infra" should depend on "domain" - should PASS', async () => {
       for (const [includeMatcher] of includeMatchers) {
         const options: Options = {
