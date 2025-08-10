@@ -1,4 +1,4 @@
-# Project Files With File Should Depend On Specified Patterns
+# Project Files with File Should Depend On Specified Patterns
 
 ## Business Rule Description
 
