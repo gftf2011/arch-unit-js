@@ -16,7 +16,7 @@ const excludeMatchers = [
 
 const typescriptPath = '<rootDir>/tsconfig.json';
 
-describe('shouldNot.haveCycles scenarios', () => {
+describe('inFile.shouldNot.haveCycles scenarios', () => {
   test('entire project should not have cycles', async () => {
     for (const includeMatcher of includeMatchers) {
       const options: Options = {
