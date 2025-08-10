@@ -330,16 +330,14 @@ class ProjectFilesComponentSelector {
     );
   }
 
-  inFile(pattern: string, excludePattern: string[] = []): ShouldSelectorBuilder {
+  inFile(pattern: string): ShouldSelectorBuilder {
     this.includePatterns.push(pattern);
-    this.excludePatterns.push(...excludePattern);
     return new ShouldSelectorBuilder(
       this.rootDir,
       this.options,
       [
         ...this.ruleConstruction,
-        `in file '${pattern}'` +
-          (excludePattern.length > 0 ? ` - excluding files [${excludePattern.join(', ')}] ,` : ''),
+        `in file '${pattern}'`,
       ],
       this,
     );
