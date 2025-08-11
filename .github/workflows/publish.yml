@@ -17,7 +17,6 @@ jobs:
   publish:
     name: Publish Package on ${{ inputs.os }}
     if: >
-      (github.event_name == 'push') ||
       (github.event_name == 'pull_request' && github.event.pull_request.merged == true && (github.base_ref == 'main' || github.base_ref == 'dev'))
     runs-on: ${{ inputs.os }}
     strategy:
@@ -51,7 +50,7 @@ jobs:
 
       - name: Generate TAR package file
         run: |
-          npm pack
+          npm run pack:tar
 
       - name: Validate "dist" Checksum
         run: sha256sum -c checksum.txt
@@ -65,7 +64,6 @@ jobs:
 
       - name: Append -beta to package.json version
         if: >
-          (github.event_name == 'push' && github.ref == 'refs/heads/dev') ||
           (github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.base_ref == 'dev')
         run: |
           # Get current version
@@ -78,7 +76,6 @@ jobs:
 
       - name: Publish Package To Beta
         if: >
-          (github.event_name == 'push' && github.ref == 'refs/heads/dev') ||
           (github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.base_ref == 'dev')
         run: npm publish --tag beta --access public
         env:

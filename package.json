@@ -3,25 +3,12 @@
   "version": "1.0.16",
   "description": "arch-unit clone for node.js projects",
   "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/types/index.d.ts",
-  "files": [
-    "dist",
-    "README.md",
-    "LICENSE"
-  ],
-  "exports": {
-    ".": {
-      "types": "./dist/types/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
-    }
-  },
   "scripts": {
-    "pack": "npm pack && sha256sum *.tgz > checksum.txt",
+    "pack:tar": "tar -czf auth-unit-js.tar.tgz dist/ LICENSE",
+    "checksum:tar": "sha256sum *.tgz > checksum.txt",
+    "pack": "npm run pack:tar && npm run checksum:tar",
     "build:tsc": "tsc",
-    "build:types": "npx tsc --emitDeclarationOnly",
-    "build": "node esbuild.config.js && npm run build:types",
+    "build": "node esbuild.config.js",
     "test": "jest --detectOpenHandles --coverage",
     "test:watch": "jest --watch",
     "publish:beta": "npm publish --tag beta --access public",
