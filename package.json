@@ -1,6 +1,6 @@
 {
   "name": "arch-unit-js",
-  "version": "1.0.21",
+  "version": "1.0.22",
   "description": "arch-unit clone for node.js projects",
   "files": [
     "package.json",
@@ -18,6 +18,7 @@
     }
   },
   "scripts": {
+    "pack": "npm run pack:linux:tar && npm run checksum:tar",
     "pack:linux:tar": "tar --transform='s|^|package/|' -czf arch-unit-js.tar.tgz dist/index.js dist/index.mjs package.json LICENSE README.md",
     "pack:macos:tar": "gtar --transform='s|^|package/|' -czf arch-unit-js.tar.tgz dist/index.js dist/index.mjs package.json LICENSE README.md",
     "checksum:tar": "sha256sum *.tgz > checksum.txt",
