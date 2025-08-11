@@ -2,6 +2,8 @@
 src/
 *.ts
 *.tsx
+**/*.map
+dist/types/
 
 # Development files
 tsconfig.json
