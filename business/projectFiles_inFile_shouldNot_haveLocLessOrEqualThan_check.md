@@ -82,7 +82,7 @@ export class EmailService {
 projectFiles().inFile('**/services/EmailService.ts').shouldNot().haveLocLessOrEqualThan(15).check();
 ```
 
-**Result**: ✅ PASS — `EmailService.ts` has 18 LOC which is > 15
+**Result**: ✅ PASS — `EmailService.ts` has 20 LOC which is > 15
 
 ---
 

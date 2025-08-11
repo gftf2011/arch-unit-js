@@ -38,8 +38,8 @@ project/
 ├── src/
 │   ├── services/
 │   │   ├── UserService.ts     // 25 LOC (above threshold)
-│   │   ├── EmailService.ts    // 18 LOC (above threshold)
-│   │   └── PaymentService.ts  // 15 LOC (equals threshold)
+│   │   ├── EmailService.ts    // 27 LOC (above threshold)
+│   │   └── PaymentService.ts  // 16 LOC (equals threshold)
 │   └── components/
 │       └── DataTable.ts       // 45 LOC (above threshold)
 ```
@@ -47,52 +47,54 @@ project/
 **File Content:**
 
 ```typescript
-// src/services/EmailService.ts (18 lines of code - above threshold)
+// src/services/EmailService.ts (27 lines of code - above threshold)
 /**
  * Email service for sending notifications
  */
-import { User } from '../models/User';
-import { Template } from '../models/Template';
+import { User } from '../models/User'; // LOC 1
+import { Template } from '../models/Template'; // LOC 2
 
 export class EmailService {
-  // LOC 1
-  private apiKey: string; // LOC 2
-  private baseUrl: string; // LOC 3
+  // LOC 3
+  private apiKey: string; // LOC 4
+  private baseUrl: string; // LOC 5
 
   constructor(apiKey: string) {
-    // LOC 4
-    this.apiKey = apiKey; // LOC 5
-    this.baseUrl = 'https://email-api.example.com'; // LOC 6
-  } // LOC 7
+    // LOC 6
+    this.apiKey = apiKey; // LOC 7
+    this.baseUrl = 'https://email-api.example.com'; // LOC 8
+  } // LOC 9
 
   async sendWelcomeEmail(user: User): Promise<boolean> {
-    // LOC 8
-    const template = this.getWelcomeTemplate(user.name); // LOC 9
-    return await this.sendEmail(user.email, template); // LOC 10
-  } // LOC 11
+    // LOC 10
+    const template = this.getWelcomeTemplate(user.name); // LOC 11
+    return await this.sendEmail(user.email, template); // LOC 12
+  } // LOC 13
 
   async sendPasswordResetEmail(user: User, token: string): Promise<boolean> {
-    // LOC 12
-    const template = this.getPasswordResetTemplate(user.name, token); // LOC 13
-    return await this.sendEmail(user.email, template); // LOC 14
-  } // LOC 15
+    // LOC 14
+    const template = this.getPasswordResetTemplate(user.name, token); // LOC 15
+    return await this.sendEmail(user.email, template); // LOC 16
+  } // LOC 17
 
   private getWelcomeTemplate(name: string): Template {
-    // LOC 16
-    return { subject: 'Welcome!', body: `Hello ${name}` }; // LOC 17
-  } // LOC 18
+    // LOC 18
+    return { subject: 'Welcome!', body: `Hello ${name}` }; // LOC 19
+  } // LOC 20
 
   private getPasswordResetTemplate(name: string, token: string): Template {
-    return { subject: 'Reset Password', body: `Hi ${name}, reset: ${token}` };
-  }
+    // LOC 21
+    return { subject: 'Reset Password', body: `Hi ${name}, reset: ${token}` }; // LOC 22
+  } // LOC 23
 
   private async sendEmail(to: string, template: Template) {
+    // LOC 24
     // Implementation would go here
-    return true;
-  }
-}
+    return true; // LOC 25
+  } // LOC 26
+} // LOC 27
 
-// src/services/PaymentService.ts (exactly 15 lines of code - equals threshold)
+// src/services/PaymentService.ts (exactly 16 lines of code - equals threshold)
 /**
  * Payment processing service
  */
@@ -121,16 +123,16 @@ export class PaymentService {
     // Implementation would go here
     return true; // LOC 14
   } // LOC 15
-}
+} // LOC 16
 ```
 
 **API Usage:**
 
 ```typescript
-projectFiles().inDirectory('**/src/**').should().haveLocGreaterOrEqualThan(15).check();
+projectFiles().inDirectory('**/src/**').should().haveLocGreaterOrEqualThan(16).check();
 ```
 
-**Result**: ✅ PASS - All files (25, 18, 15, 45 LOC) are greater than or equal to 15 lines of code
+**Result**: ✅ PASS - All files (25, 27, 16, 45 LOC) are greater than or equal to 16 lines of code
 
 ### Scenario 2: ANY files have lines of code LESS than the threshold
 
@@ -140,7 +142,7 @@ project/
 │   ├── services/
 │   │   ├── UserService.ts     // 25 LOC (above threshold)
 │   │   ├── StubService.ts     // 13 LOC (below threshold)
-│   │   └── PaymentService.ts  // 15 LOC (equals threshold)
+│   │   └── PaymentService.ts  // 16 LOC (equals threshold)
 │   ├── utils/
 │   │   ├── Constants.ts       // 18 LOC (above threshold)
 │   │   └── Helpers.ts         // 9 LOC (below threshold)
@@ -179,7 +181,7 @@ export class StubService {
   } // LOC 12
 } // LOC 13
 
-// src/services/PaymentService.ts (exactly 15 lines of code - equals threshold)
+// src/services/PaymentService.ts (exactly 16 lines of code - equals threshold)
 /**
  * Payment processing service
  */
@@ -208,7 +210,7 @@ export class PaymentService {
     // Implementation would go here
     return true; // LOC 14
   } // LOC 15
-}
+} // LOC 16
 
 // src/utils/Helpers.ts (only 9 lines of code - below threshold)
 // Simple utility functions
@@ -231,7 +233,7 @@ export function isEmpty(value: any): boolean {
 **API Usage:**
 
 ```typescript
-projectFiles().inDirectory('**/src/**').should().haveLocGreaterOrEqualThan(15).check();
+projectFiles().inDirectory('**/src/**').should().haveLocGreaterOrEqualThan(16).check();
 ```
 
 **Result**: ❌ FAIL - Multiple files violate the constraint: StubService.ts (13 LOC), Helpers.ts (9 LOC) are less than the 15-line minimum
