@@ -44,12 +44,12 @@ jobs:
 
       - name: Generate TAR package file
         run: |
-          npm run pack:tar
+          npm run pack:linux:tar
 
       - name: Publish Package
         if: >
           (github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.head_ref == 'dev' && github.base_ref == 'main')
-        run: npm publish ./auth-unit-js.tar.tgz --access public
+        run: npm publish ./arch-unit-js.tar.tgz --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -68,6 +68,6 @@ jobs:
       - name: Publish Package To Beta
         if: >
           (github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.base_ref == 'dev')
-        run: npm publish ./auth-unit-js.tar.tgz --tag beta --access public
+        run: npm publish ./arch-unit-js.tar.tgz --tag beta --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
