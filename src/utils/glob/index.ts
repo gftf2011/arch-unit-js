@@ -1,4 +1,3 @@
-import fs from 'fs';
 import * as path from 'pathe';
 
 /**
@@ -108,19 +107,4 @@ export function resolveRootDirPattern(pattern: string, rootDir: string): string 
 export function extractExtensionFromGlobPattern(pattern: string): string | null {
   const match = pattern.match(/\.[^.\\/:*?"<>|\r\n]+$/);
   return match ? match[0] : null;
-}
-
-export function createGlobToJavascriptRelatedDependency(dependency: string): string {
-  let dependencyGlob: string = dependency;
-  try {
-    const stat = fs.statSync(dependencyGlob);
-    dependencyGlob = stat.isDirectory() ? `${dependencyGlob}/index**` : `${dependencyGlob}**`;
-  } catch (_error) {
-    dependencyGlob = `${dependencyGlob}**`;
-  }
-  return dependencyGlob;
-}
-
-export function transfromWildcardToGlob(wildcard: string): string {
-  return wildcard.replace(/\*/g, '**');
 }

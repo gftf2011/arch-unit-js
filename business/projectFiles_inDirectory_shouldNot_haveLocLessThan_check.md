@@ -38,7 +38,7 @@ project/
 ├── src/
 │   ├── services/
 │   │   ├── UserService.ts     // 25 LOC (above threshold)
-│   │   ├── EmailService.ts    // 15 LOC (equals threshold)
+│   │   ├── EmailService.ts    // 20 LOC (equals threshold)
 │   │   └── PaymentService.ts  // 32 LOC (above threshold)
 │   └── components/
 │       └── DataTable.ts       // 45 LOC (above threshold)
@@ -47,41 +47,41 @@ project/
 **File Content:**
 
 ```typescript
-// src/services/EmailService.ts (exactly 15 lines of code)
+// src/services/EmailService.ts (exactly 20 lines of code)
 /**
  * Email service for sending notifications
  */
-import { User } from '../models/User';
-import { Template } from '../models/Template';
+import { User } from '../models/User'; // LOC 1
+import { Template } from '../models/Template'; // LOC 2
 
 export class EmailService {
-  // LOC 1
-  private apiKey: string; // LOC 2
-  private baseUrl: string; // LOC 3
+  // LOC 3
+  private apiKey: string; // LOC 4
+  private baseUrl: string; // LOC 5
 
   constructor(apiKey: string) {
-    // LOC 4
-    this.apiKey = apiKey; // LOC 5
-    this.baseUrl = 'https://email-api.example.com'; // LOC 6
-  } // LOC 7
+    // LOC 6
+    this.apiKey = apiKey; // LOC 7
+    this.baseUrl = 'https://email-api.example.com'; // LOC 8
+  } // LOC 9
 
   async sendWelcomeEmail(user: User): Promise<boolean> {
-    // LOC 8
-    const template = this.getWelcomeTemplate(user.name); // LOC 9
-    return await this.sendEmail(user.email, template); // LOC 10
-  } // LOC 11
+    // LOC 10
+    const template = this.getWelcomeTemplate(user.name); // LOC 11
+    return await this.sendEmail(user.email, template); // LOC 12
+  } // LOC 13
 
   private getWelcomeTemplate(name: string): Template {
-    // LOC 12
-    return { subject: 'Welcome!', body: `Hello ${name}` }; // LOC 13
-  } // LOC 14
+    // LOC 14
+    return { subject: 'Welcome!', body: `Hello ${name}` }; // LOC 15
+  } // LOC 16
 
   private async sendEmail(to: string, template: Template) {
-    // LOC 15
+    // LOC 17
     // Implementation would go here
-    return true;
-  }
-}
+    return true; // LOC 18
+  } // LOC 19
+} // LOC 20
 ```
 
 **API Usage:**
@@ -90,7 +90,7 @@ export class EmailService {
 projectFiles().inDirectory('**/src/**').shouldNot().haveLocLessThan(15).check();
 ```
 
-**Result**: ✅ PASS - All files (25, 15, 32, 45 LOC) are greater than or equal to 15 lines of code
+**Result**: ✅ PASS - All files (25, 20, 32, 45 LOC) are greater than or equal to 15 lines of code
 
 ### Scenario 2: ANY files have lines of code LESS than the threshold
 
@@ -99,7 +99,7 @@ project/
 ├── src/
 │   ├── services/
 │   │   ├── UserService.ts     // 25 LOC (above threshold)
-│   │   ├── StubService.ts     // 8 LOC (below threshold)
+│   │   ├── StubService.ts     // 10 LOC (below threshold)
 │   │   └── PaymentService.ts  // 32 LOC (above threshold)
 │   ├── utils/
 │   │   └── Constants.ts       // 3 LOC (below threshold)
@@ -110,7 +110,7 @@ project/
 **File Content:**
 
 ```typescript
-// src/services/StubService.ts (only 8 lines of code - below threshold)
+// src/services/StubService.ts (only 10 lines of code - below threshold)
 /**
  * Placeholder service - needs implementation
  */
@@ -131,7 +131,7 @@ export class StubService {
     // LOC 7
     return false; // LOC 8
   } // LOC 9
-}
+} // LOC 10
 
 // src/utils/Constants.ts (only 3 lines of code - below threshold)
 // Application constants
@@ -146,4 +146,4 @@ export const VERSION = '1.0.0'; // LOC 3
 projectFiles().inDirectory('**/src/**').shouldNot().haveLocLessThan(15).check();
 ```
 
-**Result**: ❌ FAIL - Multiple files violate the constraint: StubService.ts (8 LOC), Constants.ts (3 LOC) are below the 15-line minimum
+**Result**: ❌ FAIL - Multiple files violate the constraint: StubService.ts (10 LOC), Constants.ts (3 LOC) are below the 15-line minimum

@@ -38,7 +38,7 @@ This rule promotes:
 project/
 ├── src/
 │   ├── utils/
-│   │   ├── StringHelper.ts    // 8 LOC (excluding comments/blank lines)
+│   │   ├── StringHelper.ts    // 11 LOC (excluding comments/blank lines)
 │   │   ├── DateHelper.ts      // 12 LOC
 │   │   └── MathHelper.ts      // 6 LOC
 │   └── constants/
@@ -48,27 +48,28 @@ project/
 **File Content:**
 
 ```typescript
-// src/utils/StringHelper.ts (8 lines of actual code)
+// src/utils/StringHelper.ts (11 lines of actual code)
 /**
  * String utility helper class
  * Provides common string manipulation methods
  */
 export class StringHelper {
+  // LOC 1
   static capitalize(str: string): string {
-    // LOC 1
-    return str.charAt(0).toUpperCase() + str.slice(1); // LOC 2
-  } // LOC 3
+    // LOC 2
+    return str.charAt(0).toUpperCase() + str.slice(1); // LOC 3
+  } // LOC 4
 
   static truncate(str: string, length: number): string {
-    // LOC 4
-    return str.length > length ? str.substring(0, length) + '...' : str; // LOC 5
-  } // LOC 6
+    // LOC 5
+    return str.length > length ? str.substring(0, length) + '...' : str; // LOC 6
+  } // LOC 7
 
   static isEmpty(str: string): boolean {
-    // LOC 7
-    return !str || str.trim().length === 0; // LOC 8
-  } // LOC 9
-}
+    // LOC 8
+    return !str || str.trim().length === 0; // LOC 9
+  } // LOC 10
+} // LOC 11
 
 // src/constants/AppConstants.ts (4 lines of actual code)
 // Application configuration constants
@@ -85,7 +86,7 @@ export const API_CONFIG = {
 projectFiles().inDirectory('**/src/**').should().haveLocLessThan(15).check();
 ```
 
-**Result**: ✅ PASS - All files (8, 12, 6, 4 LOC) are less than 15 lines of code
+**Result**: ✅ PASS - All files (11, 12, 6, 4 LOC) are less than 15 lines of code
 
 ### Scenario 2: ANY files have lines of code GREATER than or EQUAL to the threshold
 
@@ -94,7 +95,7 @@ project/
 ├── src/
 │   ├── services/
 │   │   ├── UserService.ts     // 8 LOC
-│   │   └── EmailService.ts    // 10 LOC (equal to threshold)
+│   │   └── EmailService.ts    // 14 LOC (equal to threshold)
 │   ├── components/
 │   │   └── DataTable.ts       // 45 LOC (exceeds threshold)
 │   └── legacy/
@@ -104,33 +105,33 @@ project/
 **File Content:**
 
 ```typescript
-// src/services/EmailService.ts (exactly 10 lines of code)
+// src/services/EmailService.ts (exactly 14 lines of code)
 /**
  * Email service for sending notifications
  */
-import { User } from '../models/User';
+import { User } from '../models/User'; // LOC 1
 
 export class EmailService {
-  // LOC 1
-  private apiKey: string; // LOC 2
+  // LOC 2
+  private apiKey: string; // LOC 3
 
   constructor(apiKey: string) {
-    // LOC 3
-    this.apiKey = apiKey; // LOC 4
-  } // LOC 5
+    // LOC 4
+    this.apiKey = apiKey; // LOC 5
+  } // LOC 6
 
   async sendWelcomeEmail(user: User): Promise<boolean> {
-    // LOC 6
-    const template = `Welcome ${user.name}!`; // LOC 7
-    return await this.sendEmail(user.email, template); // LOC 8
-  } // LOC 9
+    // LOC 7
+    const template = `Welcome ${user.name}!`; // LOC 8
+    return await this.sendEmail(user.email, template); // LOC 9
+  } // LOC 10
 
   private async sendEmail(to: string, template: string) {
-    // LOC 10
+    // LOC 11
     // Implementation would go here
-    return true;
-  }
-}
+    return true; // LOC 12
+  } // LOC 13
+} // LOC 14
 
 // src/components/DataTable.ts (45 lines of actual code)
 export class DataTable {
@@ -146,7 +147,7 @@ export class DataTable {
 **API Usage:**
 
 ```typescript
-projectFiles().inDirectory('**/src/**').should().haveLocLessThan(10).check();
+projectFiles().inDirectory('**/src/**').should().haveLocLessThan(14).check();
 ```
 
-**Result**: ❌ FAIL - Multiple files violate the constraint: EmailService.ts (10 LOC - equal to threshold), DataTable.ts (45 LOC), LegacyProcessor.ts (78 LOC)
+**Result**: ❌ FAIL - Multiple files violate the constraint: EmailService.ts (14 LOC - equal to threshold), DataTable.ts (45 LOC), LegacyProcessor.ts (78 LOC)

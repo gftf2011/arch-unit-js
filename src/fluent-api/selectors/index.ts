@@ -10,12 +10,12 @@ import { NotificationError } from '../common/errors/notification';
 import { NotificationHandler } from '../common/notification/handler';
 import { LOCAnalysisProps, PatternCheckableProps } from '../common/types';
 
-export class ProjectFilesInDirectoryLOCAnalysisLessThanShouldSelector extends LOCAnalysisCheckable {
+export class LOCAnalysisLessThanShouldSelector extends LOCAnalysisCheckable {
   constructor(protected readonly props: LOCAnalysisProps) {
     super(props);
   }
 
-  protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<void> {
+  protected override async checkPositiveRule(nodes: Map<string, RootFile.Base>): Promise<void> {
     const notificationHandler = NotificationHandler.create();
     for (const [_, file] of nodes) {
       if (file.props.loc >= this.props.analisisThreshold)
@@ -26,7 +26,7 @@ export class ProjectFilesInDirectoryLOCAnalysisLessThanShouldSelector extends LO
     }
   }
 
-  protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
+  protected override async checkNegativeRule(nodes: Map<string, RootFile.Base>): Promise<void> {
     const notificationHandler = NotificationHandler.create();
     for (const [_, file] of nodes) {
       if (file.props.loc < this.props.analisisThreshold)
@@ -38,12 +38,12 @@ export class ProjectFilesInDirectoryLOCAnalysisLessThanShouldSelector extends LO
   }
 }
 
-export class ProjectFilesInDirectoryLOCAnalysisLessThanOrEqualShouldSelector extends LOCAnalysisCheckable {
+export class LOCAnalysisLessThanOrEqualShouldSelector extends LOCAnalysisCheckable {
   constructor(protected readonly props: LOCAnalysisProps) {
     super(props);
   }
 
-  protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<void> {
+  protected override async checkPositiveRule(nodes: Map<string, RootFile.Base>): Promise<void> {
     const notificationHandler = NotificationHandler.create();
     for (const [_, file] of nodes) {
       if (file.props.loc > this.props.analisisThreshold)
@@ -54,7 +54,7 @@ export class ProjectFilesInDirectoryLOCAnalysisLessThanOrEqualShouldSelector ext
     }
   }
 
-  protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
+  protected override async checkNegativeRule(nodes: Map<string, RootFile.Base>): Promise<void> {
     const notificationHandler = NotificationHandler.create();
     for (const [_, file] of nodes) {
       if (file.props.loc <= this.props.analisisThreshold)
@@ -66,12 +66,12 @@ export class ProjectFilesInDirectoryLOCAnalysisLessThanOrEqualShouldSelector ext
   }
 }
 
-export class ProjectFilesInDirectoryLOCAnalysisGreaterThanShouldSelector extends LOCAnalysisCheckable {
+export class LOCAnalysisGreaterThanShouldSelector extends LOCAnalysisCheckable {
   constructor(protected readonly props: LOCAnalysisProps) {
     super(props);
   }
 
-  protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<void> {
+  protected override async checkPositiveRule(nodes: Map<string, RootFile.Base>): Promise<void> {
     const notificationHandler = NotificationHandler.create();
     for (const [_, file] of nodes) {
       if (file.props.loc <= this.props.analisisThreshold)
@@ -82,7 +82,7 @@ export class ProjectFilesInDirectoryLOCAnalysisGreaterThanShouldSelector extends
     }
   }
 
-  protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
+  protected override async checkNegativeRule(nodes: Map<string, RootFile.Base>): Promise<void> {
     const notificationHandler = NotificationHandler.create();
     for (const [_, file] of nodes) {
       if (file.props.loc > this.props.analisisThreshold)
@@ -94,12 +94,12 @@ export class ProjectFilesInDirectoryLOCAnalysisGreaterThanShouldSelector extends
   }
 }
 
-export class ProjectFilesInDirectoryLOCAnalysisGreaterThanOrEqualShouldSelector extends LOCAnalysisCheckable {
+export class LOCAnalysisGreaterThanOrEqualShouldSelector extends LOCAnalysisCheckable {
   constructor(protected readonly props: LOCAnalysisProps) {
     super(props);
   }
 
-  protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<void> {
+  protected override async checkPositiveRule(nodes: Map<string, RootFile.Base>): Promise<void> {
     const notificationHandler = NotificationHandler.create();
     for (const [_, file] of nodes) {
       if (file.props.loc < this.props.analisisThreshold)
@@ -110,7 +110,7 @@ export class ProjectFilesInDirectoryLOCAnalysisGreaterThanOrEqualShouldSelector 
     }
   }
 
-  protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
+  protected override async checkNegativeRule(nodes: Map<string, RootFile.Base>): Promise<void> {
     const notificationHandler = NotificationHandler.create();
     for (const [_, file] of nodes) {
       if (file.props.loc >= this.props.analisisThreshold)
@@ -122,19 +122,19 @@ export class ProjectFilesInDirectoryLOCAnalysisGreaterThanOrEqualShouldSelector 
   }
 }
 
-export class ProjectFilesInDirectoryHaveCyclesShouldSelector extends PatternCyclesCheckable {
+export class HaveCyclesShouldSelector extends PatternCyclesCheckable {
   constructor(protected readonly props: PatternCheckableProps) {
     super(props);
   }
 
-  protected override async checkPositiveRule(_: Map<string, RootFile>): Promise<void> {
+  protected override async checkPositiveRule(_: Map<string, RootFile.Base>): Promise<void> {
     const notificationHandler = NotificationHandler.create();
     const error = new Error('IF YOU SEE THIS, YOU MUST BE A UTTERLY STUPID PERSON');
     notificationHandler.addError(error);
     throw new NotificationError(this.props.ruleConstruction, notificationHandler.getErrors());
   }
 
-  protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
+  protected override async checkNegativeRule(nodes: Map<string, RootFile.Base>): Promise<void> {
     if (nodes.size === 0) return;
 
     // Color coding: 0 = white (unvisited), 1 = gray (visiting), 2 = black (visited)
@@ -188,14 +188,14 @@ export class ProjectFilesInDirectoryHaveCyclesShouldSelector extends PatternCycl
   }
 }
 
-export class ProjectFilesInDirectoryOnlyDependsOnShouldSelector extends PatternCheckable {
+export class OnlyDependsOnShouldSelector extends PatternCheckable {
   constructor(protected readonly props: PatternCheckableProps) {
     super(props);
   }
 
-  protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<void> {
+  protected override async checkPositiveRule(nodes: Map<string, RootFile.Base>): Promise<void> {
     const notificationHandler = NotificationHandler.create();
-    const check = (file: RootFile): boolean => {
+    const check = (file: RootFile.Base): boolean => {
       if (file.props.dependencies.length === 0) return true;
 
       const matchingDeps = file.props.dependencies.filter(
@@ -215,9 +215,9 @@ export class ProjectFilesInDirectoryOnlyDependsOnShouldSelector extends PatternC
     }
   }
 
-  protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
+  protected override async checkNegativeRule(nodes: Map<string, RootFile.Base>): Promise<void> {
     const notificationHandler = NotificationHandler.create();
-    const check = (file: RootFile): boolean => {
+    const check = (file: RootFile.Base): boolean => {
       if (file.props.dependencies.length === 0) return true;
 
       const matchingDeps = file.props.dependencies.filter(
@@ -238,14 +238,14 @@ export class ProjectFilesInDirectoryOnlyDependsOnShouldSelector extends PatternC
   }
 }
 
-export class ProjectFilesInDirectoryDependsOnShouldSelector extends PatternCheckable {
+export class DependsOnShouldSelector extends PatternCheckable {
   constructor(protected readonly props: PatternCheckableProps) {
     super(props);
   }
 
-  protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<void> {
+  protected override async checkPositiveRule(nodes: Map<string, RootFile.Base>): Promise<void> {
     const notificationHandler = NotificationHandler.create();
-    const check = (file: RootFile): boolean => {
+    const check = (file: RootFile.Base): boolean => {
       if (file.props.dependencies.length === 0) return false;
 
       // Check if ALL specified patterns are present in this file's dependencies
@@ -268,9 +268,9 @@ export class ProjectFilesInDirectoryDependsOnShouldSelector extends PatternCheck
     }
   }
 
-  protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
+  protected override async checkNegativeRule(nodes: Map<string, RootFile.Base>): Promise<void> {
     const notificationHandler = NotificationHandler.create();
-    const check = (file: RootFile): boolean => {
+    const check = (file: RootFile.Base): boolean => {
       // Files with no dependencies pass the rule (no forbidden patterns can be present)
       if (file.props.dependencies.length === 0) return true;
 
@@ -296,16 +296,16 @@ export class ProjectFilesInDirectoryDependsOnShouldSelector extends PatternCheck
   }
 }
 
-export class ProjectFilesInDirectoryOnlyHaveNameShouldSelector extends PatternCheckable {
+export class OnlyHaveNameShouldSelector extends PatternCheckable {
   constructor(protected readonly props: PatternCheckableProps) {
     super(props);
   }
 
-  protected override validateFilesDependencies(_: Map<string, RootFile>): void {
+  protected override validateFilesDependencies(_: Map<string, RootFile.Base>): void {
     return;
   }
 
-  protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
+  protected override async checkNegativeRule(nodes: Map<string, RootFile.Base>): Promise<void> {
     if (nodes.size === 0) return;
 
     const totalFiles = nodes.size;
@@ -327,11 +327,11 @@ export class ProjectFilesInDirectoryOnlyHaveNameShouldSelector extends PatternCh
     }
   }
 
-  protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<void> {
+  protected override async checkPositiveRule(nodes: Map<string, RootFile.Base>): Promise<void> {
     if (nodes.size === 0) return;
 
     const notificationHandler = NotificationHandler.create();
-    const check = (file: RootFile): boolean => {
+    const check = (file: RootFile.Base): boolean => {
       const fileName = file.props.name;
       const matches = micromatch([fileName], this.props.checkingPatterns).length > 0;
       return matches;
@@ -346,18 +346,18 @@ export class ProjectFilesInDirectoryOnlyHaveNameShouldSelector extends PatternCh
   }
 }
 
-export class ProjectFilesInDirectoryHaveNameShouldSelector extends PatternCheckable {
+export class HaveNameShouldSelector extends PatternCheckable {
   constructor(protected readonly props: PatternCheckableProps) {
     super(props);
   }
 
-  protected override validateFilesDependencies(_: Map<string, RootFile>): void {
+  protected override validateFilesDependencies(_: Map<string, RootFile.Base>): void {
     return;
   }
 
-  protected override async checkPositiveRule(nodes: Map<string, RootFile>): Promise<void> {
+  protected override async checkPositiveRule(nodes: Map<string, RootFile.Base>): Promise<void> {
     const notificationHandler = NotificationHandler.create();
-    const check = (file: RootFile): boolean => {
+    const check = (file: RootFile.Base): boolean => {
       const fileName = file.props.name;
       const matches = micromatch([fileName], this.props.checkingPatterns).length > 0;
       return matches;
@@ -371,9 +371,9 @@ export class ProjectFilesInDirectoryHaveNameShouldSelector extends PatternChecka
     }
   }
 
-  protected override async checkNegativeRule(nodes: Map<string, RootFile>): Promise<void> {
+  protected override async checkNegativeRule(nodes: Map<string, RootFile.Base>): Promise<void> {
     const notificationHandler = NotificationHandler.create();
-    const check = (file: RootFile): boolean => {
+    const check = (file: RootFile.Base): boolean => {
       const fileName = file.props.name;
       const matches = micromatch([fileName], this.props.checkingPatterns).length > 0;
       return !matches;

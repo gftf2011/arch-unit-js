@@ -3,7 +3,7 @@ import { RootFile } from '../common';
 import { JavascriptRelatedFile } from '../javascript';
 
 export class FileFactory {
-  public static create(fileName: string, filePath: string): RootFile {
+  public static create(fileName: string, filePath: string): RootFile.Base {
     if (
       javascript.isJavascriptRelatedFile(fileName) ||
       javascript.isTypeScriptRelatedFile(fileName)
