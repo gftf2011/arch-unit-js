@@ -4,11 +4,10 @@ import * as path from 'pathe';
 
 import { glob } from '../../utils';
 import { RootFile } from '../file';
-import { AvailableFilesVisitor, NodeFilesVisitor } from './visitors';
-import { WalkVisitor } from './visitors/common';
+import { WalkVisitor, AvailableFilesVisitor, NodeFilesVisitor } from './visitors';
 
 export class NodeGraph {
-  private constructor(readonly nodes: Map<string, RootFile>) {}
+  private constructor(readonly nodes: Map<string, RootFile.Base>) {}
 
   public static async create(
     startPath: string,
@@ -56,6 +55,6 @@ export class NodeGraph {
     await walk(startPath, availableFilesVisitor, []);
     await walk(startPath, nodesVisitor, availableFilesVisitor.files);
 
-    return new NodeGraph(nodesVisitor.files as Map<string, RootFile>);
+    return new NodeGraph(nodesVisitor.files as Map<string, RootFile.Base>);
   }
 }

@@ -10,7 +10,7 @@ import { CheckableProps, LOCAnalysisProps, PatternCheckableProps } from '../type
 abstract class Checkable {
   constructor(protected readonly props: CheckableProps) {}
 
-  protected filter(map: Map<string, RootFile>): Map<string, RootFile> {
+  protected filter(map: Map<string, RootFile.Base>): Map<string, RootFile.Base> {
     const filters: string[] = this.props.filteringPatterns;
     const filteringPattern = glob.resolveRootDirPatterns(
       [...filters, ...this.props.excludePattern],
@@ -40,11 +40,11 @@ abstract class Checkable {
     );
   }
 
-  protected clearFiles(files: Map<string, RootFile>): void {
+  protected clearFiles(files: Map<string, RootFile.Base>): void {
     files.clear();
   }
 
-  protected validateFilesExtension(files: Map<string, RootFile>): void {
+  protected validateFilesExtension(files: Map<string, RootFile.Base>): void {
     const notificationHandler = NotificationHandler.create();
     for (const [_path, file] of files) {
       if (micromatch([file.props.path], this.props.options.extensionTypes).length === 0) {
@@ -61,7 +61,7 @@ abstract class Checkable {
     }
   }
 
-  protected validateFilesDependencies(files: Map<string, RootFile>): void {
+  protected validateFilesDependencies(files: Map<string, RootFile.Base>): void {
     const notificationHandler = NotificationHandler.create();
     for (const [_path, file] of files) {
       const filePath = file.props.path;
@@ -85,9 +85,9 @@ abstract class Checkable {
     }
   }
 
-  protected abstract checkPositiveRule(filteredFiles: Map<string, RootFile>): Promise<void>;
+  protected abstract checkPositiveRule(filteredFiles: Map<string, RootFile.Base>): Promise<void>;
 
-  protected abstract checkNegativeRule(filteredFiles: Map<string, RootFile>): Promise<void>;
+  protected abstract checkNegativeRule(filteredFiles: Map<string, RootFile.Base>): Promise<void>;
 
   public async check(): Promise<void> {
     const files = (await this.buildNodeGraph()).nodes;
