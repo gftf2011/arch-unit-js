@@ -3,7 +3,9 @@ import micromatch from 'micromatch';
 import * as path from 'pathe';
 
 import { glob } from '../../utils';
-import { RootFile, FileFactory } from '../file';
+import { RootFile } from '../file';
+import { AvailableFilesVisitor, NodeFilesVisitor } from './visitors';
+import { WalkVisitor } from './visitors/common';
 
 export class NodeGraph {
   private constructor(readonly nodes: Map<string, RootFile>) {}
@@ -15,8 +17,6 @@ export class NodeGraph {
     extensionTypes: string[],
     typescriptPath?: string,
   ): Promise<NodeGraph> {
-    const nodes: Map<string, RootFile> = new Map();
-
     const extensions = extensionTypes.map((mimeType) =>
       glob.extractExtensionFromGlobPattern(mimeType),
     ) as string[];
@@ -28,9 +28,7 @@ export class NodeGraph {
       ? glob.resolveRootDirPattern(typescriptPath, startPath)
       : typescriptPath;
 
-    const availableFiles: string[] = [];
-
-    async function walkByAvailableFiles(currentPath: string) {
+    async function walk(currentPath: string, visitor: WalkVisitor, availableFiles: string[]) {
       const entries = await fs.promises.readdir(currentPath, { withFileTypes: true });
 
       for (const entry of entries) {
@@ -38,39 +36,26 @@ export class NodeGraph {
 
         if (micromatch([fullPath], [...includePatterns, ...ignorePatterns]).length > 0) {
           if (entry.isDirectory()) {
-            await walkByAvailableFiles(fullPath);
+            await walk(fullPath, visitor, availableFiles);
           } else if (entry.isFile()) {
-            availableFiles.push(fullPath);
-          }
-        }
-      }
-    }
-
-    async function walk(currentPath: string) {
-      const entries = await fs.promises.readdir(currentPath, { withFileTypes: true });
-
-      for (const entry of entries) {
-        const fullPath = path.join(currentPath, entry.name);
-
-        if (micromatch([fullPath], [...includePatterns, ...ignorePatterns]).length > 0) {
-          if (entry.isDirectory()) {
-            await walk(fullPath);
-          } else if (entry.isFile()) {
-            const file = await FileFactory.create(entry.name, fullPath).build({
+            await visitor.addFile(fullPath, {
+              fileName: entry.name,
               rootDir: startPath,
               availableFiles,
               extensions,
               ...(typescriptPathResolved ? { typescriptPath: typescriptPathResolved } : {}),
             });
-            nodes.set(file.props.path, file);
           }
         }
       }
     }
 
-    await walkByAvailableFiles(startPath);
-    await walk(startPath);
+    const availableFilesVisitor = new AvailableFilesVisitor();
+    const nodesVisitor = new NodeFilesVisitor();
 
-    return new NodeGraph(nodes);
+    await walk(startPath, availableFilesVisitor, []);
+    await walk(startPath, nodesVisitor, availableFilesVisitor.files);
+
+    return new NodeGraph(nodesVisitor.files as Map<string, RootFile>);
   }
 }
