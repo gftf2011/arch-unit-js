@@ -3,13 +3,15 @@
   "version": "1.0.18",
   "description": "arch-unit clone for node.js projects",
   "files": [
+    "package.json",
     "dist",
     "LICENSE",
     "README.md"
   ],
   "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "scripts": {
-    "pack:tar": "tar -czf auth-unit-js.tar.tgz dist/ LICENSE README.md",
+    "pack:tar": "tar -czf auth-unit-js.tar.tgz dist/ package.json LICENSE README.md",
     "checksum:tar": "sha256sum *.tgz > checksum.txt",
     "pack": "npm run pack:tar && npm run checksum:tar",
     "build:tsc": "tsc",
