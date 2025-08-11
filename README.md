@@ -113,6 +113,9 @@ Now run the test and congrats 🥳, you just tested your application topology !
 
 ## :notebook: API Documentation
 
+<details>
+  <summary><b>"inDirectory" API Docs</b></summary>
+
 - [Project Files in Directory Should NOT Depend On Specified Patterns](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inDirectory_shouldNot_dependsOn_check.md)
 - [Project Files in Directory Should NOT Have Cycles](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inDirectory_shouldNot_haveCycles_check.md)
 - [Project Files in Directory Should NOT Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inDirectory_shouldNot_haveLocGreaterOrEqualThan_check.md)
@@ -131,6 +134,12 @@ Now run the test and congrats 🥳, you just tested your application topology !
 - [Project Files in Directory Should Have Name with Specified Pattern](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inDirectory_should_haveName_check.md)
 - [Project Files in Directory Should Only Depend On Specified Patterns](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inDirectory_should_onlyDependsOn_check.md)
 - [Project Files in Directory Should Only Have Name with Specified Pattern](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inDirectory_should_onlyHaveName_check.md)
+
+</details>
+
+<details>
+  <summary><b>"inFile" API Docs</b></summary>
+
 - [Project Files in File Should NOT Depend On Specified Patterns](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inFile_shouldNot_dependsOn_check.md)
 - [Project Files in File Should NOT Have Cycles](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inFile_shouldNot_haveCycles_check.md)
 - [Project Files in File Should NOT Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inFile_shouldNot_haveLocGreaterOrEqualThan_check.md)
@@ -150,6 +159,7 @@ Now run the test and congrats 🥳, you just tested your application topology !
 - [Project Files in File Should Only Depend On Specified Patterns](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inFile_should_onlyDependsOn_check.md)
 - [Project Files in File Should Only Have Name with Specified Pattern](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inFile_should_onlyHaveName_check.md)
 
+</details>
 <br/>
 
 ## :memo: License
