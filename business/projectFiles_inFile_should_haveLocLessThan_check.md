@@ -70,7 +70,7 @@ export class StringHelper {
 projectFiles().inFile('**/utils/StringHelper.ts').should().haveLocLessThan(12).check();
 ```
 
-**Result**: ✅ PASS — `StringHelper.ts` has 8 LOC which is < 10
+**Result**: ✅ PASS — `StringHelper.ts` has 11 LOC which is < 12
 
 ---
 
@@ -80,7 +80,7 @@ projectFiles().inFile('**/utils/StringHelper.ts').should().haveLocLessThan(12).c
 project/
 └── src/
     └── services/
-        └── EmailService.ts  // 10 LOC (equals threshold 13)
+        └── EmailService.ts  // 13 LOC (equals threshold 13)
 ```
 
 **File Content:**
@@ -115,7 +115,7 @@ export class EmailService {
 **API Usage:**
 
 ```typescript
-projectFiles().inFile('**/services/EmailService.ts').should().haveLocLessThan(10).check();
+projectFiles().inFile('**/services/EmailService.ts').should().haveLocLessThan(13).check();
 ```
 
-**Result**: ❌ FAIL — `EmailService.ts` has 13 LOC, which is not allowed (must be strictly less than 10)
+**Result**: ❌ FAIL — `EmailService.ts` has 13 LOC, which is not allowed (must be strictly less than 13)

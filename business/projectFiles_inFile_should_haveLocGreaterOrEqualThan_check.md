@@ -37,13 +37,13 @@ This rule enforces a minimum implementation size for a specific file, helping to
 project/
 ├── src/
 │   └── services/
-│       └── EmailService.ts   // 19 LOC (above threshold 15)
+│       └── EmailService.ts   // 20 LOC (above threshold 15)
 ```
 
 **File Content:**
 
 ```typescript
-// src/services/EmailService.ts (18 lines of code - above threshold)
+// src/services/EmailService.ts (20 lines of code - above threshold)
 /**
  * Email service for sending notifications
  */
@@ -76,7 +76,7 @@ export class EmailService {
     // LOC 17
     return true; // LOC 18
   } // LOC 19
-}
+} // LOC 20
 ```
 
 **API Usage:**
@@ -85,7 +85,7 @@ export class EmailService {
 projectFiles().inFile('**/services/EmailService.ts').should().haveLocGreaterOrEqualThan(15).check();
 ```
 
-**Result**: ✅ PASS - `EmailService.ts` has 19 LOC which is ≥ 15
+**Result**: ✅ PASS - `EmailService.ts` has 20 LOC which is ≥ 15
 
 ---
 
