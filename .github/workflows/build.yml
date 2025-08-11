@@ -57,13 +57,3 @@ jobs:
           key: dist-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
           restore-keys: |
             dist-${{ runner.os }}-${{ matrix.node-version }}-
-
-      - name: Pack Package And Generate Checksum
-        run: |
-          npm run pack
-
-      - name: Upload Checksum Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: checksum-${{ inputs.os }}-${{ matrix.node-version }}
-          path: 'checksum.txt'

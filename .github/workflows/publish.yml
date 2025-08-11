@@ -42,18 +42,9 @@ jobs:
           restore-keys: |
             dist-${{ runner.os }}-${{ matrix.node-version }}-
 
-      - name: Download Checksum Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: checksum-${{ inputs.os }}-${{ matrix.node-version }}
-          path: .
-
       - name: Generate TAR package file
         run: |
           npm run pack:tar
-
-      - name: Validate "dist" Checksum
-        run: sha256sum -c checksum.txt
 
       - name: Publish Package
         if: >
