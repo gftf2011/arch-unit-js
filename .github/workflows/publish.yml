@@ -56,18 +56,6 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Append -beta to package.json version
-        if: >
-          (github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.base_ref == 'dev')
-        run: |
-          # Get current version
-          VERSION=$(node -p "require('./package.json').version")
-          # Append -beta, e.g. 1.2.3-beta
-          NEW_VERSION="${VERSION}-beta"
-          echo "New version: $NEW_VERSION"
-          # Update package.json version without creating a git tag
-          npm version "$NEW_VERSION" --no-git-tag-version
-
       - name: Publish Package To Beta
         if: >
           (github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.base_ref == 'dev')
