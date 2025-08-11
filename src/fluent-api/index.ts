@@ -335,10 +335,7 @@ class ProjectFilesComponentSelector {
     return new ShouldSelectorBuilder(
       this.rootDir,
       this.options,
-      [
-        ...this.ruleConstruction,
-        `in file '${pattern}'`,
-      ],
+      [...this.ruleConstruction, `in file '${pattern}'`],
       this,
     );
   }
