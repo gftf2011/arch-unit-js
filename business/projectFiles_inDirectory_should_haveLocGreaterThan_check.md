@@ -37,7 +37,7 @@ This rule enforces minimum code complexity and prevents:
 project/
 ├── src/
 │   ├── services/
-│   │   ├── UserService.ts     // 25 LOC (above threshold)
+│   │   ├── UserService.ts     // 27 LOC (above threshold)
 │   │   ├── EmailService.ts    // 18 LOC (above threshold)
 │   │   └── PaymentService.ts  // 32 LOC (above threshold)
 │   └── components/
@@ -47,50 +47,52 @@ project/
 **File Content:**
 
 ```typescript
-// src/services/EmailService.ts (18 lines of code - above threshold)
+// src/services/EmailService.ts (27 lines of code - above threshold)
 /**
  * Email service for sending notifications
  */
-import { User } from '../models/User';
-import { Template } from '../models/Template';
+import { User } from '../models/User'; // LOC 1
+import { Template } from '../models/Template'; // LOC 2
 
 export class EmailService {
-  // LOC 1
-  private apiKey: string; // LOC 2
-  private baseUrl: string; // LOC 3
+  // LOC 3
+  private apiKey: string; // LOC 4
+  private baseUrl: string; // LOC 5
 
   constructor(apiKey: string) {
-    // LOC 4
-    this.apiKey = apiKey; // LOC 5
-    this.baseUrl = 'https://email-api.example.com'; // LOC 6
-  } // LOC 7
+    // LOC 6
+    this.apiKey = apiKey; // LOC 7
+    this.baseUrl = 'https://email-api.example.com'; // LOC 8
+  } // LOC 9
 
   async sendWelcomeEmail(user: User): Promise<boolean> {
-    // LOC 8
-    const template = this.getWelcomeTemplate(user.name); // LOC 9
-    return await this.sendEmail(user.email, template); // LOC 10
-  } // LOC 11
+    // LOC 10
+    const template = this.getWelcomeTemplate(user.name); // LOC 11
+    return await this.sendEmail(user.email, template); // LOC 12
+  } // LOC 13
 
   async sendPasswordResetEmail(user: User, token: string): Promise<boolean> {
-    // LOC 12
-    const template = this.getPasswordResetTemplate(user.name, token); // LOC 13
-    return await this.sendEmail(user.email, template); // LOC 14
-  } // LOC 15
+    // LOC 14
+    const template = this.getPasswordResetTemplate(user.name, token); // LOC 15
+    return await this.sendEmail(user.email, template); // LOC 16
+  } // LOC 17
 
   private getWelcomeTemplate(name: string): Template {
-    // LOC 16
-    return { subject: 'Welcome!', body: `Hello ${name}` }; // LOC 17
-  } // LOC 18
+    // LOC 18
+    return { subject: 'Welcome!', body: `Hello ${name}` }; // LOC 19
+  } // LOC 20
 
   private getPasswordResetTemplate(name: string, token: string): Template {
-    return { subject: 'Reset Password', body: `Hi ${name}, reset: ${token}` };
-  }
+    // LOC 21
+    return { subject: 'Reset Password', body: `Hi ${name}, reset: ${token}` }; // LOC 22
+  } // LOC 23
 
   private async sendEmail(to: string, template: Template) {
+    // LOC 24
     // Implementation would go here
-    return true;
-  }
-}
+    return true; // LOC 25
+  } // LOC 26
+} // LOC 27
 ```
 
 **API Usage:**
@@ -99,7 +101,7 @@ export class EmailService {
 projectFiles().inDirectory('**/src/**').should().haveLocGreaterThan(15).check();
 ```
 
-**Result**: ✅ PASS - All files (25, 18, 32, 45 LOC) are greater than 15 lines of code
+**Result**: ✅ PASS - All files (27, 18, 32, 45 LOC) are greater than 15 lines of code
 
 ### Scenario 2: ANY files have lines of code LESS than or EQUAL to the threshold
 

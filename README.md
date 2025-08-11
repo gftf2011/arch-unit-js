@@ -41,6 +41,7 @@
 A JavaScript/TypeScript library for enforcing architectural rules and constraints in your codebase. Inspired by ArchUnit for Java, this tool provides a fluent API to define and validate architectural boundaries, naming conventions, and dependency rules. It is agnostic about the testing framework and supports for several OS systems !
 
 > **Note**: Backend-focused (frontend support coming soon).
+> **Note**: TC39 Proposal (decorators support coming soon).
 
 <br/>
 
@@ -48,7 +49,7 @@ A JavaScript/TypeScript library for enforcing architectural rules and constraint
 
 - [x] Mac OS
 - [x] Linux
-- [x] Windows - WSL
+- [x] Windows
 
 <br/>
 

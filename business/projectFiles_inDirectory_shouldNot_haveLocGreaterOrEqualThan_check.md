@@ -71,7 +71,7 @@ export class StringHelper {
   } // LOC 10
 } // LOC 11
 
-// src/utils/MathHelper.ts (14 lines of actual code - below threshold)
+// src/utils/MathHelper.ts (15 lines of actual code - below threshold)
 /**
  * Mathematical utility helper class
  */
@@ -106,7 +106,7 @@ export class MathHelper {
 projectFiles().inDirectory('**/src/**').shouldNot().haveLocGreaterOrEqualThan(16).check();
 ```
 
-**Result**: ✅ PASS - All files (8, 12, 14, 4 LOC) are less than 16 lines of code
+**Result**: ✅ PASS - All files (11, 12, 15, 4 LOC) are less than 16 lines of code
 
 ### Scenario 2: ANY files have lines of code GREATER than or EQUAL to the threshold
 

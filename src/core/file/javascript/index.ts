@@ -4,24 +4,17 @@ import fsPromises from 'fs/promises';
 import * as path from 'pathe';
 
 import { Dependency, DependencyFactory } from '../../dependency';
-import { RootFile, RootFileBuildableProps, RootFileProps } from '../common';
-import {
-  CallExpressionInfo,
-  DefaultExportInfo,
-  ImportDeclarationInfo,
-  createCallExpressionVisitor,
-  createDefaultExportVisitor,
-  createImportDeclarationVisitor,
-} from './visitors';
+import { RootFile, VisitorsInfo } from '../common';
+import { CallExpressionVisitor, DefaultExportVisitor, ImportDeclarationVisitor } from './visitors';
 
-export type JavascriptRelatedFileProps = RootFileProps & {
+export type JavascriptRelatedFileProps = RootFile.BaseProps & {
   totalRequiredDependencies: number;
   totalImportedDependencies: number;
   totalDinamicImportedDependencies: number;
   hasDefaultExport: boolean;
 };
 
-export class JavascriptRelatedFile extends RootFile {
+export class JavascriptRelatedFile extends RootFile.Base {
   private constructor(public props: JavascriptRelatedFileProps) {
     super(props);
   }
@@ -42,7 +35,7 @@ export class JavascriptRelatedFile extends RootFile {
   }
 
   public override async build(
-    buildableProps: RootFileBuildableProps,
+    buildableProps: RootFile.BaseBuildableProps,
   ): Promise<JavascriptRelatedFile> {
     const filePath = this.props.path;
 
@@ -50,7 +43,7 @@ export class JavascriptRelatedFile extends RootFile {
 
     const ast = parse(code, {
       sourceType: 'unambiguous', // supports both ESM & CJS
-      plugins: ['typescript', 'jsx', 'dynamicImport'], // allows parsing TypeScript & JSX syntax
+      plugins: ['decorators-legacy', 'typescript', 'jsx'], // allows parsing TypeScript & JSX syntax incl. parameter decorators
     });
 
     const countLogicalCodeLines = (code: string): number => {
@@ -68,8 +61,8 @@ export class JavascriptRelatedFile extends RootFile {
 
     const dependencies: Dependency[] = [];
 
-    const defaultExportInfo: DefaultExportInfo = { hasDefaultExport: false };
-    const importDeclarationInfo: ImportDeclarationInfo = {
+    const defaultExportInfo: VisitorsInfo.DefaultExportInfo = { hasDefaultExport: false };
+    const importDeclarationInfo: VisitorsInfo.ImportDeclarationInfo = {
       totalImportedDependencies: 0,
       addDependency: (dependencyName: string) => {
         dependencies.push(
@@ -81,7 +74,7 @@ export class JavascriptRelatedFile extends RootFile {
         );
       },
     };
-    const callExpressionInfo: CallExpressionInfo = {
+    const callExpressionInfo: VisitorsInfo.CallExpressionInfo = {
       totalRequiredDependencies: 0,
       totalDinamicImportedDependencies: 0,
       addDependency: (dependencyName: string) => {
@@ -95,10 +88,14 @@ export class JavascriptRelatedFile extends RootFile {
       },
     };
 
+    const defaultExportVisitor = new DefaultExportVisitor();
+    const importDeclarationVisitor = new ImportDeclarationVisitor();
+    const callExpressionVisitor = new CallExpressionVisitor();
+
     traverse(ast, {
-      ...createDefaultExportVisitor(defaultExportInfo),
-      ...createImportDeclarationVisitor(importDeclarationInfo),
-      ...createCallExpressionVisitor(callExpressionInfo),
+      ...defaultExportVisitor.visit(defaultExportInfo),
+      ...importDeclarationVisitor.visit(importDeclarationInfo),
+      ...callExpressionVisitor.visit(callExpressionInfo),
     });
 
     dependencies.forEach((dependency) =>

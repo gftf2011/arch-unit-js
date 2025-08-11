@@ -13,8 +13,8 @@ const buildConfig = {
   platform: 'node',
   target: 'node16',
   external: ['@babel/parser', '@babel/traverse'], // External dependencies
-  sourcemap: true,
-  minify: false,
+  sourcemap: false,
+  minify: true,
 };
 
 // Build CommonJS version

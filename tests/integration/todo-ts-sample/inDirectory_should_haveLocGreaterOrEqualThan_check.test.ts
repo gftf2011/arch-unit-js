@@ -268,7 +268,7 @@ describe('should.haveLocGreaterOrEqualThan scenarios', () => {
       }
     });
 
-    test('"entities" should have LOC greater or equal than 28 - should FAIL (Todo.ts has exactly 28 LOC - boundary case)', async () => {
+    test('"entities" should have LOC greater or equal than 28 - should FAIL (Todo.ts has exactly 28 LOC - boundary case, but index.ts has less LOC)', async () => {
       for (const [includeMatcher] of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
