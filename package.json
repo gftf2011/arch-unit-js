@@ -1,34 +1,37 @@
 {
   "name": "arch-unit-js",
-  "version": "1.0.16",
+  "version": "1.0.23",
   "description": "arch-unit clone for node.js projects",
+  "files": [
+    "package.json",
+    "dist/index.js",
+    "dist/index.mjs",
+    "LICENSE",
+    "README.md"
+  ],
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
-  "types": "./dist/types/index.d.ts",
-  "files": [
-    "dist",
-    "README.md",
-    "LICENSE"
-  ],
   "exports": {
     ".": {
-      "types": "./dist/types/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
     }
   },
   "scripts": {
-    "pack": "npm pack && sha256sum *.tgz > checksum.txt",
+    "pack": "npm run pack:linux:tar && npm run checksum:tar",
+    "pack:linux:tar": "tar --transform='s|^|package/|' -czf arch-unit-js.tar.tgz dist/index.js dist/index.mjs package.json LICENSE README.md",
+    "pack:macos:tar": "gtar --transform='s|^|package/|' -czf arch-unit-js.tar.tgz dist/index.js dist/index.mjs package.json LICENSE README.md",
+    "checksum:tar": "sha256sum *.tgz > checksum.txt",
     "build:tsc": "tsc",
-    "build:types": "npx tsc --emitDeclarationOnly",
-    "build": "node esbuild.config.js && npm run build:types",
+    "build": "node esbuild.config.js",
     "test": "jest --detectOpenHandles --coverage",
     "test:watch": "jest --watch",
     "publish:beta": "npm publish --tag beta --access public",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
     "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
     "format": "prettier . --write",
-    "format:check": "prettier . --check"
+    "format:check": "prettier . --check",
+    "prepack": "find dist -name '*.map' -delete || true"
   },
   "repository": {
     "type": "git",

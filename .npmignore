@@ -2,6 +2,8 @@
 src/
 *.ts
 *.tsx
+**/*.map
+dist/types/
 
 # Development files
 tsconfig.json
@@ -24,10 +26,14 @@ yarn.lock
 
 # Git
 .git/
+.github/
 .gitignore 
 
 # Business files
 business/
+
+# Coverage files
+coverage/
 
 # Checksum files
 checksum.txt

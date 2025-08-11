@@ -41,6 +41,7 @@
 A JavaScript/TypeScript library for enforcing architectural rules and constraints in your codebase. Inspired by ArchUnit for Java, this tool provides a fluent API to define and validate architectural boundaries, naming conventions, and dependency rules. It is agnostic about the testing framework and supports for several OS systems !
 
 > **Note**: Backend-focused (frontend support coming soon).
+
 > **Note**: TC39 Proposal (decorators support coming soon).
 
 <br/>
@@ -130,6 +131,24 @@ Now run the test and congrats 🥳, you just tested your application topology !
 - [Project Files in Directory Should Have Name with Specified Pattern](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inDirectory_should_haveName_check.md)
 - [Project Files in Directory Should Only Depend On Specified Patterns](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inDirectory_should_onlyDependsOn_check.md)
 - [Project Files in Directory Should Only Have Name with Specified Pattern](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inDirectory_should_onlyHaveName_check.md)
+- [Project Files in File Should NOT Depend On Specified Patterns](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inFile_shouldNot_dependsOn_check.md)
+- [Project Files in File Should NOT Have Cycles](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inFile_shouldNot_haveCycles_check.md)
+- [Project Files in File Should NOT Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inFile_shouldNot_haveLocGreaterOrEqualThan_check.md)
+- [Project Files in File Should NOT Have Greater L.O.C. (Lines Of Code) Than Specified Value](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inFile_shouldNot_haveLocGreaterThan_check.md)
+- [Project Files in File Should NOT Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inFile_shouldNot_haveLocLessOrEqualThan_check.md)
+- [Project Files in File Should NOT Have Less L.O.C. (Lines Of Code) Than Specified Value](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inFile_shouldNot_haveLocLessThan_check.md)
+- [Project Files in File Should NOT Have Name with Specified Pattern](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inFile_shouldNot_haveName_check.md)
+- [Project Files in File Should NOT Only Depend On Specified Patterns](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inFile_shouldNot_onlyDependsOn_check.md)
+- [Project Files in File Should NOT Only Have Name with Specified Pattern](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inFile_shouldNot_onlyHaveName_check.md)
+- [Project Files in File Should Depend On Specified Patterns](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inFile_should_dependsOn_check.md)
+- [Project Files in File Should Have Cycles](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inFile_should_haveCycles_check.md)
+- [Project Files in File Should Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inFile_should_haveLocGreaterOrEqualThan_check.md)
+- [Project Files in File Should Have Greater L.O.C. (Lines Of Code) Than Specified Value](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inFile_should_haveLocGreaterThan_check.md)
+- [Project Files in File Should Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inFile_should_haveLocLessOrEqualThan_check.md)
+- [Project Files in File Should Have Less L.O.C. (Lines Of Code) Than Specified Value](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inFile_should_haveLocLessThan_check.md)
+- [Project Files in File Should Have Name with Specified Pattern](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inFile_should_haveName_check.md)
+- [Project Files in File Should Only Depend On Specified Patterns](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inFile_should_onlyDependsOn_check.md)
+- [Project Files in File Should Only Have Name with Specified Pattern](https://github.com/gftf2011/arch-unit-js/blob/main/business/projectFiles_inFile_should_onlyHaveName_check.md)
 
 <br/>
 

@@ -14,7 +14,6 @@ jobs:
   build:
     name: Build Distribuition on ${{ inputs.os }}
     if: >
-      (github.event_name == 'push') ||
       (github.event_name == 'pull_request' && github.event.pull_request.merged == true && (github.base_ref == 'main' || github.base_ref == 'dev'))
     runs-on: ${{ inputs.os }}
     strategy:
@@ -51,15 +50,7 @@ jobs:
         run: |
           npm run build
 
-      - name: Cache "dist"
-        uses: actions/cache@v4
-        with:
-          path: ./dist
-          key: dist-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
-          restore-keys: |
-            dist-${{ runner.os }}-${{ matrix.node-version }}-
-
-      - name: Pack Package And Generate Checksum
+      - name: Generate TAR package file & Checksum
         run: |
           npm run pack
 
@@ -68,3 +59,9 @@ jobs:
         with:
           name: checksum-${{ inputs.os }}-${{ matrix.node-version }}
           path: 'checksum.txt'
+
+      - name: Upload TAR package file Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tar-package-file-${{ inputs.os }}-${{ matrix.node-version }}
+          path: 'arch-unit-js.tar.tgz'
