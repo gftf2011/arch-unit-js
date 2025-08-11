@@ -236,7 +236,7 @@ export function isEmpty(value: any): boolean {
 projectFiles().inDirectory('**/src/**').should().haveLocGreaterOrEqualThan(16).check();
 ```
 
-**Result**: ❌ FAIL - Multiple files violate the constraint: StubService.ts (13 LOC), Helpers.ts (9 LOC) are less than the 15-line minimum
+**Result**: ❌ FAIL - Multiple files violate the constraint: StubService.ts (13 LOC), Helpers.ts (9 LOC) are less than the 16-line minimum
 
 ### Key Difference from `should.haveLocGreaterThan`:
 

@@ -115,7 +115,7 @@ project/
 ├── src/
 │   ├── services/
 │   │   ├── UserService.ts     // 8 LOC (below threshold)
-│   │   └── EmailService.ts    // 10 LOC (equals threshold)
+│   │   └── EmailService.ts    // 14 LOC (equals threshold)
 │   ├── components/
 │   │   └── DataTable.ts       // 45 LOC (exceeds threshold)
 │   └── legacy/
@@ -196,9 +196,9 @@ export class LegacyProcessor {
 **API Usage:**
 
 ```typescript
-projectFiles().inDirectory('**/src/**').shouldNot().haveLocGreaterThan(10).check();
+projectFiles().inDirectory('**/src/**').shouldNot().haveLocGreaterThan(14).check();
 ```
 
-**Result**: ❌ FAIL - Multiple files violate the constraint: DataTable.ts (45 LOC), LegacyProcessor.ts (78 LOC) exceed the 10-line maximum
+**Result**: ❌ FAIL - Multiple files violate the constraint: DataTable.ts (45 LOC), LegacyProcessor.ts (78 LOC) exceed the 14-line maximum
 
 Use `shouldNot.haveLocGreaterThan` when you want to enforce a maximum file size limit to prevent overly complex files and promote better code organization and maintainability.
