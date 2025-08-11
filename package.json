@@ -2,9 +2,14 @@
   "name": "arch-unit-js",
   "version": "1.0.18",
   "description": "arch-unit clone for node.js projects",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
   "main": "./dist/index.js",
   "scripts": {
-    "pack:tar": "tar -czf auth-unit-js.tar.tgz dist/ LICENSE",
+    "pack:tar": "tar -czf auth-unit-js.tar.tgz dist/ LICENSE README.md",
     "checksum:tar": "sha256sum *.tgz > checksum.txt",
     "pack": "npm run pack:tar && npm run checksum:tar",
     "build:tsc": "tsc",

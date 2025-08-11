@@ -24,10 +24,14 @@ yarn.lock
 
 # Git
 .git/
+.github/
 .gitignore 
 
 # Business files
 business/
+
+# Coverage files
+coverage/
 
 # Checksum files
 checksum.txt
