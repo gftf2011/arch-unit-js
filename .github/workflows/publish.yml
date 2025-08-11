@@ -34,23 +34,17 @@ jobs:
           node-version: ${{ matrix.node-version }}
           registry-url: 'https://registry.npmjs.org'
 
-      - name: Use Cache "dist"
-        uses: actions/cache@v4
-        with:
-          path: ./dist
-          key: dist-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
-          restore-keys: |
-            dist-${{ runner.os }}-${{ matrix.node-version }}-
-
       - name: Download Checksum Artifact
         uses: actions/download-artifact@v4
         with:
           name: checksum-${{ inputs.os }}-${{ matrix.node-version }}
           path: .
 
-      - name: Generate TAR package file
-        run: |
-          npm run pack:linux:tar
+      - name: Download TAR package file Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: tar-package-file-${{ inputs.os }}-${{ matrix.node-version }}
+          path: .
 
       - name: Validate TAR package file checksum
         run: sha256sum -c checksum.txt
