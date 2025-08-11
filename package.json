@@ -10,10 +10,16 @@
   ],
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
   "scripts": {
-    "pack:tar": "tar -czf auth-unit-js.tar.tgz dist/ package.json LICENSE README.md",
+    "pack:linux:tar": "tar --transform='s|^|package/|' -czf arch-unit-js.tar.tgz dist/ package.json LICENSE README.md",
+    "pack:macos:tar": "gtar --transform='s|^|package/|' -czf arch-unit-js.tar.tgz dist/ package.json LICENSE README.md",
     "checksum:tar": "sha256sum *.tgz > checksum.txt",
-    "pack": "npm run pack:tar && npm run checksum:tar",
     "build:tsc": "tsc",
     "build": "node esbuild.config.js",
     "test": "jest --detectOpenHandles --coverage",
