@@ -105,83 +105,41 @@ export class TodoController {
   } // LOC 5
   // ... add many small methods to exceed 30 LOC
   a() {
-    return 1;
-  } // 6
+    // LOC 6
+    return 1; // LOC 7
+  } // LOC 8
   b() {
-    return 2;
-  } // 7
+    // LOC 9
+    return 2; // LOC 10
+  } // // LOC 11
   c() {
-    return 3;
-  } // 8
+    // LOC 12
+    return 3; // LOC 13
+  } // LOC 14
   d() {
-    return 4;
-  } // 9
+    // LOC 15
+    return 4; // LOC 16
+  } // LOC 17
   e() {
-    return 5;
-  } // 10
+    // LOC 18
+    return 5; // LOC 19
+  } // LOC 20
   f() {
-    return 6;
-  } // 11
+    // LOC 21
+    return 6; // LOC 22
+  } // LOC 23
   g() {
-    return 7;
-  } // 12
+    // LOC 24
+    return 7; // LOC 25
+  } // LOC 26
   h() {
-    return 8;
-  } // 13
+    // LOC 27
+    return 8; // LOC 28
+  } // // LOC 29
   i() {
-    return 9;
-  } // 14
-  j() {
-    return 10;
-  } // 15
-  k() {
-    return 11;
-  } // 16
-  l() {
-    return 12;
-  } // 17
-  m() {
-    return 13;
-  } // 18
-  n() {
-    return 14;
-  } // 19
-  o() {
-    return 15;
-  } // 20
-  p() {
-    return 16;
-  } // 21
-  q() {
-    return 17;
-  } // 22
-  r() {
-    return 18;
-  } // 23
-  s() {
-    return 19;
-  } // 24
-  t() {
-    return 20;
-  } // 25
-  u() {
-    return 21;
-  } // 26
-  v() {
-    return 22;
-  } // 27
-  w() {
-    return 23;
-  } // 28
-  x() {
-    return 24;
-  } // 29
-  y() {
-    return 25;
-  } // 30
-  z() {
-    return 26;
-  } // 31
+    // LOC 30
+    return 9; // LOC 31
+  } // LOC 32
   // and goes on
 }
 ```
