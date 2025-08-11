@@ -1,10 +1,11 @@
 {
   "name": "arch-unit-js",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "description": "arch-unit clone for node.js projects",
   "files": [
     "package.json",
-    "dist",
+    "dist/index.js",
+    "dist/index.mjs",
     "LICENSE",
     "README.md"
   ],
