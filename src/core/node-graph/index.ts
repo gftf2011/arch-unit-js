@@ -10,6 +10,7 @@ export class NodeGraph {
   private constructor(readonly nodes: Map<string, RootFile.Base>) {}
 
   public static async create(
+    fileAnalysisType: RootFile.AnalysisType,
     startPath: string,
     filesOrFoldersToInclude: string[],
     filesOrFoldersToIgnore: string[],
@@ -50,7 +51,7 @@ export class NodeGraph {
     }
 
     const availableFilesVisitor = new AvailableFilesVisitor();
-    const nodesVisitor = new NodeFilesVisitor();
+    const nodesVisitor = new NodeFilesVisitor(fileAnalysisType);
 
     await walk(startPath, availableFilesVisitor, []);
     await walk(startPath, nodesVisitor, availableFilesVisitor.files);

@@ -8,6 +8,8 @@ import { NotificationHandler } from '../notification/handler';
 import { CheckableProps, LOCAnalysisProps, PatternCheckableProps } from '../types';
 
 abstract class Checkable {
+  protected abstract readonly fileAnalysisType: RootFile.AnalysisType;
+
   constructor(protected readonly props: CheckableProps) {}
 
   protected filter(map: Map<string, RootFile.Base>): Map<string, RootFile.Base> {
@@ -32,6 +34,7 @@ abstract class Checkable {
 
   protected async buildNodeGraph(): Promise<NodeGraph> {
     return NodeGraph.create(
+      this.fileAnalysisType,
       this.props.rootDir,
       this.props.options.includeMatcher,
       this.props.options.ignoreMatcher,
