@@ -52,6 +52,8 @@ jobs:
 
   analyze-code-ubuntu:
     uses: ./.github/workflows/sonar.yml
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     with:
       os: ubuntu-latest
       node-versions: '["22.x"]'

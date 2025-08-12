@@ -64,7 +64,14 @@ jobs:
 
       - name: Save package.json version
         run: |
-          echo "PACKAGE_JSON_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
+          PACKAGE_JSON_VERSION=$(node -p "require('./package.json').version")
+          echo -n "${PACKAGE_JSON_VERSION}" > package-json-version.txt
+
+      - name: Upload package.json version Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: package-json-version
+          path: 'package-json-version.txt'
 
       - name: Generate TAR package file & Checksum
         run: |
