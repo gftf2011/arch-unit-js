@@ -1,6 +1,6 @@
 {
   "name": "arch-unit-js",
-  "version": "1.0.32",
+  "version": "1.0.33",
   "description": "arch-unit clone for node.js projects",
   "files": [
     "package.json",
@@ -45,15 +45,18 @@
     "url": "https://github.com/gftf2011/arch-unit-js/issues"
   },
   "homepage": "https://github.com/gftf2011/arch-unit-js#readme",
+  "overrides": {
+    "argparse": "1.0.10"
+  },
   "devDependencies": {
-    "@microsoft/api-extractor": "^7.52.10",
+    "@microsoft/api-extractor": "7.52.10",
     "@types/babel__traverse": "7.20.7",
     "@types/jest": "^30.0.0",
     "@types/micromatch": "^4.0.9",
     "@types/node": "24.0.14",
     "@typescript-eslint/eslint-plugin": "^7.14.1",
     "@typescript-eslint/parser": "^7.14.1",
-    "esbuild": "^0.25.8",
+    "esbuild": "0.25.8",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.3",
