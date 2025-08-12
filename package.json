@@ -1,6 +1,6 @@
 {
   "name": "arch-unit-js",
-  "version": "1.0.31",
+  "version": "1.0.32",
   "description": "arch-unit clone for node.js projects",
   "files": [
     "package.json",
@@ -26,7 +26,7 @@
     "checksum:tar": "sha256sum *.tgz > checksum.txt",
     "build:types": "tsc --declaration --emitDeclarationOnly",
     "clean:types": "rm -rf dist/types && rm -rf dist/tsdoc-metadata.json",
-    "build": "node esbuild.config.js && npm run build:types && npx api-extractor run --local --verbose && npm run clean:types",
+    "build": "node esbuild.config.js && npm run build:types && node ./node_modules/@microsoft/api-extractor/bin/api-extractor run --local --verbose && npm run clean:types",
     "test": "jest --detectOpenHandles --coverage",
     "test:watch": "jest --watch",
     "publish:beta": "npm publish --tag beta --access public",
