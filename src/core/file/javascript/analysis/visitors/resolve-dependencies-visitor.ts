@@ -1,37 +1,16 @@
 import type { Visitor, NodePath } from '@babel/traverse';
 import type * as t from '@babel/types';
 
-import { VisitorsInfo } from '../../common';
+import { ResolveDependenciesVisitorInfo } from './info';
+import { BabelVisitor } from './common';
 
-export interface BabelVisitor<T> {
-  visit(info: T): Visitor;
-}
-
-export class DefaultExportVisitor implements BabelVisitor<VisitorsInfo.DefaultExportInfo> {
-  public visit(info: VisitorsInfo.DefaultExportInfo): Visitor {
-    return {
-      ExportDefaultDeclaration(path: NodePath<t.ExportDefaultDeclaration>) {
-        info.hasDefaultExport = true;
-        path.stop(); // optional, stop early once found
-      },
-    };
-  }
-}
-
-export class ImportDeclarationVisitor implements BabelVisitor<VisitorsInfo.ImportDeclarationInfo> {
-  public visit(info: VisitorsInfo.ImportDeclarationInfo): Visitor {
+export class ResolveDependenciesVisitor implements BabelVisitor<ResolveDependenciesVisitorInfo> {
+  public visit(info: ResolveDependenciesVisitorInfo): Visitor {
     return {
       ImportDeclaration(path: NodePath<t.ImportDeclaration>) {
         info.totalImportedDependencies++;
-        info.addDependency(path.node.source.value);
+        info.addDependency(path.node.source.value, 'import');
       },
-    };
-  }
-}
-
-export class CallExpressionVisitor implements BabelVisitor<VisitorsInfo.CallExpressionInfo> {
-  public visit(info: VisitorsInfo.CallExpressionInfo): Visitor {
-    return {
       CallExpression(path: NodePath<t.CallExpression>) {
         const node = path.node;
 
@@ -52,7 +31,7 @@ export class CallExpressionVisitor implements BabelVisitor<VisitorsInfo.CallExpr
 
           if (resolvable && value) {
             info.totalDinamicImportedDependencies++;
-            info.addDependency(value);
+            info.addDependency(value, 'import');
           }
           return;
         }
@@ -65,7 +44,7 @@ export class CallExpressionVisitor implements BabelVisitor<VisitorsInfo.CallExpr
           node.arguments[0].type === 'StringLiteral'
         ) {
           info.totalRequiredDependencies++;
-          info.addDependency(node.arguments[0].value);
+          info.addDependency(node.arguments[0].value, 'require');
         }
       },
     };

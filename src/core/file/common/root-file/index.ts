@@ -3,6 +3,12 @@ import { Dependency } from '../../../dependency';
 export type JavascriptOrTypescriptRelatedFileType = 'javascript-file' | 'typescript-file';
 export type FileType = 'file' | JavascriptOrTypescriptRelatedFileType;
 
+export enum AnalysisType {
+  LOC = 'LOC_ANALYSIS',
+  DEPENDENCIES = 'DEPENDENCIES_ANALYSIS',
+  NAME_ANALYSIS = 'NAME_ANALYSIS',
+}
+
 export type BaseProps = {
   name: string;
   path: string;
