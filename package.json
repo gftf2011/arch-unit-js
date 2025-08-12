@@ -46,6 +46,9 @@
     "url": "https://github.com/gftf2011/arch-unit-js/issues"
   },
   "homepage": "https://github.com/gftf2011/arch-unit-js#readme",
+  "overrides": {
+    "argparse": "1.0.10"
+  },
   "devDependencies": {
     "@types/babel__traverse": "7.20.7",
     "@types/jest": "^30.0.0",
