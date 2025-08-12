@@ -2,6 +2,9 @@ name: Analyze Code Quality Workflow
 
 on:
   workflow_call:
+    secrets:
+      SONAR_TOKEN:
+        required: true
     inputs:
       os:
         required: true
@@ -37,6 +40,17 @@ jobs:
           key: coverage-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
           restore-keys: |
             coverage-${{ runner.os }}-${{ matrix.node-version }}-
+      
+      - name: Download package.json version Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: package-json-version
+          path: .
+      
+      - name: Save package.json version to env variable
+        run: |
+          PACKAGE_JSON_VERSION=$(cat ./package-json-version.txt)
+          echo "PACKAGE_JSON_VERSION=$PACKAGE_JSON_VERSION" >> $GITHUB_ENV
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
