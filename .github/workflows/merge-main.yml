@@ -67,6 +67,15 @@ jobs:
       node-versions: '["22.x"]'
     needs: [test-ubuntu, test-windows, test-macos]
 
+  analyze-code-ubuntu:
+    uses: ./.github/workflows/sonar.yml
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    with:
+      os: ubuntu-latest
+      node-versions: '["22.x"]'
+    needs: [build-ubuntu]
+
   publish-ubuntu:
     uses: ./.github/workflows/publish.yml
     secrets:
@@ -74,4 +83,4 @@ jobs:
     with:
       os: ubuntu-latest
       node-versions: '["22.x"]'
-    needs: [build-ubuntu]
+    needs: [analyze-code-ubuntu]

@@ -49,3 +49,12 @@ jobs:
       - name: Run Tests
         run: |
           npm run test
+
+      - name: Cache Coverage Report
+        if: ${{ inputs.os == 'ubuntu-latest' && matrix.node-version == '22.x' }}
+        uses: actions/cache@v4
+        with:
+          path: ./coverage
+          key: coverage-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
+          restore-keys: |
+            coverage-${{ runner.os }}-${{ matrix.node-version }}-
