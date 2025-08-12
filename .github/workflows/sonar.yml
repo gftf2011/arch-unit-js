@@ -1,4 +1,4 @@
-name: Test Application Workflow
+name: Analyze Code Quality Workflow
 
 on:
   workflow_call:
@@ -12,7 +12,7 @@ on:
 
 jobs:
   test:
-    name: Test Application on ${{ inputs.os }}
+    name: Analyze Code Quality on ${{ inputs.os }}
     if: >
       (github.event_name == 'pull_request' && github.event.pull_request.merged == true && (github.base_ref == 'main' || github.base_ref == 'dev'))
     runs-on: ${{ inputs.os }}
@@ -30,31 +30,19 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Use Cache "node-modules"
-        uses: actions/cache@v4
-        with:
-          path: ./node_modules
-          key: node-modules-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
-          restore-keys: |
-            node-modules-${{ runner.os }}-${{ matrix.node-version }}-
-
-      - name: Use Cache "package-lock.json"
-        uses: actions/cache@v4
-        with:
-          path: ./package-lock.json
-          key: package-lock-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
-          restore-keys: |
-            package-lock-${{ runner.os }}-${{ matrix.node-version }}-
-
-      - name: Run Tests
-        run: |
-          npm run test
-
-      - name: Cache Coverage Report
-        if: ${{ inputs.os == 'ubuntu-latest' && matrix.node-version == '22.x' }}
+      - name: Use Code Coverage Report
         uses: actions/cache@v4
         with:
           path: ./coverage
           key: coverage-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
           restore-keys: |
             coverage-${{ runner.os }}-${{ matrix.node-version }}-
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2
+        with:
+          args: >
+            -Dsonar.branch.name=${{ github.base_ref }}
+            -Dsonar.projectVersion=${{ env.PACKAGE_JSON_VERSION }}
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

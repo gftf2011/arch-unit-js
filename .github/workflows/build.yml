@@ -62,6 +62,10 @@ jobs:
           # Update package.json version without creating a git tag
           npm version "$NEW_VERSION" --no-git-tag-version
 
+      - name: Save package.json version
+        run: |
+          echo "PACKAGE_JSON_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
+
       - name: Generate TAR package file & Checksum
         run: |
           npm run pack

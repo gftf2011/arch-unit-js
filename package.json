@@ -1,6 +1,6 @@
 {
   "name": "arch-unit-js",
-  "version": "1.0.25",
+  "version": "1.0.26",
   "description": "arch-unit clone for node.js projects",
   "files": [
     "package.json",
@@ -30,8 +30,7 @@
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
     "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
     "format": "prettier . --write",
-    "format:check": "prettier . --check",
-    "prepack": "find dist -name '*.map' -delete || true"
+    "format:check": "prettier . --check"
   },
   "repository": {
     "type": "git",
