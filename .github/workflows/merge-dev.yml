@@ -66,4 +66,4 @@ jobs:
     with:
       os: ubuntu-latest
       node-versions: '["22.x"]'
-    needs: [build-ubuntu]
+    needs: [analyze-code-ubuntu]
