@@ -3,9 +3,9 @@ import traverse from '@babel/traverse';
 import fsPromises from 'fs/promises';
 import * as path from 'pathe';
 
+import { Dependency, DependencyFactory, DependencyResolvedWith } from '../../../dependency';
 import { RootFile } from '../../common';
 import { JavascriptRelatedFileProps } from '../common';
-import { Dependency, DependencyFactory, DependencyResolvedWith } from '../../../dependency';
 import { Visitors, VisitorsInfo } from './visitors';
 
 export class JavascriptRelatedFileForDependenciesAnalysis extends RootFile.Base {
@@ -40,7 +40,13 @@ export class JavascriptRelatedFileForDependenciesAnalysis extends RootFile.Base 
       totalRequiredDependencies: 0,
       totalDinamicImportedDependencies: 0,
       addDependency: (dependencyName: string, type: DependencyResolvedWith) => {
-        dependencies.push(DependencyFactory.create({ name: dependencyName, resolvedWith: type, comesFrom: 'javascript' }));
+        dependencies.push(
+          DependencyFactory.create({
+            name: dependencyName,
+            resolvedWith: type,
+            comesFrom: 'javascript',
+          }),
+        );
       },
     };
 
@@ -64,7 +70,7 @@ export class JavascriptRelatedFileForDependenciesAnalysis extends RootFile.Base 
     this.props.totalRequiredDependencies = resolveDependenciesVisitorInfo.totalRequiredDependencies;
     this.props.totalImportedDependencies = resolveDependenciesVisitorInfo.totalImportedDependencies;
     this.props.totalDinamicImportedDependencies =
-    resolveDependenciesVisitorInfo.totalDinamicImportedDependencies;
+      resolveDependenciesVisitorInfo.totalDinamicImportedDependencies;
 
     return this;
   }

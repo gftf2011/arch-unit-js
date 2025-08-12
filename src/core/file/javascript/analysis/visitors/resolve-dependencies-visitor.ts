@@ -1,8 +1,8 @@
 import type { Visitor, NodePath } from '@babel/traverse';
 import type * as t from '@babel/types';
 
-import { ResolveDependenciesVisitorInfo } from './info';
 import { BabelVisitor } from './common';
+import { ResolveDependenciesVisitorInfo } from './info';
 
 export class ResolveDependenciesVisitor implements BabelVisitor<ResolveDependenciesVisitorInfo> {
   public visit(info: ResolveDependenciesVisitorInfo): Visitor {

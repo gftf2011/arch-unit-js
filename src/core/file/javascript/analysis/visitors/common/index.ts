@@ -1,5 +1,5 @@
-import { Visitor } from "@babel/traverse";
+import { Visitor } from '@babel/traverse';
 
 export interface BabelVisitor<T> {
-    visit(info: T): Visitor;
+  visit(info: T): Visitor;
 }
