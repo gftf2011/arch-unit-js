@@ -73,7 +73,7 @@ A JavaScript/TypeScript library for enforcing architectural rules and constraint
 Install using **npm**
 
 ```bash
-npm install arch-unit-js
+npm install --save-dev arch-unit-js
 ```
 
 ### - Basic JavaScript Scenario

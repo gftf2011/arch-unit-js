@@ -11,6 +11,8 @@ import { NotificationHandler } from '../common/notification/handler';
 import { LOCAnalysisProps, PatternCheckableProps } from '../common/types';
 
 export class LOCAnalysisLessThanShouldSelector extends LOCAnalysisCheckable {
+  protected override readonly fileAnalysisType: RootFile.AnalysisType = RootFile.AnalysisType.LOC;
+
   constructor(protected readonly props: LOCAnalysisProps) {
     super(props);
   }
@@ -39,6 +41,8 @@ export class LOCAnalysisLessThanShouldSelector extends LOCAnalysisCheckable {
 }
 
 export class LOCAnalysisLessThanOrEqualShouldSelector extends LOCAnalysisCheckable {
+  protected override readonly fileAnalysisType: RootFile.AnalysisType = RootFile.AnalysisType.LOC;
+
   constructor(protected readonly props: LOCAnalysisProps) {
     super(props);
   }
@@ -67,6 +71,8 @@ export class LOCAnalysisLessThanOrEqualShouldSelector extends LOCAnalysisCheckab
 }
 
 export class LOCAnalysisGreaterThanShouldSelector extends LOCAnalysisCheckable {
+  protected override readonly fileAnalysisType: RootFile.AnalysisType = RootFile.AnalysisType.LOC;
+
   constructor(protected readonly props: LOCAnalysisProps) {
     super(props);
   }
@@ -95,6 +101,8 @@ export class LOCAnalysisGreaterThanShouldSelector extends LOCAnalysisCheckable {
 }
 
 export class LOCAnalysisGreaterThanOrEqualShouldSelector extends LOCAnalysisCheckable {
+  protected override readonly fileAnalysisType: RootFile.AnalysisType = RootFile.AnalysisType.LOC;
+
   constructor(protected readonly props: LOCAnalysisProps) {
     super(props);
   }
@@ -123,6 +131,9 @@ export class LOCAnalysisGreaterThanOrEqualShouldSelector extends LOCAnalysisChec
 }
 
 export class HaveCyclesShouldSelector extends PatternCyclesCheckable {
+  protected override readonly fileAnalysisType: RootFile.AnalysisType =
+    RootFile.AnalysisType.DEPENDENCIES;
+
   constructor(protected readonly props: PatternCheckableProps) {
     super(props);
   }
@@ -189,6 +200,9 @@ export class HaveCyclesShouldSelector extends PatternCyclesCheckable {
 }
 
 export class OnlyDependsOnShouldSelector extends PatternCheckable {
+  protected override readonly fileAnalysisType: RootFile.AnalysisType =
+    RootFile.AnalysisType.DEPENDENCIES;
+
   constructor(protected readonly props: PatternCheckableProps) {
     super(props);
   }
@@ -239,6 +253,9 @@ export class OnlyDependsOnShouldSelector extends PatternCheckable {
 }
 
 export class DependsOnShouldSelector extends PatternCheckable {
+  protected override readonly fileAnalysisType: RootFile.AnalysisType =
+    RootFile.AnalysisType.DEPENDENCIES;
+
   constructor(protected readonly props: PatternCheckableProps) {
     super(props);
   }
@@ -297,6 +314,9 @@ export class DependsOnShouldSelector extends PatternCheckable {
 }
 
 export class OnlyHaveNameShouldSelector extends PatternCheckable {
+  protected override readonly fileAnalysisType: RootFile.AnalysisType =
+    RootFile.AnalysisType.NAME_ANALYSIS;
+
   constructor(protected readonly props: PatternCheckableProps) {
     super(props);
   }
@@ -347,6 +367,9 @@ export class OnlyHaveNameShouldSelector extends PatternCheckable {
 }
 
 export class HaveNameShouldSelector extends PatternCheckable {
+  protected override readonly fileAnalysisType: RootFile.AnalysisType =
+    RootFile.AnalysisType.NAME_ANALYSIS;
+
   constructor(protected readonly props: PatternCheckableProps) {
     super(props);
   }

@@ -15,15 +15,20 @@ export class AvailableFilesVisitor implements WalkVisitor {
 }
 
 export class NodeFilesVisitor implements WalkVisitor {
+  constructor(private readonly fileAnalysisType: RootFile.AnalysisType) {}
+
   files: Map<string, RootFile.Base> = new Map();
 
   public async addFile(fullPath: string, nodeInfo: NodeInfo): Promise<void> {
-    const file = await FileFactory.create(nodeInfo.fileName, fullPath).build({
-      rootDir: nodeInfo.rootDir,
-      availableFiles: nodeInfo.availableFiles,
-      extensions: nodeInfo.extensions,
-      ...(nodeInfo.typescriptPath ? { typescriptPath: nodeInfo.typescriptPath } : {}),
-    });
+    const file = await FileFactory.create(nodeInfo.fileName, fullPath, this.fileAnalysisType).build(
+      {
+        rootDir: nodeInfo.rootDir,
+        availableFiles: nodeInfo.availableFiles,
+        extensions: nodeInfo.extensions,
+        ...(nodeInfo.typescriptPath ? { typescriptPath: nodeInfo.typescriptPath } : {}),
+      },
+    );
+
     (this.files as Map<string, RootFile.Base>).set(file.props.path, file);
   }
 }
