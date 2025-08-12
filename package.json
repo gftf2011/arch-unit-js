@@ -1,6 +1,6 @@
 {
   "name": "arch-unit-js",
-  "version": "1.0.33",
+  "version": "1.0.34",
   "description": "arch-unit clone for node.js projects",
   "files": [
     "package.json",
@@ -25,8 +25,9 @@
     "pack:macos:tar": "gtar --transform='s|^|package/|' -czf arch-unit-js.tar.tgz dist/index.js dist/index.mjs dist/index.d.ts package.json LICENSE README.md",
     "checksum:tar": "sha256sum *.tgz > checksum.txt",
     "build:types": "tsc --declaration --emitDeclarationOnly",
-    "clean:types": "rm -rf dist/types && rm -rf dist/tsdoc-metadata.json",
-    "build": "node esbuild.config.js && npm run build:types && node ./node_modules/@microsoft/api-extractor/bin/api-extractor run --local --verbose && npm run clean:types",
+    "bundle:types": "npx rollup -c rollup.config.dts.mjs",
+    "clean:types": "rm -rf dist/types",
+    "build": "node esbuild.config.js && npm run build:types && npm run bundle:types && npm run clean:types",
     "test": "jest --detectOpenHandles --coverage",
     "test:watch": "jest --watch",
     "publish:beta": "npm publish --tag beta --access public",
@@ -45,11 +46,7 @@
     "url": "https://github.com/gftf2011/arch-unit-js/issues"
   },
   "homepage": "https://github.com/gftf2011/arch-unit-js#readme",
-  "overrides": {
-    "argparse": "1.0.10"
-  },
   "devDependencies": {
-    "@microsoft/api-extractor": "7.52.10",
     "@types/babel__traverse": "7.20.7",
     "@types/jest": "^30.0.0",
     "@types/micromatch": "^4.0.9",
@@ -64,6 +61,8 @@
     "eslint-plugin-jest": "^27.9.0",
     "jest": "^29.7.0",
     "prettier": "^3.4.0",
+    "rollup": "^4.21.0",
+    "rollup-plugin-dts": "^6.1.1",
     "ts-jest": "^29.4.0",
     "typescript": "5.8.3"
   },
