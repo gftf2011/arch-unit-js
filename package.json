@@ -1,9 +1,10 @@
 {
   "name": "arch-unit-js",
-  "version": "1.0.30",
+  "version": "1.0.31",
   "description": "arch-unit clone for node.js projects",
   "files": [
     "package.json",
+    "dist/index.d.ts",
     "dist/index.js",
     "dist/index.mjs",
     "LICENSE",
@@ -11,6 +12,7 @@
   ],
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
+  "typing": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
@@ -19,11 +21,12 @@
   },
   "scripts": {
     "pack": "npm run pack:linux:tar && npm run checksum:tar",
-    "pack:linux:tar": "tar --transform='s|^|package/|' -czf arch-unit-js.tar.tgz dist/index.js dist/index.mjs package.json LICENSE README.md",
-    "pack:macos:tar": "gtar --transform='s|^|package/|' -czf arch-unit-js.tar.tgz dist/index.js dist/index.mjs package.json LICENSE README.md",
+    "pack:linux:tar": "tar --transform='s|^|package/|' -czf arch-unit-js.tar.tgz dist/index.js dist/index.mjs dist/index.d.ts package.json LICENSE README.md",
+    "pack:macos:tar": "gtar --transform='s|^|package/|' -czf arch-unit-js.tar.tgz dist/index.js dist/index.mjs dist/index.d.ts package.json LICENSE README.md",
     "checksum:tar": "sha256sum *.tgz > checksum.txt",
-    "build:tsc": "tsc",
-    "build": "node esbuild.config.js",
+    "build:types": "tsc --declaration --emitDeclarationOnly",
+    "clean:types": "rm -rf dist/types && rm -rf dist/tsdoc-metadata.json",
+    "build": "node esbuild.config.js && npm run build:types && npx api-extractor run --local --verbose && npm run clean:types",
     "test": "jest --detectOpenHandles --coverage",
     "test:watch": "jest --watch",
     "publish:beta": "npm publish --tag beta --access public",
@@ -43,22 +46,23 @@
   },
   "homepage": "https://github.com/gftf2011/arch-unit-js#readme",
   "devDependencies": {
+    "@microsoft/api-extractor": "^7.52.10",
     "@types/babel__traverse": "7.20.7",
     "@types/jest": "^30.0.0",
     "@types/micromatch": "^4.0.9",
     "@types/node": "24.0.14",
-    "esbuild": "^0.25.8",
-    "jest": "^29.7.0",
-    "ts-jest": "^29.4.0",
-    "typescript": "5.8.3",
     "@typescript-eslint/eslint-plugin": "^7.14.1",
     "@typescript-eslint/parser": "^7.14.1",
+    "esbuild": "^0.25.8",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
+    "eslint-import-resolver-typescript": "^3.6.3",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jest": "^27.9.0",
-    "eslint-import-resolver-typescript": "^3.6.3",
-    "prettier": "^3.4.0"
+    "jest": "^29.7.0",
+    "prettier": "^3.4.0",
+    "ts-jest": "^29.4.0",
+    "typescript": "5.8.3"
   },
   "dependencies": {
     "@babel/parser": "7.28.0",
