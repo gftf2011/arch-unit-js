@@ -76,6 +76,13 @@ jobs:
       node-versions: '["22.x"]'
     needs: [build-ubuntu]
 
+  coveralls-ubuntu:
+    uses: ./.github/workflows/coveralls.yml
+    with:
+      os: ubuntu-latest
+      node-versions: '["22.x"]'
+    needs: [analyze-code-ubuntu]
+
   publish-ubuntu:
     uses: ./.github/workflows/publish.yml
     secrets:
@@ -83,4 +90,4 @@ jobs:
     with:
       os: ubuntu-latest
       node-versions: '["22.x"]'
-    needs: [analyze-code-ubuntu]
+    needs: [coveralls-ubuntu]

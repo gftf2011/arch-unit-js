@@ -1,0 +1,45 @@
+name: Project Coverage Workflow
+
+on:
+  workflow_call:
+    inputs:
+      os:
+        required: true
+        type: string
+      node-versions:
+        required: true
+        type: string
+
+jobs:
+  publish:
+    name: Coverage Package on ${{ inputs.os }}
+    if: >
+      (github.event_name == 'pull_request' && github.event.pull_request.merged == true && (github.base_ref == 'main' || github.base_ref == 'dev'))
+    runs-on: ${{ inputs.os }}
+    strategy:
+      matrix:
+        node-version: ${{ fromJson(inputs.node-versions) }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.JS Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Use Code Coverage Report
+        uses: actions/cache@v4
+        with:
+          path: ./coverage
+          key: coverage-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
+          restore-keys: |
+            coverage-${{ runner.os }}-${{ matrix.node-version }}-
+
+      - name: Upload to Coveralls
+        if: >
+          (github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.base_ref == 'main')
+        uses: coverallsapp/github-action@v2
