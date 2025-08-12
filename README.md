@@ -20,6 +20,10 @@
 </div>
 
 <div align="center">
+  <img src='https://sonarcloud.io/api/project_badges/measure?project=gftf2011_arch-unit-js&metric=alert_status' alt='Quality Gate Status' />
+  <a href="https://github.com/gftf2011/arch-unit-js/actions" target="_blank" rel="noopener noreferrer">
+    <img src="https://github.com/gftf2011/arch-unit-js/actions/workflows/merge-main.yml/badge.svg" alt="CI Status" />
+  </a>
   <a href="https://eslint.org/">
     <img src="https://img.shields.io/badge/ESLint-configured-blue?logo=eslint" alt="ESLint" />
   </a>
@@ -28,9 +32,6 @@
   </a>
   <a href="https://www.npmjs.com/package/arch-unit-js">
     <img src="https://img.shields.io/npm/v/arch-unit-js.svg" alt="npm version" />
-  </a>
-  <a href="https://github.com/gftf2011/arch-unit-js/actions" target="_blank" rel="noopener noreferrer">
-    <img src="https://github.com/gftf2011/arch-unit-js/actions/workflows/merge-main.yml/badge.svg" alt="CI Status" />
   </a>
 </div>
 
