@@ -21,6 +21,7 @@
 
 <div align="center">
   <img src='https://sonarcloud.io/api/project_badges/measure?project=gftf2011_arch-unit-js&metric=alert_status' alt='Quality Gate Status' />
+  <img src='https://sonarcloud.io/api/project_badges/measure?project=gftf2011_arch-unit-js&metric=bugs' alt='Quality Gate Bugs' />
   <a href="https://github.com/gftf2011/arch-unit-js/actions" target="_blank" rel="noopener noreferrer">
     <img src="https://github.com/gftf2011/arch-unit-js/actions/workflows/merge-main.yml/badge.svg" alt="CI Status" />
   </a>
