@@ -1,4 +1,4 @@
-import { RootFile } from '../../common';
+import { RootFile } from '@/core/file/common';
 
 export type JavascriptRelatedFileProps = RootFile.BaseProps & {
   totalRequiredDependencies: number;

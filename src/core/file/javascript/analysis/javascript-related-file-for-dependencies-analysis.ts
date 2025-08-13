@@ -3,10 +3,10 @@ import traverse from '@babel/traverse';
 import fsPromises from 'fs/promises';
 import * as path from 'pathe';
 
-import { Dependency, DependencyFactory, DependencyResolvedWith } from '../../../dependency';
-import { RootFile } from '../../common';
-import { JavascriptRelatedFileProps } from '../common';
-import { Visitors, VisitorsInfo } from './visitors';
+import { Dependency, DependencyFactory, DependencyResolvedWith } from '@/core/dependency';
+import { RootFile } from '@/core/file/common';
+import { Visitors, VisitorsInfo } from '@/core/file/javascript/analysis/visitors';
+import { JavascriptRelatedFileProps } from '@/core/file/javascript/common';
 
 export class JavascriptRelatedFileForDependenciesAnalysis extends RootFile.Base {
   public constructor(public props: JavascriptRelatedFileProps) {

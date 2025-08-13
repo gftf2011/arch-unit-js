@@ -1,3 +1,4 @@
+const { TsconfigPathsPlugin } = require('@esbuild-plugins/tsconfig-paths');
 const esbuild = require('esbuild');
 const fs = require('fs');
 
@@ -15,23 +16,29 @@ const buildConfig = {
   external: ['@babel/parser', '@babel/traverse'], // External dependencies
   sourcemap: false,
   minify: true,
+  plugins: [TsconfigPathsPlugin({ tsconfig: 'tsconfig.json' })],
 };
 
-// Build CommonJS version
-esbuild.buildSync({
-  ...buildConfig,
-  format: 'cjs',
-  outfile: 'dist/index.js',
-  define: {
-    'import.meta': 'undefined',
-  },
-});
+async function buildAll() {
+  await esbuild.build({
+    ...buildConfig,
+    format: 'cjs',
+    outfile: 'dist/index.js',
+    define: {
+      'import.meta': 'undefined',
+    },
+  });
 
-// Build ES Module version
-esbuild.buildSync({
-  ...buildConfig,
-  format: 'esm',
-  outfile: 'dist/index.mjs',
-});
+  await esbuild.build({
+    ...buildConfig,
+    format: 'esm',
+    outfile: 'dist/index.mjs',
+  });
 
-console.log('✅ Build completed: CommonJS (index.js), ES Module (index.mjs)');
+  console.log('✅ Build completed: CommonJS (index.js), ES Module (index.mjs)');
+}
+
+buildAll().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});

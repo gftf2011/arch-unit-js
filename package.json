@@ -24,7 +24,7 @@
     "pack:linux:tar": "tar --transform='s|^|package/|' -czf arch-unit-js.tar.tgz dist/index.js dist/index.mjs dist/index.d.ts package.json LICENSE README.md",
     "pack:macos:tar": "gtar --transform='s|^|package/|' -czf arch-unit-js.tar.tgz dist/index.js dist/index.mjs dist/index.d.ts package.json LICENSE README.md",
     "checksum:tar": "sha256sum *.tgz > checksum.txt",
-    "build:types": "tsc --declaration --emitDeclarationOnly",
+    "build:types": "tsc -p tsconfig.build.json --declaration --emitDeclarationOnly",
     "bundle:types": "npx rollup -c rollup.config.dts.mjs",
     "clean:types": "rm -rf dist/types",
     "build": "node esbuild.config.js && npm run build:types && npm run bundle:types && npm run clean:types",
@@ -50,6 +50,7 @@
     "argparse": "1.0.10"
   },
   "devDependencies": {
+    "@esbuild-plugins/tsconfig-paths": "0.1.2",
     "@types/babel__traverse": "7.28.0",
     "@types/jest": "^30.0.0",
     "@types/micromatch": "4.0.8",

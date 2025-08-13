@@ -1,11 +1,11 @@
 import micromatch from 'micromatch';
 
-import { RootFile } from '../../../core/file';
-import { NodeGraph } from '../../../core/node-graph';
-import { glob } from '../../../utils';
-import { NotificationError } from '../errors/notification';
-import { NotificationHandler } from '../notification/handler';
-import { CheckableProps, LOCAnalysisProps, PatternCheckableProps } from '../types';
+import { RootFile } from '@/core/file';
+import { NodeGraph } from '@/core/node-graph';
+import { NotificationError } from '@/fluent-api/common/errors/notification';
+import { NotificationHandler } from '@/fluent-api/common/notification/handler';
+import { CheckableProps, LOCAnalysisProps, PatternCheckableProps } from '@/fluent-api/common/types';
+import { glob } from '@/utils';
 
 abstract class Checkable {
   protected abstract readonly fileAnalysisType: RootFile.AnalysisType;
@@ -37,7 +37,7 @@ abstract class Checkable {
       this.fileAnalysisType,
       this.props.rootDir,
       this.props.options.includeMatcher,
-      this.props.options.ignoreMatcher,
+      this.props.options.ignoreMatcher ?? [],
       this.props.options.extensionTypes,
       this.props.options.typescriptPath,
     );

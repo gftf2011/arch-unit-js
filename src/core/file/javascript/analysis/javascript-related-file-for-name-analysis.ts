@@ -1,5 +1,5 @@
-import { RootFile } from '../../common';
-import { JavascriptRelatedFileProps } from '../common';
+import { RootFile } from '@/core/file/common';
+import { JavascriptRelatedFileProps } from '@/core/file/javascript/common';
 
 export class JavascriptRelatedFileForNameAnalysis extends RootFile.Base {
   public constructor(public props: JavascriptRelatedFileProps) {

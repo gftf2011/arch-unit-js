@@ -1,5 +1,5 @@
-import { Dependency, DependencyProps } from '../common';
-import { JavascriptRelatedDependency } from '../javascript';
+import { Dependency, DependencyProps } from '@/core/dependency/common';
+import { JavascriptRelatedDependency } from '@/core/dependency/javascript';
 
 export class DependencyFactory {
   public static create(props: Omit<DependencyProps, 'type'>): Dependency {
