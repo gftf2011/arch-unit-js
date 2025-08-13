@@ -383,7 +383,7 @@ describe('shouldNot.dependsOn scenarios', () => {
           const errorMessage = (error as Error).message;
 
           expect(errorMessage).toContain(
-            `Violation - Rule: project files in directory '**/use-cases/**' - excluding files [!**/use-cases/DeleteTodo.ts, !**/use-cases/GetTodoById.ts, !**/use-cases/GetAllTodos.ts, !**/use-cases/UpdateTodo.ts, !**/index.ts] , should not depends on '[uuid]'\n\n`,
+            `Violation - Rule: project files in directory '**/use-cases/**' - excluding [!**/use-cases/DeleteTodo.ts, !**/use-cases/GetTodoById.ts, !**/use-cases/GetAllTodos.ts, !**/use-cases/UpdateTodo.ts, !**/index.ts] , should not depends on '[uuid]'\n\n`,
           );
           expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.ts'`);
         }

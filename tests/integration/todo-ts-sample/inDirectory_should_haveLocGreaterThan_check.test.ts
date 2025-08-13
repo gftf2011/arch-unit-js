@@ -136,7 +136,7 @@ describe('should.haveLocGreaterThan scenarios', () => {
           const errorMessage = (error as Error).message;
 
           expect(errorMessage).toContain(
-            `Violation - Rule: project files in directory '**/use-cases/**' - excluding files [!**/use-cases/index.ts] , should have L.O.C. greater than: 8\n\n`,
+            `Violation - Rule: project files in directory '**/use-cases/**' - excluding [!**/use-cases/index.ts] , should have L.O.C. greater than: 8\n\n`,
           );
           expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetAllTodos.ts'`);
         }

@@ -272,7 +272,7 @@ describe('shouldNot.onlyHaveName scenarios', () => {
           const errorMessage = (error as Error).message;
 
           expect(errorMessage).toContain(
-            `Violation - Rule: project files in directory '**/use-cases/**' - excluding files [!**/index.ts] , should not only have name '*Todo*'\n\n`,
+            `Violation - Rule: project files in directory '**/use-cases/**' - excluding [!**/index.ts] , should not only have name '*Todo*'\n\n`,
           );
           expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.ts'`);
           expect(errorMessage).toContain(`- '${rootDir}/use-cases/DeleteTodo.ts'`);

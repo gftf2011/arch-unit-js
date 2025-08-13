@@ -1,0 +1,19 @@
+{
+  "name": "todo-app",
+  "version": "1.0.0",
+  "description": "Node.Js API",
+  "main": "",
+  "scripts": {},
+  "keywords": [],
+  "author": "Gabriel Ferrari Tarallo Ferraz",
+  "devDependencies": {
+    "@types/node": "18.0.3",
+    "@types/pg": "8.6.5",
+    "@types/uuid": "8.3.4"
+  },
+  "dependencies": {
+    "module-alias": "2.2.3",
+    "pg": "8.8.0",
+    "uuid": "9.0.0"
+  }
+}

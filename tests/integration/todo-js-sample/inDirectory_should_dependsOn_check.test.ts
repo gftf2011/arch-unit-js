@@ -151,7 +151,7 @@ describe('should.dependsOn scenarios', () => {
         } catch (error) {
           const errorMessage = (error as Error).message;
           expect(errorMessage).toContain(
-            `Violation - Rule: project files in directory '**/use-cases/**' - excluding files [!**/use-cases/DeleteTodo.js, !**/use-cases/GetTodoById.js, !**/use-cases/GetAllTodos.js, !**/use-cases/UpdateTodo.js] , should depends on '[**/domain/**, **/infra/**]'\n\n`,
+            `Violation - Rule: project files in directory '**/use-cases/**' - excluding [!**/use-cases/DeleteTodo.js, !**/use-cases/GetTodoById.js, !**/use-cases/GetAllTodos.js, !**/use-cases/UpdateTodo.js] , should depends on '[**/domain/**, **/infra/**]'\n\n`,
           );
           expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.js'`);
         }
