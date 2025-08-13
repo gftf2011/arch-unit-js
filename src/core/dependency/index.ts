@@ -1,4 +1,4 @@
-export { DependencyFactory } from './factories';
+export { DependencyFactory } from '@/core/dependency/factories';
 export {
   Dependency,
   DependencyProps,
@@ -8,4 +8,4 @@ export {
   JavascriptRelatedDependencyComesFrom,
   JavascriptRelatedDependencyResolvedWith,
   JavascriptRelatedDependencyType,
-} from './common';
+} from '@/core/dependency/common';

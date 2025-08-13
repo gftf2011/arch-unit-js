@@ -1,4 +1,4 @@
-import { Options } from './common/types';
+import { Options } from '@/fluent-api/common/types';
 import {
   DependsOnShouldSelector,
   HaveCyclesShouldSelector,
@@ -9,7 +9,7 @@ import {
   LOCAnalysisLessThanShouldSelector,
   OnlyDependsOnShouldSelector,
   OnlyHaveNameShouldSelector,
-} from './selectors';
+} from '@/fluent-api/selectors';
 
 class PositiveMatchConditionSelectorBuilder {
   private readonly negated: boolean = false;

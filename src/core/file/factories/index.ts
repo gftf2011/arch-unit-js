@@ -1,11 +1,11 @@
-import { javascript } from '../../../utils';
-import { RootFile } from '../common';
+import { RootFile } from '@/core/file/common';
 import {
   JavascriptRelatedFileForDependenciesAnalysis,
   JavascriptRelatedFileForLocAnalysis,
   JavascriptRelatedFileForNameAnalysis,
   JavascriptRelatedFileProps,
-} from '../javascript';
+} from '@/core/file/javascript';
+import { javascript } from '@/utils';
 
 export class FileFactory {
   public static create(

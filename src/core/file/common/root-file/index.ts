@@ -1,4 +1,4 @@
-import { Dependency } from '../../../dependency';
+import { Dependency } from '@/core/dependency';
 
 export type JavascriptOrTypescriptRelatedFileType = 'javascript-file' | 'typescript-file';
 export type FileType = 'file' | JavascriptOrTypescriptRelatedFileType;

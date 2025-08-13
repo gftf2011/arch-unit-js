@@ -1,4 +1,5 @@
 module.exports = {
+  roots: ['<rootDir>/tests'],
   preset: 'ts-jest',
   testEnvironment: 'node',
   testMatch: ['**/tests/**/*.test.ts'],
@@ -10,5 +11,9 @@ module.exports = {
         tsconfig: 'tsconfig.json',
       },
     ],
+  },
+  moduleNameMapper: {
+    '@/tests/(.*)': '<rootDir>/tests/$1',
+    '@/(.*)': '<rootDir>/src/$1',
   },
 };

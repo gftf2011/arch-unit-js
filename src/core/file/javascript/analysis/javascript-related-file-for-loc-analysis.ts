@@ -1,7 +1,7 @@
 import fsPromises from 'fs/promises';
 
-import { RootFile } from '../../common';
-import { JavascriptRelatedFileProps } from '../common';
+import { RootFile } from '@/core/file/common';
+import { JavascriptRelatedFileProps } from '@/core/file/javascript/common';
 
 export class JavascriptRelatedFileForLocAnalysis extends RootFile.Base {
   public constructor(public props: JavascriptRelatedFileProps) {

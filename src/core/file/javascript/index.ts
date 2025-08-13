@@ -1,2 +1,2 @@
-export * from './analysis';
-export * from './common';
+export * from '@/core/file/javascript/analysis';
+export * from '@/core/file/javascript/common';

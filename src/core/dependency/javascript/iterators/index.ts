@@ -1,4 +1,4 @@
-import { Resolvable } from '../../common';
+import { Resolvable } from '@/core/dependency/common';
 
 export interface Iterator<T> {
   add(item: T): void;
