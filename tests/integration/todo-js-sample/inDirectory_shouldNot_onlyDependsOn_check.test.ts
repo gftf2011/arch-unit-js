@@ -23,7 +23,11 @@ const includeMatchers = [
   [['./domain/**/', './use-cases/**/', './infra/**/', './main/**/']],
 ];
 
-const excludeMatchers = ['!<rootDir>/**/package.json'];
+const excludeMatchers = [
+  '!<rootDir>/**/package.json',
+  '!<rootDir>/**/node_modules/**',
+  '!<rootDir>/**/package-lock.json',
+];
 
 describe('shouldNot.onlyDependsOn scenarios', () => {
   describe('Scenario 1: File has NO dependencies', () => {

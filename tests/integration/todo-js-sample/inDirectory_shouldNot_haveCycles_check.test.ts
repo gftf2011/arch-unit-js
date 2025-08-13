@@ -23,7 +23,11 @@ const includeMatchers = [
   [['./domain/**/', './use-cases/**/', './infra/**/', './main/**/']],
 ];
 
-const excludeMatchers = ['!<rootDir>/**/package.json'];
+const excludeMatchers = [
+  '!<rootDir>/**/package.json',
+  '!<rootDir>/**/node_modules/**',
+  '!<rootDir>/**/package-lock.json',
+];
 
 describe('shouldNot.haveCycles scenarios', () => {
   test('entire project should not have cycles - should PASS', async () => {

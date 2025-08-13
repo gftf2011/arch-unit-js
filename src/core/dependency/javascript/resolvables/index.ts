@@ -1,5 +1,6 @@
 import fs from 'fs';
 import micromatch from 'micromatch';
+import { createRequire } from 'module';
 import * as path from 'pathe';
 import * as tsConfigPaths from 'tsconfig-paths';
 
@@ -45,6 +46,34 @@ export class PackageJsonDevDependencyResolvable extends Resolvable {
     if (nodejs.isPackageJsonDevDependency(this.resolvableProps.rootDir, this.depProps.name)) {
       this.depProps.type = 'node-dev-package';
       return { status: 'resolved', depProps: { ...this.depProps } };
+    }
+    return { status: 'unresolved', depProps: this.depProps };
+  }
+}
+
+export class ModuleAliasDependencyResolvable extends Resolvable {
+  constructor(depProps: DependencyProps, resolvableProps: ResolvableDependencyProps) {
+    super(depProps, resolvableProps);
+  }
+
+  public override resolve(): ResolvableResponse {
+    if (this.depProps.resolvedWith === 'require') {
+      const requireFromClient = createRequire(
+        path.join(this.resolvableProps.rootDir, 'package.json'),
+      );
+      const moduleAliasFromClient = requireFromClient('module-alias');
+
+      try {
+        const candidate = moduleAliasFromClient.resolve(this.depProps.name);
+        const dependency = micromatch(this.resolvableProps.availableFiles, [candidate])[0];
+        if (dependency) {
+          this.depProps.type = 'valid-path';
+          this.depProps.name = dependency;
+          return { status: 'resolved', depProps: { ...this.depProps } };
+        }
+      } catch (error) {
+        return { status: 'unresolved', depProps: this.depProps };
+      }
     }
     return { status: 'unresolved', depProps: this.depProps };
   }

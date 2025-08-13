@@ -13,7 +13,11 @@ const rootDir = path.resolve(
 
 const includeMatchers = ['<rootDir>/**'];
 
-const excludeMatchers = ['!<rootDir>/**/package.json'];
+const excludeMatchers = [
+  '!<rootDir>/**/package.json',
+  '!<rootDir>/**/node_modules/**',
+  '!<rootDir>/**/package-lock.json',
+];
 
 describe('should.haveCycles scenarios', () => {
   it('should throw an error if the dependency is not found', async () => {

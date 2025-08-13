@@ -13,7 +13,11 @@ const rootDir = path.resolve(
 
 const includeMatchers = ['<rootDir>/**'];
 
-const excludeMatchers = ['!<rootDir>/**/package.json'];
+const excludeMatchers = [
+  '!<rootDir>/**/package.json',
+  '!<rootDir>/**/node_modules/**',
+  '!<rootDir>/**/package-lock.json',
+];
 
 describe('shouldNot.haveLocGreaterOrEqualThan scenarios', () => {
   it('should PASS - dependencies are not being analyzed', async () => {

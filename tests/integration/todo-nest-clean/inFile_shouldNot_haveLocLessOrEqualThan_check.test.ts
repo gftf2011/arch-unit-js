@@ -9,6 +9,8 @@ const includeMatchers: string[][] = [['<rootDir>/**'], ['./**']];
 
 const excludeMatchers = [
   '!<rootDir>/**/package.json',
+  '!<rootDir>/**/node_modules/**',
+  '!<rootDir>/**/package-lock.json',
   '!<rootDir>/**/tsconfig.json',
   '!<rootDir>/**/.swcrc',
   '!<rootDir>/**/tsconfig.build.json',

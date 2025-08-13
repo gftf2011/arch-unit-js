@@ -23,7 +23,12 @@ const includeMatchers = [
   [['./domain/**/', './use-cases/**', './infra/**', './main/**/']],
 ];
 
-const excludeMatchers = ['!<rootDir>/**/package.json', '!<rootDir>/**/tsconfig.json'];
+const excludeMatchers = [
+  '!<rootDir>/**/package.json',
+  '!<rootDir>/**/node_modules/**',
+  '!<rootDir>/**/package-lock.json',
+  '!<rootDir>/**/tsconfig.json',
+];
 
 const typescriptPath = '<rootDir>/tsconfig.json';
 

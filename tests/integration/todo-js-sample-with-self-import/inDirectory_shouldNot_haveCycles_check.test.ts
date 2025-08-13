@@ -13,7 +13,11 @@ const rootDir = path.resolve(
 
 const includeMatchers = ['<rootDir>/**'];
 
-const excludeMatchers = ['!<rootDir>/**/package.json'];
+const excludeMatchers = [
+  '!<rootDir>/**/package.json',
+  '!<rootDir>/**/node_modules/**',
+  '!<rootDir>/**/package-lock.json',
+];
 
 describe('shouldNot.haveCycles scenarios', () => {
   it('should throw error if there is a cycle', async () => {
