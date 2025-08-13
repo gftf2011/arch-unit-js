@@ -1,8 +1,8 @@
 import * as path from 'pathe';
 import { fileURLToPath } from 'url';
 
-import { ComponentSelectorBuilder } from './fluent-api';
-import { Options } from './fluent-api/common/types';
+import { ComponentSelectorBuilder } from '@/fluent-api';
+import { Options } from '@/fluent-api/common/types';
 
 /**
  * Returns the root directory of the project where the package was installed
@@ -22,7 +22,6 @@ const app = (
   options: Options = {
     extensionTypes: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.jsx'],
     includeMatcher: ['<rootDir>/.'],
-    ignoreMatcher: ['!<rootDir>/node_modules/**'],
   },
 ) => {
   const rootDir = getProjectRoot();

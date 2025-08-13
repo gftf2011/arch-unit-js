@@ -1,7 +1,7 @@
 import * as path from 'pathe';
 
-import { ComponentSelectorBuilder } from '../../../src/fluent-api';
-import { Options } from '../../../src/fluent-api/common/types';
+import { ComponentSelectorBuilder } from '@/fluent-api';
+import { Options } from '@/fluent-api/common/types';
 
 const rootDir = path.resolve(path.dirname(__filename), '..', '..', 'sample', 'todo-js-sample');
 

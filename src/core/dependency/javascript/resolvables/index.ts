@@ -3,13 +3,13 @@ import micromatch from 'micromatch';
 import * as path from 'pathe';
 import * as tsConfigPaths from 'tsconfig-paths';
 
-import { nodejs, javascript } from '../../../../utils';
 import {
   DependencyProps,
   Resolvable,
   ResolvableDependencyProps,
   ResolvableResponse,
-} from '../../common';
+} from '@/core/dependency/common';
+import { nodejs, javascript } from '@/utils';
 
 export class BuildinModuleResolvable extends Resolvable {
   constructor(depProps: DependencyProps, resolvableProps: ResolvableDependencyProps) {

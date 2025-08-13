@@ -1,5 +1,5 @@
-import { NodeInfo } from './common';
-import { FileFactory, RootFile } from '../../file';
+import { FileFactory, RootFile } from '@/core/file';
+import { NodeInfo } from '@/core/node-graph/visitors/common';
 
 export interface WalkVisitor {
   files: string[] | Map<string, RootFile.Base>;

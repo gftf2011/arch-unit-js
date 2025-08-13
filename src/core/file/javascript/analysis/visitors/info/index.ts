@@ -1,4 +1,4 @@
-import { DependencyResolvedWith } from '../../../../../dependency';
+import { DependencyResolvedWith } from '@/core/dependency';
 
 export type ResolveDependenciesVisitorInfo = {
   totalImportedDependencies: number;

@@ -1,14 +1,14 @@
 import micromatch from 'micromatch';
 
-import { RootFile } from '../../core/file';
+import { RootFile } from '@/core/file';
 import {
   LOCAnalysisCheckable,
   PatternCyclesCheckable,
   PatternCheckable,
-} from '../common/checkables';
-import { NotificationError } from '../common/errors/notification';
-import { NotificationHandler } from '../common/notification/handler';
-import { LOCAnalysisProps, PatternCheckableProps } from '../common/types';
+} from '@/fluent-api/common/checkables';
+import { NotificationError } from '@/fluent-api/common/errors/notification';
+import { NotificationHandler } from '@/fluent-api/common/notification/handler';
+import { LOCAnalysisProps, PatternCheckableProps } from '@/fluent-api/common/types';
 
 export class LOCAnalysisLessThanShouldSelector extends LOCAnalysisCheckable {
   protected override readonly fileAnalysisType: RootFile.AnalysisType = RootFile.AnalysisType.LOC;

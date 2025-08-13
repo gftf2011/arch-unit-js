@@ -2,9 +2,9 @@ import fs from 'fs';
 import micromatch from 'micromatch';
 import * as path from 'pathe';
 
-import { glob } from '../../utils';
-import { RootFile } from '../file';
-import { WalkVisitor, AvailableFilesVisitor, NodeFilesVisitor } from './visitors';
+import { RootFile } from '@/core/file';
+import { WalkVisitor, AvailableFilesVisitor, NodeFilesVisitor } from '@/core/node-graph/visitors';
+import { glob } from '@/utils';
 
 export class NodeGraph {
   private constructor(readonly nodes: Map<string, RootFile.Base>) {}
