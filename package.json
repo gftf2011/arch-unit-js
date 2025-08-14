@@ -74,7 +74,6 @@
     "@babel/parser": "7.28.0",
     "@babel/traverse": "7.28.0",
     "micromatch": "4.0.8",
-    "pathe": "2.0.3",
-    "tsconfig-paths": "4.2.0"
+    "pathe": "2.0.3"
   }
 }

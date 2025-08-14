@@ -1,7 +1,6 @@
-import fs from 'fs';
 import micromatch from 'micromatch';
+import { createRequire } from 'module';
 import * as path from 'pathe';
-import * as tsConfigPaths from 'tsconfig-paths';
 
 import {
   DependencyProps,
@@ -79,45 +78,39 @@ export class TypescriptPathDependencyResolvable extends Resolvable {
   }
   public override resolve(): ResolvableResponse {
     try {
-      const stat = fs.statSync(this.resolvableProps.typescriptPath as string);
-      if (stat.isFile()) {
-        const tsconfigPaths = tsConfigPaths.loadConfig(
-          this.resolvableProps.typescriptPath as string,
+      const clientRequire = createRequire(path.join(this.resolvableProps.rootDir, 'package.json'));
+      const ts = clientRequire('typescript');
+
+      const configPath = ts.findConfigFile(
+        this.resolvableProps.rootDir,
+        ts.sys.fileExists,
+        'tsconfig.json',
+      );
+
+      if (configPath) {
+        const configFile = ts.readConfigFile(configPath, ts.sys.readFile);
+        const parsed = ts.parseJsonConfigFileContent(
+          configFile.config,
+          ts.sys,
+          path.dirname(configPath),
         );
-        if (tsconfigPaths.resultType === 'success') {
-          const { absoluteBaseUrl, paths } = tsconfigPaths;
+        const result = ts.resolveModuleName(
+          this.depProps.name,
+          this.resolvableProps.filePath,
+          parsed.options,
+          ts.sys,
+        );
 
-          const matchPath = tsConfigPaths.createMatchPath(
-            path.normalize(absoluteBaseUrl), // baseUrl from tsconfig
-            paths, // paths from tsconfig
-          );
+        const resolvedDependencyFileName = result.resolvedModule?.resolvedFileName;
 
-          const resolvedMatchPath = matchPath(
-            this.depProps.name,
-            undefined,
-            undefined,
-            this.resolvableProps.extensions,
-          );
-
-          if (resolvedMatchPath) {
-            const normalizedResolvedMatchPath = path.normalize(resolvedMatchPath);
-            const dependencyCandidates = javascript.generateDependenciesCandidates(
-              normalizedResolvedMatchPath,
-              this.resolvableProps.extensions,
-            );
-            const dependencyCandidateIfExists =
-              javascript.getDependencyCandidateIfExists(dependencyCandidates);
-
-            if (dependencyCandidateIfExists) {
-              const dependency = micromatch(this.resolvableProps.availableFiles, [
-                dependencyCandidateIfExists,
-              ])[0];
-              if (dependency) {
-                this.depProps.type = 'valid-path';
-                this.depProps.name = dependency;
-                return { status: 'resolved', depProps: { ...this.depProps } };
-              }
-            }
+        if (resolvedDependencyFileName) {
+          const dependency = micromatch(this.resolvableProps.availableFiles, [
+            resolvedDependencyFileName,
+          ])[0];
+          if (dependency) {
+            this.depProps.type = 'valid-path';
+            this.depProps.name = dependency;
+            return { status: 'resolved', depProps: { ...this.depProps } };
           }
         }
       }
@@ -133,7 +126,10 @@ export class ValidPathDependencyResolvable extends Resolvable {
     super(depProps, resolvableProps);
   }
   public override resolve(): ResolvableResponse {
-    const dependencyResolvedPath = path.resolve(this.resolvableProps.fileDir, this.depProps.name);
+    const dependencyResolvedPath = path.resolve(
+      path.dirname(this.resolvableProps.filePath),
+      this.depProps.name,
+    );
     const dependencyCandidates = javascript.generateDependenciesCandidates(
       dependencyResolvedPath,
       this.resolvableProps.extensions,

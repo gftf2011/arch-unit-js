@@ -12,7 +12,7 @@
     "@types/uuid": "8.3.4"
   },
   "dependencies": {
-    "module-alias": "2.2.3",
+    "module-alias": "2.0.0",
     "pg": "8.8.0",
     "uuid": "9.0.0"
   }

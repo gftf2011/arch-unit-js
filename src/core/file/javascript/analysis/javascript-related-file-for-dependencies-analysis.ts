@@ -1,7 +1,6 @@
 import { parse } from '@babel/parser';
 import traverse from '@babel/traverse';
 import fsPromises from 'fs/promises';
-import * as path from 'pathe';
 
 import { Dependency, DependencyFactory, DependencyResolvedWith } from '@/core/dependency';
 import { RootFile } from '@/core/file/common';
@@ -59,7 +58,7 @@ export class JavascriptRelatedFileForDependenciesAnalysis extends RootFile.Base 
     dependencies.forEach((dependency) =>
       dependency.resolve({
         rootDir: buildableProps.rootDir,
-        fileDir: path.dirname(filePath),
+        filePath,
         availableFiles: buildableProps.availableFiles,
         extensions: buildableProps.extensions,
         ...(buildableProps.typescriptPath ? { typescriptPath: buildableProps.typescriptPath } : {}),
