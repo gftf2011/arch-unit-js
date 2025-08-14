@@ -45,10 +45,13 @@
   "bugs": {
     "url": "https://github.com/gftf2011/arch-unit-js/issues"
   },
+  "keywords": [
+    "testing",
+    "babel",
+    "architecture",
+    "javascript-library"
+  ],
   "homepage": "https://github.com/gftf2011/arch-unit-js#readme",
-  "overrides": {
-    "argparse": "1.0.10"
-  },
   "devDependencies": {
     "@esbuild-plugins/tsconfig-paths": "0.1.2",
     "@types/babel__traverse": "7.28.0",
