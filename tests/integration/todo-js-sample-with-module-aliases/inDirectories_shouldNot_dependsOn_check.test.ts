@@ -41,27 +41,24 @@ const excludeMatchers = [
   '!<rootDir>/**/package-lock.json',
 ];
 
-describe('inDirectories.should.dependsOn scenarios (module-alias sample)', () => {
+describe('inDirectories.shouldNot.dependsOn scenarios (module-alias sample)', () => {
   beforeAll(async () => {
-    const resolveSpawn = async () => {
-      return new Promise((resolve, reject) => {
+    const runAliases = async () =>
+      new Promise((resolve, reject) => {
         const child = spawn('node', [path.resolve(rootDir, 'setup-aliases.js')], {
           stdio: 'inherit',
         });
-        child.on('close', (code) => {
-          if (code === 0)
-            resolve(true); // success
-          else reject(new Error(`Process exited with code ${code}`));
-        });
-
+        child.on('close', (code) =>
+          code === 0 ? resolve(true) : reject(new Error(`code ${code}`)),
+        );
         child.on('error', (err) => reject(err));
       });
-    };
-    await resolveSpawn();
+    await runAliases();
   });
 
+  // Scenario 1: Files have NO dependencies → PASS
   describe('Scenario 1: Files with NO dependencies', () => {
-    test('"infra" should depend on "domain" - should FAIL (no deps in infra)', async () => {
+    test('"infra" should NOT depend on "domain" - PASS', async () => {
       for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
@@ -69,29 +66,19 @@ describe('inDirectories.should.dependsOn scenarios (module-alias sample)', () =>
           ignoreMatcher: excludeMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-        try {
-          await appInstance
-            .projectFiles()
-            .inDirectories(['**/infra/**'])
-            .should()
-            .dependsOn(['**/domain/**'])
-            .check();
-          expect(1).toBe(2);
-        } catch (error) {
-          const errorMessage = (error as Error).message;
-          expect(errorMessage).toContain(
-            `Violation - Rule: project files in directories '[**/infra/**]' should depends on '[**/domain/**]'\n\n`,
-          );
-          expect(errorMessage).toContain(
-            `- '${rootDir}/infra/repositories/InMemoryTodoRepository.js'`,
-          );
-        }
+        await appInstance
+          .projectFiles()
+          .inDirectories(['**/infra/**'])
+          .shouldNot()
+          .dependsOn(['**/domain/**'])
+          .check();
       }
     });
   });
 
+  // Scenario 2: Files have dependencies but NONE match patterns → PASS
   describe('Scenario 2: Files have dependencies but NONE match the patterns', () => {
-    test('"use-cases" and "main" should depend on "inexistent" - should FAIL', async () => {
+    test('"use-cases" and "main" should NOT depend on "inexistent" - should PASS', async () => {
       for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
@@ -99,29 +86,19 @@ describe('inDirectories.should.dependsOn scenarios (module-alias sample)', () =>
           ignoreMatcher: excludeMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-        try {
-          await appInstance
-            .projectFiles()
-            .inDirectories(['**/use-cases/**', '**/main/**'])
-            .should()
-            .dependsOn(['inexistent'])
-            .check();
-          expect(1).toBe(2);
-        } catch (error) {
-          const errorMessage = (error as Error).message;
-          expect(errorMessage).toContain(
-            `Violation - Rule: project files in directories '[**/use-cases/**, **/main/**]' should depends on '[inexistent]'\n\n`,
-          );
-          expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.js'`);
-          expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetAllTodos.js'`);
-          expect(errorMessage).toContain(`- '${rootDir}/main/app.js'`);
-        }
+        await appInstance
+          .projectFiles()
+          .inDirectories(['**/use-cases/**', '**/main/**'])
+          .shouldNot()
+          .dependsOn(['inexistent'])
+          .check();
       }
     });
   });
 
-  describe('Scenario 3: Files have dependencies and SOME match the patterns', () => {
-    test('"main" should depend on "domain" and "infra" - should FAIL', async () => {
+  // Scenario 3: Files have dependencies and ANY patterns present → FAIL
+  describe('Scenario 3: Files have dependencies and ANY patterns are present', () => {
+    test('"main" should NOT depend on "domain" and "infra" - FAIL', async () => {
       for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
@@ -133,14 +110,14 @@ describe('inDirectories.should.dependsOn scenarios (module-alias sample)', () =>
           await appInstance
             .projectFiles()
             .inDirectories(['**/main/**'])
-            .should()
+            .shouldNot()
             .dependsOn(['**/domain/**', '**/infra/**'])
             .check();
           expect(1).toBe(2);
         } catch (error) {
           const errorMessage = (error as Error).message;
           expect(errorMessage).toContain(
-            `Violation - Rule: project files in directories '[**/main/**]' should depends on '[**/domain/**, **/infra/**]'\n\n`,
+            `Violation - Rule: project files in directories '[**/main/**]' should not depends on '[**/domain/**, **/infra/**]'\n\n`,
           );
           expect(errorMessage).toContain(`- '${rootDir}/main/app.js'`);
         }
@@ -149,7 +126,7 @@ describe('inDirectories.should.dependsOn scenarios (module-alias sample)', () =>
   });
 
   describe('Scenario 4: Files have dependencies and ALL patterns are present', () => {
-    test('"main" should depend on "use-cases" and "infra" - should PASS', async () => {
+    test('"main" should NOT depend on "use-cases" and "infra" - should FAIL', async () => {
       for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
@@ -157,16 +134,26 @@ describe('inDirectories.should.dependsOn scenarios (module-alias sample)', () =>
           ignoreMatcher: excludeMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-        await appInstance
-          .projectFiles()
-          .inDirectories(['**/main/**'])
-          .should()
-          .dependsOn(['**/use-cases/**', '**/infra/**'])
-          .check();
+        try {
+          await appInstance
+            .projectFiles()
+            .inDirectories(['**/main/**'])
+            .shouldNot()
+            .dependsOn(['**/use-cases/**', '**/infra/**'])
+            .check();
+
+          expect(1).toBe(2);
+        } catch (error) {
+          const errorMessage = (error as Error).message;
+          expect(errorMessage).toContain(
+            `Violation - Rule: project files in directories '[**/main/**]' should not depends on '[**/use-cases/**, **/infra/**]'\n\n`,
+          );
+          expect(errorMessage).toContain(`- '${rootDir}/main/app.js'`);
+        }
       }
     });
 
-    test('"use-cases" should depend on "domain" - should PASS', async () => {
+    test('"use-cases" should NOT depend on "domain" - should FAIL', async () => {
       for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
@@ -174,18 +161,30 @@ describe('inDirectories.should.dependsOn scenarios (module-alias sample)', () =>
           ignoreMatcher: excludeMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-        await appInstance
-          .projectFiles()
-          .inDirectories(['**/use-cases/**'])
-          .should()
-          .dependsOn(['**/domain/**'])
-          .check();
+        try {
+          await appInstance
+            .projectFiles()
+            .inDirectories(['**/use-cases/**'])
+            .shouldNot()
+            .dependsOn(['**/domain/**'])
+            .check();
+
+          expect(1).toBe(2);
+        } catch (error) {
+          const errorMessage = (error as Error).message;
+          expect(errorMessage).toContain(
+            `Violation - Rule: project files in directories '[**/use-cases/**]' should not depends on '[**/domain/**]'\n\n`,
+          );
+          expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.js'`);
+          expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetAllTodos.js'`);
+        }
       }
     });
   });
 
+  // Edge scenarios
   describe('Edge scenarios', () => {
-    test('"use-cases" and "main" should depend on "domain" and "infra" - should FAIL', async () => {
+    test('"use-cases" and "main" should NOT depend on "domain" and "infra" - should FAIL', async () => {
       for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
@@ -197,14 +196,14 @@ describe('inDirectories.should.dependsOn scenarios (module-alias sample)', () =>
           await appInstance
             .projectFiles()
             .inDirectories(['**/use-cases/**', '**/main/**'])
-            .should()
+            .shouldNot()
             .dependsOn(['**/domain/**', '**/infra/**'])
             .check();
           expect(1).toBe(2);
         } catch (error) {
           const errorMessage = (error as Error).message;
           expect(errorMessage).toContain(
-            `Violation - Rule: project files in directories '[**/use-cases/**, **/main/**]' should depends on '[**/domain/**, **/infra/**]'\n\n`,
+            `Violation - Rule: project files in directories '[**/use-cases/**, **/main/**]' should not depends on '[**/domain/**, **/infra/**]'\n\n`,
           );
           expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.js'`);
           expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetAllTodos.js'`);
@@ -213,7 +212,7 @@ describe('inDirectories.should.dependsOn scenarios (module-alias sample)', () =>
       }
     });
 
-    test('"use-cases" and "main" should depend on "domain" - should FAIL (no "domain" deps in "main")', async () => {
+    test('"use-cases" and "main" should NOT depend on "domain" - should FAIL (no "domain" deps in "main")', async () => {
       for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
@@ -225,7 +224,7 @@ describe('inDirectories.should.dependsOn scenarios (module-alias sample)', () =>
           await appInstance
             .projectFiles()
             .inDirectories(['**/use-cases/**', '**/main/**'])
-            .should()
+            .shouldNot()
             .dependsOn(['**/domain/**'])
             .check();
           expect(1).toBe(2);
@@ -233,11 +232,11 @@ describe('inDirectories.should.dependsOn scenarios (module-alias sample)', () =>
           const errorMessage = (error as Error).message;
 
           expect(errorMessage).toContain(
-            `Violation - Rule: project files in directories '[**/use-cases/**, **/main/**]' should depends on '[**/domain/**]'\n\n`,
+            `Violation - Rule: project files in directories '[**/use-cases/**, **/main/**]' should not depends on '[**/domain/**]'\n\n`,
           );
-          expect(errorMessage).not.toContain(`- '${rootDir}/use-cases/CreateTodo.js'`);
-          expect(errorMessage).not.toContain(`- '${rootDir}/use-cases/GetAllTodos.js'`);
-          expect(errorMessage).toContain(`- '${rootDir}/main/app.js'`);
+          expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.js'`);
+          expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetAllTodos.js'`);
+          expect(errorMessage).not.toContain(`- '${rootDir}/main/app.js'`);
         }
       }
     });
@@ -254,14 +253,14 @@ describe('inDirectories.should.dependsOn scenarios (module-alias sample)', () =>
           await appInstance
             .projectFiles()
             .inDirectories(['**/use-cases/**'])
-            .should()
+            .shouldNot()
             .dependsOn([])
             .check();
           expect(1).toBe(2);
         } catch (error) {
           const errorMessage = (error as Error).message;
           expect(errorMessage).toContain(
-            `Violation - Rule: project files in directories '[**/use-cases/**]' should depends on '[]'\n\n`,
+            `Violation - Rule: project files in directories '[**/use-cases/**]' should not depends on '[]'\n\n`,
           );
           expect(errorMessage).toContain('No pattern was provided for checking');
         }
@@ -280,21 +279,21 @@ describe('inDirectories.should.dependsOn scenarios (module-alias sample)', () =>
           await appInstance
             .projectFiles()
             .inDirectories(['**/use-cases/**'])
-            .should()
+            .shouldNot()
             .dependsOn(['uuid', ''])
             .check();
           expect(1).toBe(2);
         } catch (error) {
           const errorMessage = (error as Error).message;
           expect(errorMessage).toContain(
-            `Violation - Rule: project files in directories '[**/use-cases/**]' should depends on '[uuid, ]'\n\n`,
+            `Violation - Rule: project files in directories '[**/use-cases/**]' should not depends on '[uuid, ]'\n\n`,
           );
           expect(errorMessage).toContain('No pattern was provided for checking');
         }
       }
     });
 
-    test('incorrect extension - should FAIL', async () => {
+    test('incorrect extension - should FAIL with mismatch details', async () => {
       for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
@@ -305,15 +304,15 @@ describe('inDirectories.should.dependsOn scenarios (module-alias sample)', () =>
         try {
           await appInstance
             .projectFiles()
-            .inDirectories(['**/infra/**'])
-            .should()
+            .inDirectories(['**/use-cases/**'])
+            .shouldNot()
             .dependsOn(['**/domain/**'])
             .check();
           expect(1).toBe(2);
         } catch (error) {
           const errorMessage = (error as Error).message;
           expect(errorMessage).toContain(
-            `Violation - Rule: project files in directories '[**/infra/**]' should depends on '[**/domain/**]'\n\n`,
+            `Violation - Rule: project files in directories '[**/use-cases/**]' should not depends on '[**/domain/**]'\n\n`,
           );
           expect(errorMessage).toContain(
             `- '${rootDir}/domain/entities/Todo.js' - mismatch in 'extensionTypes': [**/*.ts]`,
