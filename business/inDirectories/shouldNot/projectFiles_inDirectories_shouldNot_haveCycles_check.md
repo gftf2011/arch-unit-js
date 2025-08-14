@@ -2,7 +2,7 @@
 
 ## Business Rule Description
 
-DESCRIPTION: Files in the specified directories must NOT have circular dependencies. The rule passes only when the combined dependency graph (built from the union of all files matched by the provided directory patterns, after exclusions) contains no cycles.
+DESCRIPTION: Files in the specified directories must NOT have circular dependencies. The rule passes only when the combined dependency graph (from the union of the given directories) contains no cycles.
 
 - It is NOT OK if ANY circular dependencies exist
 - It is OK if NO circular dependencies exist
