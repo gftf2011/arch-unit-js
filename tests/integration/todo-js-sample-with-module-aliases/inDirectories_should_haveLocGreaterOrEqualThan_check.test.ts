@@ -1,4 +1,3 @@
-import { spawn } from 'child_process';
 import * as path from 'pathe';
 
 import { ComponentSelectorBuilder } from '@/fluent-api';
@@ -38,24 +37,6 @@ const excludeMatchers = [
 ];
 
 describe('inDirectories.should.haveLocGreaterOrEqualThan scenarios (module-alias sample)', () => {
-  beforeAll(async () => {
-    const resolveSpawn = async () => {
-      return new Promise((resolve, reject) => {
-        const child = spawn('node', [path.resolve(rootDir, 'setup-aliases.js')], {
-          stdio: 'inherit',
-        });
-        child.on('close', (code) => {
-          if (code === 0)
-            resolve(true); // success
-          else reject(new Error(`Process exited with code ${code}`));
-        });
-
-        child.on('error', (err) => reject(err));
-      });
-    };
-    await resolveSpawn();
-  });
-
   describe('Scenario 1: All files have lines of code GREATER than or EQUAL to the threshold', () => {
     test('domain and use-cases directories should have LOC >= 7 - should PASS (all files >= 7)', async () => {
       for (const [includeMatcher] of includeMatchers) {

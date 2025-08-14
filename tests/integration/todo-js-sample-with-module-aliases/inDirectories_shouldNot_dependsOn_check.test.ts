@@ -1,4 +1,3 @@
-import { spawn } from 'child_process';
 import * as path from 'pathe';
 
 import { ComponentSelectorBuilder } from '@/fluent-api';
@@ -42,20 +41,6 @@ const excludeMatchers = [
 ];
 
 describe('inDirectories.shouldNot.dependsOn scenarios (module-alias sample)', () => {
-  beforeAll(async () => {
-    const runAliases = async () =>
-      new Promise((resolve, reject) => {
-        const child = spawn('node', [path.resolve(rootDir, 'setup-aliases.js')], {
-          stdio: 'inherit',
-        });
-        child.on('close', (code) =>
-          code === 0 ? resolve(true) : reject(new Error(`code ${code}`)),
-        );
-        child.on('error', (err) => reject(err));
-      });
-    await runAliases();
-  });
-
   // Scenario 1: Files have NO dependencies → PASS
   describe('Scenario 1: Files with NO dependencies', () => {
     test('"infra" should NOT depend on "domain" - PASS', async () => {

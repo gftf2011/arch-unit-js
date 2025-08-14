@@ -2,6 +2,7 @@ module.exports = {
   roots: ['<rootDir>/tests'],
   globalSetup: './jest.global-setup.js',
   globalTeardown: './jest.global-teardown.js',
+  setupFilesAfterEnv: ['./jest.global-before-all.js'],
   preset: 'ts-jest',
   testEnvironment: 'node',
   testMatch: ['**/tests/**/*.test.ts'],
