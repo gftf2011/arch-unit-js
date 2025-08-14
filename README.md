@@ -166,7 +166,7 @@ Now run the test and congrats 🥳, you just tested your application topology !
 
 ## :memo: License
 
-This project is under MIT license. See the [LICENSE](https://github.com/gftf2011/arch-unit-js/blob/main/LICENSE) file for more details.
+This project is under MIT license. See the [LICENSE](LICENSE) file for more details.
 
 ---
 
