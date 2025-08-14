@@ -118,7 +118,7 @@ Now run the test and congrats 🥳, you just tested your application topology !
 <details>
   <summary><b>"inDirectory" API Docs</b></summary>
 
-- [Project Files in Directory Should NOT Depend On Specified Patterns](https://github.com/gftf2011/arch-unit-js/blob/main/business/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_dependsOn_check.md)
+- [Project Files in Directory Should NOT Depend On Specified Patterns](business/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_dependsOn_check.md)
 - [Project Files in Directory Should NOT Have Cycles](https://github.com/gftf2011/arch-unit-js/blob/main/business/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveCycles_check.md)
 - [Project Files in Directory Should NOT Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](https://github.com/gftf2011/arch-unit-js/blob/main/business/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveLocGreaterOrEqualThan_check.md)
 - [Project Files in Directory Should NOT Have Greater L.O.C. (Lines Of Code) Than Specified Value](https://github.com/gftf2011/arch-unit-js/blob/main/business/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveLocGreaterThan_check.md)
