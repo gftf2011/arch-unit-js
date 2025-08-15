@@ -49,7 +49,9 @@
     "testing",
     "babel",
     "architecture",
-    "javascript-library"
+    "javascript-library",
+    "arch-unit-ts",
+    "ts-arch"
   ],
   "homepage": "https://github.com/gftf2011/arch-unit-js#readme",
   "devDependencies": {

@@ -8,7 +8,7 @@ import {
   ResolvableDependencyProps,
   ResolvableResponse,
 } from '@/core/dependency/common';
-import { nodejs, javascript } from '@/utils';
+import { nodejs } from '@/utils';
 
 export class BuildinModuleResolvable extends Resolvable {
   constructor(depProps: DependencyProps, resolvableProps: ResolvableDependencyProps) {
@@ -79,10 +79,8 @@ export class TypescriptPathDependencyResolvable extends Resolvable {
   public override resolve(): ResolvableResponse {
     try {
       if (this.resolvableProps.typescriptPath) {
-        const clientRequire = createRequire(
-          path.join(this.resolvableProps.rootDir, 'package.json'),
-        );
-        const ts = clientRequire('typescript');
+        const require = createRequire(path.join(this.resolvableProps.rootDir, 'package.json'));
+        const ts = require('typescript');
 
         const { dir, base } = path.parse(this.resolvableProps.typescriptPath);
 
@@ -128,28 +126,21 @@ export class ValidPathDependencyResolvable extends Resolvable {
     super(depProps, resolvableProps);
   }
   public override resolve(): ResolvableResponse {
-    const dependencyResolvedPath = path.resolve(
-      path.dirname(this.resolvableProps.filePath),
-      this.depProps.name,
-    );
-    const dependencyCandidates = javascript.generateDependenciesCandidates(
-      dependencyResolvedPath,
-      this.resolvableProps.extensions,
-    );
-    const dependencyCandidateIfExists =
-      javascript.getDependencyCandidateIfExists(dependencyCandidates);
+    try {
+      const require = createRequire(this.resolvableProps.filePath);
 
-    if (dependencyCandidateIfExists) {
-      const dependency = micromatch(this.resolvableProps.availableFiles, [
-        dependencyCandidateIfExists,
-      ])[0];
+      const dependencyCandidate = require.resolve(this.depProps.name);
+
+      const dependency = micromatch(this.resolvableProps.availableFiles, [dependencyCandidate])[0];
       if (dependency) {
         this.depProps.type = 'valid-path';
         this.depProps.name = dependency;
         return { status: 'resolved', depProps: { ...this.depProps } };
       }
+      return { status: 'unresolved', depProps: this.depProps };
+    } catch (_error) {
+      return { status: 'unresolved', depProps: this.depProps };
     }
-    return { status: 'unresolved', depProps: this.depProps };
   }
 }
 
