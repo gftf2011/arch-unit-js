@@ -20,7 +20,7 @@ beforeAll(async () => {
   const resolveSpawn = async () => {
     return new Promise((resolve, reject) => {
       const child = spawn('node', [path.resolve(rootDir, 'setup-aliases.js')], {
-        stdio: 'inherit',
+        stdio: 'ignore',
       });
       child.on('close', (code) => {
         if (code === 0)
