@@ -6,35 +6,33 @@ import { Options } from '@/fluent-api/common/types';
 const rootDir = path.resolve(path.dirname(__filename), '..', '..', 'sample', 'todo-ts-sample');
 
 const includeMatchers = [
-  [['<rootDir>/**']],
-  [['<rootDir>/**/']],
-  [['./**']],
-  [['./**/']],
-  [['<rootDir>/domain/**', '<rootDir>/use-cases/**', '<rootDir>/infra/**', '<rootDir>/main/**']],
-  [
-    [
-      '<rootDir>/domain/**/',
-      '<rootDir>/use-cases/**/',
-      '<rootDir>/infra/**/',
-      '<rootDir>/main/**/',
-    ],
-  ],
-  [['./domain/**', './use-cases/**', './infra/**', './main/**']],
-  [['./domain/**/', './use-cases/**', './infra/**', './main/**/']],
+  ['<rootDir>/**'],
+  ['<rootDir>/**/'],
+  ['./**'],
+  ['./**/'],
+  ['<rootDir>/domain/**', '<rootDir>/use-cases/**', '<rootDir>/infra/**', '<rootDir>/main/**'],
+  ['<rootDir>/domain/**/', '<rootDir>/use-cases/**/', '<rootDir>/infra/**/', '<rootDir>/main/**/'],
+  ['./domain/**', './use-cases/**', './infra/**', './main/**'],
+  ['./domain/**/', './use-cases/**/', './infra/**/', './main/**/'],
 ];
 
-const excludeMatchers = ['!<rootDir>/**/package.json', '!<rootDir>/**/tsconfig.json'];
+const ignoreMatchers = [
+  '!<rootDir>/**/package.json',
+  '!<rootDir>/**/node_modules/**',
+  '!<rootDir>/**/package-lock.json',
+  '!<rootDir>/**/tsconfig.json',
+];
 
 const typescriptPath = '<rootDir>/tsconfig.json';
 
 describe('should.haveName scenarios', () => {
   describe('Scenario 1: Directory has files but NONE match the pattern', () => {
     test('"use-cases" should have name "*UseCase.ts" - should FAIL (none match)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -65,11 +63,11 @@ describe('should.haveName scenarios', () => {
     });
 
     test('"domain/entities" should have name "*Repository.ts" - should FAIL (none match)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -95,11 +93,11 @@ describe('should.haveName scenarios', () => {
     });
 
     test('"infra/repositories" should have name "*Entity.ts" - should FAIL (none match)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -129,11 +127,11 @@ describe('should.haveName scenarios', () => {
 
   describe('Scenario 2: Directory has files and SOME match the pattern', () => {
     test('"use-cases" should have name "*Todo.ts" - should FAIL (only some match)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -163,11 +161,11 @@ describe('should.haveName scenarios', () => {
 
   describe('Scenario 3: Directory has files and ALL files match the pattern', () => {
     test('entire project as (**) should have name with "*.ts" - should PASS (all match)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -176,11 +174,11 @@ describe('should.haveName scenarios', () => {
     });
 
     test('"domain/entities" should have name "*Todo.ts" - should PASS (all match)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -194,11 +192,11 @@ describe('should.haveName scenarios', () => {
     });
 
     test('"domain/entities" should have name "Todo.ts" - should PASS (exact match)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -212,11 +210,11 @@ describe('should.haveName scenarios', () => {
     });
 
     test('"infra/repositories" should have name "*Repository.ts" - should PASS (all match)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -230,11 +228,11 @@ describe('should.haveName scenarios', () => {
     });
 
     test('"infra/repositories" should have name "InMemory*Repository.ts" - should PASS (all match)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -248,11 +246,11 @@ describe('should.haveName scenarios', () => {
     });
 
     test('"use-cases" should have name "*Todo*" - should PASS (all match)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -268,12 +266,12 @@ describe('should.haveName scenarios', () => {
 
   describe('Edge scenarios', () => {
     test('projectFiles.inDirectory("**/domain/**").should().haveName("").check() - should FAIL (empty pattern)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         try {
           const options: Options = {
             extensionTypes: ['**/*.ts'],
             includeMatcher: [...includeMatcher],
-            ignoreMatcher: excludeMatchers,
+            ignoreMatcher: ignoreMatchers,
             typescriptPath,
           };
           const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -298,11 +296,11 @@ describe('should.haveName scenarios', () => {
     });
 
     test('incorrect extension', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);

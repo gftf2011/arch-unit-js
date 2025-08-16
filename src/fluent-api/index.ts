@@ -315,6 +315,21 @@ class ProjectFilesComponentSelector {
     public excludePatterns: string[] = [],
   ) {}
 
+  inDirectories(patterns: string[], excludePattern: string[] = []): ShouldSelectorBuilder {
+    this.includePatterns.push(...patterns);
+    this.excludePatterns.push(...excludePattern);
+    return new ShouldSelectorBuilder(
+      this.rootDir,
+      this.options,
+      [
+        ...this.ruleConstruction,
+        `in directories '[${patterns.join(', ')}]'` +
+          (excludePattern.length > 0 ? ` - excluding [${excludePattern.join(', ')}] ,` : ''),
+      ],
+      this,
+    );
+  }
+
   inDirectory(pattern: string, excludePattern: string[] = []): ShouldSelectorBuilder {
     this.includePatterns.push(pattern);
     this.excludePatterns.push(...excludePattern);
@@ -324,7 +339,7 @@ class ProjectFilesComponentSelector {
       [
         ...this.ruleConstruction,
         `in directory '${pattern}'` +
-          (excludePattern.length > 0 ? ` - excluding files [${excludePattern.join(', ')}] ,` : ''),
+          (excludePattern.length > 0 ? ` - excluding [${excludePattern.join(', ')}] ,` : ''),
       ],
       this,
     );

@@ -4,3 +4,7 @@ node_modules/
 tests/sample/
 *.min.js
 **/*.d.ts 
+
+jest.global-setup.js
+jest.global-teardown.js
+jest.global-before-all.js

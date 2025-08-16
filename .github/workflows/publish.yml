@@ -49,6 +49,9 @@ jobs:
       - name: Validate TAR package file checksum
         run: sha256sum -c checksum.txt
 
+      - name: Authenticate to npm
+        run: npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
+
       - name: Publish Package
         if: >
           (github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.head_ref == 'dev' && github.base_ref == 'main')
