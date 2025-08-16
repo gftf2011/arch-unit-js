@@ -6,21 +6,14 @@ import { Options } from '@/fluent-api/common/types';
 const rootDir = path.resolve(path.dirname(__filename), '..', '..', 'sample', 'todo-ts-sample');
 
 const includeMatchers = [
-  [['<rootDir>/**']],
-  [['<rootDir>/**/']],
-  [['./**']],
-  [['./**/']],
-  [['<rootDir>/domain/**', '<rootDir>/use-cases/**', '<rootDir>/infra/**', '<rootDir>/main/**']],
-  [
-    [
-      '<rootDir>/domain/**/',
-      '<rootDir>/use-cases/**/',
-      '<rootDir>/infra/**/',
-      '<rootDir>/main/**/',
-    ],
-  ],
-  [['./domain/**', './use-cases/**', './infra/**', './main/**']],
-  [['./domain/**/', './use-cases/**', './infra/**', './main/**/']],
+  ['<rootDir>/**'],
+  ['<rootDir>/**/'],
+  ['./**'],
+  ['./**/'],
+  ['<rootDir>/domain/**', '<rootDir>/use-cases/**', '<rootDir>/infra/**', '<rootDir>/main/**'],
+  ['<rootDir>/domain/**/', '<rootDir>/use-cases/**/', '<rootDir>/infra/**/', '<rootDir>/main/**/'],
+  ['./domain/**', './use-cases/**', './infra/**', './main/**'],
+  ['./domain/**/', './use-cases/**/', './infra/**/', './main/**/'],
 ];
 
 const ignoreMatchers = [
@@ -35,7 +28,7 @@ const typescriptPath = '<rootDir>/tsconfig.json';
 describe('shouldNot.haveName scenarios', () => {
   describe('Scenario 1: Directory has files but NONE match the pattern', () => {
     test('"use-cases" should not have name "*UseCase.ts" - should PASS (none match)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
@@ -53,7 +46,7 @@ describe('shouldNot.haveName scenarios', () => {
     });
 
     test('"domain/entities" should not have name "*Repository.ts" - should PASS (none match)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
@@ -71,7 +64,7 @@ describe('shouldNot.haveName scenarios', () => {
     });
 
     test('"infra/repositories" should not have name "*Entity.ts" - should PASS (none match)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
@@ -89,7 +82,7 @@ describe('shouldNot.haveName scenarios', () => {
     });
 
     test('"use-cases" should not have name "*Service.ts" - should PASS (none match)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
@@ -107,7 +100,7 @@ describe('shouldNot.haveName scenarios', () => {
     });
 
     test('"domain" should not have name "*Controller.ts" - should PASS (none match)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
@@ -127,7 +120,7 @@ describe('shouldNot.haveName scenarios', () => {
 
   describe('Scenario 2: Directory has files and ANY files match the pattern', () => {
     test('"domain/entities" should not have name "*Todo.ts" - should FAIL (matches)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
@@ -157,7 +150,7 @@ describe('shouldNot.haveName scenarios', () => {
     });
 
     test('"domain/entities" should not have name "Todo.ts" - should FAIL (exact match)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
@@ -187,7 +180,7 @@ describe('shouldNot.haveName scenarios', () => {
     });
 
     test('"infra/repositories" should not have name "*Repository.ts" - should FAIL (matches)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
@@ -218,7 +211,7 @@ describe('shouldNot.haveName scenarios', () => {
     });
 
     test('"infra/repositories" should not have name "InMemory*Repository.ts" - should FAIL (matches)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
@@ -250,7 +243,7 @@ describe('shouldNot.haveName scenarios', () => {
     });
 
     test('"use-cases" should not have name "*.ts" - should FAIL (all match wildcard)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
@@ -285,7 +278,7 @@ describe('shouldNot.haveName scenarios', () => {
     });
 
     test('"use-cases" should not have name "*Todo*" - should FAIL (some match)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
@@ -319,7 +312,7 @@ describe('shouldNot.haveName scenarios', () => {
     });
 
     test('"domain" should not have name "*Todo*" - should FAIL (some match)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
@@ -352,7 +345,7 @@ describe('shouldNot.haveName scenarios', () => {
 
   describe('Edge scenarios', () => {
     test('projectFiles.inDirectory("**/domain/**").shouldNot().haveName("").check() - should FAIL (empty pattern)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         try {
           const options: Options = {
             extensionTypes: ['**/*.ts'],
@@ -382,7 +375,7 @@ describe('shouldNot.haveName scenarios', () => {
     });
 
     test('incorrect extension', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
