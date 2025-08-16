@@ -13,25 +13,25 @@ const rootDir = path.resolve(
 
 const includeMatchers: string[][] = [
   ['<rootDir>/**'],
-  //   ['<rootDir>/**/'],
-  //   ['./**'],
-  //   ['./**/'],
-  //   [
-  //     '<rootDir>/domain/**',
-  //     '<rootDir>/use-cases/**',
-  //     '<rootDir>/infra/**',
-  //     '<rootDir>/main/**',
-  //     '<rootDir>/setup-aliases.js',
-  //   ],
-  //   [
-  //     '<rootDir>/domain/**/',
-  //     '<rootDir>/use-cases/**/',
-  //     '<rootDir>/infra/**/',
-  //     '<rootDir>/main/**/',
-  //     '<rootDir>/setup-aliases.js',
-  //   ],
-  //   ['./domain/**', './use-cases/**', './infra/**', './main/**', './setup-aliases.js'],
-  //   ['./domain/**/', './use-cases/**/', './infra/**/', './main/**/', './setup-aliases.js'],
+  ['<rootDir>/**/'],
+  ['./**'],
+  ['./**/'],
+  [
+    '<rootDir>/domain/**',
+    '<rootDir>/use-cases/**',
+    '<rootDir>/infra/**',
+    '<rootDir>/main/**',
+    '<rootDir>/setup-aliases.js',
+  ],
+  [
+    '<rootDir>/domain/**/',
+    '<rootDir>/use-cases/**/',
+    '<rootDir>/infra/**/',
+    '<rootDir>/main/**/',
+    '<rootDir>/setup-aliases.js',
+  ],
+  ['./domain/**', './use-cases/**', './infra/**', './main/**', './setup-aliases.js'],
+  ['./domain/**/', './use-cases/**/', './infra/**/', './main/**/', './setup-aliases.js'],
 ];
 
 const ignoreMatchers = [
