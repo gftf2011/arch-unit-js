@@ -11,35 +11,39 @@ const rootDir = path.resolve(
   'todo-js-sample-with-module-aliases',
 );
 
-const includeMatchers = [
-  [['<rootDir>/**']],
-  [['<rootDir>/**/']],
-  [['./**']],
-  [['./**/']],
-  [['<rootDir>/domain/**', '<rootDir>/use-cases/**', '<rootDir>/infra/**', '<rootDir>/main/**']],
+const includeMatchers: string[][] = [
+  ['<rootDir>/**'],
+  ['<rootDir>/**/'],
+  ['./**'],
+  ['./**/'],
   [
-    [
-      '<rootDir>/domain/**/',
-      '<rootDir>/use-cases/**/',
-      '<rootDir>/infra/**/',
-      '<rootDir>/main/**/',
-    ],
+    '<rootDir>/domain/**',
+    '<rootDir>/use-cases/**',
+    '<rootDir>/infra/**',
+    '<rootDir>/main/**',
+    '<rootDir>/setup-aliases.js',
   ],
-  [['./domain/**', './use-cases/**', './infra/**', './main/**']],
-  [['./domain/**/', './use-cases/**', './infra/**', './main/**/']],
+  [
+    '<rootDir>/domain/**/',
+    '<rootDir>/use-cases/**/',
+    '<rootDir>/infra/**/',
+    '<rootDir>/main/**/',
+    '<rootDir>/setup-aliases.js',
+  ],
+  ['./domain/**', './use-cases/**', './infra/**', './main/**', './setup-aliases.js'],
+  ['./domain/**/', './use-cases/**/', './infra/**/', './main/**/', './setup-aliases.js'],
 ];
 
 const ignoreMatchers = [
   '!<rootDir>/**/package.json',
   '!<rootDir>/**/node_modules/**',
   '!<rootDir>/**/package-lock.json',
-  '!<rootDir>/**/setup-aliases.js',
 ];
 
 describe('inDirectories.should.haveLocLessThan scenarios (module-alias sample)', () => {
   describe('Scenario 1: All files have lines of code LESS than the threshold', () => {
     test('domain and use-cases should have LOC < 50 - should PASS', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
@@ -57,7 +61,7 @@ describe('inDirectories.should.haveLocLessThan scenarios (module-alias sample)',
     });
 
     test('infra should have LOC < 16 - should PASS (InMemoryTodoRepository.js has 15 LOC)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
@@ -75,7 +79,7 @@ describe('inDirectories.should.haveLocLessThan scenarios (module-alias sample)',
     });
 
     test('main should have LOC < 25 - should PASS (app.js has 21 LOC)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
@@ -93,7 +97,7 @@ describe('inDirectories.should.haveLocLessThan scenarios (module-alias sample)',
     });
 
     test('entire project should have LOC < 30 - should PASS (all files < 30)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
@@ -108,7 +112,7 @@ describe('inDirectories.should.haveLocLessThan scenarios (module-alias sample)',
 
   describe('Scenario 2: ANY files have lines of code GREATER than or EQUAL to the threshold', () => {
     test('domain and use-cases should have LOC < 12 - should FAIL (CreateTodo.js has exactly 12 LOC)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
@@ -138,7 +142,7 @@ describe('inDirectories.should.haveLocLessThan scenarios (module-alias sample)',
     });
 
     test('infra should have LOC < 15 - should FAIL (InMemoryTodoRepository.js has exactly 15 LOC)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
@@ -168,7 +172,7 @@ describe('inDirectories.should.haveLocLessThan scenarios (module-alias sample)',
     });
 
     test('main should have LOC < 21 - should FAIL (app.js has exactly 21 LOC)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
@@ -196,7 +200,7 @@ describe('inDirectories.should.haveLocLessThan scenarios (module-alias sample)',
     });
 
     test('entire project should have LOC < 14 - should FAIL (app.js and InMemoryTodoRepository.js violate)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
@@ -229,7 +233,7 @@ describe('inDirectories.should.haveLocLessThan scenarios (module-alias sample)',
 
   describe('Edge scenarios', () => {
     test('non-existent directories should throw error (no files found)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
@@ -257,7 +261,7 @@ describe('inDirectories.should.haveLocLessThan scenarios (module-alias sample)',
     });
 
     test('threshold of 0 should throw error (invalid threshold)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
@@ -285,7 +289,7 @@ describe('inDirectories.should.haveLocLessThan scenarios (module-alias sample)',
     });
 
     test('incorrect extension type should show mismatch entries', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'], // Looking for TS in JS project
           includeMatcher: [...includeMatcher],
