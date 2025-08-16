@@ -6,21 +6,14 @@ import { Options } from '@/fluent-api/common/types';
 const rootDir = path.resolve(path.dirname(__filename), '..', '..', 'sample', 'todo-js-sample');
 
 const includeMatchers = [
-  [['<rootDir>/**']],
-  [['<rootDir>/**/']],
-  [['./**']],
-  [['./**/']],
-  [['<rootDir>/domain/**', '<rootDir>/use-cases/**', '<rootDir>/infra/**', '<rootDir>/main/**']],
-  [
-    [
-      '<rootDir>/domain/**/',
-      '<rootDir>/use-cases/**/',
-      '<rootDir>/infra/**/',
-      '<rootDir>/main/**/',
-    ],
-  ],
-  [['./domain/**', './use-cases/**', './infra/**', './main/**']],
-  [['./domain/**/', './use-cases/**/', './infra/**/', './main/**/']],
+  ['<rootDir>/**'],
+  ['<rootDir>/**/'],
+  ['./**'],
+  ['./**/'],
+  ['<rootDir>/domain/**', '<rootDir>/use-cases/**', '<rootDir>/infra/**', '<rootDir>/main/**'],
+  ['<rootDir>/domain/**/', '<rootDir>/use-cases/**/', '<rootDir>/infra/**/', '<rootDir>/main/**/'],
+  ['./domain/**', './use-cases/**', './infra/**', './main/**'],
+  ['./domain/**/', './use-cases/**/', './infra/**/', './main/**/'],
 ];
 
 const ignoreMatchers = [
@@ -32,7 +25,7 @@ const ignoreMatchers = [
 describe('shouldNot.onlyHaveName scenarios', () => {
   describe('Scenario 1: Directory has files but NONE match the pattern', () => {
     test('"entities" should not only have name "*UseCase.js" - should PASS', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
@@ -50,7 +43,7 @@ describe('shouldNot.onlyHaveName scenarios', () => {
     });
 
     test('"infra repositories" should not only have name "*Entity.js" - should PASS', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
@@ -70,7 +63,7 @@ describe('shouldNot.onlyHaveName scenarios', () => {
 
   describe('Scenario 2: Directory has files and SOME match the pattern', () => {
     test('"use-cases" should not only have name "*Todo.js" - should PASS', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
@@ -88,7 +81,7 @@ describe('shouldNot.onlyHaveName scenarios', () => {
     });
 
     test('"use-cases" should not only have name "Get*.js" - should PASS', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
@@ -108,7 +101,7 @@ describe('shouldNot.onlyHaveName scenarios', () => {
 
   describe('Edge scenarios', () => {
     test('projectFiles.inDirectory("**/domain/**").shouldNot().onlyHaveName("").check() - should FAIL (empty pattern)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         try {
           const options: Options = {
             extensionTypes: ['**/*.js'],
@@ -137,7 +130,7 @@ describe('shouldNot.onlyHaveName scenarios', () => {
     });
 
     test('incorrect extension', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],

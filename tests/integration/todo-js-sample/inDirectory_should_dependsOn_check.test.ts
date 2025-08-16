@@ -6,21 +6,14 @@ import { Options } from '@/fluent-api/common/types';
 const rootDir = path.resolve(path.dirname(__filename), '..', '..', 'sample', 'todo-js-sample');
 
 const includeMatchers = [
-  [['<rootDir>/**']],
-  [['<rootDir>/**/']],
-  [['./**']],
-  [['./**/']],
-  [['<rootDir>/domain/**', '<rootDir>/use-cases/**', '<rootDir>/infra/**', '<rootDir>/main/**']],
-  [
-    [
-      '<rootDir>/domain/**/',
-      '<rootDir>/use-cases/**/',
-      '<rootDir>/infra/**/',
-      '<rootDir>/main/**/',
-    ],
-  ],
-  [['./domain/**', './use-cases/**', './infra/**', './main/**']],
-  [['./domain/**/', './use-cases/**/', './infra/**/', './main/**/']],
+  ['<rootDir>/**'],
+  ['<rootDir>/**/'],
+  ['./**'],
+  ['./**/'],
+  ['<rootDir>/domain/**', '<rootDir>/use-cases/**', '<rootDir>/infra/**', '<rootDir>/main/**'],
+  ['<rootDir>/domain/**/', '<rootDir>/use-cases/**/', '<rootDir>/infra/**/', '<rootDir>/main/**/'],
+  ['./domain/**', './use-cases/**', './infra/**', './main/**'],
+  ['./domain/**/', './use-cases/**/', './infra/**/', './main/**/'],
 ];
 
 const ignoreMatchers = [
@@ -32,7 +25,7 @@ const ignoreMatchers = [
 describe('should.dependsOn scenarios', () => {
   describe('Scenario 1: File has NO dependencies', () => {
     test('"domain/entities" should depend on "inexistent-dependency" - should FAIL', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
@@ -62,7 +55,7 @@ describe('should.dependsOn scenarios', () => {
 
   describe('Scenario 2: File has dependencies but NONE match the patterns', () => {
     test('"use-cases" should depend on "inexistent-dependency" - should FAIL', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
@@ -93,7 +86,7 @@ describe('should.dependsOn scenarios', () => {
     });
 
     test('"use-cases" should depend on "infra" - should FAIL (use-cases imports from domain, not infra)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
@@ -126,7 +119,7 @@ describe('should.dependsOn scenarios', () => {
 
   describe('Scenario 3: File has dependencies and SOME match the patterns', () => {
     test('"use-cases" should depend on "domain" and "infra" - should FAIL (not all files have "domain")', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
@@ -159,7 +152,7 @@ describe('should.dependsOn scenarios', () => {
     });
 
     test('"main" should depend on "domain", "use-cases" and "inexistent" - should FAIL (missing inexistent)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
@@ -189,7 +182,7 @@ describe('should.dependsOn scenarios', () => {
 
   describe('Scenario 4: File has dependencies and ALL patterns are present', () => {
     test('"infra" should depend on "domain" - should PASS', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
@@ -206,7 +199,7 @@ describe('should.dependsOn scenarios', () => {
     });
 
     test('"use-cases/CreateTodo.js" should depend on "domain" - should PASS (file have "domain")', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
@@ -228,7 +221,7 @@ describe('should.dependsOn scenarios', () => {
     });
 
     test('"main" should depend on "domain" and "use-cases" - should PASS (has both + infra extra)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
@@ -245,7 +238,7 @@ describe('should.dependsOn scenarios', () => {
     });
 
     test('"main" should depend on "domain", "use-cases" and "infra" - should PASS (has all patterns)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
@@ -264,7 +257,7 @@ describe('should.dependsOn scenarios', () => {
 
   describe('Edge scenarios', () => {
     test('projectFiles.inDirectory("**/domain/**").should().dependsOn([]).check() - should FAIL (empty array)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         try {
           const options: Options = {
             extensionTypes: ['**/*.js'],
@@ -293,7 +286,7 @@ describe('should.dependsOn scenarios', () => {
     });
 
     test('projectFiles.inDirectory("**/domain/**").should().dependsOn(["uuid", ""]).check() - should FAIL (array with empty string)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         try {
           const options: Options = {
             extensionTypes: ['**/*.js'],
@@ -322,7 +315,7 @@ describe('should.dependsOn scenarios', () => {
     });
 
     test('incorrect extension', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],

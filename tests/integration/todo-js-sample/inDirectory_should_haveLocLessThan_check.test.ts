@@ -6,21 +6,14 @@ import { Options } from '@/fluent-api/common/types';
 const rootDir = path.resolve(path.dirname(__filename), '..', '..', 'sample', 'todo-js-sample');
 
 const includeMatchers = [
-  [['<rootDir>/**']],
-  [['<rootDir>/**/']],
-  [['./**']],
-  [['./**/']],
-  [['<rootDir>/domain/**', '<rootDir>/use-cases/**', '<rootDir>/infra/**', '<rootDir>/main/**']],
-  [
-    [
-      '<rootDir>/domain/**/',
-      '<rootDir>/use-cases/**/',
-      '<rootDir>/infra/**/',
-      '<rootDir>/main/**/',
-    ],
-  ],
-  [['./domain/**', './use-cases/**', './infra/**', './main/**']],
-  [['./domain/**/', './use-cases/**/', './infra/**/', './main/**/']],
+  ['<rootDir>/**'],
+  ['<rootDir>/**/'],
+  ['./**'],
+  ['./**/'],
+  ['<rootDir>/domain/**', '<rootDir>/use-cases/**', '<rootDir>/infra/**', '<rootDir>/main/**'],
+  ['<rootDir>/domain/**/', '<rootDir>/use-cases/**/', '<rootDir>/infra/**/', '<rootDir>/main/**/'],
+  ['./domain/**', './use-cases/**', './infra/**', './main/**'],
+  ['./domain/**/', './use-cases/**/', './infra/**/', './main/**/'],
 ];
 
 const ignoreMatchers = [
@@ -32,7 +25,7 @@ const ignoreMatchers = [
 describe('should.haveLocLessThan scenarios', () => {
   describe('Scenario 1: All files have lines of code LESS than the threshold', () => {
     test('"use-cases" should have LOC less than 50 - should PASS', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
@@ -50,7 +43,7 @@ describe('should.haveLocLessThan scenarios', () => {
     });
 
     test('"entities" should have LOC less than 30 - should PASS', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
@@ -68,7 +61,7 @@ describe('should.haveLocLessThan scenarios', () => {
     });
 
     test('"domain" should have LOC less than 40 - should PASS', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
@@ -88,7 +81,7 @@ describe('should.haveLocLessThan scenarios', () => {
 
   describe('Scenario 2: ANY files have lines of code GREATER than or EQUAL to the threshold', () => {
     test('"use-cases" should have LOC less than 30 - should FAIL (UpdateTodo.js exceeds threshold)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
@@ -118,7 +111,7 @@ describe('should.haveLocLessThan scenarios', () => {
     });
 
     test('"domain" should have LOC less than 20 - should FAIL (Todo.js file exceeds threshold)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
@@ -147,7 +140,7 @@ describe('should.haveLocLessThan scenarios', () => {
     });
 
     test('entire project should have LOC less than 10 - should FAIL (most of files exceed threshold)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
@@ -183,7 +176,7 @@ describe('should.haveLocLessThan scenarios', () => {
 
   describe('Edge scenarios', () => {
     test('projectFiles.inDirectory("**/nonexistent/**").should().haveLocLessThan(10).check() - should throw error (no files exist)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         try {
           const options: Options = {
             extensionTypes: ['**/*.js'],
@@ -212,7 +205,7 @@ describe('should.haveLocLessThan scenarios', () => {
     });
 
     test('threshold of 0 should always FAIL (no files can have less than 0 LOC)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         try {
           const options: Options = {
             extensionTypes: ['**/*.js'],
@@ -241,7 +234,7 @@ describe('should.haveLocLessThan scenarios', () => {
     });
 
     test('threshold of -1 should always FAIL (impossible scenario)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         try {
           const options: Options = {
             extensionTypes: ['**/*.js'],
@@ -270,7 +263,7 @@ describe('should.haveLocLessThan scenarios', () => {
     });
 
     test('very high threshold should always PASS', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
@@ -283,7 +276,7 @@ describe('should.haveLocLessThan scenarios', () => {
     });
 
     test('incorrect extension', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'], // Looking for TypeScript in JavaScript project
           includeMatcher: [...includeMatcher],
