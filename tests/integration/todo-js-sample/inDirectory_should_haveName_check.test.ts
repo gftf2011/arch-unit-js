@@ -23,7 +23,7 @@ const includeMatchers = [
   [['./domain/**/', './use-cases/**/', './infra/**/', './main/**/']],
 ];
 
-const excludeMatchers = [
+const ignoreMatchers = [
   '!<rootDir>/**/package.json',
   '!<rootDir>/**/node_modules/**',
   '!<rootDir>/**/package-lock.json',
@@ -36,7 +36,7 @@ describe('should.haveName scenarios', () => {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         try {
@@ -69,7 +69,7 @@ describe('should.haveName scenarios', () => {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         try {
@@ -97,7 +97,7 @@ describe('should.haveName scenarios', () => {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         try {
@@ -130,7 +130,7 @@ describe('should.haveName scenarios', () => {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         try {
@@ -162,7 +162,7 @@ describe('should.haveName scenarios', () => {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance.projectFiles().inDirectory('**').should().haveName('*.js').check();
@@ -174,7 +174,7 @@ describe('should.haveName scenarios', () => {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
@@ -191,7 +191,7 @@ describe('should.haveName scenarios', () => {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
@@ -208,7 +208,7 @@ describe('should.haveName scenarios', () => {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
@@ -225,7 +225,7 @@ describe('should.haveName scenarios', () => {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
@@ -242,7 +242,7 @@ describe('should.haveName scenarios', () => {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
@@ -259,7 +259,7 @@ describe('should.haveName scenarios', () => {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
@@ -279,7 +279,7 @@ describe('should.haveName scenarios', () => {
           const options: Options = {
             extensionTypes: ['**/*.js'],
             includeMatcher: [...includeMatcher],
-            ignoreMatcher: excludeMatchers,
+            ignoreMatcher: ignoreMatchers,
           };
           const appInstance = ComponentSelectorBuilder.create(rootDir, options);
           await appInstance
@@ -307,7 +307,7 @@ describe('should.haveName scenarios', () => {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         try {

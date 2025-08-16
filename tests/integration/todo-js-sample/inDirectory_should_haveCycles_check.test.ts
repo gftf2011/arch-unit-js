@@ -23,7 +23,7 @@ const includeMatchers = [
   [['./domain/**/', './use-cases/**/', './infra/**/', './main/**/']],
 ];
 
-const excludeMatchers = [
+const ignoreMatchers = [
   '!<rootDir>/**/package.json',
   '!<rootDir>/**/node_modules/**',
   '!<rootDir>/**/package-lock.json',
@@ -36,7 +36,7 @@ describe('should.haveCycles scenarios', () => {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance.projectFiles().inDirectory('**').should().haveCycles().check();

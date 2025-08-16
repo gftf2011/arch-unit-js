@@ -7,7 +7,7 @@ const rootDir = path.resolve(path.dirname(__filename), '..', '..', 'sample', 'to
 
 const includeMatchers: string[][] = [['<rootDir>/**'], ['./**']];
 
-const excludeMatchers = [
+const ignoreMatchers = [
   '!<rootDir>/**/package.json',
   '!<rootDir>/**/node_modules/**',
   '!<rootDir>/**/package-lock.json',
@@ -25,7 +25,7 @@ describe('inFile.shouldNot.haveLocLessOrEqualThan (NestJS clean sample)', () => 
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -43,7 +43,7 @@ describe('inFile.shouldNot.haveLocLessOrEqualThan (NestJS clean sample)', () => 
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -61,7 +61,7 @@ describe('inFile.shouldNot.haveLocLessOrEqualThan (NestJS clean sample)', () => 
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -79,7 +79,7 @@ describe('inFile.shouldNot.haveLocLessOrEqualThan (NestJS clean sample)', () => 
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -99,7 +99,7 @@ describe('inFile.shouldNot.haveLocLessOrEqualThan (NestJS clean sample)', () => 
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -119,7 +119,7 @@ describe('inFile.shouldNot.haveLocLessOrEqualThan (NestJS clean sample)', () => 
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -139,7 +139,7 @@ describe('inFile.shouldNot.haveLocLessOrEqualThan (NestJS clean sample)', () => 
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -159,7 +159,7 @@ describe('inFile.shouldNot.haveLocLessOrEqualThan (NestJS clean sample)', () => 
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -179,7 +179,7 @@ describe('inFile.shouldNot.haveLocLessOrEqualThan (NestJS clean sample)', () => 
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -199,7 +199,7 @@ describe('inFile.shouldNot.haveLocLessOrEqualThan (NestJS clean sample)', () => 
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -221,7 +221,7 @@ describe('inFile.shouldNot.haveLocLessOrEqualThan (NestJS clean sample)', () => 
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -241,7 +241,7 @@ describe('inFile.shouldNot.haveLocLessOrEqualThan (NestJS clean sample)', () => 
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -260,7 +260,7 @@ describe('inFile.shouldNot.haveLocLessOrEqualThan (NestJS clean sample)', () => 
       const options: Options = {
         extensionTypes: ['**/*.ts'],
         includeMatcher: ['<rootDir>/use-cases/**'],
-        ignoreMatcher: excludeMatchers,
+        ignoreMatcher: ignoreMatchers,
         typescriptPath,
       };
       const appInstance = ComponentSelectorBuilder.create(rootDir, options);

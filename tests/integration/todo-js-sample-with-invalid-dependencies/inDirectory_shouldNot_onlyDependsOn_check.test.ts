@@ -13,7 +13,7 @@ const rootDir = path.resolve(
 
 const includeMatchers = ['<rootDir>/**'];
 
-const excludeMatchers = [
+const ignoreMatchers = [
   '!<rootDir>/**/package.json',
   '!<rootDir>/**/node_modules/**',
   '!<rootDir>/**/package-lock.json',
@@ -24,7 +24,7 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
     const options: Options = {
       extensionTypes: ['**/*.js'],
       includeMatcher: [...includeMatchers],
-      ignoreMatcher: excludeMatchers,
+      ignoreMatcher: ignoreMatchers,
     };
     const appInstance = ComponentSelectorBuilder.create(rootDir, options);
     try {

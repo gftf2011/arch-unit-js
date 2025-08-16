@@ -23,7 +23,7 @@ const includeMatchers = [
   [['./domain/**/', './use-cases/**/', './infra/**/', './main/**/']],
 ];
 
-const excludeMatchers = [
+const ignoreMatchers = [
   '!<rootDir>/**/package.json',
   '!<rootDir>/**/node_modules/**',
   '!<rootDir>/**/package-lock.json',
@@ -36,7 +36,7 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
@@ -55,7 +55,7 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
@@ -74,7 +74,7 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
@@ -91,7 +91,7 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
@@ -110,7 +110,7 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         try {
@@ -141,7 +141,7 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         try {
@@ -173,7 +173,7 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
           const options: Options = {
             extensionTypes: ['**/*.js'],
             includeMatcher: [...includeMatcher],
-            ignoreMatcher: excludeMatchers,
+            ignoreMatcher: ignoreMatchers,
           };
           const appInstance = ComponentSelectorBuilder.create(rootDir, options);
           await appInstance
@@ -202,7 +202,7 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
           const options: Options = {
             extensionTypes: ['**/*.js'],
             includeMatcher: [...includeMatcher],
-            ignoreMatcher: excludeMatchers,
+            ignoreMatcher: ignoreMatchers,
           };
           const appInstance = ComponentSelectorBuilder.create(rootDir, options);
           await appInstance
@@ -230,7 +230,7 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         try {
@@ -284,7 +284,7 @@ describe('shouldNot.onlyDependsOn scenarios', () => {
       const options: Options = {
         extensionTypes: ['**/*.js'],
         includeMatcher: ['<rootDir>/infra/**'],
-        ignoreMatcher: excludeMatchers,
+        ignoreMatcher: ignoreMatchers,
       };
       const appInstance = ComponentSelectorBuilder.create(rootDir, options);
       try {
