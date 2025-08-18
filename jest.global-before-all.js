@@ -19,7 +19,7 @@ beforeAll(async () => {
 
   const resolveSpawn = async () => {
     return new Promise((resolve, reject) => {
-      const child = spawn('node', [path.resolve(rootDir, 'setup-aliases.js')], {
+      const child = spawn(process.execPath, [path.resolve(rootDir, 'setup-aliases.js')], {
         stdio: 'ignore',
       });
       child.on('close', (code) => {

@@ -129,7 +129,7 @@ export class ValidPathDependencyResolvable extends Resolvable {
     try {
       const require = createRequire(this.resolvableProps.filePath);
 
-      const dependencyCandidate = require.resolve(this.depProps.name);
+      const dependencyCandidate = path.normalize(require.resolve(this.depProps.name));
 
       const dependency = micromatch(this.resolvableProps.availableFiles, [dependencyCandidate])[0];
       if (dependency) {
