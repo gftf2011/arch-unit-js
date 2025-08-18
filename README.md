@@ -115,6 +115,32 @@ Now run the test and congrats 🥳, you just tested your application topology !
 
 ## :notebook: API Documentation
 
+> ### "projectFiles"
+
+<details>
+  <summary><b>"inDirectories" API Docs</b></summary>
+
+- [Project Files in Directories Should NOT Depend On Specified Patterns](business/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_dependsOn_check.md)
+- [Project Files in Directories Should NOT Have Cycles](business/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveCycles_check.md)
+- [Project Files in Directories Should NOT Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](business/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveLocGreaterOrEqualThan_check.md)
+- [Project Files in Directories Should NOT Have Greater L.O.C. (Lines Of Code) Than Specified Value](business/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveLocGreaterThan_check.md)
+- [Project Files in Directories Should NOT Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](business/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveLocLessOrEqualThan_check.md)
+- [Project Files in Directories Should NOT Have Less L.O.C. (Lines Of Code) Than Specified Value](business/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveLocLessThan_check.md)
+- [Project Files in Directories Should NOT Have Name with Specified Pattern](business/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveName_check.md)
+- [Project Files in Directories Should NOT Only Depend On Specified Patterns](business/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_onlyDependsOn_check.md)
+- [Project Files in Directories Should NOT Only Have Name with Specified Pattern](business/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_onlyHaveName_check.md)
+- [Project Files in Directories Should Depend On Specified Patterns](business/inDirectories/should/projectFiles_inDirectories_should_dependsOn_check.md)
+- [Project Files in Directories Should Have Cycles](business/inDirectories/should/projectFiles_inDirectories_should_haveCycles_check.md)
+- [Project Files in Directories Should Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](business/inDirectories/should/projectFiles_inDirectories_should_haveLocGreaterOrEqualThan_check.md)
+- [Project Files in Directories Should Have Greater L.O.C. (Lines Of Code) Than Specified Value](business/inDirectories/should/projectFiles_inDirectories_should_haveLocGreaterThan_check.md)
+- [Project Files in Directories Should Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](business/inDirectories/should/projectFiles_inDirectories_should_haveLocLessOrEqualThan_check.md)
+- [Project Files in Directories Should Have Less L.O.C. (Lines Of Code) Than Specified Value](business/inDirectories/should/projectFiles_inDirectories_should_haveLocLessThan_check.md)
+- [Project Files in Directories Should Have Name with Specified Pattern](business/inDirectories/should/projectFiles_inDirectories_should_haveName_check.md)
+- [Project Files in Directories Should Only Depend On Specified Patterns](business/inDirectories/should/projectFiles_inDirectories_should_onlyDependsOn_check.md)
+- [Project Files in Directories Should Only Have Name with Specified Pattern](business/inDirectories/should/projectFiles_inDirectories_should_onlyHaveName_check.md)
+
+</details>
+
 <details>
   <summary><b>"inDirectory" API Docs</b></summary>
 
@@ -162,6 +188,7 @@ Now run the test and congrats 🥳, you just tested your application topology !
 - [Project Files in File Should Only Have Name with Specified Pattern](business/inFile/should/projectFiles_inFile_should_onlyHaveName_check.md)
 
 </details>
+
 <br/>
 
 ## :memo: License
