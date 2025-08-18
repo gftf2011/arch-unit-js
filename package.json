@@ -1,6 +1,6 @@
 {
   "name": "arch-unit-js",
-  "version": "1.0.37",
+  "version": "1.1.0",
   "description": "ArchUnit clone for node.js projects",
   "files": [
     "package.json",
@@ -48,6 +48,7 @@
   "keywords": [
     "testing",
     "babel",
+    "typescript",
     "architecture",
     "javascript-library",
     "arch-unit-ts",

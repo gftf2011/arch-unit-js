@@ -180,6 +180,20 @@ describe('Architecture Test', () => {
 
 And there you have it congrats again 🥳 , you successfully tested your project dependencies which uses `module-alias` !
 
+> ### TypeScript - (Basic Scenario)
+
+`arch-unit-js` also provides support for `typescript`. To include `typescript` support just provide the path to your **tsconfig.json** using the "_typescriptPath_"
+
+```typescript
+import { Options } from 'arch-unit-js';
+
+const options: Options = {
+  extensionTypes: ['**/*.ts'], // Positive Glob pattern, where you specify all extension types your application has
+  includeMatcher: ['<rootDir>/**'], // Positive Glob pattern, where you specify all files and directories based on the project <rootDir>
+  typescriptPath: '<rootDir>/tsconfig.json', // Path to project 'tsconfig.json' - (using <rootDir> as wildcard to )
+};
+```
+
 <br/>
 
 ## :notebook: API Documentation
@@ -189,72 +203,72 @@ And there you have it congrats again 🥳 , you successfully tested your project
 <details>
   <summary><b>"inDirectories" API Docs</b></summary>
 
-- [Project Files in Directories Should NOT Depend On Specified Patterns](business/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_dependsOn_check.md)
-- [Project Files in Directories Should NOT Have Cycles](business/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveCycles_check.md)
-- [Project Files in Directories Should NOT Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](business/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveLocGreaterOrEqualThan_check.md)
-- [Project Files in Directories Should NOT Have Greater L.O.C. (Lines Of Code) Than Specified Value](business/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveLocGreaterThan_check.md)
-- [Project Files in Directories Should NOT Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](business/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveLocLessOrEqualThan_check.md)
-- [Project Files in Directories Should NOT Have Less L.O.C. (Lines Of Code) Than Specified Value](business/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveLocLessThan_check.md)
-- [Project Files in Directories Should NOT Have Name with Specified Pattern](business/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveName_check.md)
-- [Project Files in Directories Should NOT Only Depend On Specified Patterns](business/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_onlyDependsOn_check.md)
-- [Project Files in Directories Should NOT Only Have Name with Specified Pattern](business/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_onlyHaveName_check.md)
-- [Project Files in Directories Should Depend On Specified Patterns](business/inDirectories/should/projectFiles_inDirectories_should_dependsOn_check.md)
-- [Project Files in Directories Should Have Cycles](business/inDirectories/should/projectFiles_inDirectories_should_haveCycles_check.md)
-- [Project Files in Directories Should Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](business/inDirectories/should/projectFiles_inDirectories_should_haveLocGreaterOrEqualThan_check.md)
-- [Project Files in Directories Should Have Greater L.O.C. (Lines Of Code) Than Specified Value](business/inDirectories/should/projectFiles_inDirectories_should_haveLocGreaterThan_check.md)
-- [Project Files in Directories Should Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](business/inDirectories/should/projectFiles_inDirectories_should_haveLocLessOrEqualThan_check.md)
-- [Project Files in Directories Should Have Less L.O.C. (Lines Of Code) Than Specified Value](business/inDirectories/should/projectFiles_inDirectories_should_haveLocLessThan_check.md)
-- [Project Files in Directories Should Have Name with Specified Pattern](business/inDirectories/should/projectFiles_inDirectories_should_haveName_check.md)
-- [Project Files in Directories Should Only Depend On Specified Patterns](business/inDirectories/should/projectFiles_inDirectories_should_onlyDependsOn_check.md)
-- [Project Files in Directories Should Only Have Name with Specified Pattern](business/inDirectories/should/projectFiles_inDirectories_should_onlyHaveName_check.md)
+- [Project Files in Directories Should NOT Depend On Specified Patterns](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_dependsOn_check.md)
+- [Project Files in Directories Should NOT Have Cycles](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveCycles_check.md)
+- [Project Files in Directories Should NOT Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveLocGreaterOrEqualThan_check.md)
+- [Project Files in Directories Should NOT Have Greater L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveLocGreaterThan_check.md)
+- [Project Files in Directories Should NOT Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveLocLessOrEqualThan_check.md)
+- [Project Files in Directories Should NOT Have Less L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveLocLessThan_check.md)
+- [Project Files in Directories Should NOT Have Name with Specified Pattern](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveName_check.md)
+- [Project Files in Directories Should NOT Only Depend On Specified Patterns](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_onlyDependsOn_check.md)
+- [Project Files in Directories Should NOT Only Have Name with Specified Pattern](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_onlyHaveName_check.md)
+- [Project Files in Directories Should Depend On Specified Patterns](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_dependsOn_check.md)
+- [Project Files in Directories Should Have Cycles](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveCycles_check.md)
+- [Project Files in Directories Should Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveLocGreaterOrEqualThan_check.md)
+- [Project Files in Directories Should Have Greater L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveLocGreaterThan_check.md)
+- [Project Files in Directories Should Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveLocLessOrEqualThan_check.md)
+- [Project Files in Directories Should Have Less L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveLocLessThan_check.md)
+- [Project Files in Directories Should Have Name with Specified Pattern](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveName_check.md)
+- [Project Files in Directories Should Only Depend On Specified Patterns](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_onlyDependsOn_check.md)
+- [Project Files in Directories Should Only Have Name with Specified Pattern](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_onlyHaveName_check.md)
 
 </details>
 
 <details>
   <summary><b>"inDirectory" API Docs</b></summary>
 
-- [Project Files in Directory Should NOT Depend On Specified Patterns](business/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_dependsOn_check.md)
-- [Project Files in Directory Should NOT Have Cycles](business/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveCycles_check.md)
-- [Project Files in Directory Should NOT Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](business/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveLocGreaterOrEqualThan_check.md)
-- [Project Files in Directory Should NOT Have Greater L.O.C. (Lines Of Code) Than Specified Value](business/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveLocGreaterThan_check.md)
-- [Project Files in Directory Should NOT Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](business/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveLocLessOrEqualThan_check.md)
-- [Project Files in Directory Should NOT Have Less L.O.C. (Lines Of Code) Than Specified Value](business/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveLocLessThan_check.md)
-- [Project Files in Directory Should Not Have Name with Specified Pattern](business/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveName_check.md)
-- [Project Files in Directory Should NOT Only Depend On Specific Patterns](business/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_onlyDependsOn_check.md)
-- [Project Files in Directory Should NOT Only Have Names with Specified Pattern](business/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_onlyHaveName_check.md)
-- [Project Files in Directory Should Depend On Specified Patterns](business/inDirectory/should/projectFiles_inDirectory_should_dependsOn_check.md)
-- [Project Files in Directory Should Have Cycles](business/inDirectory/should/projectFiles_inDirectory_should_haveCycles_check.md)
-- [Project Files in Directory Should Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](business/inDirectory/should/projectFiles_inDirectory_should_haveLocGreaterOrEqualThan_check.md)
-- [Project Files in Directory Should Have Greater L.O.C. (Lines Of Code) Than Specified Value](business/inDirectory/should/projectFiles_inDirectory_should_haveLocGreaterThan_check.md)
-- [Project Files in Directory Should Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](business/inDirectory/should/projectFiles_inDirectory_should_haveLocLessOrEqualThan_check.md)
-- [Project Files in Directory Should Have Less L.O.C. (Lines Of Code) Than Specified Value](business/inDirectory/should/projectFiles_inDirectory_should_haveLocLessThan_check.md)
-- [Project Files in Directory Should Have Name with Specified Pattern](business/inDirectory/should/projectFiles_inDirectory_should_haveName_check.md)
-- [Project Files in Directory Should Only Depend On Specified Patterns](business/inDirectory/should/projectFiles_inDirectory_should_onlyDependsOn_check.md)
-- [Project Files in Directory Should Only Have Name with Specified Pattern](business/inDirectory/should/projectFiles_inDirectory_should_onlyHaveName_check.md)
+- [Project Files in Directory Should NOT Depend On Specified Patterns](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_dependsOn_check.md)
+- [Project Files in Directory Should NOT Have Cycles](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveCycles_check.md)
+- [Project Files in Directory Should NOT Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveLocGreaterOrEqualThan_check.md)
+- [Project Files in Directory Should NOT Have Greater L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveLocGreaterThan_check.md)
+- [Project Files in Directory Should NOT Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveLocLessOrEqualThan_check.md)
+- [Project Files in Directory Should NOT Have Less L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveLocLessThan_check.md)
+- [Project Files in Directory Should Not Have Name with Specified Pattern](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveName_check.md)
+- [Project Files in Directory Should NOT Only Depend On Specific Patterns](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_onlyDependsOn_check.md)
+- [Project Files in Directory Should NOT Only Have Names with Specified Pattern](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_onlyHaveName_check.md)
+- [Project Files in Directory Should Depend On Specified Patterns](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_dependsOn_check.md)
+- [Project Files in Directory Should Have Cycles](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveCycles_check.md)
+- [Project Files in Directory Should Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveLocGreaterOrEqualThan_check.md)
+- [Project Files in Directory Should Have Greater L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveLocGreaterThan_check.md)
+- [Project Files in Directory Should Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveLocLessOrEqualThan_check.md)
+- [Project Files in Directory Should Have Less L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveLocLessThan_check.md)
+- [Project Files in Directory Should Have Name with Specified Pattern](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveName_check.md)
+- [Project Files in Directory Should Only Depend On Specified Patterns](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_onlyDependsOn_check.md)
+- [Project Files in Directory Should Only Have Name with Specified Pattern](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_onlyHaveName_check.md)
 
 </details>
 
 <details>
   <summary><b>"inFile" API Docs</b></summary>
 
-- [Project Files in File Should NOT Depend On Specified Patterns](business/inFile/shouldNot/projectFiles_inFile_shouldNot_dependsOn_check.md)
-- [Project Files in File Should NOT Have Cycles](business/inFile/shouldNot/projectFiles_inFile_shouldNot_haveCycles_check.md)
-- [Project Files in File Should NOT Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](business/inFile/shouldNot/projectFiles_inFile_shouldNot_haveLocGreaterOrEqualThan_check.md)
-- [Project Files in File Should NOT Have Greater L.O.C. (Lines Of Code) Than Specified Value](business/inFile/shouldNot/projectFiles_inFile_shouldNot_haveLocGreaterThan_check.md)
-- [Project Files in File Should NOT Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](business/inFile/shouldNot/projectFiles_inFile_shouldNot_haveLocLessOrEqualThan_check.md)
-- [Project Files in File Should NOT Have Less L.O.C. (Lines Of Code) Than Specified Value](business/inFile/shouldNot/projectFiles_inFile_shouldNot_haveLocLessThan_check.md)
-- [Project Files in File Should NOT Have Name with Specified Pattern](business/inFile/shouldNot/projectFiles_inFile_shouldNot_haveName_check.md)
-- [Project Files in File Should NOT Only Depend On Specified Patterns](business/inFile/shouldNot/projectFiles_inFile_shouldNot_onlyDependsOn_check.md)
-- [Project Files in File Should NOT Only Have Name with Specified Pattern](business/inFile/shouldNot/projectFiles_inFile_shouldNot_onlyHaveName_check.md)
-- [Project Files in File Should Depend On Specified Patterns](business/inFile/should/projectFiles_inFile_should_dependsOn_check.md)
-- [Project Files in File Should Have Cycles](business/inFile/should/projectFiles_inFile_should_haveCycles_check.md)
-- [Project Files in File Should Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](business/inFile/should/projectFiles_inFile_should_haveLocGreaterOrEqualThan_check.md)
-- [Project Files in File Should Have Greater L.O.C. (Lines Of Code) Than Specified Value](business/inFile/should/projectFiles_inFile_should_haveLocGreaterThan_check.md)
-- [Project Files in File Should Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](business/inFile/should/projectFiles_inFile_should_haveLocLessOrEqualThan_check.md)
-- [Project Files in File Should Have Less L.O.C. (Lines Of Code) Than Specified Value](business/inFile/should/projectFiles_inFile_should_haveLocLessThan_check.md)
-- [Project Files in File Should Have Name with Specified Pattern](business/inFile/should/projectFiles_inFile_should_haveName_check.md)
-- [Project Files in File Should Only Depend On Specified Patterns](business/inFile/should/projectFiles_inFile_should_onlyDependsOn_check.md)
-- [Project Files in File Should Only Have Name with Specified Pattern](business/inFile/should/projectFiles_inFile_should_onlyHaveName_check.md)
+- [Project Files in File Should NOT Depend On Specified Patterns](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_dependsOn_check.md)
+- [Project Files in File Should NOT Have Cycles](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_haveCycles_check.md)
+- [Project Files in File Should NOT Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_haveLocGreaterOrEqualThan_check.md)
+- [Project Files in File Should NOT Have Greater L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_haveLocGreaterThan_check.md)
+- [Project Files in File Should NOT Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_haveLocLessOrEqualThan_check.md)
+- [Project Files in File Should NOT Have Less L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_haveLocLessThan_check.md)
+- [Project Files in File Should NOT Have Name with Specified Pattern](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_haveName_check.md)
+- [Project Files in File Should NOT Only Depend On Specified Patterns](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_onlyDependsOn_check.md)
+- [Project Files in File Should NOT Only Have Name with Specified Pattern](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_onlyHaveName_check.md)
+- [Project Files in File Should Depend On Specified Patterns](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_dependsOn_check.md)
+- [Project Files in File Should Have Cycles](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveCycles_check.md)
+- [Project Files in File Should Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveLocGreaterOrEqualThan_check.md)
+- [Project Files in File Should Have Greater L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveLocGreaterThan_check.md)
+- [Project Files in File Should Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveLocLessOrEqualThan_check.md)
+- [Project Files in File Should Have Less L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveLocLessThan_check.md)
+- [Project Files in File Should Have Name with Specified Pattern](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveName_check.md)
+- [Project Files in File Should Only Depend On Specified Patterns](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_onlyDependsOn_check.md)
+- [Project Files in File Should Only Have Name with Specified Pattern](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_onlyHaveName_check.md)
 
 </details>
 
