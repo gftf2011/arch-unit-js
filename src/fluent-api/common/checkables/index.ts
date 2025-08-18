@@ -150,27 +150,12 @@ export abstract class PatternCheckable extends Checkable {
   }
 }
 
-export abstract class PatternCyclesCheckable extends PatternCheckable {
+export abstract class PatternCyclesCheckable extends Checkable {
   constructor(protected readonly props: PatternCheckableProps) {
     super(props);
   }
 
   public override async check(): Promise<void> {
-    const files = (await this.buildNodeGraph()).nodes;
-
-    this.validateFilesExtension(files);
-    this.validateFilesDependencies(files);
-
-    const filteredFiles = this.filter(files);
-    try {
-      this.props.negated
-        ? await this.checkNegativeRule(filteredFiles)
-        : await this.checkPositiveRule(filteredFiles);
-    } catch (error) {
-      throw new Error((error as Error).message);
-    } finally {
-      this.clearFiles(files);
-      this.clearFiles(filteredFiles);
-    }
+    await super.check();
   }
 }
