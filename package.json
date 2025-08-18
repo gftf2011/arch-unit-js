@@ -28,7 +28,7 @@
     "bundle:types": "npx rollup -c rollup.config.dts.mjs",
     "clean:types": "rm -rf dist/types",
     "build": "node esbuild.config.js && npm run build:types && npm run bundle:types && npm run clean:types",
-    "test": "jest --coverage --maxWorkers=4",
+    "test": "jest --coverage --maxWorkers=50%",
     "test:watch": "jest --watch",
     "publish:beta": "npm publish --tag beta --access public",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",

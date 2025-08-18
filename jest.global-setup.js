@@ -17,7 +17,9 @@ const projectsDirs = [
 
 async function npmInstall(targetPath) {
   try {
-    await execAsync('npm install', { cwd: targetPath });
+    const isWin = process.platform === 'win32';
+    const cmd = isWin ? 'npm.cmd' : 'npm';
+    await execAsync(`${cmd} install`, { cwd: targetPath });
   } catch (error) {
     throw error;
   }
