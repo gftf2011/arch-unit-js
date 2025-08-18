@@ -6,33 +6,30 @@ import { Options } from '@/fluent-api/common/types';
 const rootDir = path.resolve(path.dirname(__filename), '..', '..', 'sample', 'todo-js-sample');
 
 const includeMatchers = [
-  [['<rootDir>/**']],
-  [['<rootDir>/**/']],
-  [['./**']],
-  [['./**/']],
-  [['<rootDir>/domain/**', '<rootDir>/use-cases/**', '<rootDir>/infra/**', '<rootDir>/main/**']],
-  [
-    [
-      '<rootDir>/domain/**/',
-      '<rootDir>/use-cases/**/',
-      '<rootDir>/infra/**/',
-      '<rootDir>/main/**/',
-    ],
-  ],
-  [['./domain/**', './use-cases/**', './infra/**', './main/**']],
-  [['./domain/**/', './use-cases/**/', './infra/**/', './main/**/']],
+  ['<rootDir>/**'],
+  ['<rootDir>/**/'],
+  ['./**'],
+  ['./**/'],
+  ['<rootDir>/domain/**', '<rootDir>/use-cases/**', '<rootDir>/infra/**', '<rootDir>/main/**'],
+  ['<rootDir>/domain/**/', '<rootDir>/use-cases/**/', '<rootDir>/infra/**/', '<rootDir>/main/**/'],
+  ['./domain/**', './use-cases/**', './infra/**', './main/**'],
+  ['./domain/**/', './use-cases/**/', './infra/**/', './main/**/'],
 ];
 
-const excludeMatchers = ['!<rootDir>/**/package.json'];
+const ignoreMatchers = [
+  '!<rootDir>/**/package.json',
+  '!<rootDir>/**/node_modules/**',
+  '!<rootDir>/**/package-lock.json',
+];
 
 describe('should.dependsOn scenarios', () => {
   describe('Scenario 1: File has NO dependencies', () => {
     test('"domain/entities" should depend on "inexistent-dependency" - should FAIL', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         try {
@@ -58,11 +55,11 @@ describe('should.dependsOn scenarios', () => {
 
   describe('Scenario 2: File has dependencies but NONE match the patterns', () => {
     test('"use-cases" should depend on "inexistent-dependency" - should FAIL', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         try {
@@ -89,11 +86,11 @@ describe('should.dependsOn scenarios', () => {
     });
 
     test('"use-cases" should depend on "infra" - should FAIL (use-cases imports from domain, not infra)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         try {
@@ -122,11 +119,11 @@ describe('should.dependsOn scenarios', () => {
 
   describe('Scenario 3: File has dependencies and SOME match the patterns', () => {
     test('"use-cases" should depend on "domain" and "infra" - should FAIL (not all files have "domain")', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         try {
@@ -147,7 +144,7 @@ describe('should.dependsOn scenarios', () => {
         } catch (error) {
           const errorMessage = (error as Error).message;
           expect(errorMessage).toContain(
-            `Violation - Rule: project files in directory '**/use-cases/**' - excluding files [!**/use-cases/DeleteTodo.js, !**/use-cases/GetTodoById.js, !**/use-cases/GetAllTodos.js, !**/use-cases/UpdateTodo.js] , should depends on '[**/domain/**, **/infra/**]'\n\n`,
+            `Violation - Rule: project files in directory '**/use-cases/**' - excluding [!**/use-cases/DeleteTodo.js, !**/use-cases/GetTodoById.js, !**/use-cases/GetAllTodos.js, !**/use-cases/UpdateTodo.js] , should depends on '[**/domain/**, **/infra/**]'\n\n`,
           );
           expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.js'`);
         }
@@ -155,11 +152,11 @@ describe('should.dependsOn scenarios', () => {
     });
 
     test('"main" should depend on "domain", "use-cases" and "inexistent" - should FAIL (missing inexistent)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         try {
@@ -185,11 +182,11 @@ describe('should.dependsOn scenarios', () => {
 
   describe('Scenario 4: File has dependencies and ALL patterns are present', () => {
     test('"infra" should depend on "domain" - should PASS', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
@@ -202,11 +199,11 @@ describe('should.dependsOn scenarios', () => {
     });
 
     test('"use-cases/CreateTodo.js" should depend on "domain" - should PASS (file have "domain")', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
@@ -224,11 +221,11 @@ describe('should.dependsOn scenarios', () => {
     });
 
     test('"main" should depend on "domain" and "use-cases" - should PASS (has both + infra extra)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
@@ -241,11 +238,11 @@ describe('should.dependsOn scenarios', () => {
     });
 
     test('"main" should depend on "domain", "use-cases" and "infra" - should PASS (has all patterns)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
@@ -260,12 +257,12 @@ describe('should.dependsOn scenarios', () => {
 
   describe('Edge scenarios', () => {
     test('projectFiles.inDirectory("**/domain/**").should().dependsOn([]).check() - should FAIL (empty array)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         try {
           const options: Options = {
             extensionTypes: ['**/*.js'],
             includeMatcher: [...includeMatcher],
-            ignoreMatcher: excludeMatchers,
+            ignoreMatcher: ignoreMatchers,
           };
           const appInstance = ComponentSelectorBuilder.create(rootDir, options);
           await appInstance
@@ -289,12 +286,12 @@ describe('should.dependsOn scenarios', () => {
     });
 
     test('projectFiles.inDirectory("**/domain/**").should().dependsOn(["uuid", ""]).check() - should FAIL (array with empty string)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         try {
           const options: Options = {
             extensionTypes: ['**/*.js'],
             includeMatcher: [...includeMatcher],
-            ignoreMatcher: excludeMatchers,
+            ignoreMatcher: ignoreMatchers,
           };
           const appInstance = ComponentSelectorBuilder.create(rootDir, options);
           await appInstance
@@ -318,11 +315,11 @@ describe('should.dependsOn scenarios', () => {
     });
 
     test('incorrect extension', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         try {
@@ -376,7 +373,7 @@ describe('should.dependsOn scenarios', () => {
       const options: Options = {
         extensionTypes: ['**/*.js'],
         includeMatcher: ['<rootDir>/infra/**'],
-        ignoreMatcher: excludeMatchers,
+        ignoreMatcher: ignoreMatchers,
       };
       const appInstance = ComponentSelectorBuilder.create(rootDir, options);
       try {

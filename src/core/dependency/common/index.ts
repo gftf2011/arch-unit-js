@@ -20,7 +20,7 @@ export type DependencyProps = {
 
 export type ResolvableDependencyProps = {
   rootDir: string;
-  fileDir: string;
+  filePath: string;
   availableFiles: string[];
   extensions: string[];
   typescriptPath?: string;

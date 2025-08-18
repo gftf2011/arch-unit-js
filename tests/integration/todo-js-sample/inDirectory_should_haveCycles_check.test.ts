@@ -6,33 +6,30 @@ import { Options } from '@/fluent-api/common/types';
 const rootDir = path.resolve(path.dirname(__filename), '..', '..', 'sample', 'todo-js-sample');
 
 const includeMatchers = [
-  [['<rootDir>/**']],
-  [['<rootDir>/**/']],
-  [['./**']],
-  [['./**/']],
-  [['<rootDir>/domain/**', '<rootDir>/use-cases/**', '<rootDir>/infra/**', '<rootDir>/main/**']],
-  [
-    [
-      '<rootDir>/domain/**/',
-      '<rootDir>/use-cases/**/',
-      '<rootDir>/infra/**/',
-      '<rootDir>/main/**/',
-    ],
-  ],
-  [['./domain/**', './use-cases/**', './infra/**', './main/**']],
-  [['./domain/**/', './use-cases/**/', './infra/**/', './main/**/']],
+  ['<rootDir>/**'],
+  ['<rootDir>/**/'],
+  ['./**'],
+  ['./**/'],
+  ['<rootDir>/domain/**', '<rootDir>/use-cases/**', '<rootDir>/infra/**', '<rootDir>/main/**'],
+  ['<rootDir>/domain/**/', '<rootDir>/use-cases/**/', '<rootDir>/infra/**/', '<rootDir>/main/**/'],
+  ['./domain/**', './use-cases/**', './infra/**', './main/**'],
+  ['./domain/**/', './use-cases/**/', './infra/**/', './main/**/'],
 ];
 
-const excludeMatchers = ['!<rootDir>/**/package.json'];
+const ignoreMatchers = [
+  '!<rootDir>/**/package.json',
+  '!<rootDir>/**/node_modules/**',
+  '!<rootDir>/**/package-lock.json',
+];
 
 describe('should.haveCycles scenarios', () => {
   test('entire project should have cycles - DO I REALLY NEED TO EXPLAIN THIS ?', async () => {
-    for (const [includeMatcher] of includeMatchers) {
+    for (const includeMatcher of includeMatchers) {
       try {
         const options: Options = {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance.projectFiles().inDirectory('**').should().haveCycles().check();

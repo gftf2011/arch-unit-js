@@ -6,35 +6,33 @@ import { Options } from '@/fluent-api/common/types';
 const rootDir = path.resolve(path.dirname(__filename), '..', '..', 'sample', 'todo-ts-sample');
 
 const includeMatchers = [
-  [['<rootDir>/**']],
-  [['<rootDir>/**/']],
-  [['./**']],
-  [['./**/']],
-  [['<rootDir>/domain/**', '<rootDir>/use-cases/**', '<rootDir>/infra/**', '<rootDir>/main/**']],
-  [
-    [
-      '<rootDir>/domain/**/',
-      '<rootDir>/use-cases/**/',
-      '<rootDir>/infra/**/',
-      '<rootDir>/main/**/',
-    ],
-  ],
-  [['./domain/**', './use-cases/**', './infra/**', './main/**']],
-  [['./domain/**/', './use-cases/**/', './infra/**/', './main/**/']],
+  ['<rootDir>/**'],
+  ['<rootDir>/**/'],
+  ['./**'],
+  ['./**/'],
+  ['<rootDir>/domain/**', '<rootDir>/use-cases/**', '<rootDir>/infra/**', '<rootDir>/main/**'],
+  ['<rootDir>/domain/**/', '<rootDir>/use-cases/**/', '<rootDir>/infra/**/', '<rootDir>/main/**/'],
+  ['./domain/**', './use-cases/**', './infra/**', './main/**'],
+  ['./domain/**/', './use-cases/**/', './infra/**/', './main/**/'],
 ];
 
-const excludeMatchers = ['!<rootDir>/**/package.json', '!<rootDir>/**/tsconfig.json'];
+const ignoreMatchers = [
+  '!<rootDir>/**/package.json',
+  '!<rootDir>/**/node_modules/**',
+  '!<rootDir>/**/package-lock.json',
+  '!<rootDir>/**/tsconfig.json',
+];
 
 const typescriptPath = '<rootDir>/tsconfig.json';
 
 describe('shouldNot.dependsOn scenarios', () => {
   describe('Scenario 1: File has NO dependencies', () => {
     test('"domain/entities" should not depend on "inexistent-dependency" - should PASS (no dependencies)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -48,11 +46,11 @@ describe('shouldNot.dependsOn scenarios', () => {
     });
 
     test('"domain/entities" should not depend on "infra" - should PASS (no dependencies)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -68,11 +66,11 @@ describe('shouldNot.dependsOn scenarios', () => {
 
   describe('Scenario 2: File has dependencies but NONE match the patterns', () => {
     test('"use-cases" should not depend on "use-cases" excluding index.ts - should PASS (only index.ts uses use-cases)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -86,11 +84,11 @@ describe('shouldNot.dependsOn scenarios', () => {
     });
 
     test('"use-cases" should not depend on "inexistent-dependency" - should PASS (no matching patterns)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -104,11 +102,11 @@ describe('shouldNot.dependsOn scenarios', () => {
     });
 
     test('"use-cases" should not depend on "infra" - should PASS (use-cases imports from domain and npm packages, not infra)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -122,11 +120,11 @@ describe('shouldNot.dependsOn scenarios', () => {
     });
 
     test('"domain" should not depend on "use-cases" and "infra" - should PASS (domain is independent layer)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -140,11 +138,11 @@ describe('shouldNot.dependsOn scenarios', () => {
     });
 
     test('"infra" should not depend on "use-cases" - should PASS (infra only depends on domain)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -160,11 +158,11 @@ describe('shouldNot.dependsOn scenarios', () => {
 
   describe('Scenario 3: File has dependencies and ANY patterns are present', () => {
     test('"use-cases" should not depend on "use-cases" - should FAIL (use-cases has index.ts)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -190,11 +188,11 @@ describe('shouldNot.dependsOn scenarios', () => {
     });
 
     test('"use-cases" should not depend on "domain" - should FAIL (use-cases imports from domain)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -224,11 +222,11 @@ describe('shouldNot.dependsOn scenarios', () => {
     });
 
     test('"use-cases" should not depend on "domain" and "uuid" - should FAIL (some files have both patterns)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -258,11 +256,11 @@ describe('shouldNot.dependsOn scenarios', () => {
     });
 
     test('"infra" should not depend on "domain" - should FAIL (infra imports from domain)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -290,11 +288,11 @@ describe('shouldNot.dependsOn scenarios', () => {
     });
 
     test('"main" should not depend on "domain", "use-cases" and "infra" - should FAIL (main imports from all layers)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -320,11 +318,11 @@ describe('shouldNot.dependsOn scenarios', () => {
     });
 
     test('"main" should not depend on "uuid" - should FAIL (main uses uuid)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -350,11 +348,11 @@ describe('shouldNot.dependsOn scenarios', () => {
     });
 
     test('"use-cases/CreateTodo.ts" should not depend on "uuid" - should FAIL (CreateTodo uses uuid)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -378,7 +376,7 @@ describe('shouldNot.dependsOn scenarios', () => {
           const errorMessage = (error as Error).message;
 
           expect(errorMessage).toContain(
-            `Violation - Rule: project files in directory '**/use-cases/**' - excluding files [!**/use-cases/DeleteTodo.ts, !**/use-cases/GetTodoById.ts, !**/use-cases/GetAllTodos.ts, !**/use-cases/UpdateTodo.ts, !**/index.ts] , should not depends on '[uuid]'\n\n`,
+            `Violation - Rule: project files in directory '**/use-cases/**' - excluding [!**/use-cases/DeleteTodo.ts, !**/use-cases/GetTodoById.ts, !**/use-cases/GetAllTodos.ts, !**/use-cases/UpdateTodo.ts, !**/index.ts] , should not depends on '[uuid]'\n\n`,
           );
           expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.ts'`);
         }
@@ -386,11 +384,11 @@ describe('shouldNot.dependsOn scenarios', () => {
     });
 
     test('entire project should not depend on "domain" - should FAIL (multiple layers depend on domain)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -427,12 +425,12 @@ describe('shouldNot.dependsOn scenarios', () => {
 
   describe('Edge scenarios', () => {
     test('projectFiles.inDirectory("**/domain/**").shouldNot().dependsOn([]).check() - should FAIL (empty array)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         try {
           const options: Options = {
             extensionTypes: ['**/*.ts'],
             includeMatcher: [...includeMatcher],
-            ignoreMatcher: excludeMatchers,
+            ignoreMatcher: ignoreMatchers,
             typescriptPath,
           };
           const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -457,12 +455,12 @@ describe('shouldNot.dependsOn scenarios', () => {
     });
 
     test('projectFiles.inDirectory("**/domain/**").shouldNot().dependsOn(["uuid", ""]).check() - should FAIL (array with empty string)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         try {
           const options: Options = {
             extensionTypes: ['**/*.ts'],
             includeMatcher: [...includeMatcher],
-            ignoreMatcher: excludeMatchers,
+            ignoreMatcher: ignoreMatchers,
             typescriptPath,
           };
           const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -487,12 +485,12 @@ describe('shouldNot.dependsOn scenarios', () => {
     });
 
     test('projectFiles.inDirectory("**/nonexistent/**").shouldNot().dependsOn(["uuid"]).check() - should throw error (no files exist)', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         try {
           const options: Options = {
             extensionTypes: ['**/*.ts'],
             includeMatcher: [...includeMatcher],
-            ignoreMatcher: excludeMatchers,
+            ignoreMatcher: ignoreMatchers,
             typescriptPath,
           };
           const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -517,11 +515,11 @@ describe('shouldNot.dependsOn scenarios', () => {
     });
 
     test('incorrect extension', async () => {
-      for (const [includeMatcher] of includeMatchers) {
+      for (const includeMatcher of includeMatchers) {
         const options: Options = {
           extensionTypes: ['**/*.js'], // Looking for JavaScript in TypeScript project
           includeMatcher: [...includeMatcher],
-          ignoreMatcher: excludeMatchers,
+          ignoreMatcher: ignoreMatchers,
           typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
@@ -582,7 +580,7 @@ describe('shouldNot.dependsOn scenarios', () => {
       const options: Options = {
         extensionTypes: ['**/*.ts'],
         includeMatcher: ['<rootDir>/infra/**'],
-        ignoreMatcher: excludeMatchers,
+        ignoreMatcher: ignoreMatchers,
       };
       const appInstance = ComponentSelectorBuilder.create(rootDir, options);
       try {
