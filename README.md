@@ -182,7 +182,7 @@ And there you have it congrats again 🥳 , you successfully tested your project
 
 > ### TypeScript - (Basic Scenario)
 
-`arch-unit-js` also provides support for `typescript`. To include `typescript` support just provide the path to your __tsconfig.json__ using the "_typescriptPath_"
+`arch-unit-js` also provides support for `typescript`. To include `typescript` support just provide the path to your **tsconfig.json** using the "_typescriptPath_"
 
 ```typescript
 import { Options } from 'arch-unit-js';
@@ -190,10 +190,9 @@ import { Options } from 'arch-unit-js';
 const options: Options = {
   extensionTypes: ['**/*.ts'], // Positive Glob pattern, where you specify all extension types your application has
   includeMatcher: ['<rootDir>/**'], // Positive Glob pattern, where you specify all files and directories based on the project <rootDir>
-  typescriptPath: '<rootDir>/tsconfig.json' // Path to project 'tsconfig.json' - (using <rootDir> as wildcard to )
+  typescriptPath: '<rootDir>/tsconfig.json', // Path to project 'tsconfig.json' - (using <rootDir> as wildcard to )
 };
 ```
-
 
 <br/>
 
