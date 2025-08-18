@@ -1,16 +1,21 @@
 import fsPromises from 'fs/promises';
 
-import { RootFile } from '@/core/file/common';
-import { JavascriptRelatedFileProps } from '@/core/file/javascript/common';
+import {
+  JavascriptRelatedBuildableProps,
+  JavascriptRelatedFile,
+} from '@/core/file/javascript/common';
 
-export class JavascriptRelatedFileForLocAnalysis extends RootFile.Base {
-  public constructor(public props: JavascriptRelatedFileProps) {
-    super(props);
+export class JavascriptRelatedFileForLocAnalysis extends JavascriptRelatedFile {
+  public constructor(
+    protected readonly fileName: string,
+    protected readonly filePath: string,
+  ) {
+    super(fileName, filePath);
   }
 
-  public override async build(
-    _: RootFile.BaseBuildableProps,
-  ): Promise<JavascriptRelatedFileForLocAnalysis> {
+  public override async buildByProps(
+    _: JavascriptRelatedBuildableProps,
+  ): Promise<JavascriptRelatedFile> {
     const filePath = this.props.path;
 
     const code = await fsPromises.readFile(filePath, 'utf-8');

@@ -1,12 +1,19 @@
-import { RootFile } from '@/core/file/common';
-import { JavascriptRelatedFileProps } from '@/core/file/javascript/common';
+import {
+  JavascriptRelatedBuildableProps,
+  JavascriptRelatedFile,
+} from '@/core/file/javascript/common';
 
-export class JavascriptRelatedFileForNameAnalysis extends RootFile.Base {
-  public constructor(public props: JavascriptRelatedFileProps) {
-    super(props);
+export class JavascriptRelatedFileForNameAnalysis extends JavascriptRelatedFile {
+  public constructor(
+    protected readonly fileName: string,
+    protected readonly filePath: string,
+  ) {
+    super(fileName, filePath);
   }
 
-  public override async build(_: RootFile.BaseBuildableProps): Promise<RootFile.Base> {
+  public override async buildByProps(
+    _: JavascriptRelatedBuildableProps,
+  ): Promise<JavascriptRelatedFile> {
     return this;
   }
 }

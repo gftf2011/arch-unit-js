@@ -14,6 +14,7 @@ export type BaseProps = {
   path: string;
   type: FileType;
   loc: number;
+  size: number;
   totalLines: number;
   dependencies: Dependency[];
 };
@@ -26,7 +27,9 @@ export type BaseBuildableProps = {
 };
 
 export abstract class Base {
-  protected constructor(public props: BaseProps) {}
+  public abstract props: BaseProps;
+
+  protected constructor() {}
 
   public abstract build(buildableProps: BaseBuildableProps): Promise<Base>;
 }
