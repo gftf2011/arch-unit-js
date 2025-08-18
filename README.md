@@ -68,7 +68,7 @@ A JavaScript/TypeScript library for enforcing architectural rules and constraint
 
 ## :racing_car: Getting Started
 
-### - Installation
+> ### Installation
 
 Install using **npm**
 
@@ -76,7 +76,7 @@ Install using **npm**
 npm install --save-dev arch-unit-js
 ```
 
-### - Basic JavaScript Scenario
+> ### JavaScript - (Basic Scenario)
 
 Let's get started by writing a simple function that generates a **UUID** using the lib _uuid_. First, create a `uuid.js` file, inside a `utils` directory:
 
@@ -98,7 +98,7 @@ const { app } = require('arch-unit-js');
 const options = {
   extensionTypes: ['**/*.js'], // Positive Glob pattern, where you specify all extension types your application has
   includeMatcher: ['<rootDir>/**'], // Positive Glob pattern, where you specify all files and directories based on the project <rootDir>
-  ignoreMatcher: ['!**/node_modules/**'], // Negative Glob pattern, where you specify all files and directories you do NOT want to check
+  ignoreMatcher: ['!**/node_modules/**'], // (Optional) - Negative Glob pattern, where you specify all files and directories you do NOT want to check
 };
 
 // We are using Jest, but you can use any other testing library
@@ -110,6 +110,66 @@ describe('Architecture Test', () => {
 ```
 
 Now run the test and congrats 🥳, you just tested your application topology !
+
+> #### `module-alias`
+> `arch-unit-js` also provides support for applications which still use `module-alias@2.x.x` with the next example !
+
+Create a file `register.js` , in the root of your project, function which calls the `module-alias` first:
+```javascript
+// file path: ./register.js
+'use strict';
+
+const path = require('path');
+const moduleAlias = require('module-alias');
+const baseDir = __dirname;
+
+moduleAlias.addAliases({
+  '#domain': path.join(baseDir, 'domain'),
+  '#usecases': path.join(baseDir, 'use-cases'),
+});
+```
+
+Now let's create a simple `domain` layer in a directory with a file `user.js`:
+```javascript
+// file path: ./domain/user.js
+export class User {
+  constructor(id, name) {}
+}
+```
+
+To use the `domain` layer, create the `use-cases` layer within a directory with the same name, with a file called `create-user.js`:
+
+```javascript
+// file path: ./use-cases/create-user.js
+const { User } = require('#domain/user');
+
+const createUserUseCase = () => new User(1, 'Roko');
+```
+
+Now, let's test if `create-user.js` does depends on the `#domain` layer, create a `tests` directory and inside create a `arch-use-case.test.js` file.
+```javascript
+// file path: ./tests/arch-use-case.test.js
+const { app } = require('arch-unit-js');
+
+const options = {
+  extensionTypes: ['**/*.js'], // Positive Glob pattern, where you specify all extension types your application has
+  includeMatcher: ['<rootDir>/**'], // Positive Glob pattern, where you specify all files and directories based on the project <rootDir>
+  ignoreMatcher: ['!**/node_modules/**'], // (Optional) - Negative Glob pattern, where you specify all files and directories you do NOT want to check
+};
+
+// We are using Jest, but you can use any other testing library
+describe('Architecture Test', () => {
+  beforeAll(() => {
+    require('../register'); // calls the `module-alias` and stores the alias in the node Modules package
+  });
+
+  it('"./createUserUseCase.js" file should depend on "#domain"', async () => {
+    await app(options).projectFiles().inFile('**/usecases/create-user.js').should().dependsOn('**/domain/**').check(); // No need to expect, if the dependency is not found it throws an error
+  });
+});
+```
+
+And there you have it congrats again 🥳 , you successfully tested your project dependencies which uses `module-alias` !
 
 <br/>
 
