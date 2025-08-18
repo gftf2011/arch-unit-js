@@ -7,7 +7,14 @@ import { WalkVisitor, AvailableFilesVisitor, FilesVisitor } from '@/core/project
 import { glob } from '@/utils';
 
 export class Project {
-  private constructor(protected files: Map<string, RootFile.Base>) {}
+  private constructor(
+    protected projectSizeInBytes: number,
+    protected files: Map<string, RootFile.Base>,
+  ) {}
+
+  public getProjectSizeInBytes(): number {
+    return this.projectSizeInBytes;
+  }
 
   public getFiles(): Map<string, RootFile.Base> {
     return this.files;
@@ -64,6 +71,11 @@ export class Project {
     await walk(startPath, availableFilesVisitor, []);
     await walk(startPath, filesVisitor, availableFilesVisitor.files);
 
-    return new Project(filesVisitor.files as Map<string, RootFile.Base>);
+    let projectSizeInBytes = 0;
+    for (const [_, file] of filesVisitor.files) {
+      projectSizeInBytes += file.props.size;
+    }
+
+    return new Project(projectSizeInBytes, filesVisitor.files as Map<string, RootFile.Base>);
   }
 }
