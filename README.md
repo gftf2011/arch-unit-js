@@ -112,9 +112,11 @@ describe('Architecture Test', () => {
 Now run the test and congrats 🥳, you just tested your application topology !
 
 > #### `module-alias`
+>
 > `arch-unit-js` also provides support for applications which still use `module-alias@2.x.x` with the next example !
 
 Create a file `register.js` , in the root of your project, function which calls the `module-alias` first:
+
 ```javascript
 // file path: ./register.js
 'use strict';
@@ -130,6 +132,7 @@ moduleAlias.addAliases({
 ```
 
 Now let's create a simple `domain` layer in a directory with a file `user.js`:
+
 ```javascript
 // file path: ./domain/user.js
 export class User {
@@ -147,6 +150,7 @@ const createUserUseCase = () => new User(1, 'Roko');
 ```
 
 Now, let's test if `create-user.js` does depends on the `#domain` layer, create a `tests` directory and inside create a `arch-use-case.test.js` file.
+
 ```javascript
 // file path: ./tests/arch-use-case.test.js
 const { app } = require('arch-unit-js');
@@ -164,7 +168,12 @@ describe('Architecture Test', () => {
   });
 
   it('"./createUserUseCase.js" file should depend on "#domain"', async () => {
-    await app(options).projectFiles().inFile('**/usecases/create-user.js').should().dependsOn('**/domain/**').check(); // No need to expect, if the dependency is not found it throws an error
+    await app(options)
+      .projectFiles()
+      .inFile('**/usecases/create-user.js')
+      .should()
+      .dependsOn('**/domain/**')
+      .check(); // No need to expect, if the dependency is not found it throws an error
   });
 });
 ```
