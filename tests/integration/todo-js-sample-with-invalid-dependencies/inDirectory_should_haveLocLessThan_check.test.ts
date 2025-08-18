@@ -13,14 +13,18 @@ const rootDir = path.resolve(
 
 const includeMatchers = ['<rootDir>/**'];
 
-const excludeMatchers = ['!<rootDir>/**/package.json'];
+const ignoreMatchers = [
+  '!<rootDir>/**/package.json',
+  '!<rootDir>/**/node_modules/**',
+  '!<rootDir>/**/package-lock.json',
+];
 
 describe('should.haveLocLessThan scenarios', () => {
   it('should PASS - dependencies are not being analyzed', async () => {
     const options: Options = {
       extensionTypes: ['**/*.js'],
       includeMatcher: [...includeMatchers],
-      ignoreMatcher: excludeMatchers,
+      ignoreMatcher: ignoreMatchers,
     };
     const appInstance = ComponentSelectorBuilder.create(rootDir, options);
     await appInstance.projectFiles().inDirectory('**').should().haveLocLessThan(10000).check();

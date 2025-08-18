@@ -87,10 +87,10 @@ export class EmailService {
 **API Usage:**
 
 ```typescript
-projectFiles().inDirectory('**/src/**').shouldNot().haveLocLessThan(15).check();
+projectFiles().inDirectory('**/src/**').shouldNot().haveLocLessThan(20).check();
 ```
 
-**Result**: ✅ PASS - All files (25, 20, 32, 45 LOC) are greater than or equal to 15 lines of code
+**Result**: ✅ PASS - All files (25, 20, 32, 45 LOC) are greater than or equal to 20 lines of code
 
 ### Scenario 2: ANY files have lines of code LESS than the threshold
 

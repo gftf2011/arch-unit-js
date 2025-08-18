@@ -1,7 +1,7 @@
 {
   "name": "arch-unit-js",
-  "version": "1.0.36",
-  "description": "arch-unit clone for node.js projects",
+  "version": "1.0.37",
+  "description": "ArchUnit clone for node.js projects",
   "files": [
     "package.json",
     "dist/index.d.ts",
@@ -28,7 +28,7 @@
     "bundle:types": "npx rollup -c rollup.config.dts.mjs",
     "clean:types": "rm -rf dist/types",
     "build": "node esbuild.config.js && npm run build:types && npm run bundle:types && npm run clean:types",
-    "test": "jest --detectOpenHandles --coverage",
+    "test": "jest --coverage --maxWorkers=4",
     "test:watch": "jest --watch",
     "publish:beta": "npm publish --tag beta --access public",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
@@ -45,10 +45,15 @@
   "bugs": {
     "url": "https://github.com/gftf2011/arch-unit-js/issues"
   },
+  "keywords": [
+    "testing",
+    "babel",
+    "architecture",
+    "javascript-library",
+    "arch-unit-ts",
+    "ts-arch"
+  ],
   "homepage": "https://github.com/gftf2011/arch-unit-js#readme",
-  "overrides": {
-    "argparse": "1.0.10"
-  },
   "devDependencies": {
     "@esbuild-plugins/tsconfig-paths": "0.1.2",
     "@types/babel__traverse": "7.28.0",
@@ -74,7 +79,6 @@
     "@babel/parser": "7.28.0",
     "@babel/traverse": "7.28.0",
     "micromatch": "4.0.8",
-    "pathe": "2.0.3",
-    "tsconfig-paths": "4.2.0"
+    "pathe": "2.0.3"
   }
 }
