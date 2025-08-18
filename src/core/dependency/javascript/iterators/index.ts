@@ -10,7 +10,7 @@ export interface Iterator<T> {
 
 export class ResolvableIterator implements Iterator<Resolvable> {
   private index: number = 0;
-  private resolvables: Resolvable[] = [];
+  private readonly resolvables: Resolvable[] = [];
 
   public add(item: Resolvable): void {
     this.resolvables.push(item);

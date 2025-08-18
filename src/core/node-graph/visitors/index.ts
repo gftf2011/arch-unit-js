@@ -29,6 +29,6 @@ export class NodeFilesVisitor implements WalkVisitor {
       },
     );
 
-    (this.files as Map<string, RootFile.Base>).set(file.props.path, file);
+    this.files.set(file.props.path, file);
   }
 }

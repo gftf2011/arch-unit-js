@@ -21,7 +21,7 @@ export class JavascriptRelatedDependency extends Dependency {
     });
   }
 
-  public override resolve(resolvableProps: ResolvableDependencyProps): JavascriptRelatedDependency {
+  public override resolve(resolvableProps: ResolvableDependencyProps): this {
     const iterator = new ResolvableIterator();
     iterator.add(new BuildinModuleResolvable({ ...this.props }, { ...resolvableProps }));
     iterator.add(new PackageJsonDependencyResolvable({ ...this.props }, { ...resolvableProps }));
