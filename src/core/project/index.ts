@@ -3,11 +3,19 @@ import micromatch from 'micromatch';
 import * as path from 'pathe';
 
 import { RootFile } from '@/core/file';
-import { WalkVisitor, AvailableFilesVisitor, NodeFilesVisitor } from '@/core/node-graph/visitors';
+import { WalkVisitor, AvailableFilesVisitor, FilesVisitor } from '@/core/project/visitors';
 import { glob } from '@/utils';
 
-export class NodeGraph {
-  private constructor(readonly nodes: Map<string, RootFile.Base>) {}
+export class Project {
+  private constructor(protected files: Map<string, RootFile.Base>) {}
+
+  public getFiles(): Map<string, RootFile.Base> {
+    return this.files;
+  }
+
+  public setFiles(files: Map<string, RootFile.Base>): void {
+    this.files = files;
+  }
 
   public static async create(
     fileAnalysisType: RootFile.AnalysisType,
@@ -16,7 +24,7 @@ export class NodeGraph {
     filesOrFoldersToIgnore: string[],
     extensionTypes: string[],
     typescriptPath?: string,
-  ): Promise<NodeGraph> {
+  ): Promise<Project> {
     const extensions = extensionTypes.map((mimeType) =>
       glob.extractExtensionFromGlobPattern(mimeType),
     ) as string[];
@@ -51,11 +59,11 @@ export class NodeGraph {
     }
 
     const availableFilesVisitor = new AvailableFilesVisitor();
-    const nodesVisitor = new NodeFilesVisitor(fileAnalysisType);
+    const filesVisitor = new FilesVisitor(fileAnalysisType);
 
     await walk(startPath, availableFilesVisitor, []);
-    await walk(startPath, nodesVisitor, availableFilesVisitor.files);
+    await walk(startPath, filesVisitor, availableFilesVisitor.files);
 
-    return new NodeGraph(nodesVisitor.files as Map<string, RootFile.Base>);
+    return new Project(filesVisitor.files as Map<string, RootFile.Base>);
   }
 }

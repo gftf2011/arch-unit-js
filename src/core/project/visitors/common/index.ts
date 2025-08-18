@@ -1,4 +1,4 @@
-export type NodeInfo = {
+export type FileInfo = {
   fileName: string;
   rootDir: string;
   availableFiles: string[];
