@@ -3,6 +3,7 @@ import {
   JavascriptRelatedFileForDependenciesAnalysis,
   JavascriptRelatedFileForLocAnalysis,
   JavascriptRelatedFileForNameAnalysis,
+  JavascriptRelatedFileForProjectSizeAnalysis,
 } from '@/core/file/javascript';
 import { javascript } from '@/utils';
 
@@ -22,6 +23,8 @@ export class FileFactory {
         return new JavascriptRelatedFileForDependenciesAnalysis(fileName, filePath);
       } else if (fileAnalysisType === RootFile.AnalysisType.NAME_ANALYSIS) {
         return new JavascriptRelatedFileForNameAnalysis(fileName, filePath);
+      } else if (fileAnalysisType === RootFile.AnalysisType.PROJECT_SIZE) {
+        return new JavascriptRelatedFileForProjectSizeAnalysis(fileName, filePath);
       }
     }
     throw new Error(`Unsupported file type: ${fileName}`);

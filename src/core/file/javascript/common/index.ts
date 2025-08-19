@@ -1,5 +1,3 @@
-import fsPromises from 'fs/promises';
-
 import { RootFile } from '@/core/file/common';
 
 export type JavascriptRelatedFileProps = RootFile.BaseProps & {
@@ -31,16 +29,5 @@ export abstract class JavascriptRelatedFile extends RootFile.Base {
       totalImportedDependencies: 0,
       totalDinamicImportedDependencies: 0,
     };
-  }
-
-  public abstract buildByProps(
-    props: JavascriptRelatedBuildableProps,
-  ): Promise<JavascriptRelatedFile>;
-
-  public override async build(
-    buildableProps: JavascriptRelatedBuildableProps,
-  ): Promise<JavascriptRelatedFile> {
-    this.props.size = (await fsPromises.stat(this.filePath)).size;
-    return this.buildByProps(buildableProps);
   }
 }

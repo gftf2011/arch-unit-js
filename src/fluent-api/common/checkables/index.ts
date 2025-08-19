@@ -4,7 +4,12 @@ import { RootFile } from '@/core/file';
 import { Project } from '@/core/project';
 import { NotificationError } from '@/fluent-api/common/errors/notification';
 import { NotificationHandler } from '@/fluent-api/common/notification/handler';
-import { CheckableProps, LOCAnalysisProps, PatternCheckableProps } from '@/fluent-api/common/types';
+import {
+  CheckableProps,
+  LOCAnalysisProps,
+  PatternCheckableProps,
+  ProjectSizeAnalysisProps,
+} from '@/fluent-api/common/types';
 import { glob } from '@/utils';
 
 abstract class Checkable {
@@ -109,15 +114,33 @@ abstract class Checkable {
   }
 }
 
+export abstract class ProjectSizeAnalysisCheckable extends Checkable {
+  constructor(protected readonly props: ProjectSizeAnalysisProps) {
+    super(props);
+  }
+
+  public override async check(): Promise<void> {
+    const isPercentageInvalid =
+      this.props.percentageThreshold <= 0 || this.props.percentageThreshold > 1;
+
+    if (isPercentageInvalid) {
+      throw new NotificationError(this.props.ruleConstruction, [
+        new Error('Percentage value must be greater than 0 and less or equal than 1'),
+      ]);
+    }
+    await super.check();
+  }
+}
+
 export abstract class LOCAnalysisCheckable extends Checkable {
   constructor(protected readonly props: LOCAnalysisProps) {
     super(props);
   }
 
   public override async check(): Promise<void> {
-    const isThresholdValid = this.props.analisisThreshold <= 0;
+    const isThresholdInvalid = this.props.analisisThreshold <= 0;
 
-    if (isThresholdValid) {
+    if (isThresholdInvalid) {
       throw new NotificationError(this.props.ruleConstruction, [
         new Error('Threshold value must be greater than 0'),
       ]);

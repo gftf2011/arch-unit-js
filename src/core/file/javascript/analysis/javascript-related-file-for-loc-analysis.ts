@@ -13,9 +13,7 @@ export class JavascriptRelatedFileForLocAnalysis extends JavascriptRelatedFile {
     super(fileName, filePath);
   }
 
-  public override async buildByProps(
-    _: JavascriptRelatedBuildableProps,
-  ): Promise<JavascriptRelatedFile> {
+  public override async build(_: JavascriptRelatedBuildableProps): Promise<JavascriptRelatedFile> {
     const filePath = this.props.path;
 
     const code = await fsPromises.readFile(filePath, 'utf-8');

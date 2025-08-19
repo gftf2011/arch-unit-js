@@ -17,7 +17,7 @@ export class JavascriptRelatedFileForDependenciesAnalysis extends JavascriptRela
     super(fileName, filePath);
   }
 
-  public override async buildByProps(
+  public override async build(
     buildableProps: JavascriptRelatedBuildableProps,
   ): Promise<JavascriptRelatedFile> {
     const filePath = this.filePath;

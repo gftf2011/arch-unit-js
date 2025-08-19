@@ -7,6 +7,7 @@ export enum AnalysisType {
   LOC = 'LOC_ANALYSIS',
   DEPENDENCIES = 'DEPENDENCIES_ANALYSIS',
   NAME_ANALYSIS = 'NAME_ANALYSIS',
+  PROJECT_SIZE = 'PROJECT_SIZE_ANALYSIS',
 }
 
 export type BaseProps = {
