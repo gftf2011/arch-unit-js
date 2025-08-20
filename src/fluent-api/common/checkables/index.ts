@@ -1,18 +1,24 @@
 import micromatch from 'micromatch';
 
 import { RootFile } from '@/core/file';
-import { NodeGraph } from '@/core/node-graph';
+import { Project } from '@/core/project';
 import { NotificationError } from '@/fluent-api/common/errors/notification';
 import { NotificationHandler } from '@/fluent-api/common/notification/handler';
-import { CheckableProps, LOCAnalysisProps, PatternCheckableProps } from '@/fluent-api/common/types';
+import {
+  CheckableProps,
+  LOCAnalysisProps,
+  PatternCheckableProps,
+  ProjectSizeAnalysisProps,
+} from '@/fluent-api/common/types';
 import { glob } from '@/utils';
 
 abstract class Checkable {
+  protected project!: Project;
   protected abstract readonly fileAnalysisType: RootFile.AnalysisType;
 
   constructor(protected readonly props: CheckableProps) {}
 
-  protected filter(map: Map<string, RootFile.Base>): Map<string, RootFile.Base> {
+  protected filter(): void {
     const filters: string[] = this.props.filteringPatterns;
     const filteringPattern = glob.resolveRootDirPatterns(
       [...filters, ...this.props.excludePattern],
@@ -20,7 +26,9 @@ abstract class Checkable {
     );
 
     const filteredFiles = new Map(
-      [...map].filter(([path, _file]) => micromatch([path], filteringPattern).length > 0),
+      [...this.project.getFiles()].filter(
+        ([path, _file]) => micromatch([path], filteringPattern).length > 0,
+      ),
     );
 
     if (filteredFiles.size === 0) {
@@ -29,11 +37,11 @@ abstract class Checkable {
       ]);
     }
 
-    return filteredFiles;
+    this.project.setFiles(filteredFiles);
   }
 
-  protected async buildNodeGraph(): Promise<NodeGraph> {
-    return NodeGraph.create(
+  protected async buildNodeGraph(): Promise<Project> {
+    return Project.create(
       this.fileAnalysisType,
       this.props.rootDir,
       this.props.options.includeMatcher,
@@ -43,12 +51,10 @@ abstract class Checkable {
     );
   }
 
-  protected clearFiles(files: Map<string, RootFile.Base>): void {
-    files.clear();
-  }
-
-  protected validateFilesExtension(files: Map<string, RootFile.Base>): void {
+  protected validateFilesExtension(): void {
+    const files = this.project.getFiles();
     const notificationHandler = NotificationHandler.create();
+
     for (const [_path, file] of files) {
       if (micromatch([file.props.path], this.props.options.extensionTypes).length === 0) {
         notificationHandler.addError(
@@ -64,7 +70,8 @@ abstract class Checkable {
     }
   }
 
-  protected validateFilesDependencies(files: Map<string, RootFile.Base>): void {
+  protected validateFilesDependencies(): void {
+    const files = this.project.getFiles();
     const notificationHandler = NotificationHandler.create();
     for (const [_path, file] of files) {
       const filePath = file.props.path;
@@ -88,27 +95,40 @@ abstract class Checkable {
     }
   }
 
-  protected abstract checkPositiveRule(filteredFiles: Map<string, RootFile.Base>): Promise<void>;
+  protected abstract checkPositiveRule(): Promise<void>;
 
-  protected abstract checkNegativeRule(filteredFiles: Map<string, RootFile.Base>): Promise<void>;
+  protected abstract checkNegativeRule(): Promise<void>;
 
   public async check(): Promise<void> {
-    const files = (await this.buildNodeGraph()).nodes;
+    this.project = await this.buildNodeGraph();
 
-    this.validateFilesExtension(files);
-    this.validateFilesDependencies(files);
+    this.validateFilesExtension();
+    this.validateFilesDependencies();
+    this.filter();
 
-    const filteredFiles = this.filter(files);
     try {
-      this.props.negated
-        ? await this.checkNegativeRule(filteredFiles)
-        : await this.checkPositiveRule(filteredFiles);
+      this.props.negated ? await this.checkNegativeRule() : await this.checkPositiveRule();
     } catch (error) {
       throw new Error((error as Error).message);
-    } finally {
-      this.clearFiles(files);
-      this.clearFiles(filteredFiles);
     }
+  }
+}
+
+export abstract class ProjectSizeAnalysisCheckable extends Checkable {
+  constructor(protected readonly props: ProjectSizeAnalysisProps) {
+    super(props);
+  }
+
+  public override async check(): Promise<void> {
+    const isPercentageInvalid =
+      this.props.percentageThreshold <= 0 || this.props.percentageThreshold > 1;
+
+    if (isPercentageInvalid) {
+      throw new NotificationError(this.props.ruleConstruction, [
+        new Error('Percentage value must be greater than 0 and less or equal than 1'),
+      ]);
+    }
+    await super.check();
   }
 }
 
@@ -118,9 +138,9 @@ export abstract class LOCAnalysisCheckable extends Checkable {
   }
 
   public override async check(): Promise<void> {
-    const isThresholdValid = this.props.analisisThreshold <= 0;
+    const isThresholdInvalid = this.props.analisisThreshold <= 0;
 
-    if (isThresholdValid) {
+    if (isThresholdInvalid) {
       throw new NotificationError(this.props.ruleConstruction, [
         new Error('Threshold value must be greater than 0'),
       ]);

@@ -3,7 +3,7 @@ import {
   JavascriptRelatedFileForDependenciesAnalysis,
   JavascriptRelatedFileForLocAnalysis,
   JavascriptRelatedFileForNameAnalysis,
-  JavascriptRelatedFileProps,
+  JavascriptRelatedFileForProjectSizeAnalysis,
 } from '@/core/file/javascript';
 import { javascript } from '@/utils';
 
@@ -17,23 +17,14 @@ export class FileFactory {
       javascript.isJavascriptRelatedFile(fileName) ||
       javascript.isTypeScriptRelatedFile(fileName)
     ) {
-      const props: JavascriptRelatedFileProps = {
-        name: fileName,
-        path: filePath,
-        type: 'javascript-file',
-        loc: 0,
-        totalLines: 0,
-        dependencies: [],
-        totalRequiredDependencies: 0,
-        totalImportedDependencies: 0,
-        totalDinamicImportedDependencies: 0,
-      };
       if (fileAnalysisType === RootFile.AnalysisType.LOC) {
-        return new JavascriptRelatedFileForLocAnalysis(props);
+        return new JavascriptRelatedFileForLocAnalysis(fileName, filePath);
       } else if (fileAnalysisType === RootFile.AnalysisType.DEPENDENCIES) {
-        return new JavascriptRelatedFileForDependenciesAnalysis(props);
+        return new JavascriptRelatedFileForDependenciesAnalysis(fileName, filePath);
       } else if (fileAnalysisType === RootFile.AnalysisType.NAME_ANALYSIS) {
-        return new JavascriptRelatedFileForNameAnalysis(props);
+        return new JavascriptRelatedFileForNameAnalysis(fileName, filePath);
+      } else if (fileAnalysisType === RootFile.AnalysisType.PROJECT_SIZE) {
+        return new JavascriptRelatedFileForProjectSizeAnalysis(fileName, filePath);
       }
     }
     throw new Error(`Unsupported file type: ${fileName}`);

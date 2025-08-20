@@ -5,7 +5,7 @@ export default {
   output: [{ file: 'dist/index.d.ts', format: 'es' }],
   plugins: [
     dts({
-      tsconfig: './tsconfig.json', // 👈 Make sure it's pointing to the right file
+      tsconfig: './tsconfig.build.json', // 👈 Make sure it's pointing to the right file
     }),
   ],
   onwarn(warning, warn) {

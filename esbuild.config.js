@@ -16,7 +16,7 @@ const buildConfig = {
   external: ['@babel/parser', '@babel/traverse'], // External dependencies
   sourcemap: false,
   minify: true,
-  plugins: [TsconfigPathsPlugin({ tsconfig: 'tsconfig.json' })],
+  plugins: [TsconfigPathsPlugin({ tsconfig: 'tsconfig.build.json' })],
 };
 
 async function buildAll() {
