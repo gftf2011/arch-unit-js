@@ -14,6 +14,10 @@ export type CheckableProps = {
   ruleConstruction: string[];
 };
 
+export type ProjectSizeAnalysisProps = CheckableProps & {
+  percentageThreshold: number;
+};
+
 export type LOCAnalysisProps = CheckableProps & {
   analisisThreshold: number;
 };

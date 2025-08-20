@@ -1,6 +1,6 @@
 {
   "name": "arch-unit-js",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "ArchUnit clone for node.js projects",
   "files": [
     "package.json",
@@ -15,6 +15,7 @@
   "typing": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
     }
@@ -24,7 +25,7 @@
     "pack:linux:tar": "tar --transform='s|^|package/|' -czf arch-unit-js.tar.tgz dist/index.js dist/index.mjs dist/index.d.ts package.json LICENSE README.md",
     "pack:macos:tar": "gtar --transform='s|^|package/|' -czf arch-unit-js.tar.tgz dist/index.js dist/index.mjs dist/index.d.ts package.json LICENSE README.md",
     "checksum:tar": "sha256sum *.tgz > checksum.txt",
-    "build:types": "tsc -p tsconfig.build.json --declaration --emitDeclarationOnly",
+    "build:types": "npx tsc -p tsconfig.build.json && npx tsc-alias -p tsconfig.build.json --outDir dist/types",
     "bundle:types": "npx rollup -c rollup.config.dts.mjs",
     "clean:types": "rm -rf dist/types",
     "build": "node esbuild.config.js && npm run build:types && npm run bundle:types && npm run clean:types",
@@ -74,6 +75,7 @@
     "rollup": "4.46.2",
     "rollup-plugin-dts": "6.2.1",
     "ts-jest": "^29.4.0",
+    "tsc-alias": "^1.8.16",
     "typescript": "5.8.3"
   },
   "dependencies": {

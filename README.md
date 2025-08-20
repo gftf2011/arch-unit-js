@@ -190,7 +190,7 @@ import { Options } from 'arch-unit-js';
 const options: Options = {
   extensionTypes: ['**/*.ts'], // Positive Glob pattern, where you specify all extension types your application has
   includeMatcher: ['<rootDir>/**'], // Positive Glob pattern, where you specify all files and directories based on the project <rootDir>
-  typescriptPath: '<rootDir>/tsconfig.json', // Path to project 'tsconfig.json' - (using <rootDir> as wildcard to )
+  typescriptPath: '<rootDir>/tsconfig.json', // Path to project 'tsconfig.json' - (using <rootDir> as wildcard)
 };
 ```
 
@@ -212,6 +212,7 @@ const options: Options = {
 - [Project Files in Directories Should NOT Have Name with Specified Pattern](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveName_check.md)
 - [Project Files in Directories Should NOT Only Depend On Specified Patterns](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_onlyDependsOn_check.md)
 - [Project Files in Directories Should NOT Only Have Name with Specified Pattern](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_onlyHaveName_check.md)
+- [Project Files in Directories Should NOT Have Total Project Code Less Than a Percentage Value](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveTotalProjectCodeLessThan_check.md)
 - [Project Files in Directories Should Depend On Specified Patterns](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_dependsOn_check.md)
 - [Project Files in Directories Should Have Cycles](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveCycles_check.md)
 - [Project Files in Directories Should Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveLocGreaterOrEqualThan_check.md)
@@ -221,6 +222,7 @@ const options: Options = {
 - [Project Files in Directories Should Have Name with Specified Pattern](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveName_check.md)
 - [Project Files in Directories Should Only Depend On Specified Patterns](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_onlyDependsOn_check.md)
 - [Project Files in Directories Should Only Have Name with Specified Pattern](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_onlyHaveName_check.md)
+- [Project Files in Directories Should Have Total Project Code Less Than a Percentage Value](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveTotalProjectCodeLessThan_check.md)
 
 </details>
 
@@ -236,6 +238,7 @@ const options: Options = {
 - [Project Files in Directory Should Not Have Name with Specified Pattern](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveName_check.md)
 - [Project Files in Directory Should NOT Only Depend On Specific Patterns](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_onlyDependsOn_check.md)
 - [Project Files in Directory Should NOT Only Have Names with Specified Pattern](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_onlyHaveName_check.md)
+- [Project Files in Directory Should NOT Have Total Project Code Less Than a Percentage Value](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveTotalProjectCodeLessThan_check.md)
 - [Project Files in Directory Should Depend On Specified Patterns](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_dependsOn_check.md)
 - [Project Files in Directory Should Have Cycles](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveCycles_check.md)
 - [Project Files in Directory Should Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveLocGreaterOrEqualThan_check.md)
@@ -245,6 +248,7 @@ const options: Options = {
 - [Project Files in Directory Should Have Name with Specified Pattern](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveName_check.md)
 - [Project Files in Directory Should Only Depend On Specified Patterns](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_onlyDependsOn_check.md)
 - [Project Files in Directory Should Only Have Name with Specified Pattern](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_onlyHaveName_check.md)
+- [Project Files in Directory Should Have Total Project Code Less Than a Percentage Value](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveTotalProjectCodeLessThan_check.md)
 
 </details>
 
@@ -260,6 +264,7 @@ const options: Options = {
 - [Project Files in File Should NOT Have Name with Specified Pattern](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_haveName_check.md)
 - [Project Files in File Should NOT Only Depend On Specified Patterns](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_onlyDependsOn_check.md)
 - [Project Files in File Should NOT Only Have Name with Specified Pattern](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_onlyHaveName_check.md)
+- [Project Files in File Should NOT Have Total Project Code Less Than a Percentage Value](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_haveTotalProjectCodeLessThan_check.md)
 - [Project Files in File Should Depend On Specified Patterns](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_dependsOn_check.md)
 - [Project Files in File Should Have Cycles](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveCycles_check.md)
 - [Project Files in File Should Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveLocGreaterOrEqualThan_check.md)
@@ -269,6 +274,7 @@ const options: Options = {
 - [Project Files in File Should Have Name with Specified Pattern](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveName_check.md)
 - [Project Files in File Should Only Depend On Specified Patterns](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_onlyDependsOn_check.md)
 - [Project Files in File Should Only Have Name with Specified Pattern](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_onlyHaveName_check.md)
+- [Project Files in File Should Have Total Project Code Less Than a Percentage Value](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveTotalProjectCodeLessThan_check.md)
 
 </details>
 
