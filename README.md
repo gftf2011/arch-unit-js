@@ -190,7 +190,7 @@ import { Options } from 'arch-unit-js';
 const options: Options = {
   extensionTypes: ['**/*.ts'], // Positive Glob pattern, where you specify all extension types your application has
   includeMatcher: ['<rootDir>/**'], // Positive Glob pattern, where you specify all files and directories based on the project <rootDir>
-  typescriptPath: '<rootDir>/tsconfig.json', // Path to project 'tsconfig.json' - (using <rootDir> as wildcard to )
+  typescriptPath: '<rootDir>/tsconfig.json', // Path to project 'tsconfig.json' - (using <rootDir> as wildcard)
 };
 ```
 
