@@ -1,6 +1,6 @@
 {
   "name": "arch-unit-js",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "ArchUnit clone for node.js projects",
   "files": [
     "package.json",
