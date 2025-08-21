@@ -63,11 +63,7 @@ projectFiles()
 **API Usage:**
 
 ```typescript
-projectFiles()
-  .inDirectory('**/main/**')
-  .should()
-  .haveTotalProjectCodeLessOrEqualThan(0.2)
-  .check();
+projectFiles().inDirectory('**/main/**').should().haveTotalProjectCodeLessOrEqualThan(0.2).check();
 ```
 
 **Result**: ❌ FAIL — SUM 2,200 bytes > 2,000 bytes (20% of 10,000). The error should list the directory and the contributing file(s) with their sizes.

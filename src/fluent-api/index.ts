@@ -9,8 +9,8 @@ import {
   LOCAnalysisLessThanShouldSelector,
   OnlyDependsOnShouldSelector,
   OnlyHaveNameShouldSelector,
-  ShouldHaveTotalProjectCodeLessOrEqualThanSelector,
-  ShouldHaveTotalProjectCodeLessThanSelector,
+  HaveTotalProjectCodeLessOrEqualThanShouldSelector,
+  HaveTotalProjectCodeLessThanShouldSelector,
 } from '@/fluent-api/selectors';
 
 abstract class MatchConditionSelectorBuilder {
@@ -24,8 +24,10 @@ abstract class MatchConditionSelectorBuilder {
     protected readonly ruleConstruction: string[],
   ) {}
 
-  haveTotalProjectCodeLessOrEqualThan(threshold: number): ShouldHaveTotalProjectCodeLessOrEqualThanSelector {
-    return new ShouldHaveTotalProjectCodeLessOrEqualThanSelector({
+  haveTotalProjectCodeLessOrEqualThan(
+    threshold: number,
+  ): HaveTotalProjectCodeLessOrEqualThanShouldSelector {
+    return new HaveTotalProjectCodeLessOrEqualThanShouldSelector({
       negated: this.negated,
       rootDir: this.rootDir,
       filteringPatterns: [...this.pattern],
@@ -39,8 +41,8 @@ abstract class MatchConditionSelectorBuilder {
     });
   }
 
-  haveTotalProjectCodeLessThan(threshold: number): ShouldHaveTotalProjectCodeLessThanSelector {
-    return new ShouldHaveTotalProjectCodeLessThanSelector({
+  haveTotalProjectCodeLessThan(threshold: number): HaveTotalProjectCodeLessThanShouldSelector {
+    return new HaveTotalProjectCodeLessThanShouldSelector({
       negated: this.negated,
       rootDir: this.rootDir,
       filteringPatterns: [...this.pattern],
