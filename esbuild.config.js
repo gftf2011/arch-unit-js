@@ -12,7 +12,7 @@ const buildConfig = {
   entryPoints: ['src/index.ts'],
   bundle: true,
   platform: 'node',
-  target: 'node18',
+  target: 'node16',
   sourcemap: false,
   minify: true,
   plugins: [TsconfigPathsPlugin({ tsconfig: 'tsconfig.build.json' })],
