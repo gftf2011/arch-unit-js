@@ -199,93 +199,61 @@ const options: Options = {
 
 ## :notebook: API Documentation
 
-> ### "projectFiles"
+## Globals
 
-<details>
-  <summary><b>"inDirectories" API Docs</b></summary>
+### `projectFiles()`
 
-- [Project Files in Directories Should NOT Depend On Specified Patterns](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_dependsOn_check.md)
-- [Project Files in Directories Should NOT Have Cycles](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveCycles_check.md)
-- [Project Files in Directories Should NOT Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveLocGreaterOrEqualThan_check.md)
-- [Project Files in Directories Should NOT Have Greater L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveLocGreaterThan_check.md)
-- [Project Files in Directories Should NOT Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveLocLessOrEqualThan_check.md)
-- [Project Files in Directories Should NOT Have Less L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveLocLessThan_check.md)
-- [Project Files in Directories Should NOT Have Name with Specified Pattern](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveName_check.md)
-- [Project Files in Directories Should NOT Only Depend On Specified Patterns](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_onlyDependsOn_check.md)
-- [Project Files in Directories Should NOT Only Have Name with Specified Pattern](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_onlyHaveName_check.md)
-- [Project Files in Directories Should NOT Have Total Project Code Less Than a Percentage Value](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveTotalProjectCodeLessThan_check.md)
-- [Project Files in Directories Should NOT Have Total Project Code Less Or Equal Than a Percentage Value](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveTotalProjectCodeLessOrEqualThan_check.md)
-- [Project Files in Directories Should Depend On Specified Patterns](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_dependsOn_check.md)
-- [Project Files in Directories Should Have Cycles](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveCycles_check.md)
-- [Project Files in Directories Should Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveLocGreaterOrEqualThan_check.md)
-- [Project Files in Directories Should Have Greater L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveLocGreaterThan_check.md)
-- [Project Files in Directories Should Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveLocLessOrEqualThan_check.md)
-- [Project Files in Directories Should Have Less L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveLocLessThan_check.md)
-- [Project Files in Directories Should Have Name with Specified Pattern](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveName_check.md)
-- [Project Files in Directories Should Only Depend On Specified Patterns](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_onlyDependsOn_check.md)
-- [Project Files in Directories Should Only Have Name with Specified Pattern](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_onlyHaveName_check.md)
-- [Project Files in Directories Should Have Total Project Code Less Than a Percentage Value](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveTotalProjectCodeLessThan_check.md)
-- [Project Files in Directories Should Have Total Project Code Less Or Equal Than a Percentage Value](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveTotalProjectCodeLessOrEqualThan_check.md)
+`projectFiles()` is the function used every time you want to make a broad test against your project structure. You will use it alongside with a "selector" to choose the files location which will be checked by a "matcher" !
 
-</details>
+To understand better, let's use an example, where you want to test to check if a file `stringUtils.js` has less than 50 L.O.C. - (Lines Of Code). Here's how to start.
+```javascript
+const { app } = require('arch-unit-js');
 
-<details>
-  <summary><b>"inDirectory" API Docs</b></summary>
+const options = {
+  extensionTypes: ['**/*.js'],
+  includeMatcher: ['<rootDir>/**']
+};
 
-- [Project Files in Directory Should NOT Depend On Specified Patterns](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_dependsOn_check.md)
-- [Project Files in Directory Should NOT Have Cycles](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveCycles_check.md)
-- [Project Files in Directory Should NOT Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveLocGreaterOrEqualThan_check.md)
-- [Project Files in Directory Should NOT Have Greater L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveLocGreaterThan_check.md)
-- [Project Files in Directory Should NOT Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveLocLessOrEqualThan_check.md)
-- [Project Files in Directory Should NOT Have Less L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveLocLessThan_check.md)
-- [Project Files in Directory Should Not Have Name with Specified Pattern](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveName_check.md)
-- [Project Files in Directory Should NOT Only Depend On Specific Patterns](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_onlyDependsOn_check.md)
-- [Project Files in Directory Should NOT Only Have Names with Specified Pattern](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_onlyHaveName_check.md)
-- [Project Files in Directory Should NOT Have Total Project Code Less Than a Percentage Value](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveTotalProjectCodeLessThan_check.md)
-- [Project Files in Directory Should NOT Have Total Project Code Less Or Equal Than a Percentage Value](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveTotalProjectCodeLessOrEqualThan_check.md)
-- [Project Files in Directory Should Depend On Specified Patterns](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_dependsOn_check.md)
-- [Project Files in Directory Should Have Cycles](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveCycles_check.md)
-- [Project Files in Directory Should Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveLocGreaterOrEqualThan_check.md)
-- [Project Files in Directory Should Have Greater L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveLocGreaterThan_check.md)
-- [Project Files in Directory Should Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveLocLessOrEqualThan_check.md)
-- [Project Files in Directory Should Have Less L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveLocLessThan_check.md)
-- [Project Files in Directory Should Have Name with Specified Pattern](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveName_check.md)
-- [Project Files in Directory Should Only Depend On Specified Patterns](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_onlyDependsOn_check.md)
-- [Project Files in Directory Should Only Have Name with Specified Pattern](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_onlyHaveName_check.md)
-- [Project Files in Directory Should Have Total Project Code Less Than a Percentage Value](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveTotalProjectCodeLessThan_check.md)
-- [Project Files in Directory Should Have Total Project Code Less Or Equal Than a Percentage Value](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveTotalProjectCodeLessOrEqualThan_check.md)
+it('"./stringHelpers.js" file should have less than 50 - L.O.C.', async () => {
+    await app(options)
+      .projectFiles()
+      .inFile('stringHelpers.js')
+      .should()
+      .haveLocLessThan(50)
+      .check();
+});
+```
 
-</details>
+In this case we have the `inFile` as the "selector" which selects the files which will be tested by the "matcher" , in this case we are only targeting `stringUtils.js`. Then we have the `should` which is a "modifier" which indicates it is a positive test done by the "matcher". And finally there is the `haveLocLessThan` which is the "matcher" whose going to test if the selected files match the criteria !
 
-<details>
-  <summary><b>"inFile" API Docs</b></summary>
+## Modifiers
 
-- [Project Files in File Should NOT Depend On Specified Patterns](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_dependsOn_check.md)
-- [Project Files in File Should NOT Have Cycles](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_haveCycles_check.md)
-- [Project Files in File Should NOT Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_haveLocGreaterOrEqualThan_check.md)
-- [Project Files in File Should NOT Have Greater L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_haveLocGreaterThan_check.md)
-- [Project Files in File Should NOT Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_haveLocLessOrEqualThan_check.md)
-- [Project Files in File Should NOT Have Less L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_haveLocLessThan_check.md)
-- [Project Files in File Should NOT Have Name with Specified Pattern](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_haveName_check.md)
-- [Project Files in File Should NOT Only Depend On Specified Patterns](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_onlyDependsOn_check.md)
-- [Project Files in File Should NOT Only Have Name with Specified Pattern](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_onlyHaveName_check.md)
-- [Project Files in File Should NOT Have Total Project Code Less Than a Percentage Value](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_haveTotalProjectCodeLessThan_check.md)
-- [Project Files in File Should NOT Have Total Project Code Less Or Equal Than a Percentage Value](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_haveTotalProjectCodeLessOrEqualThan_check.md)
-- [Project Files in File Should Depend On Specified Patterns](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_dependsOn_check.md)
-- [Project Files in File Should Have Cycles](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveCycles_check.md)
-- [Project Files in File Should Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveLocGreaterOrEqualThan_check.md)
-- [Project Files in File Should Have Greater L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveLocGreaterThan_check.md)
-- [Project Files in File Should Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveLocLessOrEqualThan_check.md)
-- [Project Files in File Should Have Less L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveLocLessThan_check.md)
-- [Project Files in File Should Have Name with Specified Pattern](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveName_check.md)
-- [Project Files in File Should Only Depend On Specified Patterns](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_onlyDependsOn_check.md)
-- [Project Files in File Should Only Have Name with Specified Pattern](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_onlyHaveName_check.md)
-- [Project Files in File Should Have Total Project Code Less Than a Percentage Value](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveTotalProjectCodeLessThan_check.md)
-- [Project Files in File Should Have Total Project Code Less Or Equal Than a Percentage Value](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveTotalProjectCodeLessOrEqualThan_check.md)
+### `should()`
 
-</details>
+Use the `should` modifier to indicate to "arch-unit-js" what the "matcher" should test. It chains with the "matcher" to indicate how the selected files will be checked !
 
-<br/>
+We can use the another example, where we want all the files in a directory "utils" should match the name "*.utils.js".
+```javascript
+const { app } = require('arch-unit-js');
+
+const options = {
+  extensionTypes: ['**/*.js'],
+  includeMatcher: ['<rootDir>/**']
+};
+
+it('"utils" directory should have all files matching the name "*.utils.js"', async () => {
+    await app(options)
+      .projectFiles()
+      .inDirectory('**/utils/**')
+      .should()
+      .haveName('*.utils.js')
+      .check();
+});
+```
+
+### `shouldNot()`
+
+The `shouldNot` modifier indicates the opposite of `should` , so it is a negative test modifier which tells the "matcher" the selected files should not match the checked pattern
 
 ## :memo: License
 
