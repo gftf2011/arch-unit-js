@@ -15,6 +15,7 @@ const buildConfig = {
   target: 'node16',
   sourcemap: false,
   minify: true,
+  external: ['@babel/parser', '@babel/traverse'],
   plugins: [TsconfigPathsPlugin({ tsconfig: 'tsconfig.build.json' })],
 };
 
