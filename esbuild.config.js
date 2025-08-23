@@ -13,7 +13,6 @@ const buildConfig = {
   bundle: true,
   platform: 'node',
   target: 'node16',
-  external: ['@babel/parser', '@babel/traverse'], // External dependencies
   sourcemap: false,
   minify: true,
   plugins: [TsconfigPathsPlugin({ tsconfig: 'tsconfig.build.json' })],

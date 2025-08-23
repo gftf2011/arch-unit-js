@@ -10,12 +10,12 @@ jobs:
     uses: ./.github/workflows/install.yml
     with:
       os: ubuntu-latest
-      node-versions: '["18.x", "20.x", "22.x"]'
+      node-versions: '["16.x", "18.x", "20.x", "22.x"]'
   install-windows:
     uses: ./.github/workflows/install.yml
     with:
       os: windows-latest
-      node-versions: '["18.x", "20.x", "22.x"]'
+      node-versions: '["16.x", "18.x", "20.x", "22.x"]'
 
   lint-ubuntu:
     uses: ./.github/workflows/lint.yml
@@ -34,13 +34,13 @@ jobs:
     uses: ./.github/workflows/test.yml
     with:
       os: ubuntu-latest
-      node-versions: '["18.x", "20.x", "22.x"]'
+      node-versions: '["16.x", "18.x", "20.x", "22.x"]'
     needs: [lint-ubuntu]
   test-windows:
     uses: ./.github/workflows/test.yml
     with:
       os: windows-latest
-      node-versions: '["18.x", "20.x", "22.x"]'
+      node-versions: '["16.x", "18.x", "20.x", "22.x"]'
     needs: [lint-windows]
 
   build-ubuntu:
