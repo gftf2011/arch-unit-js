@@ -199,6 +199,28 @@ const options: Options = {
 
 ## :notebook: API Documentation
 
+## `app(options)`
+
+When checking your architecture you need to test against your application and some them do have different structures. And here's where `app` comes to play.
+
+The initial `app` API is the representation of your application and to define which files compose your application you can use as parameter the 'options'.
+```javascript
+const { app } = require('arch-unit-js');
+
+app({
+  extensionTypes: ['**/*.js'], // Required
+  includeMatcher: ['<rootDir>/**'], // Required
+  ignoreMatcher: ['!**/node_modules/**'], // Optional
+  typescriptPath: '<rootDir>/tsconfig.json' // Optional
+});
+```
+
+The 'options' parameter is an object which has:
+- The `extensionTypes` which is a `string[]` of glob patterns, representing the allowed extensions which compose your project files
+- The `includeMatcher` which is a `string[]` of glob patterns, representing the source directories of your application
+- The `ignoreMatcher` which is a `string[]` of glob patterns, representing the resources you want to ignore
+- The `typescriptPath` which is a path like `string`, representing the path to your `typescript` config file
+
 ## Globals
 
 ### `projectFiles()`
