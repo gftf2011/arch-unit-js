@@ -236,10 +236,10 @@ const options = {
   includeMatcher: ['<rootDir>/**']
 };
 
-it('"./stringHelpers.js" file should have less than 50 - L.O.C.', async () => {
+it('"**/stringUtils.js" file should have less than 50 - L.O.C.', async () => {
     await app(options)
       .projectFiles()
-      .inFile('stringHelpers.js')
+      .inFile('**/stringUtils.js')
       .should()
       .haveLocLessThan(50)
       .check();
@@ -247,6 +247,54 @@ it('"./stringHelpers.js" file should have less than 50 - L.O.C.', async () => {
 ```
 
 In this case we have the `inFile` as the "selector" which selects the files which will be tested by the "matcher" , in this case we are only targeting `stringUtils.js`. Then we have the `should` which is a "modifier" which indicates it is a positive test done by the "matcher". And finally there is the `haveLocLessThan` which is the "matcher" whose going to test if the selected files match the criteria !
+
+## Selectors
+
+### `inDirectories(pattern: string[], excludePattern?: string[])`
+
+Use the `inDirectories` to select different files from multiple directories within your project. The "selectors" it chains with the "modifier" to indicate which will be "matcher" behavior.
+
+Let's say we have an application and we have the directories `**/infra/repositories/**` & `**/infra/providers/**`. We want to enforce the files inside this folders contain only very specific dependencies which are the `mysql2` & `crypto`.
+```javascript
+const { app } = require('arch-unit-js');
+
+const options = {
+  extensionTypes: ['**/*.js'],
+  includeMatcher: ['<rootDir>/**']
+};
+
+it('"**/infra/repositories/**" & "**/infra/providers/**" should only depends on "mysql2" & "crypto"', async () => {
+    await app(options)
+      .projectFiles()
+      .inDirectories(['**/infra/repositories/**', '**/infra/providers/**'])
+      .should()
+      .onlyDependsOn(['mysql2', 'crypto'])
+      .check();
+});
+```
+
+Now, let's imagine the structure from the selected directories changed, and now they use _barrel exports_ which means both have now an `index.js` file exporting all the files.
+
+But the `index.js` does not comply with the checking "matcher" rule. For this scenario the `inDirectories` has a second parameter which is used to exclude files and folders you don't want to be checked by the "matcher".
+```javascript
+const { app } = require('arch-unit-js');
+
+const options = {
+  extensionTypes: ['**/*.js'],
+  includeMatcher: ['<rootDir>/**']
+};
+
+it('"**/infra/repositories/**" & "**/infra/providers/**" should only depends on "mysql2" & "crypto" , excluding "**/infra/**/index.js"', async () => {
+    await app(options)
+      .projectFiles()
+      .inDirectories(['**/infra/repositories/**', '**/infra/providers/**'], ['!**/infra/**/index.js'])
+      .should()
+      .onlyDependsOn(['mysql2', 'crypto'])
+      .check();
+});
+```
+
+> **Note**: All the patterns passed to the `excludePattern` must have a `!` , which indicates the given pattern must be excluded from the "matcher" check !
 
 ## Modifiers
 
@@ -275,7 +323,28 @@ it('"utils" directory should have all files matching the name "*.utils.js"', asy
 
 ### `shouldNot()`
 
-The `shouldNot` modifier indicates the opposite of `should` , so it is a negative test modifier which tells the "matcher" the selected files should not match the checked pattern
+The `shouldNot` modifier indicates the opposite of `should` , so it is a negative test modifier which tells the "matcher" the selected files should not match the checked pattern.
+
+The code below test if a file `numberUtils.js` has 50 L.O.C. or more.
+```javascript
+const { app } = require('arch-unit-js');
+
+const options = {
+  extensionTypes: ['**/*.js'],
+  includeMatcher: ['<rootDir>/**']
+};
+
+it('"**/numberUtils.js" file should have less than 50 - L.O.C.', async () => {
+    await app(options)
+      .projectFiles()
+      .inFile('**/numberUtils.js')
+      .shouldNot()
+      .haveLocLessThan(50)
+      .check();
+});
+```
+
+By using the `shouldNot` "modifier" the "matcher" behave was modified to check if the selected files had a L.O.C. greater or equal than the specified value !
 
 ## :memo: License
 
