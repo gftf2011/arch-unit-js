@@ -342,6 +342,29 @@ it('"**/infra/repositories/**" should depends on "mysql2/*" , excluding "**/infr
 
 ### `inFiles(pattern: string[])` - (Coming Soon)
 
+### `inFile(pattern: string)`
+
+Use the `inFile` to select different files OR a single file within your project. This selector is focused in selecting specific files or single file which match the pattern only, providing better semantics towards the test itself.
+
+To ilustrate it's behavior let's use an example where we want to check if a file `**/domain/entities/address.entity.js` has more than 80 - L.O.C. - (Lines Of Code).
+```javascript
+const { app } = require('arch-unit-js');
+
+const options = {
+  extensionTypes: ['**/*.js'],
+  includeMatcher: ['<rootDir>/**']
+};
+
+it('"**/domain/entities/address.entity.js" should have more than 80 - L.O.C.', async () => {
+    await app(options)
+      .projectFiles()
+      .inFile('**/domain/entities/address.entity.js')
+      .should()
+      .haveLocGreaterThan(80)
+      .check();
+});
+```
+
 ## Modifiers
 
 ### `should()`
