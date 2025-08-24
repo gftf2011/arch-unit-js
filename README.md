@@ -201,9 +201,9 @@ const options: Options = {
 
 ## `app(options)`
 
-When checking your architecture you need to test against your application and some them do have different structures. And here's where `app` comes to play.
+When checking your architecture you need to test against your application and some of them have different folder structures. And here's where `app` comes to play.
 
-The initial `app` API is the representation of your application and to define which files compose your application you can use as parameter the 'options'.
+The initial `app` API is the representation of your application and to define which files compose your application, you can use as parameter the 'options' to compose your application.
 ```javascript
 const { app } = require('arch-unit-js');
 
@@ -220,6 +220,8 @@ The 'options' parameter is an object which has:
 - The `includeMatcher` which is a `string[]` of glob patterns, representing the source directories of your application
 - The `ignoreMatcher` which is a `string[]` of glob patterns, representing the resources you want to ignore
 - The `typescriptPath` which is a path like `string`, representing the path to your `typescript` config file
+
+> **Note**: All the patterns passed to the `ignoreMatcher` must have a `!` , which indicates the given pattern must be ignored from the application !
 
 ## Globals
 
@@ -252,9 +254,9 @@ In this case we have the `inFile` as the "selector" which selects the files whic
 
 ### `inDirectories(pattern: string[], excludePattern?: string[])`
 
-Use the `inDirectories` to select different files from multiple directories within your project. The "selectors" it chains with the "modifier" to indicate which will be "matcher" behavior.
+Use the `inDirectories` to select different files from multiple directories within your project. The "selectors" chains with the "modifiers" to indicate which will be the "matcher" behavior.
 
-Let's say we have an application and we have the directories `**/infra/repositories/**` & `**/infra/providers/**`. We want to enforce the files inside this folders contain only very specific dependencies which are the `mysql2` & `crypto`.
+Let's say we have an application and we have the directories `**/infra/repositories/**` & `**/infra/providers/**`. We want to enforce the files inside this folders contains only very specific dependencies which are the `mysql2` & `crypto`.
 ```javascript
 const { app } = require('arch-unit-js');
 
@@ -296,13 +298,57 @@ it('"**/infra/repositories/**" & "**/infra/providers/**" should only depends on 
 
 > **Note**: All the patterns passed to the `excludePattern` must have a `!` , which indicates the given pattern must be excluded from the "matcher" check !
 
+### `inDirectory(pattern: string, excludePattern?: string[])`
+
+Use the `inDirectory` to select different files from a single directory within your project. It's behavior is the same as the one described for the `inDirectories` selector, with the exception the `pattern` parameter is a single `string`.
+
+To ilustrate it's behavior let's use an example where we are going to have again a directory `**/infra/repositories/**` and we want to test it it's files use the `mysql2`, but to make interesting the files implementation are using `mysql2/promise` now.
+```javascript
+const { app } = require('arch-unit-js');
+
+const options = {
+  extensionTypes: ['**/*.js'],
+  includeMatcher: ['<rootDir>/**']
+};
+
+it('"**/infra/repositories/**" should depends on "mysql2/**"', async () => {
+    await app(options)
+      .projectFiles()
+      .inDirectory('**/infra/repositories/**')
+      .should()
+      .dependsOn('mysql2/**')
+      .check();
+});
+```
+
+Just like the previous example, let's imagine the structure from the selected directory changed, and now uses _barrel exports_ which means it has an `index.js` file exporting all the other files.
+```javascript
+const { app } = require('arch-unit-js');
+
+const options = {
+  extensionTypes: ['**/*.js'],
+  includeMatcher: ['<rootDir>/**']
+};
+
+it('"**/infra/repositories/**" should depends on "mysql2/*" , excluding "**/infra/repositories/**/index.js"', async () => {
+    await app(options)
+      .projectFiles()
+      .inDirectory('**/infra/repositories/**', ['!**/infra/repositories/**/index.js'])
+      .should()
+      .dependsOn('mysql2/**')
+      .check();
+});
+```
+
+### `inFiles(pattern: string[])` - (Coming Soon)
+
 ## Modifiers
 
 ### `should()`
 
 Use the `should` modifier to indicate to "arch-unit-js" what the "matcher" should test. It chains with the "matcher" to indicate how the selected files will be checked !
 
-We can use the another example, where we want all the files in a directory "utils" should match the name "*.utils.js".
+We can use the another example, where we want all the files in a directory "utils" should match the name _`*.utils.js`_.
 ```javascript
 const { app } = require('arch-unit-js');
 
