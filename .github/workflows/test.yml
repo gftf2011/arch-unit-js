@@ -52,9 +52,7 @@ jobs:
 
       - name: Cache Coverage Report
         if: ${{ inputs.os == 'ubuntu-latest' && matrix.node-version == '22.x' }}
-        uses: actions/cache@v4
+        uses: actions/upload-artifact@v4
         with:
-          path: ./coverage
-          key: coverage-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
-          restore-keys: |
-            coverage-${{ runner.os }}-${{ matrix.node-version }}-
+          name: coverage
+          path: coverage
