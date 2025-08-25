@@ -58,13 +58,7 @@ jobs:
           args: >
             -Dsonar.branch.name=${{ github.base_ref }}
             -Dsonar.projectVersion=${{ env.PACKAGE_JSON_VERSION }}
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-      - name: SonarCloud Quality Gate Check
-        uses: SonarSource/sonarcloud-github-action@v2
-        with:
-          args: >
             -Dsonar.qualitygate.wait=true
+            -X
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

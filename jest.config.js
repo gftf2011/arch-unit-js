@@ -8,6 +8,9 @@ module.exports = {
   testMatch: ['**/tests/**/*.test.ts'],
   moduleFileExtensions: ['ts', 'js'],
   testTimeout: 15000,
+  collectCoverageFrom: ['src/**/*.ts', '!src/**/*.d.ts'],
+  coverageReporters: ['lcov', 'json', 'text', 'clover'],
+  coverageDirectory: 'coverage',
   transform: {
     '^.+\\.ts$': [
       'ts-jest',
