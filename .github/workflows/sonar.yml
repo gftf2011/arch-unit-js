@@ -33,13 +33,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Use Code Coverage Report
-        uses: actions/cache@v4
+      - name: Download Code Coverage Report
+        uses: actions/download-artifact@v4
         with:
-          path: ./coverage
-          key: coverage-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('package.json') }}
-          restore-keys: |
-            coverage-${{ runner.os }}-${{ matrix.node-version }}-
+          name: coverage
+          path: .
 
       - name: Download package.json version Artifact
         uses: actions/download-artifact@v4
@@ -59,6 +57,5 @@ jobs:
             -Dsonar.branch.name=${{ github.base_ref }}
             -Dsonar.projectVersion=${{ env.PACKAGE_JSON_VERSION }}
             -Dsonar.qualitygate.wait=true
-            -X
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
