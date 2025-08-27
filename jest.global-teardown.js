@@ -10,6 +10,7 @@ const projectsDirs = [
   path.resolve(rootDir, 'tests', 'sample', 'todo-js-sample-with-self-import'),
   path.resolve(rootDir, 'tests', 'sample', 'todo-nest-clean'),
   path.resolve(rootDir, 'tests', 'sample', 'todo-ts-sample'),
+  path.resolve(rootDir, 'tests', 'sample', 'todo-js-clean-decorators'),
 ];
 
 function deleteNodeModulesAndPackageLock(targetPath) {

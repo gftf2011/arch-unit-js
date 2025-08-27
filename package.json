@@ -58,6 +58,8 @@
   ],
   "homepage": "https://github.com/gftf2011/arch-unit-js#readme",
   "devDependencies": {
+    "@commitlint/cli": "^19.5.0",
+    "@commitlint/config-conventional": "^19.5.0",
     "@esbuild-plugins/tsconfig-paths": "0.1.2",
     "@types/babel__traverse": "7.28.0",
     "@types/jest": "^30.0.0",
@@ -65,15 +67,13 @@
     "@types/node": "24.0.14",
     "@typescript-eslint/eslint-plugin": "^7.14.1",
     "@typescript-eslint/parser": "^7.14.1",
-    "@commitlint/cli": "^19.5.0",
-    "@commitlint/config-conventional": "^19.5.0",
-    "husky": "^9.1.6",
     "esbuild": "0.25.8",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.3",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jest": "^27.9.0",
+    "husky": "^9.1.6",
     "jest": "^29.7.0",
     "prettier": "^3.4.0",
     "rollup": "4.46.2",
@@ -85,6 +85,7 @@
   "dependencies": {
     "@babel/parser": "7.28.0",
     "@babel/traverse": "7.28.0",
+    "enhanced-resolve": "^5.18.3",
     "micromatch": "4.0.8",
     "pathe": "2.0.3"
   }

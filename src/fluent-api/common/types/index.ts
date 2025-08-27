@@ -3,6 +3,10 @@ export type Options = {
   includeMatcher: string[];
   ignoreMatcher?: string[];
   typescriptPath?: string;
+  webpack?: {
+    path: string;
+    name?: string;
+  };
 };
 
 export type CheckableProps = {

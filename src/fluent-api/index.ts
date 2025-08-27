@@ -259,6 +259,16 @@ class ProjectFilesComponentSelector {
     );
   }
 
+  inFiles(patterns: string[]): ShouldSelectorBuilder {
+    this.includePatterns.push(...patterns);
+    return new ShouldSelectorBuilder(
+      this.rootDir,
+      this.options,
+      [...this.ruleConstruction, `in files '[${patterns.join(', ')}]'`],
+      this,
+    );
+  }
+
   inFile(pattern: string): ShouldSelectorBuilder {
     this.includePatterns.push(pattern);
     return new ShouldSelectorBuilder(

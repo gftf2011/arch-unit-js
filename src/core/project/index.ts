@@ -31,6 +31,10 @@ export class Project {
     filesOrFoldersToIgnore: string[],
     extensionTypes: string[],
     typescriptPath?: string,
+    webpack?: {
+      path: string;
+      name?: string;
+    },
   ): Promise<Project> {
     const extensions = extensionTypes.map((mimeType) =>
       glob.extractExtensionFromGlobPattern(mimeType),
@@ -42,6 +46,13 @@ export class Project {
     const typescriptPathResolved = typescriptPath
       ? glob.resolveRootDirPattern(typescriptPath, startPath)
       : typescriptPath;
+
+    const webpackResolved = webpack
+      ? {
+          path: glob.resolveRootDirPattern(webpack.path, startPath),
+          ...(webpack.name ? { name: webpack.name } : {}),
+        }
+      : webpack;
 
     async function walk(currentPath: string, visitor: WalkVisitor, availableFiles: string[]) {
       const entries = await fs.promises.readdir(currentPath, { withFileTypes: true });
@@ -59,6 +70,9 @@ export class Project {
               availableFiles,
               extensions,
               ...(typescriptPathResolved ? { typescriptPath: typescriptPathResolved } : {}),
+              ...(webpackResolved
+                ? { webpack: { path: webpackResolved.path, name: webpackResolved.name } }
+                : {}),
             });
           }
         }

@@ -26,6 +26,7 @@ export class FilesVisitor implements WalkVisitor {
         availableFiles: fileInfo.availableFiles,
         extensions: fileInfo.extensions,
         ...(fileInfo.typescriptPath ? { typescriptPath: fileInfo.typescriptPath } : {}),
+        ...(fileInfo.webpack ? { webpack: fileInfo.webpack } : {}),
       },
     );
 

@@ -48,6 +48,7 @@ abstract class Checkable {
       this.props.options.ignoreMatcher ?? [],
       this.props.options.extensionTypes,
       this.props.options.typescriptPath,
+      this.props.options.webpack,
     );
   }
 

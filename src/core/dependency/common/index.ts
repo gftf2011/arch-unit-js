@@ -24,6 +24,10 @@ export type ResolvableDependencyProps = {
   availableFiles: string[];
   extensions: string[];
   typescriptPath?: string;
+  webpack?: {
+    path: string;
+    name?: string;
+  };
 };
 
 export abstract class Resolvable {
