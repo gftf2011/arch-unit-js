@@ -1,17 +1,17 @@
 import { Options } from '@/fluent-api/common/types';
 import {
-  DependsOnShouldSelector,
-  HaveCyclesShouldSelector,
-  HaveNameShouldSelector,
-  LOCAnalysisGreaterThanOrEqualShouldSelector,
-  LOCAnalysisGreaterThanShouldSelector,
-  LOCAnalysisLessThanOrEqualShouldSelector,
-  LOCAnalysisLessThanShouldSelector,
-  OnlyDependsOnShouldSelector,
-  OnlyHaveNameShouldSelector,
-  HaveTotalProjectCodeLessOrEqualThanShouldSelector,
-  HaveTotalProjectCodeLessThanShouldSelector,
-} from '@/fluent-api/selectors';
+  DependsOnShouldMatcher,
+  HaveCyclesShouldMatcher,
+  HaveNameShouldMatcher,
+  LOCAnalysisGreaterThanOrEqualShouldMatcher,
+  LOCAnalysisGreaterThanShouldMatcher,
+  LOCAnalysisLessThanOrEqualShouldMatcher,
+  LOCAnalysisLessThanShouldMatcher,
+  OnlyDependsOnShouldMatcher,
+  OnlyHaveNameShouldMatcher,
+  HaveTotalProjectCodeLessOrEqualThanShouldMatcher,
+  HaveTotalProjectCodeLessThanShouldMatcher,
+} from '@/fluent-api/matchers';
 
 abstract class MatchConditionSelectorBuilder {
   protected abstract readonly negated: boolean;
@@ -26,8 +26,8 @@ abstract class MatchConditionSelectorBuilder {
 
   haveTotalProjectCodeLessOrEqualThan(
     threshold: number,
-  ): HaveTotalProjectCodeLessOrEqualThanShouldSelector {
-    return new HaveTotalProjectCodeLessOrEqualThanShouldSelector({
+  ): HaveTotalProjectCodeLessOrEqualThanShouldMatcher {
+    return new HaveTotalProjectCodeLessOrEqualThanShouldMatcher({
       negated: this.negated,
       rootDir: this.rootDir,
       filteringPatterns: [...this.pattern],
@@ -41,8 +41,8 @@ abstract class MatchConditionSelectorBuilder {
     });
   }
 
-  haveTotalProjectCodeLessThan(threshold: number): HaveTotalProjectCodeLessThanShouldSelector {
-    return new HaveTotalProjectCodeLessThanShouldSelector({
+  haveTotalProjectCodeLessThan(threshold: number): HaveTotalProjectCodeLessThanShouldMatcher {
+    return new HaveTotalProjectCodeLessThanShouldMatcher({
       negated: this.negated,
       rootDir: this.rootDir,
       filteringPatterns: [...this.pattern],
@@ -56,8 +56,8 @@ abstract class MatchConditionSelectorBuilder {
     });
   }
 
-  haveLocGreaterOrEqualThan(threshold: number): LOCAnalysisGreaterThanOrEqualShouldSelector {
-    return new LOCAnalysisGreaterThanOrEqualShouldSelector({
+  haveLocGreaterOrEqualThan(threshold: number): LOCAnalysisGreaterThanOrEqualShouldMatcher {
+    return new LOCAnalysisGreaterThanOrEqualShouldMatcher({
       negated: this.negated,
       rootDir: this.rootDir,
       filteringPatterns: [...this.pattern],
@@ -71,8 +71,8 @@ abstract class MatchConditionSelectorBuilder {
     });
   }
 
-  haveLocGreaterThan(threshold: number): LOCAnalysisGreaterThanShouldSelector {
-    return new LOCAnalysisGreaterThanShouldSelector({
+  haveLocGreaterThan(threshold: number): LOCAnalysisGreaterThanShouldMatcher {
+    return new LOCAnalysisGreaterThanShouldMatcher({
       negated: this.negated,
       rootDir: this.rootDir,
       filteringPatterns: [...this.pattern],
@@ -83,8 +83,8 @@ abstract class MatchConditionSelectorBuilder {
     });
   }
 
-  haveLocLessOrEqualThan(threshold: number): LOCAnalysisLessThanOrEqualShouldSelector {
-    return new LOCAnalysisLessThanOrEqualShouldSelector({
+  haveLocLessOrEqualThan(threshold: number): LOCAnalysisLessThanOrEqualShouldMatcher {
+    return new LOCAnalysisLessThanOrEqualShouldMatcher({
       negated: this.negated,
       rootDir: this.rootDir,
       filteringPatterns: [...this.pattern],
@@ -95,8 +95,8 @@ abstract class MatchConditionSelectorBuilder {
     });
   }
 
-  haveLocLessThan(threshold: number): LOCAnalysisLessThanShouldSelector {
-    return new LOCAnalysisLessThanShouldSelector({
+  haveLocLessThan(threshold: number): LOCAnalysisLessThanShouldMatcher {
+    return new LOCAnalysisLessThanShouldMatcher({
       negated: this.negated,
       rootDir: this.rootDir,
       filteringPatterns: [...this.pattern],
@@ -107,8 +107,8 @@ abstract class MatchConditionSelectorBuilder {
     });
   }
 
-  haveCycles(): HaveCyclesShouldSelector {
-    return new HaveCyclesShouldSelector({
+    haveCycles(): HaveCyclesShouldMatcher {
+    return new HaveCyclesShouldMatcher({
       negated: this.negated,
       rootDir: this.rootDir,
       filteringPatterns: [...this.pattern],
@@ -119,9 +119,9 @@ abstract class MatchConditionSelectorBuilder {
     });
   }
 
-  dependsOn(pattern: string[] | string): DependsOnShouldSelector {
+  dependsOn(pattern: string[] | string): DependsOnShouldMatcher {
     const patternArray = typeof pattern === 'string' ? [pattern] : pattern;
-    return new DependsOnShouldSelector({
+    return new DependsOnShouldMatcher({
       negated: this.negated,
       rootDir: this.rootDir,
       filteringPatterns: [...this.pattern],
@@ -132,9 +132,9 @@ abstract class MatchConditionSelectorBuilder {
     });
   }
 
-  onlyDependsOn(pattern: string[] | string): OnlyDependsOnShouldSelector {
+  onlyDependsOn(pattern: string[] | string): OnlyDependsOnShouldMatcher {
     const patternArray = typeof pattern === 'string' ? [pattern] : pattern;
-    return new OnlyDependsOnShouldSelector({
+    return new OnlyDependsOnShouldMatcher({
       negated: this.negated,
       rootDir: this.rootDir,
       filteringPatterns: [...this.pattern],
@@ -148,8 +148,8 @@ abstract class MatchConditionSelectorBuilder {
     });
   }
 
-  onlyHaveName(pattern: string): OnlyHaveNameShouldSelector {
-    return new OnlyHaveNameShouldSelector({
+  onlyHaveName(pattern: string): OnlyHaveNameShouldMatcher {
+    return new OnlyHaveNameShouldMatcher({
       negated: this.negated,
       rootDir: this.rootDir,
       filteringPatterns: [...this.pattern],
@@ -160,8 +160,8 @@ abstract class MatchConditionSelectorBuilder {
     });
   }
 
-  haveName(pattern: string): HaveNameShouldSelector {
-    return new HaveNameShouldSelector({
+  haveName(pattern: string): HaveNameShouldMatcher {
+    return new HaveNameShouldMatcher({
       negated: this.negated,
       rootDir: this.rootDir,
       filteringPatterns: [...this.pattern],

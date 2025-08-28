@@ -4,7 +4,7 @@ import { NotificationError } from '@/fluent-api/common/errors/notification';
 import { NotificationHandler } from '@/fluent-api/common/notification/handler';
 import { PatternCheckableProps } from '@/fluent-api/common/types';
 
-export class HaveCyclesShouldSelector extends PatternCyclesCheckable {
+export class HaveCyclesShouldMatcher extends PatternCyclesCheckable {
   protected override readonly fileAnalysisType: RootFile.AnalysisType =
     RootFile.AnalysisType.DEPENDENCIES;
 

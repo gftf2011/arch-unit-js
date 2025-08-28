@@ -4,7 +4,7 @@ import { NotificationError } from '@/fluent-api/common/errors/notification';
 import { NotificationHandler } from '@/fluent-api/common/notification/handler';
 import { LOCAnalysisProps } from '@/fluent-api/common/types';
 
-export class LOCAnalysisGreaterThanOrEqualShouldSelector extends LOCAnalysisCheckable {
+export class LOCAnalysisGreaterThanOrEqualShouldMatcher extends LOCAnalysisCheckable {
   protected override readonly fileAnalysisType: RootFile.AnalysisType = RootFile.AnalysisType.LOC;
 
   constructor(protected readonly props: LOCAnalysisProps) {

@@ -4,7 +4,7 @@ import { NotificationError } from '@/fluent-api/common/errors/notification';
 import { NotificationHandler } from '@/fluent-api/common/notification/handler';
 import { ProjectSizeAnalysisProps } from '@/fluent-api/common/types';
 
-export class HaveTotalProjectCodeLessOrEqualThanShouldSelector extends ProjectSizeAnalysisCheckable {
+export class HaveTotalProjectCodeLessThanShouldMatcher extends ProjectSizeAnalysisCheckable {
   protected override readonly fileAnalysisType: RootFile.AnalysisType =
     RootFile.AnalysisType.PROJECT_SIZE;
 
@@ -24,7 +24,7 @@ export class HaveTotalProjectCodeLessOrEqualThanShouldSelector extends ProjectSi
       notificationHandler.addError(new Error(`- '${file.props.path}'`));
     }
 
-    if (totalFilesSizeInBytes > allowedProjectSizeInBytes) {
+    if (totalFilesSizeInBytes >= allowedProjectSizeInBytes) {
       throw new NotificationError(this.props.ruleConstruction, notificationHandler.getErrors());
     }
   }
@@ -41,7 +41,7 @@ export class HaveTotalProjectCodeLessOrEqualThanShouldSelector extends ProjectSi
       notificationHandler.addError(new Error(`- '${file.props.path}'`));
     }
 
-    if (totalFilesSizeInBytes <= allowedProjectSizeInBytes) {
+    if (totalFilesSizeInBytes < allowedProjectSizeInBytes) {
       throw new NotificationError(this.props.ruleConstruction, notificationHandler.getErrors());
     }
   }

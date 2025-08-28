@@ -6,7 +6,7 @@ import { NotificationError } from '@/fluent-api/common/errors/notification';
 import { NotificationHandler } from '@/fluent-api/common/notification/handler';
 import { PatternCheckableProps } from '@/fluent-api/common/types';
 
-export class OnlyDependsOnShouldSelector extends PatternCheckable {
+export class OnlyDependsOnShouldMatcher extends PatternCheckable {
   protected override readonly fileAnalysisType: RootFile.AnalysisType =
     RootFile.AnalysisType.DEPENDENCIES;
 

@@ -4,7 +4,7 @@ import { NotificationError } from '@/fluent-api/common/errors/notification';
 import { NotificationHandler } from '@/fluent-api/common/notification/handler';
 import { LOCAnalysisProps } from '@/fluent-api/common/types';
 
-export class LOCAnalysisLessThanOrEqualShouldSelector extends LOCAnalysisCheckable {
+export class LOCAnalysisLessThanShouldMatcher extends LOCAnalysisCheckable {
   protected override readonly fileAnalysisType: RootFile.AnalysisType = RootFile.AnalysisType.LOC;
 
   constructor(protected readonly props: LOCAnalysisProps) {
@@ -15,7 +15,7 @@ export class LOCAnalysisLessThanOrEqualShouldSelector extends LOCAnalysisCheckab
     const files = this.project.getFiles();
     const notificationHandler = NotificationHandler.create();
     for (const [_, file] of files) {
-      if (file.props.loc > this.props.analisisThreshold)
+      if (file.props.loc >= this.props.analisisThreshold)
         notificationHandler.addError(new Error(`- '${file.props.path}'`));
     }
     if (notificationHandler.hasErrors()) {
@@ -27,7 +27,7 @@ export class LOCAnalysisLessThanOrEqualShouldSelector extends LOCAnalysisCheckab
     const files = this.project.getFiles();
     const notificationHandler = NotificationHandler.create();
     for (const [_, file] of files) {
-      if (file.props.loc <= this.props.analisisThreshold)
+      if (file.props.loc < this.props.analisisThreshold)
         notificationHandler.addError(new Error(`- '${file.props.path}'`));
     }
     if (notificationHandler.hasErrors()) {
