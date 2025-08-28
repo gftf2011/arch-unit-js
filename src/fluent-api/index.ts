@@ -107,7 +107,7 @@ abstract class MatchConditionSelectorBuilder {
     });
   }
 
-    haveCycles(): HaveCyclesShouldMatcher {
+  haveCycles(): HaveCyclesShouldMatcher {
     return new HaveCyclesShouldMatcher({
       negated: this.negated,
       rootDir: this.rootDir,
