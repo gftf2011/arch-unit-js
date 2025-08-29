@@ -33,7 +33,7 @@ export class Project {
     typescriptPath?: string,
     webpack?: {
       path: string;
-      name?: string;
+      names?: string[];
     },
   ): Promise<Project> {
     const extensions = extensionTypes.map((mimeType) =>
@@ -50,7 +50,7 @@ export class Project {
     const webpackResolved = webpack
       ? {
           path: glob.resolveRootDirPattern(webpack.path, startPath),
-          ...(webpack.name ? { name: webpack.name } : {}),
+          ...(webpack.names ? { names: webpack.names } : {}),
         }
       : webpack;
 
@@ -71,7 +71,7 @@ export class Project {
               extensions,
               ...(typescriptPathResolved ? { typescriptPath: typescriptPathResolved } : {}),
               ...(webpackResolved
-                ? { webpack: { path: webpackResolved.path, name: webpackResolved.name } }
+                ? { webpack: { path: webpackResolved.path, names: webpackResolved.names } }
                 : {}),
             });
           }

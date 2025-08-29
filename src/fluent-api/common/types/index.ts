@@ -5,7 +5,7 @@ export type Options = {
   typescriptPath?: string;
   webpack?: {
     path: string;
-    name?: string;
+    names?: string[];
   };
 };
 

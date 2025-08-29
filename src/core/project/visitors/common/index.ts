@@ -6,6 +6,6 @@ export type FileInfo = {
   typescriptPath?: string;
   webpack?: {
     path: string;
-    name?: string;
+    names?: string[];
   };
 };

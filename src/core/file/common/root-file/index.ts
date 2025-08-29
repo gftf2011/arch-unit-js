@@ -27,7 +27,7 @@ export type BaseBuildableProps = {
   typescriptPath?: string;
   webpack?: {
     path: string;
-    name?: string;
+    names?: string[];
   };
 };
 

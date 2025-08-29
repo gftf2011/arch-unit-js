@@ -157,9 +157,9 @@ export class WebpackDependencyResolvable extends Resolvable {
   }
 
   private filterWebpackConfig(webpackConfigs: any[]): any[] {
-    if (this.resolvableProps.webpack?.name) {
+    if (this.resolvableProps.webpack?.names) {
       return webpackConfigs.filter((webpackConfig) => {
-        return webpackConfig.name === this.resolvableProps.webpack?.name;
+        return this.resolvableProps.webpack?.names?.includes(webpackConfig.name);
       });
     }
     return webpackConfigs;

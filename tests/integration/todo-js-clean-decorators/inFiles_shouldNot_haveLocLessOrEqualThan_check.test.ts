@@ -41,34 +41,14 @@ const webpacks = [
   {
     webpack: {
       path: '<rootDir>/webpack2.config.js',
-      names: ['app'],
+      name: 'app',
     },
   },
 ];
 
-describe('inFiles.should.haveLocLessOrEqualThan scenarios (vanilla JS decorators sample)', () => {
-  describe('Scenario 1: All selected files have LOC ≤ threshold (PASS)', () => {
-    test("['use-cases/CreateTodo.js', 'use-cases/GetAllTodos.js'] should have LOC ≤ 50 - PASS", async () => {
-      for (const includeMatcher of includeMatchers) {
-        for (const { webpack } of webpacks) {
-          const options: Options = {
-            extensionTypes: ['**/*.js'],
-            includeMatcher: [...includeMatcher],
-            ignoreMatcher: ignoreMatchers,
-            webpack,
-          };
-          const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-          await appInstance
-            .projectFiles()
-            .inFiles(['**/use-cases/CreateTodo.js', '**/use-cases/GetAllTodos.js'])
-            .should()
-            .haveLocLessOrEqualThan(50)
-            .check();
-        }
-      }
-    });
-
-    test("['main/index.js'] should have LOC ≤ 1000 - PASS", async () => {
+describe('inFiles.shouldNot.haveLocLessOrEqualThan scenarios (vanilla JS decorators sample)', () => {
+  describe('Scenario 1: All selected files have LOC > threshold (PASS)', () => {
+    test("['main/index.js'] should NOT have LOC ≤ 1 - PASS", async () => {
       for (const includeMatcher of includeMatchers) {
         for (const { webpack } of webpacks) {
           const options: Options = {
@@ -81,16 +61,36 @@ describe('inFiles.should.haveLocLessOrEqualThan scenarios (vanilla JS decorators
           await appInstance
             .projectFiles()
             .inFiles(['**/main/index.js'])
-            .should()
-            .haveLocLessOrEqualThan(1000)
+            .shouldNot()
+            .haveLocLessOrEqualThan(1)
+            .check();
+        }
+      }
+    });
+
+    test("['infra/InMemoryTodoRepository.js','domain/Todo.js'] should NOT have LOC ≤ 10 - PASS", async () => {
+      for (const includeMatcher of includeMatchers) {
+        for (const { webpack } of webpacks) {
+          const options: Options = {
+            extensionTypes: ['**/*.js'],
+            includeMatcher: [...includeMatcher],
+            ignoreMatcher: ignoreMatchers,
+            webpack,
+          };
+          const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+          await appInstance
+            .projectFiles()
+            .inFiles(['**/infra/InMemoryTodoRepository.js', '**/domain/Todo.js'])
+            .shouldNot()
+            .haveLocLessOrEqualThan(10)
             .check();
         }
       }
     });
   });
 
-  describe('Scenario 2: ANY selected file has LOC > threshold (FAIL)', () => {
-    test("['infra/InMemoryTodoRepository.js'] should have LOC ≤ 19 - FAIL", async () => {
+  describe('Scenario 2: ANY selected file has LOC ≤ threshold (FAIL)', () => {
+    test("['main/index.js'] should NOT have LOC ≤ 33 - FAIL (equals boundary)", async () => {
       for (const includeMatcher of includeMatchers) {
         for (const { webpack } of webpacks) {
           const options: Options = {
@@ -103,9 +103,9 @@ describe('inFiles.should.haveLocLessOrEqualThan scenarios (vanilla JS decorators
           try {
             await appInstance
               .projectFiles()
-              .inFiles(['**/infra/InMemoryTodoRepository.js'])
-              .should()
-              .haveLocLessOrEqualThan(19)
+              .inFiles(['**/main/index.js'])
+              .shouldNot()
+              .haveLocLessOrEqualThan(33)
               .check();
 
             // If we get here, the test should fail
@@ -113,9 +113,40 @@ describe('inFiles.should.haveLocLessOrEqualThan scenarios (vanilla JS decorators
           } catch (error) {
             const errorMessage = (error as Error).message;
             expect(errorMessage).toContain(
-              `Violation - Rule: project files in files '[**/infra/InMemoryTodoRepository.js]' should have L.O.C. less or equal than: 19\n\n`,
+              `Violation - Rule: project files in files '[**/main/index.js]' should not have L.O.C. less or equal than: 33\n\n`,
             );
-            expect(errorMessage).toContain(`- '${rootDir}/infra/InMemoryTodoRepository.js'`);
+            expect(errorMessage).toContain(`- '${rootDir}/main/index.js'`);
+          }
+        }
+      }
+    });
+
+    test("['use-cases/CreateTodo.js','use-cases/GetAllTodos.js'] should NOT have LOC ≤ 50 - FAIL", async () => {
+      for (const includeMatcher of includeMatchers) {
+        for (const { webpack } of webpacks) {
+          const options: Options = {
+            extensionTypes: ['**/*.js'],
+            includeMatcher: [...includeMatcher],
+            ignoreMatcher: ignoreMatchers,
+            webpack,
+          };
+          const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+          try {
+            await appInstance
+              .projectFiles()
+              .inFiles(['**/use-cases/CreateTodo.js', '**/use-cases/GetAllTodos.js'])
+              .shouldNot()
+              .haveLocLessOrEqualThan(50)
+              .check();
+
+            expect(1).toBe(2);
+          } catch (error) {
+            const errorMessage = (error as Error).message;
+            expect(errorMessage).toContain(
+              `Violation - Rule: project files in files '[**/use-cases/CreateTodo.js, **/use-cases/GetAllTodos.js]' should not have L.O.C. less or equal than: 50\n\n`,
+            );
+            expect(errorMessage).toContain(`- '${rootDir}/use-cases/CreateTodo.js'`);
+            expect(errorMessage).toContain(`- '${rootDir}/use-cases/GetAllTodos.js'`);
           }
         }
       }
@@ -137,7 +168,7 @@ describe('inFiles.should.haveLocLessOrEqualThan scenarios (vanilla JS decorators
             await appInstance
               .projectFiles()
               .inFiles([])
-              .should()
+              .shouldNot()
               .haveLocLessOrEqualThan(10)
               .check();
 
@@ -145,38 +176,9 @@ describe('inFiles.should.haveLocLessOrEqualThan scenarios (vanilla JS decorators
           } catch (error) {
             const errorMessage = (error as Error).message;
             expect(errorMessage).toContain(
-              `Violation - Rule: project files in files '[]' should have L.O.C. less or equal than: 10\n\n`,
+              `Violation - Rule: project files in files '[]' should not have L.O.C. less or equal than: 10\n\n`,
             );
             expect(errorMessage).toContain(`No files found in '[]'`);
-          }
-        }
-      }
-    });
-
-    test('threshold of 0 should FAIL (invalid threshold)', async () => {
-      for (const includeMatcher of includeMatchers) {
-        for (const { webpack } of webpacks) {
-          const options: Options = {
-            extensionTypes: ['**/*.js'],
-            includeMatcher: [...includeMatcher],
-            ignoreMatcher: ignoreMatchers,
-            webpack,
-          };
-          const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-          try {
-            await appInstance
-              .projectFiles()
-              .inFiles(['**/use-cases/CreateTodo.js'])
-              .should()
-              .haveLocLessOrEqualThan(0)
-              .check();
-
-            expect(1).toBe(2);
-          } catch (error) {
-            const errorMessage = (error as Error).message;
-            expect(errorMessage).toContain(
-              `Violation - Rule: project files in files '[**/use-cases/CreateTodo.js]' should have L.O.C. less or equal than: 0\n\n`,
-            );
           }
         }
       }
@@ -186,7 +188,7 @@ describe('inFiles.should.haveLocLessOrEqualThan scenarios (vanilla JS decorators
       for (const includeMatcher of includeMatchers) {
         for (const { webpack } of webpacks) {
           const options: Options = {
-            extensionTypes: ['**/*.ts'], // Looking for TypeScript where file is JS
+            extensionTypes: ['**/*.ts'], // Looking for TypeScript where files are JS
             includeMatcher: [...includeMatcher],
             ignoreMatcher: ignoreMatchers,
             webpack,
@@ -196,16 +198,15 @@ describe('inFiles.should.haveLocLessOrEqualThan scenarios (vanilla JS decorators
             await appInstance
               .projectFiles()
               .inFiles(['**/domain/Todo.js'])
-              .should()
+              .shouldNot()
               .haveLocLessOrEqualThan(50)
               .check();
 
             expect(1).toBe(2);
           } catch (error) {
             const errorMessage = (error as Error).message;
-
             expect(errorMessage).toContain(
-              `Violation - Rule: project files in files '[**/domain/Todo.js]' should have L.O.C. less or equal than: 50\n\n`,
+              `Violation - Rule: project files in files '[**/domain/Todo.js]' should not have L.O.C. less or equal than: 50\n\n`,
             );
             expect(errorMessage).toContain(
               `- '${rootDir}/domain/Todo.js' - mismatch in 'extensionTypes': [**/*.ts]`,

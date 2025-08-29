@@ -41,7 +41,7 @@ const webpacks = [
   {
     webpack: {
       path: '<rootDir>/webpack2.config.js',
-      name: 'app',
+      names: ['app'],
     },
   },
 ];
