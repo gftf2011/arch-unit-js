@@ -1,10 +1,10 @@
 import { RootFile } from '@/core/file';
-import { ProjectSizeAnalysisCheckable } from '@/fluent-api/common/checkables';
 import { NotificationError } from '@/fluent-api/common/errors/notification';
+import { ProjectSizeAnalysisMatchable } from '@/fluent-api/common/matchables';
 import { NotificationHandler } from '@/fluent-api/common/notification/handler';
 import { ProjectSizeAnalysisProps } from '@/fluent-api/common/types';
 
-export class HaveTotalProjectCodeLessOrEqualThanShouldMatcher extends ProjectSizeAnalysisCheckable {
+export class HaveTotalProjectCodeLessOrEqualThanShouldMatcher extends ProjectSizeAnalysisMatchable {
   protected override readonly fileAnalysisType: RootFile.AnalysisType =
     RootFile.AnalysisType.PROJECT_SIZE;
 

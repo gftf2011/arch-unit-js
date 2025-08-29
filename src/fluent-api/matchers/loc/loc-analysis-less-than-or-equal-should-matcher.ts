@@ -1,10 +1,10 @@
 import { RootFile } from '@/core/file';
-import { LOCAnalysisCheckable } from '@/fluent-api/common/checkables';
 import { NotificationError } from '@/fluent-api/common/errors/notification';
+import { LOCAnalysisMatchable } from '@/fluent-api/common/matchables';
 import { NotificationHandler } from '@/fluent-api/common/notification/handler';
 import { LOCAnalysisProps } from '@/fluent-api/common/types';
 
-export class LOCAnalysisLessThanOrEqualShouldMatcher extends LOCAnalysisCheckable {
+export class LOCAnalysisLessThanOrEqualShouldMatcher extends LOCAnalysisMatchable {
   protected override readonly fileAnalysisType: RootFile.AnalysisType = RootFile.AnalysisType.LOC;
 
   constructor(protected readonly props: LOCAnalysisProps) {

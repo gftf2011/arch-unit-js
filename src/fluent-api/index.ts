@@ -1,4 +1,5 @@
-import { Options } from '@/fluent-api/common/types';
+import { CheckableIterator, Matchable } from '@/fluent-api/common/matchables';
+import { Checkable, Options } from '@/fluent-api/common/types';
 import {
   DependsOnShouldMatcher,
   HaveCyclesShouldMatcher,
@@ -13,172 +14,237 @@ import {
   HaveTotalProjectCodeLessThanShouldMatcher,
 } from '@/fluent-api/matchers';
 
+class MatcherCheckableBuilder implements Checkable {
+  constructor(private readonly matchConditionSelectorBuilder: MatchConditionSelectorBuilder) {}
+
+  public async check(): Promise<void> {
+    const checkableIterator = new CheckableIterator(this.matchConditionSelectorBuilder.matchables);
+    await checkableIterator.check();
+  }
+
+  public and(): MatchConditionSelectorBuilder {
+    if (this.matchConditionSelectorBuilder.negated) {
+      return new NegativeMatchConditionSelectorBuilder(
+        this.matchConditionSelectorBuilder.rootDir,
+        this.matchConditionSelectorBuilder.pattern,
+        this.matchConditionSelectorBuilder.options,
+        this.matchConditionSelectorBuilder.excludePattern,
+        [...this.matchConditionSelectorBuilder.ruleConstruction, 'and'],
+        [...this.matchConditionSelectorBuilder.matchables],
+      );
+    }
+    return new PositiveMatchConditionSelectorBuilder(
+      this.matchConditionSelectorBuilder.rootDir,
+      this.matchConditionSelectorBuilder.pattern,
+      this.matchConditionSelectorBuilder.options,
+      this.matchConditionSelectorBuilder.excludePattern,
+      [...this.matchConditionSelectorBuilder.ruleConstruction, 'and'],
+      [...this.matchConditionSelectorBuilder.matchables],
+    );
+  }
+}
+
 abstract class MatchConditionSelectorBuilder {
-  protected abstract readonly negated: boolean;
+  public abstract readonly negated: boolean;
 
   constructor(
-    protected readonly rootDir: string,
-    protected readonly pattern: string[],
-    protected readonly options: Options,
-    protected readonly excludePattern: string[],
-    protected readonly ruleConstruction: string[],
+    public readonly rootDir: string,
+    public readonly pattern: string[],
+    public readonly options: Options,
+    public readonly excludePattern: string[],
+    public readonly ruleConstruction: string[],
+    public readonly matchables: Matchable[] = [],
   ) {}
 
-  haveTotalProjectCodeLessOrEqualThan(
-    threshold: number,
-  ): HaveTotalProjectCodeLessOrEqualThanShouldMatcher {
-    return new HaveTotalProjectCodeLessOrEqualThanShouldMatcher({
-      negated: this.negated,
-      rootDir: this.rootDir,
-      filteringPatterns: [...this.pattern],
-      percentageThreshold: threshold,
-      options: this.options,
-      excludePattern: this.excludePattern,
-      ruleConstruction: [
-        ...this.ruleConstruction,
-        `have total project code less or equal than: ${threshold}`,
-      ],
-    });
+  haveTotalProjectCodeLessOrEqualThan(threshold: number): MatcherCheckableBuilder {
+    this.matchables.push(
+      new HaveTotalProjectCodeLessOrEqualThanShouldMatcher({
+        negated: this.negated,
+        rootDir: this.rootDir,
+        filteringPatterns: [...this.pattern],
+        percentageThreshold: threshold,
+        options: this.options,
+        excludePattern: this.excludePattern,
+        ruleConstruction: [
+          ...this.ruleConstruction,
+          `have total project code less or equal than: ${threshold}`,
+        ],
+      }),
+    );
+    return new MatcherCheckableBuilder(this);
   }
 
-  haveTotalProjectCodeLessThan(threshold: number): HaveTotalProjectCodeLessThanShouldMatcher {
-    return new HaveTotalProjectCodeLessThanShouldMatcher({
-      negated: this.negated,
-      rootDir: this.rootDir,
-      filteringPatterns: [...this.pattern],
-      percentageThreshold: threshold,
-      options: this.options,
-      excludePattern: this.excludePattern,
-      ruleConstruction: [
-        ...this.ruleConstruction,
-        `have total project code less than: ${threshold}`,
-      ],
-    });
+  haveTotalProjectCodeLessThan(threshold: number): MatcherCheckableBuilder {
+    this.matchables.push(
+      new HaveTotalProjectCodeLessThanShouldMatcher({
+        negated: this.negated,
+        rootDir: this.rootDir,
+        filteringPatterns: [...this.pattern],
+        percentageThreshold: threshold,
+        options: this.options,
+        excludePattern: this.excludePattern,
+        ruleConstruction: [
+          ...this.ruleConstruction,
+          `have total project code less than: ${threshold}`,
+        ],
+      }),
+    );
+    return new MatcherCheckableBuilder(this);
   }
 
-  haveLocGreaterOrEqualThan(threshold: number): LOCAnalysisGreaterThanOrEqualShouldMatcher {
-    return new LOCAnalysisGreaterThanOrEqualShouldMatcher({
-      negated: this.negated,
-      rootDir: this.rootDir,
-      filteringPatterns: [...this.pattern],
-      analisisThreshold: threshold,
-      options: this.options,
-      excludePattern: this.excludePattern,
-      ruleConstruction: [
-        ...this.ruleConstruction,
-        `have L.O.C. greater or equal than: ${threshold}`,
-      ],
-    });
+  haveLocGreaterOrEqualThan(threshold: number): MatcherCheckableBuilder {
+    this.matchables.push(
+      new LOCAnalysisGreaterThanOrEqualShouldMatcher({
+        negated: this.negated,
+        rootDir: this.rootDir,
+        filteringPatterns: [...this.pattern],
+        analisisThreshold: threshold,
+        options: this.options,
+        excludePattern: this.excludePattern,
+        ruleConstruction: [
+          ...this.ruleConstruction,
+          `have L.O.C. greater or equal than: ${threshold}`,
+        ],
+      }),
+    );
+    return new MatcherCheckableBuilder(this);
   }
 
-  haveLocGreaterThan(threshold: number): LOCAnalysisGreaterThanShouldMatcher {
-    return new LOCAnalysisGreaterThanShouldMatcher({
-      negated: this.negated,
-      rootDir: this.rootDir,
-      filteringPatterns: [...this.pattern],
-      analisisThreshold: threshold,
-      options: this.options,
-      excludePattern: this.excludePattern,
-      ruleConstruction: [...this.ruleConstruction, `have L.O.C. greater than: ${threshold}`],
-    });
+  haveLocGreaterThan(threshold: number): MatcherCheckableBuilder {
+    this.matchables.push(
+      new LOCAnalysisGreaterThanShouldMatcher({
+        negated: this.negated,
+        rootDir: this.rootDir,
+        filteringPatterns: [...this.pattern],
+        analisisThreshold: threshold,
+        options: this.options,
+        excludePattern: this.excludePattern,
+        ruleConstruction: [...this.ruleConstruction, `have L.O.C. greater than: ${threshold}`],
+      }),
+    );
+    return new MatcherCheckableBuilder(this);
   }
 
-  haveLocLessOrEqualThan(threshold: number): LOCAnalysisLessThanOrEqualShouldMatcher {
-    return new LOCAnalysisLessThanOrEqualShouldMatcher({
-      negated: this.negated,
-      rootDir: this.rootDir,
-      filteringPatterns: [...this.pattern],
-      analisisThreshold: threshold,
-      options: this.options,
-      excludePattern: this.excludePattern,
-      ruleConstruction: [...this.ruleConstruction, `have L.O.C. less or equal than: ${threshold}`],
-    });
+  haveLocLessOrEqualThan(threshold: number): MatcherCheckableBuilder {
+    this.matchables.push(
+      new LOCAnalysisLessThanOrEqualShouldMatcher({
+        negated: this.negated,
+        rootDir: this.rootDir,
+        filteringPatterns: [...this.pattern],
+        analisisThreshold: threshold,
+        options: this.options,
+        excludePattern: this.excludePattern,
+        ruleConstruction: [
+          ...this.ruleConstruction,
+          `have L.O.C. less or equal than: ${threshold}`,
+        ],
+      }),
+    );
+    return new MatcherCheckableBuilder(this);
   }
 
-  haveLocLessThan(threshold: number): LOCAnalysisLessThanShouldMatcher {
-    return new LOCAnalysisLessThanShouldMatcher({
-      negated: this.negated,
-      rootDir: this.rootDir,
-      filteringPatterns: [...this.pattern],
-      analisisThreshold: threshold,
-      options: this.options,
-      excludePattern: this.excludePattern,
-      ruleConstruction: [...this.ruleConstruction, `have L.O.C. less than: ${threshold}`],
-    });
+  haveLocLessThan(threshold: number): MatcherCheckableBuilder {
+    this.matchables.push(
+      new LOCAnalysisLessThanShouldMatcher({
+        negated: this.negated,
+        rootDir: this.rootDir,
+        filteringPatterns: [...this.pattern],
+        analisisThreshold: threshold,
+        options: this.options,
+        excludePattern: this.excludePattern,
+        ruleConstruction: [...this.ruleConstruction, `have L.O.C. less than: ${threshold}`],
+      }),
+    );
+    return new MatcherCheckableBuilder(this);
   }
 
-  haveCycles(): HaveCyclesShouldMatcher {
-    return new HaveCyclesShouldMatcher({
-      negated: this.negated,
-      rootDir: this.rootDir,
-      filteringPatterns: [...this.pattern],
-      checkingPatterns: [],
-      options: this.options,
-      excludePattern: this.excludePattern,
-      ruleConstruction: [...this.ruleConstruction, `have cycles`],
-    });
+  haveCycles(): MatcherCheckableBuilder {
+    this.matchables.push(
+      new HaveCyclesShouldMatcher({
+        negated: this.negated,
+        rootDir: this.rootDir,
+        filteringPatterns: [...this.pattern],
+        checkingPatterns: [],
+        options: this.options,
+        excludePattern: this.excludePattern,
+        ruleConstruction: [...this.ruleConstruction, `have cycles`],
+      }),
+    );
+    return new MatcherCheckableBuilder(this);
   }
 
-  dependsOn(pattern: string[] | string): DependsOnShouldMatcher {
+  dependsOn(pattern: string[] | string): MatcherCheckableBuilder {
     const patternArray = typeof pattern === 'string' ? [pattern] : pattern;
-    return new DependsOnShouldMatcher({
-      negated: this.negated,
-      rootDir: this.rootDir,
-      filteringPatterns: [...this.pattern],
-      checkingPatterns: patternArray,
-      options: this.options,
-      excludePattern: this.excludePattern,
-      ruleConstruction: [...this.ruleConstruction, `depends on '[${patternArray.join(', ')}]'`],
-    });
+    this.matchables.push(
+      new DependsOnShouldMatcher({
+        negated: this.negated,
+        rootDir: this.rootDir,
+        filteringPatterns: [...this.pattern],
+        checkingPatterns: patternArray,
+        options: this.options,
+        excludePattern: this.excludePattern,
+        ruleConstruction: [...this.ruleConstruction, `depends on '[${patternArray.join(', ')}]'`],
+      }),
+    );
+    return new MatcherCheckableBuilder(this);
   }
 
-  onlyDependsOn(pattern: string[] | string): OnlyDependsOnShouldMatcher {
+  onlyDependsOn(pattern: string[] | string): MatcherCheckableBuilder {
     const patternArray = typeof pattern === 'string' ? [pattern] : pattern;
-    return new OnlyDependsOnShouldMatcher({
-      negated: this.negated,
-      rootDir: this.rootDir,
-      filteringPatterns: [...this.pattern],
-      checkingPatterns: patternArray,
-      options: this.options,
-      excludePattern: this.excludePattern,
-      ruleConstruction: [
-        ...this.ruleConstruction,
-        `only depends on '[${patternArray.join(', ')}]'`,
-      ],
-    });
+    this.matchables.push(
+      new OnlyDependsOnShouldMatcher({
+        negated: this.negated,
+        rootDir: this.rootDir,
+        filteringPatterns: [...this.pattern],
+        checkingPatterns: patternArray,
+        options: this.options,
+        excludePattern: this.excludePattern,
+        ruleConstruction: [
+          ...this.ruleConstruction,
+          `only depends on '[${patternArray.join(', ')}]'`,
+        ],
+      }),
+    );
+    return new MatcherCheckableBuilder(this);
   }
 
-  onlyHaveName(pattern: string): OnlyHaveNameShouldMatcher {
-    return new OnlyHaveNameShouldMatcher({
-      negated: this.negated,
-      rootDir: this.rootDir,
-      filteringPatterns: [...this.pattern],
-      checkingPatterns: [pattern],
-      options: this.options,
-      excludePattern: this.excludePattern,
-      ruleConstruction: [...this.ruleConstruction, `only have name '${pattern}'`],
-    });
+  onlyHaveName(pattern: string): MatcherCheckableBuilder {
+    this.matchables.push(
+      new OnlyHaveNameShouldMatcher({
+        negated: this.negated,
+        rootDir: this.rootDir,
+        filteringPatterns: [...this.pattern],
+        checkingPatterns: [pattern],
+        options: this.options,
+        excludePattern: this.excludePattern,
+        ruleConstruction: [...this.ruleConstruction, `only have name '${pattern}'`],
+      }),
+    );
+    return new MatcherCheckableBuilder(this);
   }
 
-  haveName(pattern: string): HaveNameShouldMatcher {
-    return new HaveNameShouldMatcher({
-      negated: this.negated,
-      rootDir: this.rootDir,
-      filteringPatterns: [...this.pattern],
-      checkingPatterns: [pattern],
-      options: this.options,
-      excludePattern: this.excludePattern,
-      ruleConstruction: [...this.ruleConstruction, `have name '${pattern}'`],
-    });
+  haveName(pattern: string): MatcherCheckableBuilder {
+    this.matchables.push(
+      new HaveNameShouldMatcher({
+        negated: this.negated,
+        rootDir: this.rootDir,
+        filteringPatterns: [...this.pattern],
+        checkingPatterns: [pattern],
+        options: this.options,
+        excludePattern: this.excludePattern,
+        ruleConstruction: [...this.ruleConstruction, `have name '${pattern}'`],
+      }),
+    );
+    return new MatcherCheckableBuilder(this);
   }
 }
 
 class PositiveMatchConditionSelectorBuilder extends MatchConditionSelectorBuilder {
-  protected override readonly negated: boolean = false;
+  public override readonly negated: boolean = false;
 }
 
 class NegativeMatchConditionSelectorBuilder extends MatchConditionSelectorBuilder {
-  protected override readonly negated: boolean = true;
+  public override readonly negated: boolean = true;
 }
 
 class ShouldSelectorBuilder {

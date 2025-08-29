@@ -5,18 +5,19 @@ import { Project } from '@/core/project';
 import { NotificationError } from '@/fluent-api/common/errors/notification';
 import { NotificationHandler } from '@/fluent-api/common/notification/handler';
 import {
-  CheckableProps,
+  MatchableProps,
   LOCAnalysisProps,
-  PatternCheckableProps,
+  PatternMatchableProps,
   ProjectSizeAnalysisProps,
+  Checkable,
 } from '@/fluent-api/common/types';
 import { glob } from '@/utils';
 
-abstract class Checkable {
+export abstract class Matchable implements Checkable {
   protected project!: Project;
   protected abstract readonly fileAnalysisType: RootFile.AnalysisType;
 
-  constructor(protected readonly props: CheckableProps) {}
+  constructor(protected readonly props: MatchableProps) {}
 
   protected filter(): void {
     const filters: string[] = this.props.filteringPatterns;
@@ -115,7 +116,7 @@ abstract class Checkable {
   }
 }
 
-export abstract class ProjectSizeAnalysisCheckable extends Checkable {
+export abstract class ProjectSizeAnalysisMatchable extends Matchable {
   constructor(protected readonly props: ProjectSizeAnalysisProps) {
     super(props);
   }
@@ -133,7 +134,7 @@ export abstract class ProjectSizeAnalysisCheckable extends Checkable {
   }
 }
 
-export abstract class LOCAnalysisCheckable extends Checkable {
+export abstract class LOCAnalysisMatchable extends Matchable {
   constructor(protected readonly props: LOCAnalysisProps) {
     super(props);
   }
@@ -150,8 +151,8 @@ export abstract class LOCAnalysisCheckable extends Checkable {
   }
 }
 
-export abstract class PatternCheckable extends Checkable {
-  constructor(protected readonly props: PatternCheckableProps) {
+export abstract class PatternMatchable extends Matchable {
+  constructor(protected readonly props: PatternMatchableProps) {
     super(props);
   }
 
@@ -171,12 +172,22 @@ export abstract class PatternCheckable extends Checkable {
   }
 }
 
-export abstract class PatternCyclesCheckable extends Checkable {
-  constructor(protected readonly props: PatternCheckableProps) {
+export abstract class PatternCyclesMatchable extends Matchable {
+  constructor(protected readonly props: PatternMatchableProps) {
     super(props);
   }
 
   public override async check(): Promise<void> {
     await super.check();
+  }
+}
+
+export class CheckableIterator implements Checkable {
+  constructor(protected readonly matchables: Matchable[]) {}
+
+  public async check(): Promise<void> {
+    for (const matchable of this.matchables) {
+      await matchable.check();
+    }
   }
 }

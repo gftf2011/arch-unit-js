@@ -165,7 +165,9 @@ describe('inFiles.should.dependsOn scenarios (vanilla JS decorators sample)', ()
             .projectFiles()
             .inFiles(['**/main/index.js'])
             .should()
-            .dependsOn(['**/infra/**', '**/use-cases/**'])
+            .dependsOn(['**/use-cases/**'])
+            .and()
+            .dependsOn(['**/infra/**'])
             .check();
         }
       }

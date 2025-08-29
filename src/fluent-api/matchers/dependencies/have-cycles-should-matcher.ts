@@ -1,14 +1,14 @@
 import { RootFile } from '@/core/file';
-import { PatternCyclesCheckable } from '@/fluent-api/common/checkables';
 import { NotificationError } from '@/fluent-api/common/errors/notification';
+import { PatternCyclesMatchable } from '@/fluent-api/common/matchables';
 import { NotificationHandler } from '@/fluent-api/common/notification/handler';
-import { PatternCheckableProps } from '@/fluent-api/common/types';
+import { PatternMatchableProps } from '@/fluent-api/common/types';
 
-export class HaveCyclesShouldMatcher extends PatternCyclesCheckable {
+export class HaveCyclesShouldMatcher extends PatternCyclesMatchable {
   protected override readonly fileAnalysisType: RootFile.AnalysisType =
     RootFile.AnalysisType.DEPENDENCIES;
 
-  constructor(protected readonly props: PatternCheckableProps) {
+  constructor(protected readonly props: PatternMatchableProps) {
     super(props);
   }
 

@@ -9,7 +9,7 @@ export type Options = {
   };
 };
 
-export type CheckableProps = {
+export type MatchableProps = {
   negated: boolean;
   rootDir: string;
   filteringPatterns: string[];
@@ -18,14 +18,18 @@ export type CheckableProps = {
   ruleConstruction: string[];
 };
 
-export type ProjectSizeAnalysisProps = CheckableProps & {
+export type ProjectSizeAnalysisProps = MatchableProps & {
   percentageThreshold: number;
 };
 
-export type LOCAnalysisProps = CheckableProps & {
+export type LOCAnalysisProps = MatchableProps & {
   analisisThreshold: number;
 };
 
-export type PatternCheckableProps = CheckableProps & {
+export type PatternMatchableProps = MatchableProps & {
   checkingPatterns: string[];
 };
+
+export interface Checkable {
+  check(): Promise<void>;
+}

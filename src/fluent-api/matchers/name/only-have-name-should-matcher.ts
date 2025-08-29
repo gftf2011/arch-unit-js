@@ -1,16 +1,16 @@
 import micromatch from 'micromatch';
 
 import { RootFile } from '@/core/file';
-import { PatternCheckable } from '@/fluent-api/common/checkables';
 import { NotificationError } from '@/fluent-api/common/errors/notification';
+import { PatternMatchable } from '@/fluent-api/common/matchables';
 import { NotificationHandler } from '@/fluent-api/common/notification/handler';
-import { PatternCheckableProps } from '@/fluent-api/common/types';
+import { PatternMatchableProps } from '@/fluent-api/common/types';
 
-export class OnlyHaveNameShouldMatcher extends PatternCheckable {
+export class OnlyHaveNameShouldMatcher extends PatternMatchable {
   protected override readonly fileAnalysisType: RootFile.AnalysisType =
     RootFile.AnalysisType.NAME_ANALYSIS;
 
-  constructor(protected readonly props: PatternCheckableProps) {
+  constructor(protected readonly props: PatternMatchableProps) {
     super(props);
   }
 
