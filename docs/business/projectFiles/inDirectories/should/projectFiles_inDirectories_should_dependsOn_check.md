@@ -43,8 +43,8 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
-│   │       └── EmptyUseCase.ts  // No imports
+│   │   └── services/
+│   │       └── EmptyService.ts  // No imports
 │   └── main/
 │       └── app.ts  // Irrelevant here
 ```
@@ -53,13 +53,13 @@ API Usage:
 
 ```typescript
 projectFiles()
-  .inDirectories(['**/use-cases/**', '**/main/**'])
+  .inDirectories(['**/services/**', '**/main/**'])
   .should()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
 ```
 
-Result: ❌ FAIL - EmptyUseCase.ts has no dependencies
+Result: ❌ FAIL - EmptyService.ts has no dependencies
 
 ### Scenario 2: Files have dependencies but NONE match the patterns (across multiple directories)
 
@@ -70,8 +70,8 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
-│   │       └── WrongUseCase.ts  // imports: ['../utils/helper', '../config/settings']
+│   │   └── services/
+│   │       └── WrongService.ts  // imports: ['../utils/helper', '../config/settings']
 │   ├── main/
 │   │   └── app.ts              // imports: ['../utils/logger']
 │   ├── utils/
@@ -84,13 +84,13 @@ API Usage:
 
 ```typescript
 projectFiles()
-  .inDirectories(['**/use-cases/**', '**/main/**'])
+  .inDirectories(['**/services/**', '**/main/**'])
   .should()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
 ```
 
-Result: ❌ FAIL - WrongUseCase.ts and app.ts import from utils/config, not domain or infrastructure
+Result: ❌ FAIL - WrongService.ts and app.ts import from utils/config, not domain or infrastructure
 
 ### Scenario 3: Files have dependencies and SOME match the patterns (across multiple directories)
 
@@ -101,8 +101,8 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
-│   │       └── PartialUseCase.ts  // imports: ['../domain/entities/User', '../utils/helper']
+│   │   └── services/
+│   │       └── PartialService.ts  // imports: ['../domain/entities/User', '../utils/helper']
 │   └── main/
 │       └── app.ts                 // imports: ['../infrastructure/database/DatabaseConnection']
 ```
@@ -111,13 +111,13 @@ API Usage:
 
 ```typescript
 projectFiles()
-  .inDirectories(['**/use-cases/**', '**/main/**'])
+  .inDirectories(['**/services/**', '**/main/**'])
   .should()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
 ```
 
-Result: ❌ FAIL - PartialUseCase.ts imports from domain but not infrastructure; app.ts imports from infrastructure but not domain
+Result: ❌ FAIL - PartialService.ts imports from domain but not infrastructure; app.ts imports from infrastructure but not domain
 
 ### Scenario 4: Files have dependencies and ALL patterns are present (across multiple directories)
 
@@ -128,8 +128,8 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
-│   │       └── CorrectUseCase.ts  // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection']
+│   │   └── services/
+│   │       └── CorrectService.ts  // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection']
 │   └── main/
 │       └── app.ts                 // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection']
 ```
@@ -138,7 +138,7 @@ API Usage:
 
 ```typescript
 projectFiles()
-  .inDirectories(['**/use-cases/**', '**/main/**'])
+  .inDirectories(['**/services/**', '**/main/**'])
   .should()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();

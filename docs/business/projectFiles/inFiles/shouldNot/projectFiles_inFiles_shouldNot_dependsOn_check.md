@@ -42,7 +42,7 @@ This rule enforces architectural boundaries by ensuring target files do not depe
 project/
 ├── src/
 │   ├── application/
-│   │   └── use-cases/
+│   │   └── services/
 │   │       ├── EmptyA.ts  // No imports
 │   │       └── EmptyB.ts  // No imports
 │   └── infrastructure/
@@ -53,14 +53,14 @@ project/
 **File Content:**
 
 ```typescript
-// src/application/use-cases/EmptyA.ts
+// src/application/services/EmptyA.ts
 export class EmptyA {
   execute() {
     return 'A';
   }
 }
 
-// src/application/use-cases/EmptyB.ts
+// src/application/services/EmptyB.ts
 export class EmptyB {
   execute() {
     return 'B';
@@ -72,7 +72,7 @@ export class EmptyB {
 
 ```typescript
 projectFiles()
-  .inFiles(['**/use-cases/EmptyA.ts', '**/use-cases/EmptyB.ts'])
+  .inFiles(['**/services/EmptyA.ts', '**/services/EmptyB.ts'])
   .shouldNot()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
@@ -88,7 +88,7 @@ projectFiles()
 project/
 ├── src/
 │   ├── application/
-│   │   └── use-cases/
+│   │   └── services/
 │   │       ├── A.ts  // imports: ['../utils/a']
 │   │       └── B.ts  // imports: ['../config/b']
 │   ├── utils/
@@ -100,7 +100,7 @@ project/
 **File Content:**
 
 ```typescript
-// src/application/use-cases/A.ts
+// src/application/services/A.ts
 import { a } from '../utils/a';
 export class A {
   run() {
@@ -108,7 +108,7 @@ export class A {
   }
 }
 
-// src/application/use-cases/B.ts
+// src/application/services/B.ts
 import { b } from '../config/b';
 export class B {
   run() {
@@ -121,7 +121,7 @@ export class B {
 
 ```typescript
 projectFiles()
-  .inFiles(['**/use-cases/A.ts', '**/use-cases/B.ts'])
+  .inFiles(['**/services/A.ts', '**/services/B.ts'])
   .shouldNot()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
@@ -140,7 +140,7 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
+│   │   └── services/
 │   │       ├── PartialA.ts  // imports: ['../domain/entities/User']
 │   │       └── PartialB.ts  // imports: ['../infrastructure/db/DatabaseConnection']
 │   └── infrastructure/
@@ -151,7 +151,7 @@ project/
 **File Content:**
 
 ```typescript
-// src/application/use-cases/PartialA.ts
+// src/application/services/PartialA.ts
 import { User } from '../domain/entities/User';
 export class PartialA {
   run(d: any) {
@@ -159,7 +159,7 @@ export class PartialA {
   }
 }
 
-// src/application/use-cases/PartialB.ts
+// src/application/services/PartialB.ts
 import { DatabaseConnection } from '../infrastructure/db/DatabaseConnection';
 export class PartialB {
   async run(d: any) {
@@ -172,7 +172,7 @@ export class PartialB {
 
 ```typescript
 projectFiles()
-  .inFiles(['**/use-cases/PartialA.ts', '**/use-cases/PartialB.ts'])
+  .inFiles(['**/services/PartialA.ts', '**/services/PartialB.ts'])
   .shouldNot()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
@@ -191,7 +191,7 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
+│   │   └── services/
 │   │       ├── WrongA.ts  // imports: ['../domain/entities/User', '../infrastructure/db/DatabaseConnection']
 │   │       └── WrongB.ts  // imports: ['../domain/entities/User', '../infrastructure/db/DatabaseConnection']
 │   └── infrastructure/
@@ -202,7 +202,7 @@ project/
 **File Content:**
 
 ```typescript
-// src/application/use-cases/WrongA.ts
+// src/application/services/WrongA.ts
 import { User } from '../domain/entities/User';
 import { DatabaseConnection } from '../infrastructure/db/DatabaseConnection';
 export class WrongA {
@@ -212,7 +212,7 @@ export class WrongA {
   }
 }
 
-// src/application/use-cases/WrongB.ts
+// src/application/services/WrongB.ts
 import { User } from '../domain/entities/User';
 import { DatabaseConnection } from '../infrastructure/db/DatabaseConnection';
 export class WrongB {
@@ -227,7 +227,7 @@ export class WrongB {
 
 ```typescript
 projectFiles()
-  .inFiles(['**/use-cases/WrongA.ts', '**/use-cases/WrongB.ts'])
+  .inFiles(['**/services/WrongA.ts', '**/services/WrongB.ts'])
   .shouldNot()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();

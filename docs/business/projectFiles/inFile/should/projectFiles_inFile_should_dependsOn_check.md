@@ -45,8 +45,8 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
-│   │       └── EmptyUseCase.ts  // No imports
+│   │   └── services/
+│   │       └── EmptyService.ts  // No imports
 │   └── infrastructure/
 │       └── database/
 │           └── DatabaseConnection.ts
@@ -55,8 +55,8 @@ project/
 **File Content:**
 
 ```typescript
-// src/application/use-cases/EmptyUseCase.ts
-export class EmptyUseCase {
+// src/application/services/EmptyService.ts
+export class EmptyService {
   execute() {
     return 'Hello World';
   }
@@ -67,13 +67,13 @@ export class EmptyUseCase {
 
 ```typescript
 projectFiles()
-  .inFile('**/use-cases/EmptyUseCase.ts')
+  .inFile('**/services/EmptyService.ts')
   .should()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
 ```
 
-**Result**: ❌ FAIL — `EmptyUseCase.ts` has no dependencies
+**Result**: ❌ FAIL — `EmptyService.ts` has no dependencies
 
 ---
 
@@ -86,8 +86,8 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
-│   │       └── WrongUseCase.ts  // imports: ['../utils/helper', '../config/settings']
+│   │   └── services/
+│   │       └── WrongService.ts  // imports: ['../utils/helper', '../config/settings']
 │   ├── utils/
 │   │   └── helper.ts
 │   └── config/
@@ -97,11 +97,11 @@ project/
 **File Content:**
 
 ```typescript
-// src/application/use-cases/WrongUseCase.ts
+// src/application/services/WrongService.ts
 import { helper } from '../utils/helper';
 import { settings } from '../config/settings';
 
-export class WrongUseCase {
+export class WrongService {
   execute() {
     return helper.process(settings.getConfig());
   }
@@ -112,13 +112,13 @@ export class WrongUseCase {
 
 ```typescript
 projectFiles()
-  .inFile('**/use-cases/WrongUseCase.ts')
+  .inFile('**/services/WrongService.ts')
   .should()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
 ```
 
-**Result**: ❌ FAIL — `WrongUseCase.ts` imports from `utils` and `config`, not `domain` or `infrastructure`
+**Result**: ❌ FAIL — `WrongService.ts` imports from `utils` and `config`, not `domain` or `infrastructure`
 
 ---
 
@@ -131,8 +131,8 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
-│   │       └── PartialUseCase.ts  // imports: ['../domain/entities/User', '../utils/helper']
+│   │   └── services/
+│   │       └── PartialService.ts  // imports: ['../domain/entities/User', '../utils/helper']
 │   ├── utils/
 │   │   └── helper.ts
 │   └── infrastructure/
@@ -143,11 +143,11 @@ project/
 **File Content:**
 
 ```typescript
-// src/application/use-cases/PartialUseCase.ts
+// src/application/services/PartialService.ts
 import { User } from '../domain/entities/User';
 import { helper } from '../utils/helper';
 
-export class PartialUseCase {
+export class PartialService {
   execute(userData: any) {
     const user = new User(userData);
     return helper.process(user);
@@ -159,13 +159,13 @@ export class PartialUseCase {
 
 ```typescript
 projectFiles()
-  .inFile('**/use-cases/PartialUseCase.ts')
+  .inFile('**/services/PartialService.ts')
   .should()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
 ```
 
-**Result**: ❌ FAIL — `PartialUseCase.ts` imports from `domain` but not from `infrastructure`
+**Result**: ❌ FAIL — `PartialService.ts` imports from `domain` but not from `infrastructure`
 
 ---
 
@@ -178,8 +178,8 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
-│   │       └── CorrectUseCase.ts  // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection']
+│   │   └── services/
+│   │       └── CorrectService.ts  // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection']
 │   └── infrastructure/
 │       └── database/
 │           └── DatabaseConnection.ts
@@ -188,11 +188,11 @@ project/
 **File Content:**
 
 ```typescript
-// src/application/use-cases/CorrectUseCase.ts
+// src/application/services/CorrectService.ts
 import { User } from '../domain/entities/User';
 import { DatabaseConnection } from '../infrastructure/database/DatabaseConnection';
 
-export class CorrectUseCase {
+export class CorrectService {
   constructor(private db: DatabaseConnection) {}
 
   async execute(userData: any) {
@@ -207,7 +207,7 @@ export class CorrectUseCase {
 
 ```typescript
 projectFiles()
-  .inFile('**/use-cases/CorrectUseCase.ts')
+  .inFile('**/services/CorrectService.ts')
   .should()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();

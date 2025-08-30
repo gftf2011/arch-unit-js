@@ -48,8 +48,8 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
-│   │       └── EmptyUseCase.ts  // No imports
+│   │   └── services/
+│   │       └── EmptyService.ts  // No imports
 │   └── infrastructure/
 │       └── database/
 │           └── DatabaseConnection.ts
@@ -58,8 +58,8 @@ project/
 **File Content:**
 
 ```typescript
-// src/application/use-cases/EmptyUseCase.ts
-export class EmptyUseCase {
+// src/application/services/EmptyService.ts
+export class EmptyService {
   execute() {
     return 'Hello World';
   }
@@ -70,13 +70,13 @@ export class EmptyUseCase {
 
 ```typescript
 projectFiles()
-  .inDirectory('**/use-cases/**')
+  .inDirectory('**/services/**')
   .should()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
 ```
 
-**Result**: ✅ PASS - `EmptyUseCase.ts` has no dependencies, so it cannot violate the exclusive dependency rule
+**Result**: ✅ PASS - `EmptyService.ts` has no dependencies, so it cannot violate the exclusive dependency rule
 
 ### Scenario 2: File has dependencies but NONE match the patterns
 
@@ -87,8 +87,8 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
-│   │       └── WrongUseCase.ts  // imports: ['../utils/helper', '../config/settings']
+│   │   └── services/
+│   │       └── WrongService.ts  // imports: ['../utils/helper', '../config/settings']
 │   ├── utils/
 │   │   └── helper.ts
 │   └── config/
@@ -98,11 +98,11 @@ project/
 **File Content:**
 
 ```typescript
-// src/application/use-cases/WrongUseCase.ts
+// src/application/services/WrongService.ts
 import { helper } from '../utils/helper';
 import { settings } from '../config/settings';
 
-export class WrongUseCase {
+export class WrongService {
   execute() {
     return helper.process(settings.getConfig());
   }
@@ -113,13 +113,13 @@ export class WrongUseCase {
 
 ```typescript
 projectFiles()
-  .inDirectory('**/use-cases/**')
+  .inDirectory('**/services/**')
   .should()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
 ```
 
-**Result**: ❌ FAIL - `WrongUseCase.ts` imports from `utils` and `config`, not `domain` or `infrastructure`
+**Result**: ❌ FAIL - `WrongService.ts` imports from `utils` and `config`, not `domain` or `infrastructure`
 
 ### Scenario 3: File has dependencies that match only SOME of the patterns (exclusively)
 
@@ -130,8 +130,8 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
-│   │       └── PartialUseCase.ts  // imports: ['../domain/entities/User']
+│   │   └── services/
+│   │       └── PartialService.ts  // imports: ['../domain/entities/User']
 │   └── infrastructure/
 │       └── database/
 │           └── DatabaseConnection.ts
@@ -140,10 +140,10 @@ project/
 **File Content:**
 
 ```typescript
-// src/application/use-cases/PartialUseCase.ts
+// src/application/services/PartialService.ts
 import { User } from '../domain/entities/User';
 
-export class PartialUseCase {
+export class PartialService {
   execute(userData: any) {
     const user = new User(userData);
     return user;
@@ -155,13 +155,13 @@ export class PartialUseCase {
 
 ```typescript
 projectFiles()
-  .inDirectory('**/use-cases/**')
+  .inDirectory('**/services/**')
   .should()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
 ```
 
-**Result**: ✅ PASS - `PartialUseCase.ts` imports exclusively from `domain` (matches one of the specified patterns)
+**Result**: ✅ PASS - `PartialService.ts` imports exclusively from `domain` (matches one of the specified patterns)
 
 ### Scenario 4: File has dependencies and ALL patterns are present (exclusively)
 
@@ -172,8 +172,8 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
-│   │       └── PerfectUseCase.ts  // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection']
+│   │   └── services/
+│   │       └── PerfectService.ts  // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection']
 │   └── infrastructure/
 │       └── database/
 │           └── DatabaseConnection.ts
@@ -182,11 +182,11 @@ project/
 **File Content:**
 
 ```typescript
-// src/application/use-cases/PerfectUseCase.ts
+// src/application/services/PerfectService.ts
 import { User } from '../domain/entities/User';
 import { DatabaseConnection } from '../infrastructure/database/DatabaseConnection';
 
-export class PerfectUseCase {
+export class PerfectService {
   constructor(private db: DatabaseConnection) {}
 
   async execute(userData: any) {
@@ -201,13 +201,13 @@ export class PerfectUseCase {
 
 ```typescript
 projectFiles()
-  .inDirectory('**/use-cases/**')
+  .inDirectory('**/services/**')
   .should()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
 ```
 
-**Result**: ✅ PASS - `PerfectUseCase.ts` imports ONLY from `domain` and `infrastructure`
+**Result**: ✅ PASS - `PerfectService.ts` imports ONLY from `domain` and `infrastructure`
 
 ### Scenario 5: File has dependencies with additional non-matching dependencies
 
@@ -218,9 +218,9 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
-│   │       ├── ViolatingUseCase.ts  // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection', '../utils/helper']
-│   │       └── MixedViolatingUseCase.ts  // imports: ['../domain/entities/User', '../utils/helper', '../config/settings']
+│   │   └── services/
+│   │       ├── ViolatingService.ts  // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection', '../utils/helper']
+│   │       └── MixedViolatingService.ts  // imports: ['../domain/entities/User', '../utils/helper', '../config/settings']
 │   ├── utils/
 │   │   └── helper.ts
 │   ├── config/
@@ -233,12 +233,12 @@ project/
 **File Content:**
 
 ```typescript
-// src/application/use-cases/ViolatingUseCase.ts
+// src/application/services/ViolatingService.ts
 import { User } from '../domain/entities/User';
 import { DatabaseConnection } from '../infrastructure/database/DatabaseConnection';
 import { helper } from '../utils/helper';
 
-export class ViolatingUseCase {
+export class ViolatingService {
   constructor(private db: DatabaseConnection) {}
 
   async execute(userData: any) {
@@ -250,12 +250,12 @@ export class ViolatingUseCase {
   }
 }
 
-// src/application/use-cases/MixedViolatingUseCase.ts
+// src/application/services/MixedViolatingService.ts
 import { User } from '../domain/entities/User';
 import { helper } from '../utils/helper';
 import { settings } from '../config/settings';
 
-export class MixedViolatingUseCase {
+export class MixedViolatingService {
   execute(userData: any) {
     const user = new User(userData);
     const processedData = helper.process(userData);
@@ -270,10 +270,10 @@ export class MixedViolatingUseCase {
 
 ```typescript
 projectFiles()
-  .inDirectory('**/use-cases/**')
+  .inDirectory('**/services/**')
   .should()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
 ```
 
-**Result**: ❌ FAIL - Both files have extra dependencies: `ViolatingUseCase.ts` has all required patterns plus `utils`, `MixedViolatingUseCase.ts` has some required patterns plus `utils` and `config` (extra dependencies not allowed)
+**Result**: ❌ FAIL - Both files have extra dependencies: `ViolatingService.ts` has all required patterns plus `utils`, `MixedViolatingService.ts` has some required patterns plus `utils` and `config` (extra dependencies not allowed)

@@ -1,18 +1,20 @@
-# Project Files in Directories Should NOT Only Depend On Specified Patterns
+# Project Files in Files Should NOT Only Depend On Specified Patterns
 
 ## Business Rule Description
 
-**DESCRIPTION**: Files in the specified directories (considered as a union) must NOT depend exclusively on the specified patterns. The rule passes when files have mixed dependencies (include at least one non-allowed dependency) or have no dependencies at all. It fails when any file depends only on a subset or all of the specified patterns and nothing else.
+**DESCRIPTION**: Files explicitly selected via `inFiles([...])` (considered as a set) must NOT depend exclusively on the specified patterns. The rule passes when selected files have mixed dependencies (include at least one non-allowed dependency) or have no dependencies at all. It fails when any selected file depends only on a subset or all of the specified patterns and nothing else.
 
 - It is OK if files have NO dependencies
 - It is OK if files have mixed dependencies (some of the patterns + additional, non-matching dependencies)
 - It is NOT OK if files depend exclusively on the specified patterns (any subset or all)
 
-This rule ensures architectural flexibility across multiple directories by preventing overly restrictive coupling to only the specified dependencies.
+This rule ensures architectural flexibility across explicitly selected files by preventing overly restrictive coupling to only the specified dependencies.
 
 **Note**: The `shouldNot.onlyDependsOn` rule validates both project paths and npm dependencies (e.g., `['express', 'lodash']`).
 
 **Note**: The `shouldNot.onlyDependsOn` also accepts a single string as parameter.
+
+**Note**: Pattern matching uses glob semantics and honors the current configuration (e.g., webpack path aliases, `includeMatcher`, `ignoreMatcher`, and `extensionTypes`).
 
 ## All Possible Scenarios
 
@@ -34,7 +36,7 @@ This rule ensures architectural flexibility across multiple directories by preve
 
 ## Scenario Examples
 
-### Scenario 1: Files in multiple directories have NO dependencies (PASS)
+### Scenario 1: Selected files have NO dependencies (PASS)
 
 ```
 project/
@@ -50,14 +52,16 @@ project/
 **API Usage:**
 
 ```typescript
-projectFiles()
-  .inDirectories(['**/services/**', '**/presentation/controllers/**'])
+await projectFiles()
+  .inFiles(['**/services/EmptyService.ts', '**/presentation/controllers/EmptyController.ts'])
   .shouldNot()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
 ```
 
 **Result**: ✅ PASS - Files without imports cannot exclusively depend on any patterns
+
+---
 
 ### Scenario 2: Files have dependencies but NONE match the patterns (PASS)
 
@@ -75,14 +79,16 @@ project/
 **API Usage:**
 
 ```typescript
-projectFiles()
-  .inDirectories(['**/services/**', '**/presentation/controllers/**'])
+await projectFiles()
+  .inFiles(['**/services/SafeService.ts', '**/presentation/controllers/SafeController.ts'])
   .shouldNot()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
 ```
 
 **Result**: ✅ PASS - Dependencies point to non-specified areas (`utils`, `config`), so not exclusive
+
+---
 
 ### Scenario 3: Files have mixed dependencies (PASS)
 
@@ -91,7 +97,7 @@ project/
 ├── src/
 │   ├── application/
 │   │   └── services/
-│   │       ├── MixedService.ts   // imports: ['../domain/entities/User', '../utils/helper']
+│   │       ├── MixedService.ts    // imports: ['../domain/entities/User', '../utils/helper']
 │   │       └── FlexibleService.ts // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection', '../utils/helper']
 │   └── presentation/
 │       └── controllers/
@@ -101,14 +107,20 @@ project/
 **API Usage:**
 
 ```typescript
-projectFiles()
-  .inDirectories(['**/services/**', '**/presentation/controllers/**'])
+await projectFiles()
+  .inFiles([
+    '**/services/MixedService.ts',
+    '**/services/FlexibleService.ts',
+    '**/presentation/controllers/ReportsController.ts',
+  ])
   .shouldNot()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
 ```
 
 **Result**: ✅ PASS - Mixed dependencies mean the files are not exclusively tied to the specified patterns
+
+---
 
 ### Scenario 4: Files have exclusive dependencies to specified patterns (FAIL)
 
@@ -127,8 +139,12 @@ project/
 **API Usage:**
 
 ```typescript
-projectFiles()
-  .inDirectories(['**/services/**', '**/presentation/controllers/**'])
+await projectFiles()
+  .inFiles([
+    '**/services/ExclusiveService.ts',
+    '**/services/CreateUserService.ts',
+    '**/presentation/controllers/UsersController.ts',
+  ])
   .shouldNot()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
@@ -141,8 +157,8 @@ projectFiles()
 You can also prohibit exclusive reliance on certain external (npm) dependencies:
 
 ```typescript
-projectFiles()
-  .inDirectories(['**/presentation/**'])
+await projectFiles()
+  .inFiles(['**/presentation/**/SomeController.ts'])
   .shouldNot()
   .onlyDependsOn(['react', 'react-dom'])
   .check();

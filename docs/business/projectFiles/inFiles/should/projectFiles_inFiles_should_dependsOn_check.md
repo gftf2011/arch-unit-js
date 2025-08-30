@@ -45,7 +45,7 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
+│   │   └── services/
 │   │       ├── EmptyA.ts  // No imports
 │   │       └── EmptyB.ts  // No imports
 │   └── infrastructure/
@@ -56,14 +56,14 @@ project/
 **File Content:**
 
 ```typescript
-// src/application/use-cases/EmptyA.ts
+// src/application/services/EmptyA.ts
 export class EmptyA {
   execute() {
     return 'A';
   }
 }
 
-// src/application/use-cases/EmptyB.ts
+// src/application/services/EmptyB.ts
 export class EmptyB {
   execute() {
     return 'B';
@@ -75,7 +75,7 @@ export class EmptyB {
 
 ```typescript
 projectFiles()
-  .inFiles(['**/use-cases/EmptyA.ts', '**/use-cases/EmptyB.ts'])
+  .inFiles(['**/services/EmptyA.ts', '**/services/EmptyB.ts'])
   .should()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
@@ -94,7 +94,7 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
+│   │   └── services/
 │   │       ├── WrongA.ts  // imports: ['../utils/a']
 │   │       └── WrongB.ts  // imports: ['../config/b']
 │   ├── utils/
@@ -106,7 +106,7 @@ project/
 **File Content:**
 
 ```typescript
-// src/application/use-cases/WrongA.ts
+// src/application/services/WrongA.ts
 import { a } from '../utils/a';
 export class WrongA {
   run() {
@@ -114,7 +114,7 @@ export class WrongA {
   }
 }
 
-// src/application/use-cases/WrongB.ts
+// src/application/services/WrongB.ts
 import { b } from '../config/b';
 export class WrongB {
   run() {
@@ -127,7 +127,7 @@ export class WrongB {
 
 ```typescript
 projectFiles()
-  .inFiles(['**/use-cases/WrongA.ts', '**/use-cases/WrongB.ts'])
+  .inFiles(['**/services/WrongA.ts', '**/services/WrongB.ts'])
   .should()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
@@ -146,7 +146,7 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
+│   │   └── services/
 │   │       ├── PartialA.ts  // imports: ['../domain/entities/User']
 │   │       └── PartialB.ts  // imports: ['../infrastructure/db/DatabaseConnection']
 │   └── infrastructure/
@@ -157,7 +157,7 @@ project/
 **File Content:**
 
 ```typescript
-// src/application/use-cases/PartialA.ts
+// src/application/services/PartialA.ts
 import { User } from '../domain/entities/User';
 export class PartialA {
   run(data: any) {
@@ -165,7 +165,7 @@ export class PartialA {
   }
 }
 
-// src/application/use-cases/PartialB.ts
+// src/application/services/PartialB.ts
 import { DatabaseConnection } from '../infrastructure/db/DatabaseConnection';
 export class PartialB {
   async run(data: any) {
@@ -178,7 +178,7 @@ export class PartialB {
 
 ```typescript
 projectFiles()
-  .inFiles(['**/use-cases/PartialA.ts', '**/use-cases/PartialB.ts'])
+  .inFiles(['**/services/PartialA.ts', '**/services/PartialB.ts'])
   .should()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
@@ -197,7 +197,7 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
+│   │   └── services/
 │   │       ├── CorrectA.ts  // imports: ['../domain/entities/User', '../infrastructure/db/DatabaseConnection']
 │   │       └── CorrectB.ts  // imports: ['../domain/entities/User', '../infrastructure/db/DatabaseConnection']
 │   └── infrastructure/
@@ -208,7 +208,7 @@ project/
 **File Content:**
 
 ```typescript
-// src/application/use-cases/CorrectA.ts
+// src/application/services/CorrectA.ts
 import { User } from '../domain/entities/User';
 import { DatabaseConnection } from '../infrastructure/db/DatabaseConnection';
 export class CorrectA {
@@ -218,7 +218,7 @@ export class CorrectA {
   }
 }
 
-// src/application/use-cases/CorrectB.ts
+// src/application/services/CorrectB.ts
 import { User } from '../domain/entities/User';
 import { DatabaseConnection } from '../infrastructure/db/DatabaseConnection';
 export class CorrectB {
@@ -233,7 +233,7 @@ export class CorrectB {
 
 ```typescript
 projectFiles()
-  .inFiles(['**/use-cases/CorrectA.ts', '**/use-cases/CorrectB.ts'])
+  .inFiles(['**/services/CorrectA.ts', '**/services/CorrectB.ts'])
   .should()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
