@@ -71,4 +71,4 @@ projectFiles()
   .check();
 ```
 
-**Result**: ❌ FAIL — SELECTION SUM 2,300 bytes > 2,000 bytes (20% of 10,000). The error should list the selected files and their sizes contributing to the overflow.
+**Result**: ❌ FAIL — SELECTION SUM 2,300 bytes > 2,000 bytes (20% of 10,000).
