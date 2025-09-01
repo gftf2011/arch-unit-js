@@ -1,4 +1,3 @@
-import { create } from 'enhanced-resolve';
 import micromatch from 'micromatch';
 import { createRequire } from 'module';
 import * as path from 'pathe';
@@ -165,6 +164,15 @@ export class WebpackDependencyResolvable extends Resolvable {
     return webpackConfigs;
   }
 
+  private dependencyResolver(webpackConfig: any): string | false {
+    const require = createRequire(path.join(this.resolvableProps.rootDir, 'package.json'));
+    const enhancedResolve = require('enhanced-resolve'); // available in node_modules for webpack ^2.2.0
+    const { dir } = path.parse(this.resolvableProps.filePath);
+    const resolver = enhancedResolve.create.sync(webpackConfig.resolve || {});
+    const resolvedDependency = resolver(dir, this.depProps.name);
+    return resolvedDependency;
+  }
+
   public override resolve(): ResolvableResponse {
     if (!this.resolvableProps.webpack) {
       return { status: 'unresolved', depProps: this.depProps };
@@ -173,10 +181,8 @@ export class WebpackDependencyResolvable extends Resolvable {
       const webpackConfigs = this.resolveWebpackConfig(this.resolvableProps.webpack?.path);
       const filteredWebpackConfigs = this.filterWebpackConfig(webpackConfigs);
       for (const webpackConfig of filteredWebpackConfigs) {
-        const resolver = create.sync(webpackConfig.resolve || {});
-        const { dir } = path.parse(this.resolvableProps.filePath);
         try {
-          const resolvedDependency = resolver(dir, this.depProps.name);
+          const resolvedDependency = this.dependencyResolver(webpackConfig);
           if (resolvedDependency) {
             const dependency = micromatch(this.resolvableProps.availableFiles, [
               resolvedDependency,

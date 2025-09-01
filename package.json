@@ -85,7 +85,6 @@
   "dependencies": {
     "@babel/parser": "7.28.0",
     "@babel/traverse": "7.28.0",
-    "enhanced-resolve": "^5.18.3",
     "micromatch": "4.0.8",
     "pathe": "2.0.3"
   }
