@@ -25,6 +25,10 @@ export type BaseBuildableProps = {
   availableFiles: string[];
   extensions: string[];
   typescriptPath?: string;
+  webpack?: {
+    path: string;
+    names?: string[];
+  };
 };
 
 export abstract class Base {

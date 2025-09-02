@@ -14,13 +14,14 @@ export abstract class JavascriptRelatedFile extends RootFile.Base {
   public constructor(
     protected readonly fileName: string,
     protected readonly filePath: string,
+    protected readonly fileType: RootFile.JavascriptOrTypescriptRelatedFileType,
   ) {
     super();
 
     this.props = {
       name: this.fileName,
       path: this.filePath,
-      type: 'javascript-file',
+      type: fileType,
       loc: 0,
       size: 0,
       totalLines: 0,

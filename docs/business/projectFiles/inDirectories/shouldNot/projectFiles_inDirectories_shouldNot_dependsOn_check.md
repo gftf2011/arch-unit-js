@@ -38,8 +38,8 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
-│   │       └── EmptyUseCase.ts  // No imports
+│   │   └── services/
+│   │       └── EmptyService.ts  // No imports
 │   └── main/
 │       └── app.ts  // Irrelevant for this rule
 ```
@@ -48,13 +48,13 @@ API Usage:
 
 ```typescript
 projectFiles()
-  .inDirectories(['**/use-cases/**', '**/main/**'])
+  .inDirectories(['**/services/**', '**/main/**'])
   .shouldNot()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
 ```
 
-Result: ✅ PASS — EmptyUseCase.ts has no dependencies
+Result: ✅ PASS — EmptyService.ts has no dependencies
 
 ### Scenario 2: Files have dependencies but NONE match the patterns (across multiple directories)
 
@@ -65,8 +65,8 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
-│   │       └── SafeUseCase.ts  // imports: ['../utils/helper', '../config/settings']
+│   │   └── services/
+│   │       └── SafeService.ts  // imports: ['../utils/helper', '../config/settings']
 │   ├── main/
 │   │   └── app.ts              // imports: ['../utils/logger']
 │   ├── utils/
@@ -79,13 +79,13 @@ API Usage:
 
 ```typescript
 projectFiles()
-  .inDirectories(['**/use-cases/**', '**/main/**'])
+  .inDirectories(['**/services/**', '**/main/**'])
   .shouldNot()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
 ```
 
-Result: ✅ PASS — Neither SafeUseCase.ts nor app.ts import from domain or infrastructure
+Result: ✅ PASS — Neither SafeService.ts nor app.ts import from domain or infrastructure
 
 ### Scenario 3: Files have dependencies and ANY patterns are present (across multiple directories)
 
@@ -96,8 +96,8 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
-│   │       ├── ViolatingUseCase.ts   // imports: ['../domain/entities/User', '../utils/helper']
+│   │   └── services/
+│   │       ├── ViolatingService.ts   // imports: ['../domain/entities/User', '../utils/helper']
 │   └── main/
 │       └── app.ts                    // imports: ['../infrastructure/database/DatabaseConnection']
 ├── src/infrastructure/
@@ -108,10 +108,10 @@ API Usage:
 
 ```typescript
 projectFiles()
-  .inDirectories(['**/use-cases/**', '**/main/**'])
+  .inDirectories(['**/services/**', '**/main/**'])
   .shouldNot()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
 ```
 
-Result: ❌ FAIL — ViolatingUseCase.ts imports from domain; app.ts imports from infrastructure (any match violates the rule)
+Result: ❌ FAIL — ViolatingService.ts imports from domain; app.ts imports from infrastructure (any match violates the rule)

@@ -40,8 +40,8 @@ This rule ensures architectural flexibility across multiple directories by preve
 project/
 ├── src/
 │   ├── application/
-│   │   └── use-cases/
-│   │       └── EmptyUseCase.ts        // No imports
+│   │   └── services/
+│   │       └── EmptyService.ts        // No imports
 │   └── presentation/
 │       └── controllers/
 │           └── EmptyController.ts     // No imports
@@ -51,7 +51,7 @@ project/
 
 ```typescript
 projectFiles()
-  .inDirectories(['**/use-cases/**', '**/presentation/controllers/**'])
+  .inDirectories(['**/services/**', '**/presentation/controllers/**'])
   .shouldNot()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
@@ -65,8 +65,8 @@ projectFiles()
 project/
 ├── src/
 │   ├── application/
-│   │   └── use-cases/
-│   │       └── SafeUseCase.ts  // imports: ['../utils/helper', '../config/settings']
+│   │   └── services/
+│   │       └── SafeService.ts  // imports: ['../utils/helper', '../config/settings']
 │   └── presentation/
 │       └── controllers/
 │           └── SafeController.ts // imports: ['../utils/helper']
@@ -76,7 +76,7 @@ project/
 
 ```typescript
 projectFiles()
-  .inDirectories(['**/use-cases/**', '**/presentation/controllers/**'])
+  .inDirectories(['**/services/**', '**/presentation/controllers/**'])
   .shouldNot()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
@@ -90,9 +90,9 @@ projectFiles()
 project/
 ├── src/
 │   ├── application/
-│   │   └── use-cases/
-│   │       ├── MixedUseCase.ts   // imports: ['../domain/entities/User', '../utils/helper']
-│   │       └── FlexibleUseCase.ts // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection', '../utils/helper']
+│   │   └── services/
+│   │       ├── MixedService.ts   // imports: ['../domain/entities/User', '../utils/helper']
+│   │       └── FlexibleService.ts // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection', '../utils/helper']
 │   └── presentation/
 │       └── controllers/
 │           └── ReportsController.ts // imports: ['lodash', '../domain/entities/User']
@@ -102,7 +102,7 @@ project/
 
 ```typescript
 projectFiles()
-  .inDirectories(['**/use-cases/**', '**/presentation/controllers/**'])
+  .inDirectories(['**/services/**', '**/presentation/controllers/**'])
   .shouldNot()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
@@ -116,9 +116,9 @@ projectFiles()
 project/
 ├── src/
 │   ├── application/
-│   │   └── use-cases/
-│   │       ├── ExclusiveUseCase.ts  // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection']
-│   │       └── CreateUserUseCase.ts // imports: ['../domain/entities/User']
+│   │   └── services/
+│   │       ├── ExclusiveService.ts  // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection']
+│   │       └── CreateUserService.ts // imports: ['../domain/entities/User']
 │   └── presentation/
 │       └── controllers/
 │           └── UsersController.ts    // imports: ['../domain/entities/User']
@@ -128,7 +128,7 @@ project/
 
 ```typescript
 projectFiles()
-  .inDirectories(['**/use-cases/**', '**/presentation/controllers/**'])
+  .inDirectories(['**/services/**', '**/presentation/controllers/**'])
   .shouldNot()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();

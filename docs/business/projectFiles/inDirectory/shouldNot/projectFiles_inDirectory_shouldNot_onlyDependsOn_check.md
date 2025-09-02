@@ -43,8 +43,8 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
-│   │       └── EmptyUseCase.ts  // No imports
+│   │   └── services/
+│   │       └── EmptyService.ts  // No imports
 │   └── infrastructure/
 │       └── database/
 │           └── DatabaseConnection.ts
@@ -53,8 +53,8 @@ project/
 **File Content:**
 
 ```typescript
-// src/application/use-cases/EmptyUseCase.ts
-export class EmptyUseCase {
+// src/application/services/EmptyService.ts
+export class EmptyService {
   execute() {
     return 'Hello World';
   }
@@ -65,13 +65,13 @@ export class EmptyUseCase {
 
 ```typescript
 projectFiles()
-  .inDirectory('**/use-cases/**')
+  .inDirectory('**/services/**')
   .shouldNot()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
 ```
 
-**Result**: ✅ PASS - `EmptyUseCase.ts` has no dependencies, so it cannot violate the exclusive dependency rule
+**Result**: ✅ PASS - `EmptyService.ts` has no dependencies, so it cannot violate the exclusive dependency rule
 
 ### Scenario 2: File has dependencies but NONE match the patterns
 
@@ -82,8 +82,8 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
-│   │       └── SafeUseCase.ts  // imports: ['../utils/helper', '../config/settings']
+│   │   └── services/
+│   │       └── SafeService.ts  // imports: ['../utils/helper', '../config/settings']
 │   ├── utils/
 │   │   └── helper.ts
 │   └── config/
@@ -93,11 +93,11 @@ project/
 **File Content:**
 
 ```typescript
-// src/application/use-cases/SafeUseCase.ts
+// src/application/services/SafeService.ts
 import { helper } from '../utils/helper';
 import { settings } from '../config/settings';
 
-export class SafeUseCase {
+export class SafeService {
   execute() {
     return helper.process(settings.getConfig());
   }
@@ -108,13 +108,13 @@ export class SafeUseCase {
 
 ```typescript
 projectFiles()
-  .inDirectory('**/use-cases/**')
+  .inDirectory('**/services/**')
   .shouldNot()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
 ```
 
-**Result**: ✅ PASS - `SafeUseCase.ts` imports from `utils` and `config`, not from `domain` or `infrastructure`
+**Result**: ✅ PASS - `SafeService.ts` imports from `utils` and `config`, not from `domain` or `infrastructure`
 
 ### Scenario 3: File has mixed dependencies
 
@@ -125,9 +125,9 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
-│   │       ├── MixedUseCase.ts  // imports: ['../domain/entities/User', '../utils/helper']
-│   │       └── FlexibleUseCase.ts  // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection', '../utils/helper']
+│   │   └── services/
+│   │       ├── MixedService.ts  // imports: ['../domain/entities/User', '../utils/helper']
+│   │       └── FlexibleService.ts  // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection', '../utils/helper']
 │   ├── utils/
 │   │   └── helper.ts
 │   ├── config/
@@ -140,23 +140,23 @@ project/
 **File Content:**
 
 ```typescript
-// src/application/use-cases/MixedUseCase.ts
+// src/application/services/MixedService.ts
 import { User } from '../domain/entities/User';
 import { helper } from '../utils/helper';
 
-export class MixedUseCase {
+export class MixedService {
   execute(userData: any) {
     const user = new User(userData);
     return helper.process(user);
   }
 }
 
-// src/application/use-cases/FlexibleUseCase.ts
+// src/application/services/FlexibleService.ts
 import { User } from '../domain/entities/User';
 import { DatabaseConnection } from '../infrastructure/database/DatabaseConnection';
 import { helper } from '../utils/helper';
 
-export class FlexibleUseCase {
+export class FlexibleService {
   constructor(private db: DatabaseConnection) {}
 
   async execute(userData: any) {
@@ -173,13 +173,13 @@ export class FlexibleUseCase {
 
 ```typescript
 projectFiles()
-  .inDirectory('**/use-cases/**')
+  .inDirectory('**/services/**')
   .shouldNot()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
 ```
 
-**Result**: ✅ PASS - Both files have mixed dependencies: `MixedUseCase.ts` has some patterns + extra, `FlexibleUseCase.ts` has all patterns + extra (not exclusive)
+**Result**: ✅ PASS - Both files have mixed dependencies: `MixedService.ts` has some patterns + extra, `FlexibleService.ts` has all patterns + extra (not exclusive)
 
 ### Scenario 4: File has exclusive dependencies to specified patterns
 
@@ -190,11 +190,11 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
-│   │       ├── ExclusiveUseCase.ts  // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection']
-│   │       ├── CreateUserUseCase.ts  // imports: ['../domain/entities/User']
-│   │       ├── UpdateUserUseCase.ts  // imports: ['../domain/entities/User']
-│   │       └── DeleteUserUseCase.ts  // imports: ['../domain/entities/User']
+│   │   └── services/
+│   │       ├── ExclusiveService.ts  // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection']
+│   │       ├── CreateUserService.ts  // imports: ['../domain/entities/User']
+│   │       ├── UpdateUserService.ts  // imports: ['../domain/entities/User']
+│   │       └── DeleteUserService.ts  // imports: ['../domain/entities/User']
 │   └── infrastructure/
 │       └── database/
 │           └── DatabaseConnection.ts
@@ -203,11 +203,11 @@ project/
 **File Content:**
 
 ```typescript
-// src/application/use-cases/ExclusiveUseCase.ts
+// src/application/services/ExclusiveService.ts
 import { User } from '../domain/entities/User';
 import { DatabaseConnection } from '../infrastructure/database/DatabaseConnection';
 
-export class ExclusiveUseCase {
+export class ExclusiveService {
   constructor(private db: DatabaseConnection) {}
 
   async execute(userData: any) {
@@ -217,10 +217,10 @@ export class ExclusiveUseCase {
   }
 }
 
-// src/application/use-cases/CreateUserUseCase.ts
+// src/application/services/CreateUserService.ts
 import { User } from '../domain/entities/User';
 
-export class CreateUserUseCase {
+export class CreateUserService {
   execute(userData: any) {
     const user = new User(userData.id, userData.title, userData.description);
     return user;
@@ -232,10 +232,10 @@ export class CreateUserUseCase {
 
 ```typescript
 projectFiles()
-  .inDirectory('**/use-cases/**')
+  .inDirectory('**/services/**')
   .shouldNot()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
 ```
 
-**Result**: ❌ FAIL - Files have exclusive dependencies: `ExclusiveUseCase.ts` depends only on all patterns, other files depend only on some patterns (exclusive dependencies not allowed)
+**Result**: ❌ FAIL - Files have exclusive dependencies: `ExclusiveService.ts` depends only on all patterns, other files depend only on some patterns (exclusive dependencies not allowed)

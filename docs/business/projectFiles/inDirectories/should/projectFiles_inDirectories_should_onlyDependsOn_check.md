@@ -45,8 +45,8 @@ This rule ensures strict architectural compliance across multiple directories by
 project/
 ├── src/
 │   ├── application/
-│   │   └── use-cases/
-│   │       └── EmptyUseCase.ts        // No imports
+│   │   └── services/
+│   │       └── EmptyService.ts        // No imports
 │   └── presentation/
 │       └── controllers/
 │           └── EmptyController.ts     // No imports
@@ -56,7 +56,7 @@ project/
 
 ```typescript
 projectFiles()
-  .inDirectories(['**/use-cases/**', '**/presentation/controllers/**'])
+  .inDirectories(['**/services/**', '**/presentation/controllers/**'])
   .should()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
@@ -70,8 +70,8 @@ projectFiles()
 project/
 ├── src/
 │   ├── application/
-│   │   └── use-cases/
-│   │       └── WrongUseCase.ts  // imports: ['../utils/helper', '../config/settings']
+│   │   └── services/
+│   │       └── WrongService.ts  // imports: ['../utils/helper', '../config/settings']
 │   └── presentation/
 │       └── controllers/
 │           └── WrongController.ts // imports: ['../utils/helper']
@@ -80,11 +80,11 @@ project/
 **File Content Example:**
 
 ```typescript
-// src/application/use-cases/WrongUseCase.ts
+// src/application/services/WrongService.ts
 import { helper } from '../utils/helper';
 import { settings } from '../config/settings';
 
-export class WrongUseCase {
+export class WrongService {
   execute() {
     return helper.process(settings.getConfig());
   }
@@ -95,7 +95,7 @@ export class WrongUseCase {
 
 ```typescript
 projectFiles()
-  .inDirectories(['**/use-cases/**', '**/presentation/controllers/**'])
+  .inDirectories(['**/services/**', '**/presentation/controllers/**'])
   .should()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
@@ -111,8 +111,8 @@ project/
 │   ├── domain/
 │   │   └── entities/User.ts
 │   ├── application/
-│   │   └── use-cases/
-│   │       └── PartialUseCase.ts  // imports: ['../domain/entities/User']
+│   │   └── services/
+│   │       └── PartialService.ts  // imports: ['../domain/entities/User']
 │   └── presentation/
 │       └── controllers/
 │           └── ReadOnlyController.ts // imports: [] (no deps)
@@ -122,7 +122,7 @@ project/
 
 ```typescript
 projectFiles()
-  .inDirectories(['**/use-cases/**', '**/presentation/controllers/**'])
+  .inDirectories(['**/services/**', '**/presentation/controllers/**'])
   .should()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
@@ -140,15 +140,15 @@ project/
 │   ├── infrastructure/
 │   │   └── database/DatabaseConnection.ts
 │   └── application/
-│       └── use-cases/
-│           └── PerfectUseCase.ts // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection']
+│       └── services/
+│           └── PerfectService.ts // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection']
 ```
 
 **API Usage:**
 
 ```typescript
 projectFiles()
-  .inDirectories(['**/use-cases/**'])
+  .inDirectories(['**/services/**'])
   .should()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
@@ -162,9 +162,9 @@ projectFiles()
 project/
 ├── src/
 │   ├── application/
-│   │   └── use-cases/
-│   │       ├── ViolatingUseCase.ts       // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection', '../utils/helper']
-│   │       └── MixedViolatingUseCase.ts  // imports: ['../domain/entities/User', '../utils/helper', '../config/settings']
+│   │   └── services/
+│   │       ├── ViolatingService.ts       // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection', '../utils/helper']
+│   │       └── MixedViolatingService.ts  // imports: ['../domain/entities/User', '../utils/helper', '../config/settings']
 │   ├── utils/helper.ts
 │   └── config/settings.ts
 ```
@@ -173,7 +173,7 @@ project/
 
 ```typescript
 projectFiles()
-  .inDirectories(['**/use-cases/**'])
+  .inDirectories(['**/services/**'])
   .should()
   .onlyDependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();

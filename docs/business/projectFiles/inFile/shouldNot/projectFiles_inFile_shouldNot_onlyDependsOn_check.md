@@ -40,15 +40,15 @@ This rule ensures architectural flexibility by preventing overly restrictive cou
 ```
 project/
 └── src/
-    └── use-cases/
-        └── EmptyUseCase.ts  // No imports
+    └── services/
+        └── EmptyService.ts  // No imports
 ```
 
 **File Content:**
 
 ```typescript
-// src/use-cases/EmptyUseCase.ts
-export class EmptyUseCase {
+// src/services/EmptyService.ts
+export class EmptyService {
   execute() {
     return 'Hello World';
   }
@@ -59,7 +59,7 @@ export class EmptyUseCase {
 
 ```typescript
 projectFiles()
-  .inFile('**/use-cases/EmptyUseCase.ts')
+  .inFile('**/services/EmptyService.ts')
   .shouldNot()
   .onlyDependsOn(['**/domain/**', '**/infra/**'])
   .check();
@@ -74,8 +74,8 @@ projectFiles()
 ```
 project/
 └── src/
-    ├── use-cases/
-    │   └── SafeUseCase.ts  // imports: ['../utils/helper', '../config/settings']
+    ├── services/
+    │   └── SafeService.ts  // imports: ['../utils/helper', '../config/settings']
     ├── utils/helper.ts
     └── config/settings.ts
 ```
@@ -83,11 +83,11 @@ project/
 **File Content:**
 
 ```typescript
-// src/use-cases/SafeUseCase.ts
+// src/services/SafeService.ts
 import { helper } from '../utils/helper';
 import { settings } from '../config/settings';
 
-export class SafeUseCase {
+export class SafeService {
   execute() {
     return helper.process(settings.getConfig());
   }
@@ -98,7 +98,7 @@ export class SafeUseCase {
 
 ```typescript
 projectFiles()
-  .inFile('**/use-cases/SafeUseCase.ts')
+  .inFile('**/services/SafeService.ts')
   .shouldNot()
   .onlyDependsOn(['**/domain/**', '**/infra/**'])
   .check();
@@ -113,7 +113,7 @@ projectFiles()
 ```
 project/
 └── src/
-    ├── use-cases/MixedUseCase.ts  // imports: ['../domain/entities/User', '../utils/helper']
+    ├── services/MixedService.ts  // imports: ['../domain/entities/User', '../utils/helper']
     ├── domain/entities/User.ts
     └── utils/helper.ts
 ```
@@ -121,11 +121,11 @@ project/
 **File Content:**
 
 ```typescript
-// src/use-cases/MixedUseCase.ts
+// src/services/MixedService.ts
 import { User } from '../domain/entities/User';
 import { helper } from '../utils/helper';
 
-export class MixedUseCase {
+export class MixedService {
   execute(userData: any) {
     const user = new User(userData);
     return helper.process(user);
@@ -137,7 +137,7 @@ export class MixedUseCase {
 
 ```typescript
 projectFiles()
-  .inFile('**/use-cases/MixedUseCase.ts')
+  .inFile('**/services/MixedService.ts')
   .shouldNot()
   .onlyDependsOn(['**/domain/**', '**/infra/**'])
   .check();
@@ -152,7 +152,7 @@ projectFiles()
 ```
 project/
 └── src/
-    ├── use-cases/ExclusiveUseCase.ts  // imports: ['../domain/entities/User', '../infra/database/DatabaseConnection']
+    ├── services/ExclusiveService.ts  // imports: ['../domain/entities/User', '../infra/database/DatabaseConnection']
     ├── domain/entities/User.ts
     └── infra/database/DatabaseConnection.ts
 ```
@@ -160,11 +160,11 @@ project/
 **File Content:**
 
 ```typescript
-// src/use-cases/ExclusiveUseCase.ts
+// src/services/ExclusiveService.ts
 import { User } from '../domain/entities/User';
 import { DatabaseConnection } from '../infra/database/DatabaseConnection';
 
-export class ExclusiveUseCase {
+export class ExclusiveService {
   constructor(private db: DatabaseConnection) {}
 
   async execute(userData: any) {
@@ -179,7 +179,7 @@ export class ExclusiveUseCase {
 
 ```typescript
 projectFiles()
-  .inFile('**/use-cases/ExclusiveUseCase.ts')
+  .inFile('**/services/ExclusiveService.ts')
   .shouldNot()
   .onlyDependsOn(['**/domain/**', '**/infra/**'])
   .check();

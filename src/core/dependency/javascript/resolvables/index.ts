@@ -100,11 +100,11 @@ export class TypescriptPathDependencyResolvable extends Resolvable {
             ts.sys,
           );
 
-          const resolvedDependencyFileName = result.resolvedModule?.resolvedFileName;
+          const resolvedDependency = result.resolvedModule?.resolvedFileName;
 
-          if (resolvedDependencyFileName) {
+          if (resolvedDependency) {
             const dependency = micromatch(this.resolvableProps.availableFiles, [
-              resolvedDependencyFileName,
+              resolvedDependency,
             ])[0];
             if (dependency) {
               this.depProps.type = 'valid-path';
@@ -117,6 +117,89 @@ export class TypescriptPathDependencyResolvable extends Resolvable {
       return { status: 'unresolved', depProps: { ...this.depProps } };
     } catch (_error) {
       return { status: 'unresolved', depProps: { ...this.depProps } };
+    }
+  }
+}
+
+export class WebpackDependencyResolvable extends Resolvable {
+  constructor(depProps: DependencyProps, resolvableProps: ResolvableDependencyProps) {
+    super(depProps, resolvableProps);
+  }
+
+  private resolveWebpackConfig(webpackPath: string): any[] {
+    const { dir, base } = path.parse(webpackPath);
+    const require = createRequire(dir);
+    const webpackConfig = require(`${dir}/${base}`);
+
+    let config: any = null;
+
+    if (webpackConfig && webpackConfig.__esModule !== true) {
+      if (Object.getPrototypeOf(webpackConfig) === null) {
+        const key = Object.keys(webpackConfig)[0];
+        const value = webpackConfig[key];
+        config = typeof value === 'function' ? value({}, {}) : value;
+      } else {
+        config = typeof webpackConfig === 'function' ? webpackConfig({}, {}) : webpackConfig;
+      }
+    } else if (webpackConfig.default) {
+      config =
+        typeof webpackConfig.default === 'function'
+          ? webpackConfig.default({}, {})
+          : webpackConfig.default;
+    }
+
+    if (config) {
+      return Array.isArray(config) ? config : [config];
+    }
+
+    throw new Error('Invalid webpack config');
+  }
+
+  private filterWebpackConfig(webpackConfigs: any[]): any[] {
+    if (this.resolvableProps.webpack?.names) {
+      return webpackConfigs.filter((webpackConfig) => {
+        return this.resolvableProps.webpack?.names?.includes(webpackConfig.name);
+      });
+    }
+    return webpackConfigs;
+  }
+
+  private dependencyResolver(webpackConfig: any): string | false {
+    const require = createRequire(path.join(this.resolvableProps.rootDir, 'package.json'));
+    const enhancedResolve = require('enhanced-resolve'); // available in node_modules for webpack ^2.2.0
+    const { dir } = path.parse(this.resolvableProps.filePath);
+    const resolver = enhancedResolve.create.sync(webpackConfig.resolve || {});
+    const resolvedDependency = resolver(dir, this.depProps.name);
+    return resolvedDependency;
+  }
+
+  public override resolve(): ResolvableResponse {
+    if (!this.resolvableProps.webpack) {
+      return { status: 'unresolved', depProps: this.depProps };
+    }
+    try {
+      const webpackConfigs = this.resolveWebpackConfig(this.resolvableProps.webpack?.path);
+      const filteredWebpackConfigs = this.filterWebpackConfig(webpackConfigs);
+      for (const webpackConfig of filteredWebpackConfigs) {
+        try {
+          const resolvedDependency = this.dependencyResolver(webpackConfig);
+          if (resolvedDependency) {
+            const dependency = micromatch(this.resolvableProps.availableFiles, [
+              resolvedDependency,
+            ])[0];
+            if (dependency) {
+              this.depProps.type = 'valid-path';
+              this.depProps.name = dependency;
+              return { status: 'resolved', depProps: { ...this.depProps } };
+            }
+          }
+        } catch (_error) {
+          continue;
+        }
+      }
+      return { status: 'unresolved', depProps: this.depProps };
+    } catch (_error) {
+      return { status: 'unresolved', depProps: this.depProps };
     }
   }
 }
