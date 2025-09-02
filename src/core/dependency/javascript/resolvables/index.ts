@@ -184,8 +184,9 @@ export class WebpackDependencyResolvable extends Resolvable {
         try {
           const resolvedDependency = this.dependencyResolver(webpackConfig);
           if (resolvedDependency) {
+            const normalizedResolvedDependency = path.normalize(resolvedDependency);
             const dependency = micromatch(this.resolvableProps.availableFiles, [
-              resolvedDependency,
+              normalizedResolvedDependency,
             ])[0];
             if (dependency) {
               this.depProps.type = 'valid-path';
@@ -194,11 +195,13 @@ export class WebpackDependencyResolvable extends Resolvable {
             }
           }
         } catch (_error) {
+          console.log('error', _error);
           continue;
         }
       }
       return { status: 'unresolved', depProps: this.depProps };
     } catch (_error) {
+      console.log('error', _error);
       return { status: 'unresolved', depProps: this.depProps };
     }
   }
