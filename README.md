@@ -564,7 +564,7 @@ it('"**/domain/entities/user.entity.js" & "**/domain/entities/address.entity.js"
     .dependsOn(['uuid', 'lodash'])
     .check();
 });
-``` 
+```
 
 ### `inFile(pattern: string)`
 
@@ -661,7 +661,7 @@ const options = {
 it('"**/domain/entities/**" & "**/services/contracts/**" & "**/shared/utils.js" files and directories have more than 30 L.O.C. & ;ess than 120 L.O.C.', async () => {
   await app(options)
     .projectFiles()
-    .inDirectories(["**/domain/entities/**", "**/services/contracts/**"])
+    .inDirectories(['**/domain/entities/**', '**/services/contracts/**'])
     .and()
     .inFile('**/shared/utils.js')
     .should()
