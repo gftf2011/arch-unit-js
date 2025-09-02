@@ -20,6 +20,7 @@
 </div>
 
 <div align="center">
+  <img src="https://img.shields.io/badge/node-%3E%3D16.0.0-brightgreen?logo=node.js&logoColor=white"/>
   <a href='https://coveralls.io/github/gftf2011/arch-unit-js?branch=dev'><img src='https://coveralls.io/repos/github/gftf2011/arch-unit-js/badge.svg?branch=dev' alt='Coverage Status' /></a>
   <img src='https://sonarcloud.io/api/project_badges/measure?project=gftf2011_arch-unit-js&metric=alert_status' alt='Quality Gate Status' />
   <a href="https://github.com/gftf2011/arch-unit-js/actions" target="_blank" rel="noopener noreferrer">
@@ -40,11 +41,9 @@
 
 ## :page_facing_up: About
 
-A JavaScript/TypeScript library for enforcing architectural rules and constraints in your codebase. Inspired by ArchUnit for Java, this tool provides a fluent API to define and validate architectural boundaries, naming conventions, and dependency rules. It is agnostic about the testing framework and supports for several OS systems !
+A JavaScript/TypeScript library for enforcing architectural rules and constraints in your codebase. Inspired by ArchUnit for Java, this tool provides a fluent API to define and validate architectural boundaries, naming conventions, and dependency rules. It is agnostic about the testing framework & OS systems ! Also provides support for both _ESModules_ and _CommonJS_ projects !
 
 > **Note**: Backend-focused (frontend support coming soon).
-
-> **Note**: TC39 Decorators Proposal (support coming soon).
 
 <br/>
 
@@ -327,7 +326,7 @@ it('"**/infra/repositories/**" should depends on "mysql2/**"', async () => {
 });
 ```
 
-Just like the previous example, let's imagine the structure from the selected directory changed, and now uses _barrel exports_ which means it has an `index.js` file exporting all the other files.
+Just like the previous example, let's imagine the structure from the selected directory changed, and now uses _barrel exports_ which means it has an `index.js` file exporting all the other files. Given this scenario let's exclude the index.ts file from the "selectors" !
 
 ```javascript
 const { app } = require('arch-unit-js');
@@ -347,7 +346,29 @@ it('"**/infra/repositories/**" should depends on "mysql2/*" , excluding "**/infr
 });
 ```
 
-### `inFiles(pattern: string[])` - (Coming Soon)
+### `inFiles(pattern: string[])`
+
+Use the `inFiles` to select different files from different parts of your project. It's behavior is similar than the one described by `inDirectories`, with the exception that it is not possible to exclude a given pattern with this "selector" !
+
+To ilustrate it's behavior let's use an example where we wanna check if the files `**/domain/entities/user.entity.js` & `**/domain/entities/address.entity.js` depends on `uuid` & `lodash`.
+
+```javascript
+const { app } = require('arch-unit-js');
+
+const options = {
+  extensionTypes: ['**/*.js'],
+  includeMatcher: ['<rootDir>/**'],
+};
+
+it('"**/domain/entities/user.entity.js" & "**/domain/entities/address.entity.js" should depends on "uuid", async () => {
+  await app(options)
+    .projectFiles()
+    .inFiles(['**/domain/entities/user.entity.js', '**/domain/entities/address.entity.js'])
+    .should()
+    .dependsOn(['uuid', 'lodash'])
+    .check();
+});
+``` 
 
 ### `inFile(pattern: string)`
 
@@ -424,6 +445,38 @@ it('"**/numberUtils.js" file should have less than 50 - L.O.C.', async () => {
 ```
 
 By using the `shouldNot` "modifier" the "matcher" behave was modified to check if the selected files had a L.O.C. greater or equal than the specified value !
+
+## Aggragators
+
+### `and()`
+
+The `and` is an "aggragator". An "aggragator" gives the ability to chain "selectors" with other "selectors" & chain "matchers" with other "matchers" creating more complex architecture rules to be validated !
+
+In the example below we wanna check if files inside the `**/domain/entities/**` & `**/services/contracts/**` directories & `**/shared/utils.js` file have more than 30 - L.O.C. - (Lines Of Code) & less than 120 - L.O.C. - (Lines Of Code).
+
+```javascript
+const { app } = require('arch-unit-js');
+
+const options = {
+  extensionTypes: ['**/*.js'],
+  includeMatcher: ['<rootDir>/**'],
+};
+
+it('"**/domain/entities/**" & "**/services/contracts/**" & "**/shared/utils.js" files and directories have more than 30 L.O.C. & ;ess than 120 L.O.C.', async () => {
+  await app(options)
+    .projectFiles()
+    .inDirectories(["**/domain/entities/**", "**/services/contracts/**"])
+    .and()
+    .inFile('**/shared/utils.js')
+    .should()
+    .haveLocGreaterThan(30)
+    .and()
+    .haveLocLessThan(120)
+    .check();
+});
+```
+
+As demonstrated in the example "aggragators" are a powerful tool to create stronger architecture rules by combinig different "selectors" and "matchers" in more meaningful setences !
 
 ## Matchers
 
