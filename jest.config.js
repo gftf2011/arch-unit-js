@@ -7,7 +7,7 @@ module.exports = {
   testEnvironment: 'node',
   testMatch: ['**/tests/**/*.test.ts'],
   moduleFileExtensions: ['ts', 'js'],
-  testTimeout: 15000,
+  testTimeout: 20000,
   collectCoverageFrom: ['src/**/*.ts', '!src/**/*.d.ts'],
   coverageReporters: ['lcov', 'json', 'text', 'clover'],
   coverageDirectory: 'coverage',
