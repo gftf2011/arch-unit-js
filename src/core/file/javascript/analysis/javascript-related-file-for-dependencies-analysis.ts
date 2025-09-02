@@ -3,6 +3,7 @@ import traverse from '@babel/traverse';
 import fsPromises from 'fs/promises';
 
 import { Dependency, DependencyFactory, DependencyResolvedWith } from '@/core/dependency';
+import { RootFile } from '@/core/file/common';
 import { Visitors, VisitorsInfo } from '@/core/file/javascript/analysis/visitors';
 import {
   JavascriptRelatedBuildableProps,
@@ -13,8 +14,9 @@ export class JavascriptRelatedFileForDependenciesAnalysis extends JavascriptRela
   public constructor(
     protected readonly fileName: string,
     protected readonly filePath: string,
+    protected readonly fileType: RootFile.JavascriptOrTypescriptRelatedFileType,
   ) {
-    super(fileName, filePath);
+    super(fileName, filePath, fileType);
   }
 
   private parseBabelPlugins(code: string) {
