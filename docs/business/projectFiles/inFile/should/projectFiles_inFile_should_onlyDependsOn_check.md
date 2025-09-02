@@ -44,15 +44,15 @@ This rule ensures strict architectural compliance by allowing the file to depend
 ```
 project/
 └── src/
-    └── use-cases/
-        └── EmptyUseCase.ts  // No imports
+    └── services/
+        └── EmptyService.ts  // No imports
 ```
 
 **File Content:**
 
 ```typescript
-// src/use-cases/EmptyUseCase.ts
-export class EmptyUseCase {
+// src/services/EmptyService.ts
+export class EmptyService {
   execute() {
     return 'Hello World';
   }
@@ -63,7 +63,7 @@ export class EmptyUseCase {
 
 ```typescript
 projectFiles()
-  .inFile('**/use-cases/EmptyUseCase.ts')
+  .inFile('**/services/EmptyService.ts')
   .should()
   .onlyDependsOn(['**/domain/**', '**/infra/**'])
   .check();
@@ -78,8 +78,8 @@ projectFiles()
 ```
 project/
 └── src/
-    ├── use-cases/
-    │   └── WrongUseCase.ts  // imports: ['../utils/helper', '../config/settings']
+    ├── services/
+    │   └── WrongService.ts  // imports: ['../utils/helper', '../config/settings']
     ├── utils/helper.ts
     └── config/settings.ts
 ```
@@ -87,11 +87,11 @@ project/
 **File Content:**
 
 ```typescript
-// src/use-cases/WrongUseCase.ts
+// src/services/WrongService.ts
 import { helper } from '../utils/helper';
 import { settings } from '../config/settings';
 
-export class WrongUseCase {
+export class WrongService {
   execute() {
     return helper.process(settings.getConfig());
   }
@@ -102,7 +102,7 @@ export class WrongUseCase {
 
 ```typescript
 projectFiles()
-  .inFile('**/use-cases/WrongUseCase.ts')
+  .inFile('**/services/WrongService.ts')
   .should()
   .onlyDependsOn(['**/domain/**', '**/infra/**'])
   .check();
@@ -118,16 +118,16 @@ projectFiles()
 project/
 └── src/
     ├── domain/entities/User.ts
-    └── use-cases/PartialUseCase.ts  // imports: ['../domain/entities/User']
+    └── services/PartialService.ts  // imports: ['../domain/entities/User']
 ```
 
 **File Content:**
 
 ```typescript
-// src/use-cases/PartialUseCase.ts
+// src/services/PartialService.ts
 import { User } from '../domain/entities/User';
 
-export class PartialUseCase {
+export class PartialService {
   execute(dto: any) {
     return new User(dto);
   }
@@ -138,7 +138,7 @@ export class PartialUseCase {
 
 ```typescript
 projectFiles()
-  .inFile('**/use-cases/PartialUseCase.ts')
+  .inFile('**/services/PartialService.ts')
   .should()
   .onlyDependsOn(['**/domain/**', '**/infra/**'])
   .check();
@@ -155,17 +155,17 @@ project/
 └── src/
     ├── domain/entities/User.ts
     ├── infra/database/DatabaseConnection.ts
-    └── use-cases/PerfectUseCase.ts  // imports both allowed patterns
+    └── services/PerfectService.ts  // imports both allowed patterns
 ```
 
 **File Content:**
 
 ```typescript
-// src/use-cases/PerfectUseCase.ts
+// src/services/PerfectService.ts
 import { User } from '../domain/entities/User';
 import { DatabaseConnection } from '../infra/database/DatabaseConnection';
 
-export class PerfectUseCase {
+export class PerfectService {
   constructor(private db: DatabaseConnection) {}
   async execute(dto: any) {
     const user = new User(dto);
@@ -179,7 +179,7 @@ export class PerfectUseCase {
 
 ```typescript
 projectFiles()
-  .inFile('**/use-cases/PerfectUseCase.ts')
+  .inFile('**/services/PerfectService.ts')
   .should()
   .onlyDependsOn(['**/domain/**', '**/infra/**'])
   .check();
@@ -194,7 +194,7 @@ projectFiles()
 ```
 project/
 └── src/
-    ├── use-cases/ViolatingUseCase.ts  // imports: ['../domain/entities/User', '../infra/database/DatabaseConnection', '../utils/helper']
+    ├── services/ViolatingService.ts  // imports: ['../domain/entities/User', '../infra/database/DatabaseConnection', '../utils/helper']
     ├── domain/entities/User.ts
     ├── infra/database/DatabaseConnection.ts
     └── utils/helper.ts
@@ -203,12 +203,12 @@ project/
 **File Content:**
 
 ```typescript
-// src/use-cases/ViolatingUseCase.ts
+// src/services/ViolatingService.ts
 import { User } from '../domain/entities/User';
 import { DatabaseConnection } from '../infra/database/DatabaseConnection';
 import { helper } from '../utils/helper';
 
-export class ViolatingUseCase {
+export class ViolatingService {
   constructor(private db: DatabaseConnection) {}
   async execute(dto: any) {
     const user = new User(dto);
@@ -223,7 +223,7 @@ export class ViolatingUseCase {
 
 ```typescript
 projectFiles()
-  .inFile('**/use-cases/ViolatingUseCase.ts')
+  .inFile('**/services/ViolatingService.ts')
   .should()
   .onlyDependsOn(['**/domain/**', '**/infra/**'])
   .check();

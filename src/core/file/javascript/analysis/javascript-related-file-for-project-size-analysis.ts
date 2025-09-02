@@ -1,5 +1,6 @@
 import fsPromises from 'fs/promises';
 
+import { RootFile } from '@/core/file/common';
 import {
   JavascriptRelatedBuildableProps,
   JavascriptRelatedFile,
@@ -9,8 +10,9 @@ export class JavascriptRelatedFileForProjectSizeAnalysis extends JavascriptRelat
   public constructor(
     protected readonly fileName: string,
     protected readonly filePath: string,
+    protected readonly fileType: RootFile.JavascriptOrTypescriptRelatedFileType,
   ) {
-    super(fileName, filePath);
+    super(fileName, filePath, fileType);
   }
 
   public override async build(_: JavascriptRelatedBuildableProps): Promise<JavascriptRelatedFile> {

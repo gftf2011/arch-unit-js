@@ -20,6 +20,7 @@
 </div>
 
 <div align="center">
+  <img src="https://img.shields.io/badge/node-%3E%3D16.0.0-brightgreen?logo=node.js&logoColor=white"/>
   <a href='https://coveralls.io/github/gftf2011/arch-unit-js?branch=dev'><img src='https://coveralls.io/repos/github/gftf2011/arch-unit-js/badge.svg?branch=dev' alt='Coverage Status' /></a>
   <img src='https://sonarcloud.io/api/project_badges/measure?project=gftf2011_arch-unit-js&metric=alert_status' alt='Quality Gate Status' />
   <a href="https://github.com/gftf2011/arch-unit-js/actions" target="_blank" rel="noopener noreferrer">
@@ -40,11 +41,9 @@
 
 ## :page_facing_up: About
 
-A JavaScript/TypeScript library for enforcing architectural rules and constraints in your codebase. Inspired by ArchUnit for Java, this tool provides a fluent API to define and validate architectural boundaries, naming conventions, and dependency rules. It is agnostic about the testing framework and supports for several OS systems !
+A JavaScript/TypeScript library for enforcing architectural rules and constraints in your codebase. Inspired by ArchUnit for Java, this tool provides a fluent API to define and validate architectural boundaries, naming conventions, and dependency rules. It is agnostic about the testing framework & OS systems ! Also provides support for both _ESModules_ and _CommonJS_ projects !
 
 > **Note**: Backend-focused (frontend support coming soon).
-
-> **Note**: TC39 Decorators Proposal (support coming soon).
 
 <br/>
 
@@ -114,7 +113,7 @@ Now run the test and congrats 🥳, you just tested your application topology !
 
 > #### `module-alias`
 >
-> `arch-unit-js` also provides support for applications which still use `module-alias@2.x.x` with the next example !
+> `arch-unit-js` also provides support for applications which still use `module-alias@2.x.x` !
 
 Create a file `register.js` , in the root of your project, function which calls the `module-alias` first:
 
@@ -181,6 +180,196 @@ describe('Architecture Test', () => {
 
 And there you have it congrats again 🥳 , you successfully tested your project dependencies which uses `module-alias` !
 
+> #### `webpack`
+>
+> `arch-unit-js` also provides support for applications which use `webpack@2.2.x` !
+
+In this section we are going to explore some scenarios using `webpack`. In the first example let's use a single build `webpack.config.js` file given in the example below.
+
+```javascript
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+// single - webpack.config.js
+module.exports = {
+  entry: './main/index.js',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'bundle.js',
+    clean: true,
+  },
+  resolve: {
+    extensions: ['.js'],
+    alias: {
+      '@domain': path.resolve(__dirname, 'domain'),
+      '@use-cases': path.resolve(__dirname, 'use-cases'),
+      '@infra': path.resolve(__dirname, 'infra'),
+      '@main': path.resolve(__dirname, 'main'),
+    },
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+        },
+      },
+      { test: /\.css$/, use: ['style-loader', 'css-loader'] },
+    ],
+  },
+  plugins: [new HtmlWebpackPlugin({ template: './index.html' })],
+  devServer: {
+    static: path.resolve(__dirname, 'public'),
+    port: 5173,
+    historyApiFallback: true,
+  },
+};
+```
+
+In this example we wanna test if the files within the directory `**/use-cases/**` are using the files within `**/domain/**` to assert usage according to the 'clean architecture' standards. Since webpack is being used, we need to use let explicit within the `path(options)` using the following !
+
+```javascript
+const { app } = require('arch-unit-js');
+
+const options = {
+  extensionTypes: ['**/*.js'], // Positive Glob pattern, where you specify all extension types your application has
+  includeMatcher: ['<rootDir>/**'], // Positive Glob pattern, where you specify all files and directories based on the project <rootDir>
+  ignoreMatcher: ['!**/node_modules/**'], // (Optional) - Negative Glob pattern, where you specify all files and directories you do NOT want to check
+  webpack: {
+    path: '<rootDir>/webpack.config.js', // Path to project 'webpack.config.js' - (using <rootDir> as wildcard)
+  },
+};
+
+// We are using Jest, but you can use any other testing library
+describe('Architecture Test', () => {
+  it('"**/use-cases/**" files should depends on "@domain"', async () => {
+    await app(options)
+      .projectFiles()
+      .inDirectory('**/usecases/**')
+      .should()
+      .dependsOn('**/domain/**')
+      .check(); // No need to expect, if the dependency is not found it throws an error
+  });
+});
+```
+
+See, it is pretty easy !
+
+In the next example let's explore a `webpack.config.js` file which has muiltiple builds down below.
+
+```javascript
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+// single - webpack.config.js
+module.exports = [
+  {
+    name: 'client'
+    entry: './main/client.js',
+    output: {
+      path: path.resolve(__dirname, 'dist', 'client'),
+      filename: 'bundle.client.js',
+      clean: true,
+    },
+    resolve: {
+      extensions: ['.js'],
+      alias: {
+        '@domain': path.resolve(__dirname, 'domain'),
+        '@use-cases': path.resolve(__dirname, 'use-cases'),
+        '@infra': path.resolve(__dirname, 'infra'),
+        '@main': path.resolve(__dirname, 'main'),
+      },
+    },
+    module: {
+      rules: [
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader',
+          },
+        },
+        { test: /\.css$/, use: ['style-loader', 'css-loader'] },
+      ],
+    },
+    plugins: [new HtmlWebpackPlugin({ template: './index.html' })],
+    devServer: {
+      static: path.resolve(__dirname, 'public'),
+      port: 5173,
+      historyApiFallback: true,
+    },
+  },
+  {
+    name: 'server'
+    entry: './main/server.js',
+    target: 'node',
+    output: {
+      path: path.resolve(__dirname, 'dist', 'server'),
+      filename: 'bundle.server.js',
+      clean: true,
+    },
+    resolve: {
+      extensions: ['.js'],
+      alias: {
+        '@domain': path.resolve(__dirname, 'domain'),
+        '@use-cases': path.resolve(__dirname, 'use-cases'),
+        '@infra': path.resolve(__dirname, 'infra'),
+        '@main': path.resolve(__dirname, 'main'),
+      },
+    },
+    module: {
+      rules: [
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader',
+          },
+        },
+      ],
+    },
+    devServer: {
+      port: 5174,
+      historyApiFallback: true,
+    },
+  }
+]
+```
+
+The `webpack.config.js` now uses a multi configuration set for the application building. To run `arch-unit-js` using a specific configuration from the webpack file use the `webpack.names` which is a way to tell `arch-unit-js` which configurations are going to be used in the aliases resolution during the test. To ilustrate let's use the same example where we want the files inside the `**/use-cases/**` to depend on the `**/domain/**` files !
+
+> **Important**: To use this feature, the `webpack.names` from `app(options)` must match the key `name` from the `webpack.config.js` file !
+
+```javascript
+const { app } = require('arch-unit-js');
+
+const options = {
+  extensionTypes: ['**/*.js'], // Positive Glob pattern, where you specify all extension types your application has
+  includeMatcher: ['<rootDir>/**'], // Positive Glob pattern, where you specify all files and directories based on the project <rootDir>
+  ignoreMatcher: ['!**/node_modules/**'], // (Optional) - Negative Glob pattern, where you specify all files and directories you do NOT want to check
+  webpack: {
+    path: '<rootDir>/webpack.config.js', // Path to project 'webpack.config.js' - (using <rootDir> as wildcard)
+    names: ['server'], // Array of webpack config names from a 'webpack.config.js' file with multiple configurations
+  },
+};
+
+// We are using Jest, but you can use any other testing library
+describe('Architecture Test', () => {
+  it('"**/use-cases/**" files should depends on "@domain"', async () => {
+    await app(options)
+      .projectFiles()
+      .inDirectory('**/usecases/**')
+      .should()
+      .dependsOn('**/domain/**')
+      .check(); // No need to expect, if the dependency is not found it throws an error
+  });
+});
+```
+
+Again, you successfully tested you application topology 🥳 , you getting the hang of it !
+
 > ### TypeScript - (Basic Scenario)
 
 `arch-unit-js` also provides support for `typescript`. To include `typescript` support just provide the path to your **tsconfig.json** using the "_typescriptPath_"
@@ -213,6 +402,10 @@ app({
   includeMatcher: ['<rootDir>/**'], // Required
   ignoreMatcher: ['!**/node_modules/**'], // Optional
   typescriptPath: '<rootDir>/tsconfig.json', // Optional
+  webpack: {
+    path: '<rootDir>/webpack.config.js', // Optional
+    names: ['client', 'server'], // Optional
+  },
 });
 ```
 
@@ -222,6 +415,8 @@ The 'options' parameter is an object which has:
 - The `includeMatcher` which is a `string[]` of glob patterns, representing the source directories of your application
 - The `ignoreMatcher` which is a `string[]` of glob patterns, representing the resources you want to ignore
 - The `typescriptPath` which is a path like `string`, representing the path to your `typescript` config file
+- The `webpack.path` which is a path like `string`, representing the path to your `webpack` config file
+- The `webpack.names` which is an array telling which `webpack` configs to use in a multi config file
 
 > **Note**: All the patterns passed to the `ignoreMatcher` must have a `!` , which indicates the given pattern must be ignored from the application !
 
@@ -327,7 +522,7 @@ it('"**/infra/repositories/**" should depends on "mysql2/**"', async () => {
 });
 ```
 
-Just like the previous example, let's imagine the structure from the selected directory changed, and now uses _barrel exports_ which means it has an `index.js` file exporting all the other files.
+Just like the previous example, let's imagine the structure from the selected directory changed, and now uses _barrel exports_ which means it has an `index.js` file exporting all the other files. Given this scenario let's exclude the index.ts file from the "selectors" !
 
 ```javascript
 const { app } = require('arch-unit-js');
@@ -347,7 +542,29 @@ it('"**/infra/repositories/**" should depends on "mysql2/*" , excluding "**/infr
 });
 ```
 
-### `inFiles(pattern: string[])` - (Coming Soon)
+### `inFiles(pattern: string[])`
+
+Use the `inFiles` to select different files from different parts of your project. It's behavior is similar than the one described by `inDirectories`, with the exception that it is not possible to exclude a given pattern with this "selector" !
+
+To ilustrate it's behavior let's use an example where we wanna check if the files `**/domain/entities/user.entity.js` & `**/domain/entities/address.entity.js` depends on `uuid` & `lodash`.
+
+```javascript
+const { app } = require('arch-unit-js');
+
+const options = {
+  extensionTypes: ['**/*.js'],
+  includeMatcher: ['<rootDir>/**'],
+};
+
+it('"**/domain/entities/user.entity.js" & "**/domain/entities/address.entity.js" should depends on "uuid", async () => {
+  await app(options)
+    .projectFiles()
+    .inFiles(['**/domain/entities/user.entity.js', '**/domain/entities/address.entity.js'])
+    .should()
+    .dependsOn(['uuid', 'lodash'])
+    .check();
+});
+```
 
 ### `inFile(pattern: string)`
 
@@ -425,6 +642,38 @@ it('"**/numberUtils.js" file should have less than 50 - L.O.C.', async () => {
 
 By using the `shouldNot` "modifier" the "matcher" behave was modified to check if the selected files had a L.O.C. greater or equal than the specified value !
 
+## Aggragators
+
+### `and()`
+
+The `and` is an "aggragator". An "aggragator" gives the ability to chain "selectors" with other "selectors" & chain "matchers" with other "matchers" creating more complex architecture rules to be validated !
+
+In the example below we wanna check if files inside the `**/domain/entities/**` & `**/services/contracts/**` directories & `**/shared/utils.js` file have more than 30 - L.O.C. - (Lines Of Code) & less than 120 - L.O.C. - (Lines Of Code).
+
+```javascript
+const { app } = require('arch-unit-js');
+
+const options = {
+  extensionTypes: ['**/*.js'],
+  includeMatcher: ['<rootDir>/**'],
+};
+
+it('"**/domain/entities/**" & "**/services/contracts/**" & "**/shared/utils.js" files and directories have more than 30 L.O.C. & ;ess than 120 L.O.C.', async () => {
+  await app(options)
+    .projectFiles()
+    .inDirectories(['**/domain/entities/**', '**/services/contracts/**'])
+    .and()
+    .inFile('**/shared/utils.js')
+    .should()
+    .haveLocGreaterThan(30)
+    .and()
+    .haveLocLessThan(120)
+    .check();
+});
+```
+
+As demonstrated in the example "aggragators" are a powerful tool to create stronger architecture rules by combinig different "selectors" and "matchers" in more meaningful setences !
+
 ## Matchers
 
 ### `dependsOn`
@@ -433,12 +682,14 @@ By using the `shouldNot` "modifier" the "matcher" behave was modified to check i
 
 - [Project Files in Directories Should Depends On Specified Patterns](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_dependsOn_check.md)
 - [Project Files in Directory Should Depends On Specified Patterns](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_dependsOn_check.md)
+- [Project Files in Files Should Depends On Specified Patterns](docs/business/projectFiles/inFiles/should/projectFiles_inFiles_should_dependsOn_check.md)
 - [Project Files in File Should Depends On Specified Patterns](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_dependsOn_check.md)
 
 > #### shouldNot
 
 - [Project Files in Directories Should NOT Depends On Specified Patterns](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_dependsOn_check.md)
 - [Project Files in Directory Should NOT Depends On Specified Patterns](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_dependsOn_check.md)
+- [Project Files in Files Should NOT Depends On Specified Patterns](docs/business/projectFiles/inFiles/shouldNot/projectFiles_inFiles_shouldNot_dependsOn_check.md)
 - [Project Files in File Should NOT Depends On Specified Patterns](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_dependsOn_check.md)
 
 ### `onlyDependsOn`
@@ -447,12 +698,14 @@ By using the `shouldNot` "modifier" the "matcher" behave was modified to check i
 
 - [Project Files in Directories Should Only Depends On Specified Patterns](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_onlyDependsOn_check.md)
 - [Project Files in Directory Should Only Depends On Specified Patterns](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_onlyDependsOn_check.md)
+- [Project Files in Files Should Only Depends On Specified Patterns](docs/business/projectFiles/inFiles/should/projectFiles_inFiles_should_onlyDependsOn_check.md)
 - [Project Files in File Should Only Depends On Specified Patterns](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_onlyDependsOn_check.md)
 
 > #### shouldNot
 
 - [Project Files in Directories Should NOT Only Depends On Specified Patterns](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_onlyDependsOn_check.md)
 - [Project Files in Directory Should NOT Only Depends On Specific Patterns](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_onlyDependsOn_check.md)
+- [Project Files in Files Should NOT Only Depends On Specified Patterns](docs/business/projectFiles/inFiles/shouldNot/projectFiles_inFiles_shouldNot_onlyDependsOn_check.md)
 - [Project Files in File Should NOT Only Depends On Specified Patterns](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_onlyDependsOn_check.md)
 
 ### `haveCycles`
@@ -461,12 +714,14 @@ By using the `shouldNot` "modifier" the "matcher" behave was modified to check i
 
 - [Project Files in Directories Should Have Cycles](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveCycles_check.md)
 - [Project Files in Directory Should Have Cycles](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveCycles_check.md)
+- [Project Files in Files Should Have Cycles](docs/business/projectFiles/inFiles/should/projectFiles_inFiles_should_haveCycles_check.md)
 - [Project Files in File Should Have Cycles](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveCycles_check.md)
 
 > #### shouldNot
 
 - [Project Files in Directories Should NOT Have Cycles](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveCycles_check.md)
 - [Project Files in Directory Should NOT Have Cycles](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveCycles_check.md)
+- [Project Files in Files Should NOT Have Cycles](docs/business/projectFiles/inFiles/shouldNot/projectFiles_inFiles_shouldNot_haveCycles_check.md)
 - [Project Files in File Should NOT Have Cycles](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_haveCycles_check.md)
 
 ### `haveName`
@@ -475,12 +730,14 @@ By using the `shouldNot` "modifier" the "matcher" behave was modified to check i
 
 - [Project Files in Directories Should Have Name with Specified Pattern](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveName_check.md)
 - [Project Files in Directory Should Have Name with Specified Pattern](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveName_check.md)
+- [Project Files in Files Should Have Name with Specified Pattern](docs/business/projectFiles/inFiles/should/projectFiles_inFiles_should_haveName_check.md)
 - [Project Files in File Should Have Name with Specified Pattern](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveName_check.md)
 
 > #### shouldNot
 
 - [Project Files in Directories Should NOT Have Name with Specified Pattern](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveName_check.md)
 - [Project Files in Directory Should Not Have Name with Specified Pattern](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveName_check.md)
+- [Project Files in Files Should NOT Have Name with Specified Pattern](docs/business/projectFiles/inFiles/shouldNot/projectFiles_inFiles_shouldNot_haveName_check.md)
 - [Project Files in File Should NOT Have Name with Specified Pattern](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_haveName_check.md)
 
 ### `onlyHaveName`
@@ -489,12 +746,14 @@ By using the `shouldNot` "modifier" the "matcher" behave was modified to check i
 
 - [Project Files in Directories Should Only Have Name with Specified Pattern](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_onlyHaveName_check.md)
 - [Project Files in Directory Should Only Have Name with Specified Pattern](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_onlyHaveName_check.md)
+- [Project Files in Files Should Only Have Name with Specified Pattern](docs/business/projectFiles/inFiles/should/projectFiles_inFiles_should_onlyHaveName_check.md)
 - [Project Files in File Should Only Have Name with Specified Pattern](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_onlyHaveName_check.md)
 
 > #### shouldNot
 
 - [Project Files in Directories Should NOT Only Have Name with Specified Pattern](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_onlyHaveName_check.md)
 - [Project Files in Directory Should NOT Only Have Name with Specified Pattern](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_onlyHaveName_check.md)
+- [Project Files in Files Should NOT Only Have Name with Specified Pattern](docs/business/projectFiles/inFiles/shouldNot/projectFiles_inFiles_shouldNot_onlyHaveName_check.md)
 - [Project Files in File Should NOT Only Have Name with Specified Pattern](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_onlyHaveName_check.md)
 
 ### `haveLocLessThan`
@@ -503,12 +762,14 @@ By using the `shouldNot` "modifier" the "matcher" behave was modified to check i
 
 - [Project Files in Directories Should Have Less L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveLocLessThan_check.md)
 - [Project Files in Directory Should Have Less L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveLocLessThan_check.md)
+- [Project Files in Files Should Have Less L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFiles/should/projectFiles_inFiles_should_haveLocLessThan_check.md)
 - [Project Files in File Should Have Less L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveLocLessThan_check.md)
 
 > #### shouldNot
 
 - [Project Files in Directories Should NOT Have Less L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveLocLessThan_check.md)
 - [Project Files in Directory Should NOT Have Less L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveLocLessThan_check.md)
+- [Project Files in Files Should NOT Have Less L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFiles/shouldNot/projectFiles_inFiles_shouldNot_haveLocLessThan_check.md)
 - [Project Files in File Should NOT Have Less L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_haveLocLessThan_check.md)
 
 ### `haveLocLessOrEqualThan`
@@ -517,12 +778,14 @@ By using the `shouldNot` "modifier" the "matcher" behave was modified to check i
 
 - [Project Files in Directories Should Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveLocLessOrEqualThan_check.md)
 - [Project Files in Directory Should Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveLocLessOrEqualThan_check.md)
+- [Project Files in Files Should Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFiles/should/projectFiles_inFiles_should_haveLocLessOrEqualThan_check.md)
 - [Project Files in File Should Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveLocLessOrEqualThan_check.md)
 
 > #### shouldNot
 
 - [Project Files in Directories Should NOT Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveLocLessOrEqualThan_check.md)
 - [Project Files in Directory Should NOT Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveLocLessOrEqualThan_check.md)
+- [Project Files in Files Should NOT Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFiles/shouldNot/projectFiles_inFiles_shouldNot_haveLocLessOrEqualThan_check.md)
 - [Project Files in File Should NOT Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_haveLocLessOrEqualThan_check.md)
 
 ### `haveLocGreaterThan`
@@ -531,12 +794,14 @@ By using the `shouldNot` "modifier" the "matcher" behave was modified to check i
 
 - [Project Files in Directories Should Have Greater L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveLocGreaterThan_check.md)
 - [Project Files in Directory Should Have Greater L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveLocGreaterThan_check.md)
+- [Project Files in Files Should Have Greater L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFiles/should/projectFiles_inFiles_should_haveLocGreaterThan_check.md)
 - [Project Files in File Should Have Greater L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveLocGreaterThan_check.md)
 
 > #### shouldNot
 
 - [Project Files in Directories Should NOT Have Greater L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveLocGreaterThan_check.md)
 - [Project Files in Directory Should NOT Have Greater L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveLocGreaterThan_check.md)
+- [Project Files in Files Should NOT Have Greater L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFiles/shouldNot/projectFiles_inFiles_shouldNot_haveLocGreaterThan_check.md)
 - [Project Files in File Should NOT Have Greater L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_haveLocGreaterThan_check.md)
 
 ### `haveLocGreaterOrEqualThan`
@@ -545,12 +810,14 @@ By using the `shouldNot` "modifier" the "matcher" behave was modified to check i
 
 - [Project Files in Directories Should Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveLocGreaterOrEqualThan_check.md)
 - [Project Files in Directory Should Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveLocGreaterOrEqualThan_check.md)
+- [Project Files in Files Should Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFiles/should/projectFiles_inFiles_should_haveLocGreaterOrEqualThan_check.md)
 - [Project Files in File Should Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveLocGreaterOrEqualThan_check.md)
 
 > #### shouldNot
 
 - [Project Files in Directories Should NOT Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveLocGreaterOrEqualThan_check.md)
 - [Project Files in Directory Should NOT Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveLocGreaterOrEqualThan_check.md)
+- [Project Files in Files Should NOT Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFiles/shouldNot/projectFiles_inFiles_shouldNot_haveLocGreaterOrEqualThan_check.md)
 - [Project Files in File Should NOT Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_haveLocGreaterOrEqualThan_check.md)
 
 ### `haveTotalProjectCodeLessThan`
@@ -559,12 +826,14 @@ By using the `shouldNot` "modifier" the "matcher" behave was modified to check i
 
 - [Project Files in Directories Should Have Total Project Code Less Than a Percentage Value](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveTotalProjectCodeLessThan_check.md)
 - [Project Files in Directory Should Have Total Project Code Less Than a Percentage Value](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveTotalProjectCodeLessThan_check.md)
+- [Project Files in Files Should Have Total Project Code Less Than a Percentage Value](docs/business/projectFiles/inFiles/should/projectFiles_inFiles_should_haveTotalProjectCodeLessThan_check.md)
 - [Project Files in File Should Have Total Project Code Less Than a Percentage Value](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveTotalProjectCodeLessThan_check.md)
 
 > #### shouldNot
 
 - [Project Files in Directories Should NOT Have Total Project Code Less Than a Percentage Value](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveTotalProjectCodeLessThan_check.md)
 - [Project Files in Directory Should NOT Have Total Project Code Less Than a Percentage Value](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveTotalProjectCodeLessThan_check.md)
+- [Project Files in Files Should NOT Have Total Project Code Less Than a Percentage Value](docs/business/projectFiles/inFiles/shouldNot/projectFiles_inFiles_shouldNot_haveTotalProjectCodeLessThan_check.md)
 - [Project Files in File Should NOT Have Total Project Code Less Than a Percentage Value](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_haveTotalProjectCodeLessThan_check.md)
 
 ### `haveTotalProjectCodeLessOrEqualThan`
@@ -573,12 +842,14 @@ By using the `shouldNot` "modifier" the "matcher" behave was modified to check i
 
 - [Project Files in Directories Should Have Total Project Code Less Or Equal Than a Percentage Value](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveTotalProjectCodeLessOrEqualThan_check.md)
 - [Project Files in Directory Should Have Total Project Code Less Or Equal Than a Percentage Value](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveTotalProjectCodeLessOrEqualThan_check.md)
+- [Project Files in Files Should Have Total Project Code Less Or Equal Than a Percentage Value](docs/business/projectFiles/inFiles/should/projectFiles_inFiles_should_haveTotalProjectCodeLessOrEqualThan_check.md)
 - [Project Files in File Should Have Total Project Code Less Or Equal Than a Percentage Value](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveTotalProjectCodeLessOrEqualThan_check.md)
 
 > #### shouldNot
 
 - [Project Files in Directories Should NOT Have Total Project Code Less Or Equal Than a Percentage Value](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveTotalProjectCodeLessOrEqualThan_check.md)
 - [Project Files in Directory Should NOT Have Total Project Code Less Or Equal Than a Percentage Value](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveTotalProjectCodeLessOrEqualThan_check.md)
+- [Project Files in Files Should NOT Have Total Project Code Less Or Equal Than a Percentage Value](docs/business/projectFiles/inFiles/shouldNot/projectFiles_inFiles_shouldNot_haveTotalProjectCodeLessOrEqualThan_check.md)
 - [Project Files in File Should NOT Have Total Project Code Less Or Equal Than a Percentage Value](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_haveTotalProjectCodeLessOrEqualThan_check.md)
 
 ---

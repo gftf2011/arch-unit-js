@@ -43,8 +43,8 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
-│   │       └── EmptyUseCase.ts  // No imports
+│   │   └── services/
+│   │       └── EmptyService.ts  // No imports
 │   └── infrastructure/
 │       └── database/
 │           └── DatabaseConnection.ts
@@ -53,8 +53,8 @@ project/
 **File Content:**
 
 ```typescript
-// src/application/use-cases/EmptyUseCase.ts
-export class EmptyUseCase {
+// src/application/services/EmptyService.ts
+export class EmptyService {
   execute() {
     return 'Hello World';
   }
@@ -65,13 +65,13 @@ export class EmptyUseCase {
 
 ```typescript
 projectFiles()
-  .inDirectory('**/use-cases/**')
+  .inDirectory('**/services/**')
   .should()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
 ```
 
-**Result**: ❌ FAIL - `EmptyUseCase.ts` has no dependencies
+**Result**: ❌ FAIL - `EmptyService.ts` has no dependencies
 
 ### Scenario 2: File has dependencies but NONE match the patterns
 
@@ -82,8 +82,8 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
-│   │       └── WrongUseCase.ts  // imports: ['../utils/helper', '../config/settings']
+│   │   └── services/
+│   │       └── WrongService.ts  // imports: ['../utils/helper', '../config/settings']
 │   ├── utils/
 │   │   └── helper.ts
 │   └── config/
@@ -93,11 +93,11 @@ project/
 **File Content:**
 
 ```typescript
-// src/application/use-cases/WrongUseCase.ts
+// src/application/services/WrongService.ts
 import { helper } from '../utils/helper';
 import { settings } from '../config/settings';
 
-export class WrongUseCase {
+export class WrongService {
   execute() {
     return helper.process(settings.getConfig());
   }
@@ -108,13 +108,13 @@ export class WrongUseCase {
 
 ```typescript
 projectFiles()
-  .inDirectory('**/use-cases/**')
+  .inDirectory('**/services/**')
   .should()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
 ```
 
-**Result**: ❌ FAIL - `WrongUseCase.ts` imports from `utils` and `config`, not `domain` or `infrastructure`
+**Result**: ❌ FAIL - `WrongService.ts` imports from `utils` and `config`, not `domain` or `infrastructure`
 
 ### Scenario 3: File has dependencies and SOME match the patterns
 
@@ -125,8 +125,8 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
-│   │       └── PartialUseCase.ts  // imports: ['../domain/entities/User', '../utils/helper']
+│   │   └── services/
+│   │       └── PartialService.ts  // imports: ['../domain/entities/User', '../utils/helper']
 │   ├── utils/
 │   │   └── helper.ts
 │   └── infrastructure/
@@ -137,11 +137,11 @@ project/
 **File Content:**
 
 ```typescript
-// src/application/use-cases/PartialUseCase.ts
+// src/application/services/PartialService.ts
 import { User } from '../domain/entities/User';
 import { helper } from '../utils/helper';
 
-export class PartialUseCase {
+export class PartialService {
   execute(userData: any) {
     const user = new User(userData);
     return helper.process(user);
@@ -153,13 +153,13 @@ export class PartialUseCase {
 
 ```typescript
 projectFiles()
-  .inDirectory('**/use-cases/**')
+  .inDirectory('**/services/**')
   .should()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
 ```
 
-**Result**: ❌ FAIL - `PartialUseCase.ts` imports from `domain` but not from `infrastructure`
+**Result**: ❌ FAIL - `PartialService.ts` imports from `domain` but not from `infrastructure`
 
 ### Scenario 4: File has dependencies and ALL patterns are present
 
@@ -170,9 +170,9 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
-│   │       ├── CorrectUseCase.ts  // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection']
-│   │       └── CompleteUseCase.ts  // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection', '../utils/helper', '../config/settings']
+│   │   └── services/
+│   │       ├── CorrectService.ts  // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection']
+│   │       └── CompleteService.ts  // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection', '../utils/helper', '../config/settings']
 │   ├── utils/
 │   │   └── helper.ts
 │   ├── config/
@@ -185,11 +185,11 @@ project/
 **File Content:**
 
 ```typescript
-// src/application/use-cases/CorrectUseCase.ts
+// src/application/services/CorrectService.ts
 import { User } from '../domain/entities/User';
 import { DatabaseConnection } from '../infrastructure/database/DatabaseConnection';
 
-export class CorrectUseCase {
+export class CorrectService {
   constructor(private db: DatabaseConnection) {}
 
   async execute(userData: any) {
@@ -199,13 +199,13 @@ export class CorrectUseCase {
   }
 }
 
-// src/application/use-cases/CompleteUseCase.ts
+// src/application/services/CompleteService.ts
 import { User } from '../domain/entities/User';
 import { DatabaseConnection } from '../infrastructure/database/DatabaseConnection';
 import { helper } from '../utils/helper';
 import { settings } from '../config/settings';
 
-export class CompleteUseCase {
+export class CompleteService {
   constructor(private db: DatabaseConnection) {}
 
   async execute(userData: any) {
@@ -223,10 +223,10 @@ export class CompleteUseCase {
 
 ```typescript
 projectFiles()
-  .inDirectory('**/use-cases/**')
+  .inDirectory('**/services/**')
   .should()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
 ```
 
-**Result**: ✅ PASS - Both files import from `domain` and `infrastructure`: `CorrectUseCase.ts` has minimal dependencies, `CompleteUseCase.ts` has extra dependencies (ignored)
+**Result**: ✅ PASS - Both files import from `domain` and `infrastructure`: `CorrectService.ts` has minimal dependencies, `CompleteService.ts` has extra dependencies (ignored)

@@ -38,8 +38,8 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
-│   │       └── EmptyUseCase.ts  // No imports
+│   │   └── services/
+│   │       └── EmptyService.ts  // No imports
 │   └── infrastructure/
 │       └── database/
 │           └── DatabaseConnection.ts
@@ -48,8 +48,8 @@ project/
 **File Content:**
 
 ```typescript
-// src/application/use-cases/EmptyUseCase.ts
-export class EmptyUseCase {
+// src/application/services/EmptyService.ts
+export class EmptyService {
   execute() {
     return 'Hello World';
   }
@@ -60,13 +60,13 @@ export class EmptyUseCase {
 
 ```typescript
 projectFiles()
-  .inDirectory('**/use-cases/**')
+  .inDirectory('**/services/**')
   .shouldNot()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
 ```
 
-**Result**: ✅ PASS - `EmptyUseCase.ts` has no dependencies
+**Result**: ✅ PASS - `EmptyService.ts` has no dependencies
 
 ### Scenario 2: File has dependencies but NONE match the patterns
 
@@ -77,8 +77,8 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
-│   │       └── SafeUseCase.ts  // imports: ['../utils/helper', '../config/settings']
+│   │   └── services/
+│   │       └── SafeService.ts  // imports: ['../utils/helper', '../config/settings']
 │   ├── utils/
 │   │   └── helper.ts
 │   └── config/
@@ -88,11 +88,11 @@ project/
 **File Content:**
 
 ```typescript
-// src/application/use-cases/SafeUseCase.ts
+// src/application/services/SafeService.ts
 import { helper } from '../utils/helper';
 import { settings } from '../config/settings';
 
-export class SafeUseCase {
+export class SafeService {
   execute() {
     return helper.process(settings.getConfig());
   }
@@ -103,13 +103,13 @@ export class SafeUseCase {
 
 ```typescript
 projectFiles()
-  .inDirectory('**/use-cases/**')
+  .inDirectory('**/services/**')
   .shouldNot()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
 ```
 
-**Result**: ✅ PASS - `SafeUseCase.ts` imports from `utils` and `config`, not from `domain` or `infrastructure`
+**Result**: ✅ PASS - `SafeService.ts` imports from `utils` and `config`, not from `domain` or `infrastructure`
 
 ### Scenario 3: File has dependencies and ANY patterns are present
 
@@ -120,10 +120,10 @@ project/
 │   │   └── entities/
 │   │       └── User.ts
 │   ├── application/
-│   │   └── use-cases/
-│   │       ├── ViolatingUseCase.ts  // imports: ['../domain/entities/User', '../utils/helper']
-│   │       ├── FullyViolatingUseCase.ts  // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection']
-│   │       └── ComplexViolatingUseCase.ts  // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection', '../utils/helper', '../config/settings']
+│   │   └── services/
+│   │       ├── ViolatingService.ts  // imports: ['../domain/entities/User', '../utils/helper']
+│   │       ├── FullyViolatingService.ts  // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection']
+│   │       └── ComplexViolatingService.ts  // imports: ['../domain/entities/User', '../infrastructure/database/DatabaseConnection', '../utils/helper', '../config/settings']
 │   ├── utils/
 │   │   └── helper.ts
 │   ├── config/
@@ -136,22 +136,22 @@ project/
 **File Content:**
 
 ```typescript
-// src/application/use-cases/ViolatingUseCase.ts
+// src/application/services/ViolatingService.ts
 import { User } from '../domain/entities/User';
 import { helper } from '../utils/helper';
 
-export class ViolatingUseCase {
+export class ViolatingService {
   execute(userData: any) {
     const user = new User(userData);
     return helper.process(user);
   }
 }
 
-// src/application/use-cases/FullyViolatingUseCase.ts
+// src/application/services/FullyViolatingService.ts
 import { User } from '../domain/entities/User';
 import { DatabaseConnection } from '../infrastructure/database/DatabaseConnection';
 
-export class FullyViolatingUseCase {
+export class FullyViolatingService {
   constructor(private db: DatabaseConnection) {}
 
   async execute(userData: any) {
@@ -161,13 +161,13 @@ export class FullyViolatingUseCase {
   }
 }
 
-// src/application/use-cases/ComplexViolatingUseCase.ts
+// src/application/services/ComplexViolatingService.ts
 import { User } from '../domain/entities/User';
 import { DatabaseConnection } from '../infrastructure/database/DatabaseConnection';
 import { helper } from '../utils/helper';
 import { settings } from '../config/settings';
 
-export class ComplexViolatingUseCase {
+export class ComplexViolatingService {
   constructor(private db: DatabaseConnection) {}
 
   async execute(userData: any) {
@@ -185,10 +185,10 @@ export class ComplexViolatingUseCase {
 
 ```typescript
 projectFiles()
-  .inDirectory('**/use-cases/**')
+  .inDirectory('**/services/**')
   .shouldNot()
   .dependsOn(['**/domain/**', '**/infrastructure/**'])
   .check();
 ```
 
-**Result**: ❌ FAIL - All files violate the rule: `ViolatingUseCase.ts` has some patterns, `FullyViolatingUseCase.ts` has all patterns, `ComplexViolatingUseCase.ts` has all patterns + extra dependencies
+**Result**: ❌ FAIL - All files violate the rule: `ViolatingService.ts` has some patterns, `FullyViolatingService.ts` has all patterns, `ComplexViolatingService.ts` has all patterns + extra dependencies
