@@ -682,12 +682,14 @@ As demonstrated in the example "aggragators" are a powerful tool to create stron
 
 - [Project Files in Directories Should Depends On Specified Patterns](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_dependsOn_check.md)
 - [Project Files in Directory Should Depends On Specified Patterns](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_dependsOn_check.md)
+- [Project Files in Files Should Depends On Specified Patterns](docs/business/projectFiles/inFiles/should/projectFiles_inFiles_should_dependsOn_check.md)
 - [Project Files in File Should Depends On Specified Patterns](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_dependsOn_check.md)
 
 > #### shouldNot
 
 - [Project Files in Directories Should NOT Depends On Specified Patterns](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_dependsOn_check.md)
 - [Project Files in Directory Should NOT Depends On Specified Patterns](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_dependsOn_check.md)
+- [Project Files in Files Should NOT Depends On Specified Patterns](docs/business/projectFiles/inFiles/shouldNot/projectFiles_inFiles_shouldNot_dependsOn_check.md)
 - [Project Files in File Should NOT Depends On Specified Patterns](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_dependsOn_check.md)
 
 ### `onlyDependsOn`
@@ -696,12 +698,14 @@ As demonstrated in the example "aggragators" are a powerful tool to create stron
 
 - [Project Files in Directories Should Only Depends On Specified Patterns](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_onlyDependsOn_check.md)
 - [Project Files in Directory Should Only Depends On Specified Patterns](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_onlyDependsOn_check.md)
+- [Project Files in Files Should Only Depends On Specified Patterns](docs/business/projectFiles/inFiles/should/projectFiles_inFiles_should_onlyDependsOn_check.md)
 - [Project Files in File Should Only Depends On Specified Patterns](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_onlyDependsOn_check.md)
 
 > #### shouldNot
 
 - [Project Files in Directories Should NOT Only Depends On Specified Patterns](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_onlyDependsOn_check.md)
 - [Project Files in Directory Should NOT Only Depends On Specific Patterns](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_onlyDependsOn_check.md)
+- [Project Files in Files Should NOT Only Depends On Specified Patterns](docs/business/projectFiles/inFiles/shouldNot/projectFiles_inFiles_shouldNot_onlyDependsOn_check.md)
 - [Project Files in File Should NOT Only Depends On Specified Patterns](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_onlyDependsOn_check.md)
 
 ### `haveCycles`
@@ -710,12 +714,14 @@ As demonstrated in the example "aggragators" are a powerful tool to create stron
 
 - [Project Files in Directories Should Have Cycles](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveCycles_check.md)
 - [Project Files in Directory Should Have Cycles](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveCycles_check.md)
+- [Project Files in Files Should Have Cycles](docs/business/projectFiles/inFiles/should/projectFiles_inFiles_should_haveCycles_check.md)
 - [Project Files in File Should Have Cycles](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveCycles_check.md)
 
 > #### shouldNot
 
 - [Project Files in Directories Should NOT Have Cycles](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveCycles_check.md)
 - [Project Files in Directory Should NOT Have Cycles](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveCycles_check.md)
+- [Project Files in Files Should NOT Have Cycles](docs/business/projectFiles/inFiles/shouldNot/projectFiles_inFiles_shouldNot_haveCycles_check.md)
 - [Project Files in File Should NOT Have Cycles](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_haveCycles_check.md)
 
 ### `haveName`
@@ -724,12 +730,14 @@ As demonstrated in the example "aggragators" are a powerful tool to create stron
 
 - [Project Files in Directories Should Have Name with Specified Pattern](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveName_check.md)
 - [Project Files in Directory Should Have Name with Specified Pattern](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveName_check.md)
+- [Project Files in Files Should Have Name with Specified Pattern](docs/business/projectFiles/inFiles/should/projectFiles_inFiles_should_haveName_check.md)
 - [Project Files in File Should Have Name with Specified Pattern](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveName_check.md)
 
 > #### shouldNot
 
 - [Project Files in Directories Should NOT Have Name with Specified Pattern](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveName_check.md)
 - [Project Files in Directory Should Not Have Name with Specified Pattern](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveName_check.md)
+- [Project Files in Files Should NOT Have Name with Specified Pattern](docs/business/projectFiles/inFiles/shouldNot/projectFiles_inFiles_shouldNot_haveName_check.md)
 - [Project Files in File Should NOT Have Name with Specified Pattern](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_haveName_check.md)
 
 ### `onlyHaveName`
@@ -738,12 +746,14 @@ As demonstrated in the example "aggragators" are a powerful tool to create stron
 
 - [Project Files in Directories Should Only Have Name with Specified Pattern](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_onlyHaveName_check.md)
 - [Project Files in Directory Should Only Have Name with Specified Pattern](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_onlyHaveName_check.md)
+- [Project Files in Files Should Only Have Name with Specified Pattern](docs/business/projectFiles/inFiles/should/projectFiles_inFiles_should_onlyHaveName_check.md)
 - [Project Files in File Should Only Have Name with Specified Pattern](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_onlyHaveName_check.md)
 
 > #### shouldNot
 
 - [Project Files in Directories Should NOT Only Have Name with Specified Pattern](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_onlyHaveName_check.md)
 - [Project Files in Directory Should NOT Only Have Name with Specified Pattern](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_onlyHaveName_check.md)
+- [Project Files in Files Should NOT Only Have Name with Specified Pattern](docs/business/projectFiles/inFiles/shouldNot/projectFiles_inFiles_shouldNot_onlyHaveName_check.md)
 - [Project Files in File Should NOT Only Have Name with Specified Pattern](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_onlyHaveName_check.md)
 
 ### `haveLocLessThan`
@@ -752,12 +762,14 @@ As demonstrated in the example "aggragators" are a powerful tool to create stron
 
 - [Project Files in Directories Should Have Less L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveLocLessThan_check.md)
 - [Project Files in Directory Should Have Less L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveLocLessThan_check.md)
+- [Project Files in Files Should Have Less L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFiles/should/projectFiles_inFiles_should_haveLocLessThan_check.md)
 - [Project Files in File Should Have Less L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveLocLessThan_check.md)
 
 > #### shouldNot
 
 - [Project Files in Directories Should NOT Have Less L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveLocLessThan_check.md)
 - [Project Files in Directory Should NOT Have Less L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveLocLessThan_check.md)
+- [Project Files in Files Should NOT Have Less L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFiles/shouldNot/projectFiles_inFiles_shouldNot_haveLocLessThan_check.md)
 - [Project Files in File Should NOT Have Less L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_haveLocLessThan_check.md)
 
 ### `haveLocLessOrEqualThan`
@@ -766,12 +778,14 @@ As demonstrated in the example "aggragators" are a powerful tool to create stron
 
 - [Project Files in Directories Should Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveLocLessOrEqualThan_check.md)
 - [Project Files in Directory Should Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveLocLessOrEqualThan_check.md)
+- [Project Files in Files Should Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFiles/should/projectFiles_inFiles_should_haveLocLessOrEqualThan_check.md)
 - [Project Files in File Should Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveLocLessOrEqualThan_check.md)
 
 > #### shouldNot
 
 - [Project Files in Directories Should NOT Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveLocLessOrEqualThan_check.md)
 - [Project Files in Directory Should NOT Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveLocLessOrEqualThan_check.md)
+- [Project Files in Files Should NOT Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFiles/shouldNot/projectFiles_inFiles_shouldNot_haveLocLessOrEqualThan_check.md)
 - [Project Files in File Should NOT Have Less Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_haveLocLessOrEqualThan_check.md)
 
 ### `haveLocGreaterThan`
@@ -780,12 +794,14 @@ As demonstrated in the example "aggragators" are a powerful tool to create stron
 
 - [Project Files in Directories Should Have Greater L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveLocGreaterThan_check.md)
 - [Project Files in Directory Should Have Greater L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveLocGreaterThan_check.md)
+- [Project Files in Files Should Have Greater L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFiles/should/projectFiles_inFiles_should_haveLocGreaterThan_check.md)
 - [Project Files in File Should Have Greater L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveLocGreaterThan_check.md)
 
 > #### shouldNot
 
 - [Project Files in Directories Should NOT Have Greater L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveLocGreaterThan_check.md)
 - [Project Files in Directory Should NOT Have Greater L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveLocGreaterThan_check.md)
+- [Project Files in Files Should NOT Have Greater L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFiles/shouldNot/projectFiles_inFiles_shouldNot_haveLocGreaterThan_check.md)
 - [Project Files in File Should NOT Have Greater L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_haveLocGreaterThan_check.md)
 
 ### `haveLocGreaterOrEqualThan`
@@ -794,12 +810,14 @@ As demonstrated in the example "aggragators" are a powerful tool to create stron
 
 - [Project Files in Directories Should Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveLocGreaterOrEqualThan_check.md)
 - [Project Files in Directory Should Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveLocGreaterOrEqualThan_check.md)
+- [Project Files in Files Should Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFiles/should/projectFiles_inFiles_should_haveLocGreaterOrEqualThan_check.md)
 - [Project Files in File Should Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveLocGreaterOrEqualThan_check.md)
 
 > #### shouldNot
 
 - [Project Files in Directories Should NOT Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveLocGreaterOrEqualThan_check.md)
 - [Project Files in Directory Should NOT Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveLocGreaterOrEqualThan_check.md)
+- [Project Files in Files Should NOT Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFiles/shouldNot/projectFiles_inFiles_shouldNot_haveLocGreaterOrEqualThan_check.md)
 - [Project Files in File Should NOT Have Greater Or Equal L.O.C. (Lines Of Code) Than Specified Value](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_haveLocGreaterOrEqualThan_check.md)
 
 ### `haveTotalProjectCodeLessThan`
@@ -808,12 +826,14 @@ As demonstrated in the example "aggragators" are a powerful tool to create stron
 
 - [Project Files in Directories Should Have Total Project Code Less Than a Percentage Value](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveTotalProjectCodeLessThan_check.md)
 - [Project Files in Directory Should Have Total Project Code Less Than a Percentage Value](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveTotalProjectCodeLessThan_check.md)
+- [Project Files in Files Should Have Total Project Code Less Than a Percentage Value](docs/business/projectFiles/inFiles/should/projectFiles_inFiles_should_haveTotalProjectCodeLessThan_check.md)
 - [Project Files in File Should Have Total Project Code Less Than a Percentage Value](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveTotalProjectCodeLessThan_check.md)
 
 > #### shouldNot
 
 - [Project Files in Directories Should NOT Have Total Project Code Less Than a Percentage Value](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveTotalProjectCodeLessThan_check.md)
 - [Project Files in Directory Should NOT Have Total Project Code Less Than a Percentage Value](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveTotalProjectCodeLessThan_check.md)
+- [Project Files in Files Should NOT Have Total Project Code Less Than a Percentage Value](docs/business/projectFiles/inFiles/shouldNot/projectFiles_inFiles_shouldNot_haveTotalProjectCodeLessThan_check.md)
 - [Project Files in File Should NOT Have Total Project Code Less Than a Percentage Value](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_haveTotalProjectCodeLessThan_check.md)
 
 ### `haveTotalProjectCodeLessOrEqualThan`
@@ -822,12 +842,14 @@ As demonstrated in the example "aggragators" are a powerful tool to create stron
 
 - [Project Files in Directories Should Have Total Project Code Less Or Equal Than a Percentage Value](docs/business/projectFiles/inDirectories/should/projectFiles_inDirectories_should_haveTotalProjectCodeLessOrEqualThan_check.md)
 - [Project Files in Directory Should Have Total Project Code Less Or Equal Than a Percentage Value](docs/business/projectFiles/inDirectory/should/projectFiles_inDirectory_should_haveTotalProjectCodeLessOrEqualThan_check.md)
+- [Project Files in Files Should Have Total Project Code Less Or Equal Than a Percentage Value](docs/business/projectFiles/inFiles/should/projectFiles_inFiles_should_haveTotalProjectCodeLessOrEqualThan_check.md)
 - [Project Files in File Should Have Total Project Code Less Or Equal Than a Percentage Value](docs/business/projectFiles/inFile/should/projectFiles_inFile_should_haveTotalProjectCodeLessOrEqualThan_check.md)
 
 > #### shouldNot
 
 - [Project Files in Directories Should NOT Have Total Project Code Less Or Equal Than a Percentage Value](docs/business/projectFiles/inDirectories/shouldNot/projectFiles_inDirectories_shouldNot_haveTotalProjectCodeLessOrEqualThan_check.md)
 - [Project Files in Directory Should NOT Have Total Project Code Less Or Equal Than a Percentage Value](docs/business/projectFiles/inDirectory/shouldNot/projectFiles_inDirectory_shouldNot_haveTotalProjectCodeLessOrEqualThan_check.md)
+- [Project Files in Files Should NOT Have Total Project Code Less Or Equal Than a Percentage Value](docs/business/projectFiles/inFiles/shouldNot/projectFiles_inFiles_shouldNot_haveTotalProjectCodeLessOrEqualThan_check.md)
 - [Project Files in File Should NOT Have Total Project Code Less Or Equal Than a Percentage Value](docs/business/projectFiles/inFile/shouldNot/projectFiles_inFile_shouldNot_haveTotalProjectCodeLessOrEqualThan_check.md)
 
 ---
