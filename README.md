@@ -113,7 +113,7 @@ Now run the test and congrats 🥳, you just tested your application topology !
 
 > #### `module-alias`
 >
-> `arch-unit-js` also provides support for applications which still use `module-alias@2.x.x` with the next example !
+> `arch-unit-js` also provides support for applications which still use `module-alias@2.x.x` !
 
 Create a file `register.js` , in the root of your project, function which calls the `module-alias` first:
 
@@ -180,6 +180,196 @@ describe('Architecture Test', () => {
 
 And there you have it congrats again 🥳 , you successfully tested your project dependencies which uses `module-alias` !
 
+> #### `webpack`
+>
+> `arch-unit-js` also provides support for applications which use `webpack@2.2.x` !
+
+In this section we are going to explore some scenarios using `webpack`. In the first example let's use a single build `webpack.config.js` file given in the example below.
+
+```javascript
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+// single - webpack.config.js
+module.exports = {
+  entry: './main/index.js',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'bundle.js',
+    clean: true,
+  },
+  resolve: {
+    extensions: ['.js'],
+    alias: {
+      '@domain': path.resolve(__dirname, 'domain'),
+      '@use-cases': path.resolve(__dirname, 'use-cases'),
+      '@infra': path.resolve(__dirname, 'infra'),
+      '@main': path.resolve(__dirname, 'main'),
+    },
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+        },
+      },
+      { test: /\.css$/, use: ['style-loader', 'css-loader'] },
+    ],
+  },
+  plugins: [new HtmlWebpackPlugin({ template: './index.html' })],
+  devServer: {
+    static: path.resolve(__dirname, 'public'),
+    port: 5173,
+    historyApiFallback: true,
+  },
+};
+```
+
+In this example we wanna test if the files within the directory `**/use-cases/**` are using the files within `**/domain/**` to assert usage according to the 'clean architecture' standards. Since webpack is being used, we need to use let explicit within the `path(options)` using the following !
+
+```javascript
+const { app } = require('arch-unit-js');
+
+const options = {
+  extensionTypes: ['**/*.js'], // Positive Glob pattern, where you specify all extension types your application has
+  includeMatcher: ['<rootDir>/**'], // Positive Glob pattern, where you specify all files and directories based on the project <rootDir>
+  ignoreMatcher: ['!**/node_modules/**'], // (Optional) - Negative Glob pattern, where you specify all files and directories you do NOT want to check
+  webpack: {
+    path: '<rootDir>/webpack.config.js', // Path to project 'webpack.config.js' - (using <rootDir> as wildcard)
+  },
+};
+
+// We are using Jest, but you can use any other testing library
+describe('Architecture Test', () => {
+  it('"**/use-cases/**" files should depends on "@domain"', async () => {
+    await app(options)
+      .projectFiles()
+      .inDirectory('**/usecases/**')
+      .should()
+      .dependsOn('**/domain/**')
+      .check(); // No need to expect, if the dependency is not found it throws an error
+  });
+});
+```
+
+See, it is pretty easy !
+
+In the next example let's explore a `webpack.config.js` file which has muiltiple builds down below.
+
+```javascript
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+// single - webpack.config.js
+module.exports = [
+  {
+    name: 'client'
+    entry: './main/client.js',
+    output: {
+      path: path.resolve(__dirname, 'dist', 'client'),
+      filename: 'bundle.client.js',
+      clean: true,
+    },
+    resolve: {
+      extensions: ['.js'],
+      alias: {
+        '@domain': path.resolve(__dirname, 'domain'),
+        '@use-cases': path.resolve(__dirname, 'use-cases'),
+        '@infra': path.resolve(__dirname, 'infra'),
+        '@main': path.resolve(__dirname, 'main'),
+      },
+    },
+    module: {
+      rules: [
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader',
+          },
+        },
+        { test: /\.css$/, use: ['style-loader', 'css-loader'] },
+      ],
+    },
+    plugins: [new HtmlWebpackPlugin({ template: './index.html' })],
+    devServer: {
+      static: path.resolve(__dirname, 'public'),
+      port: 5173,
+      historyApiFallback: true,
+    },
+  },
+  {
+    name: 'server'
+    entry: './main/server.js',
+    target: 'node',
+    output: {
+      path: path.resolve(__dirname, 'dist', 'server'),
+      filename: 'bundle.server.js',
+      clean: true,
+    },
+    resolve: {
+      extensions: ['.js'],
+      alias: {
+        '@domain': path.resolve(__dirname, 'domain'),
+        '@use-cases': path.resolve(__dirname, 'use-cases'),
+        '@infra': path.resolve(__dirname, 'infra'),
+        '@main': path.resolve(__dirname, 'main'),
+      },
+    },
+    module: {
+      rules: [
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader',
+          },
+        },
+      ],
+    },
+    devServer: {
+      port: 5174,
+      historyApiFallback: true,
+    },
+  }
+]
+```
+
+The `webpack.config.js` now uses a multi configuration set for the application building. To run `arch-unit-js` using a specific configuration from the webpack file use the `webpack.names` which is a way to tell `arch-unit-js` which configurations are going to be used in the aliases resolution during the test. To ilustrate let's use the same example where we want the files inside the `**/use-cases/**` to depend on the `**/domain/**` files !
+
+> **Important**: To use this feature, the `webpack.names` from `app(options)` must match the key `name` from the `webpack.config.js` file !
+
+```javascript
+const { app } = require('arch-unit-js');
+
+const options = {
+  extensionTypes: ['**/*.js'], // Positive Glob pattern, where you specify all extension types your application has
+  includeMatcher: ['<rootDir>/**'], // Positive Glob pattern, where you specify all files and directories based on the project <rootDir>
+  ignoreMatcher: ['!**/node_modules/**'], // (Optional) - Negative Glob pattern, where you specify all files and directories you do NOT want to check
+  webpack: {
+    path: '<rootDir>/webpack.config.js', // Path to project 'webpack.config.js' - (using <rootDir> as wildcard)
+    names: ['server'], // Array of webpack config names from a 'webpack.config.js' file with multiple configurations
+  },
+};
+
+// We are using Jest, but you can use any other testing library
+describe('Architecture Test', () => {
+  it('"**/use-cases/**" files should depends on "@domain"', async () => {
+    await app(options)
+      .projectFiles()
+      .inDirectory('**/usecases/**')
+      .should()
+      .dependsOn('**/domain/**')
+      .check(); // No need to expect, if the dependency is not found it throws an error
+  });
+});
+```
+
+Again, you successfully tested you application topology 🥳 , you getting the hang of it !
+
 > ### TypeScript - (Basic Scenario)
 
 `arch-unit-js` also provides support for `typescript`. To include `typescript` support just provide the path to your **tsconfig.json** using the "_typescriptPath_"
@@ -212,6 +402,10 @@ app({
   includeMatcher: ['<rootDir>/**'], // Required
   ignoreMatcher: ['!**/node_modules/**'], // Optional
   typescriptPath: '<rootDir>/tsconfig.json', // Optional
+  webpack: {
+    path: '<rootDir>/webpack.config.js', // Optional
+    names: ['client', 'server'], // Optional
+  },
 });
 ```
 
@@ -221,6 +415,8 @@ The 'options' parameter is an object which has:
 - The `includeMatcher` which is a `string[]` of glob patterns, representing the source directories of your application
 - The `ignoreMatcher` which is a `string[]` of glob patterns, representing the resources you want to ignore
 - The `typescriptPath` which is a path like `string`, representing the path to your `typescript` config file
+- The `webpack.path` which is a path like `string`, representing the path to your `webpack` config file
+- The `webpack.names` which is an array telling which `webpack` configs to use in a multi config file
 
 > **Note**: All the patterns passed to the `ignoreMatcher` must have a `!` , which indicates the given pattern must be ignored from the application !
 
