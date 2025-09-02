@@ -195,13 +195,11 @@ export class WebpackDependencyResolvable extends Resolvable {
             }
           }
         } catch (_error) {
-          console.log('error', _error);
           continue;
         }
       }
       return { status: 'unresolved', depProps: this.depProps };
     } catch (_error) {
-      console.log('error', _error);
       return { status: 'unresolved', depProps: this.depProps };
     }
   }

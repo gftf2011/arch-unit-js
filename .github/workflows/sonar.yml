@@ -44,6 +44,10 @@ jobs:
         with:
           name: package-json-version
           path: .
+      
+      - name: Print
+        run: |
+          ls -la
 
       - name: Save package.json version to env variable
         run: |
