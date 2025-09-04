@@ -35,6 +35,18 @@ export class ClassComponentVisitor implements BabelVisitor<any> {
       if (t.isTSNonNullExpression(node)) return mapBabelTypes(node.expression) + '!';
       if (t.isTSTypeQuery(node)) return `typeof ${mapBabelTypes(node.exprName)}`;
       if (t.isRestElement(node)) return `...${mapBabelTypes(node.argument)}`;
+      if (t.isOptionalMemberExpression(node)) {
+        if (!node.optional)
+          return `${mapBabelTypes(node.object)}${node.computed ? `[${mapBabelTypes(node.property)}]` : `.${mapBabelTypes(node.property)}`}`;
+        if (node.optional)
+          return `${mapBabelTypes(node.object)}?.${node.computed ? `[${mapBabelTypes(node.property)}]` : `${mapBabelTypes(node.property)}`}`;
+      }
+      if (t.isMemberExpression(node)) {
+        if (!node.optional)
+          return `${mapBabelTypes(node.object)}${node.computed ? `[${mapBabelTypes(node.property)}]` : `.${mapBabelTypes(node.property)}`}`;
+        if (node.optional)
+          return `${mapBabelTypes(node.object)}?.${node.computed ? `[${mapBabelTypes(node.property)}]` : `${mapBabelTypes(node.property)}`}`;
+      }
       if (t.isTSTypeAnnotation(node)) return mapBabelTypes(node.typeAnnotation);
       if (t.isTSLiteralType(node)) return mapBabelTypes(node.literal);
       if (t.isTSArrayType(node)) return `${mapBabelTypes(node.elementType)}[]`;
@@ -175,9 +187,8 @@ export class ClassComponentVisitor implements BabelVisitor<any> {
         for (const type of node.types) types.push(mapBabelTypes(type));
         return types.join(' & ');
       }
-      if (t.isNewExpression(node)) {
+      if (t.isNewExpression(node))
         return `new ${mapBabelTypes(node.callee)}${node.optional ? '?.' : ''}${node.typeParameters ? `${mapBabelTypes(node.typeParameters)}` : ''}${node.arguments.length > 0 ? `(${node.arguments.map(mapBabelTypes).join(', ')})` : '()'}`;
-      }
       if (t.isOptionalCallExpression(node))
         return (
           mapBabelTypes(node.callee) +
