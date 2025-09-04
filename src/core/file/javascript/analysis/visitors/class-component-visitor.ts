@@ -33,6 +33,8 @@ export class ClassComponentVisitor implements BabelVisitor<any> {
       if (t.isTSTypeAnnotation(node)) return mapBabelTypes(node.typeAnnotation);
       if (t.isTSLiteralType(node)) return mapBabelTypes(node.literal);
       if (t.isTSArrayType(node)) return `${mapBabelTypes(node.elementType)}[]`;
+      if (t.isArrayPattern(node))
+        return `[${node.elements.map((element) => mapBabelTypes(element!)).join(', ')}]`;
       if (t.isTSPropertySignature(node)) {
         if (!node.computed)
           return `${node.readonly ? 'readonly ' : ''}${mapBabelTypes(node.key)}${node.optional ? '?' : ''}: ${mapBabelTypes(node.typeAnnotation as t.Node)}`;
@@ -107,7 +109,6 @@ export class ClassComponentVisitor implements BabelVisitor<any> {
         return members.length > 0 ? `{ ${members.join(', ')} }` : '{}';
       }
       if (t.isTSTypeReference(node)) {
-        console.log(node);
         let name = '';
         if (node.typeName) name += mapBabelTypes(node.typeName);
         if (node.typeParameters) name += mapBabelTypes(node.typeParameters);
