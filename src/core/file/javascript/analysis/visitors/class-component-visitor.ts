@@ -35,6 +35,20 @@ export class ClassComponentVisitor implements BabelVisitor<any> {
       if (t.isTSArrayType(node)) return `${mapBabelTypes(node.elementType)}[]`;
       if (t.isArrayPattern(node))
         return `[${node.elements.map((element) => mapBabelTypes(element!)).join(', ')}]`;
+      if (t.isObjectProperty(node)) {
+        if (!(node as any).method) {
+          const key = mapBabelTypes(node.key);
+          const value = mapBabelTypes(node.value);
+          return `${node.computed ? `[${key}]` : key}${node.shorthand ? '' : `: ${value}`}`;
+        }
+      }
+      if (t.isObjectPattern(node)) {
+        const properties = [];
+        for (const property of node.properties) {
+          properties.push(`${mapBabelTypes(property)}`);
+        }
+        return `${properties.length > 0 ? `{ ${properties.join(', ')} }` : `{}`}${node.typeAnnotation ? `: ${mapBabelTypes(node.typeAnnotation)}` : ''}`;
+      }
       if (t.isTSPropertySignature(node)) {
         if (!node.computed)
           return `${node.readonly ? 'readonly ' : ''}${mapBabelTypes(node.key)}${node.optional ? '?' : ''}: ${mapBabelTypes(node.typeAnnotation as t.Node)}`;
@@ -61,6 +75,26 @@ export class ClassComponentVisitor implements BabelVisitor<any> {
       if (t.isTSParenthesizedType(node)) return `(${mapBabelTypes(node.typeAnnotation as t.Node)})`;
       if (t.isTSQualifiedName(node))
         return `${mapBabelTypes(node.left)}.${mapBabelTypes(node.right)}`;
+      if (t.isTSTypeOperator(node)) {
+        return `${node.operator}${node.typeAnnotation ? ` ${mapBabelTypes(node.typeAnnotation as t.Node)}` : ''}`;
+      }
+      if (t.isTSTypeParameter(node))
+        return `${node.name}${node.constraint ? ` extends ${mapBabelTypes(node.constraint)}` : ''}${node.default ? ` = ${mapBabelTypes(node.default)}` : ''}`;
+      if (t.isTSTypeParameterDeclaration(node)) {
+        const types = [];
+        for (const type of node.params) types.push(mapBabelTypes(type));
+        return `<${types.join(', ')}>`;
+      }
+      if (t.isTSConstructorType(node)) {
+        let name = `${node.abstract ? 'abstract ' : ''}new ${mapBabelTypes(node.typeParameters as t.Node)}`;
+        const parameters = [];
+        for (const parameter of node.parameters) {
+          const parameterName = `${mapBabelTypes(parameter)}: ${mapBabelTypes(parameter.typeAnnotation as t.Node)}`;
+          parameters.push(parameterName);
+        }
+        name += `(${parameters.join(', ')})${node.typeAnnotation ? ` => ${mapBabelTypes(node.typeAnnotation as t.Node)}` : ''}`;
+        return name;
+      }
       if (t.isTSMethodSignature(node)) {
         let methodName = `${mapBabelTypes(node.key)}`;
         const parameters = [];
