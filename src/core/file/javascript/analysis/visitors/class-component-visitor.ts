@@ -16,6 +16,7 @@ export class ClassComponentVisitor implements BabelVisitor<any> {
         return `${node.extra?.raw || node.extra?.rawValue || node.value}`;
       if (t.isStringLiteral(node))
         return `${node.extra?.raw || `'${node.extra?.rawValue}'` || `'${node.value}'`}`;
+      if (t.isTemplateElement(node)) return `${node.value.raw || node.value.cooked}`;
       if (t.isTSBigIntKeyword(node)) return 'bigint';
       if (t.isTSNumberKeyword(node)) return 'number';
       if (t.isTSBooleanKeyword(node)) return 'boolean';
@@ -26,6 +27,7 @@ export class ClassComponentVisitor implements BabelVisitor<any> {
       if (t.isTSUnknownKeyword(node)) return 'unknown';
       if (t.isTSAnyKeyword(node)) return 'any';
       if (t.isTSVoidKeyword(node)) return 'void';
+      if (t.isTSObjectKeyword(node)) return 'object';
       if (t.isTSTypeQuery(node)) return `typeof ${mapBabelTypes(node.exprName)}`;
       if (t.isRestElement(node)) return `...${mapBabelTypes(node.argument)}`;
       if (t.isTSTypeAnnotation(node)) return mapBabelTypes(node.typeAnnotation);
@@ -36,6 +38,21 @@ export class ClassComponentVisitor implements BabelVisitor<any> {
           return `${node.readonly ? 'readonly ' : ''}${mapBabelTypes(node.key)}${node.optional ? '?' : ''}: ${mapBabelTypes(node.typeAnnotation as t.Node)}`;
         if (node.computed)
           return `[${node.readonly ? 'readonly ' : ''}${mapBabelTypes(node.key)}${node.optional ? '?' : ''}]: ${mapBabelTypes(node.typeAnnotation as t.Node)}`;
+      }
+      if (t.isTemplateLiteral(node)) {
+        const quasis: string[] = [];
+        for (let i = 0; i < node.quasis.length; i++) {
+          let quasiStr = mapBabelTypes(node.quasis[i]);
+          if (
+            node.quasis[i].tail === false &&
+            node.expressions &&
+            node.expressions[i] !== undefined
+          ) {
+            quasiStr += (('${' + mapBabelTypes(node.expressions[i] as t.Node)) as string) + '}';
+          }
+          quasis.push(`${quasiStr}`);
+        }
+        return `\`${quasis.join('')}\``;
       }
       if (t.isTSParenthesizedType(node)) return `(${mapBabelTypes(node.typeAnnotation as t.Node)})`;
       if (t.isTSQualifiedName(node))
