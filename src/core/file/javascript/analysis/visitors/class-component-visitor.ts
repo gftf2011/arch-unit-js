@@ -12,6 +12,10 @@ export class ClassComponentVisitor implements BabelVisitor<any> {
     const mapBabelTypes = (node: t.Node): string | undefined => {
       if (t.isIdentifier(node)) return `${node.name}${node.optional ? '?' : ''}`;
       if (t.isBooleanLiteral(node)) return `${node.value}`;
+      if (t.isBigIntLiteral(node))
+        return `${node.extra?.raw || node.extra?.rawValue || node.value}`;
+      if (t.isDecimalLiteral(node))
+        return `${node.extra?.raw || node.extra?.rawValue || node.value}`;
       if (t.isNumericLiteral(node))
         return `${node.extra?.raw || node.extra?.rawValue || node.value}`;
       if (t.isStringLiteral(node))
@@ -28,6 +32,7 @@ export class ClassComponentVisitor implements BabelVisitor<any> {
       if (t.isTSAnyKeyword(node)) return 'any';
       if (t.isTSVoidKeyword(node)) return 'void';
       if (t.isTSObjectKeyword(node)) return 'object';
+      if (t.isTSNonNullExpression(node)) return mapBabelTypes(node.expression) + '!';
       if (t.isTSTypeQuery(node)) return `typeof ${mapBabelTypes(node.exprName)}`;
       if (t.isRestElement(node)) return `...${mapBabelTypes(node.argument)}`;
       if (t.isTSTypeAnnotation(node)) return mapBabelTypes(node.typeAnnotation);
@@ -170,6 +175,9 @@ export class ClassComponentVisitor implements BabelVisitor<any> {
         for (const type of node.types) types.push(mapBabelTypes(type));
         return types.join(' & ');
       }
+      if (t.isNewExpression(node)) {
+        return `new ${mapBabelTypes(node.callee)}${node.optional ? '?.' : ''}${node.typeParameters ? `${mapBabelTypes(node.typeParameters)}` : ''}${node.arguments.length > 0 ? `(${node.arguments.map(mapBabelTypes).join(', ')})` : '()'}`;
+      }
       if (t.isOptionalCallExpression(node))
         return (
           mapBabelTypes(node.callee) +
@@ -189,7 +197,7 @@ export class ClassComponentVisitor implements BabelVisitor<any> {
       ClassDeclaration(path: NodePath<t.ClassDeclaration>) {
         const node = path.node;
 
-        let classComponent: ClassComponent = {
+        const classComponent: ClassComponent = {
           name: node.id?.name || '',
           extendsFrom: mapBabelTypes(node.superClass as t.Node) || '',
           implementsFrom: [],
