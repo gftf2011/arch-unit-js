@@ -35,6 +35,13 @@ export class ClassComponentVisitor implements BabelVisitor<any> {
       if (t.isTSArrayType(node)) return `${mapBabelTypes(node.elementType)}[]`;
       if (t.isArrayPattern(node))
         return `[${node.elements.map((element) => mapBabelTypes(element!)).join(', ')}]`;
+      if (t.isArrayExpression(node)) {
+        const elements = [];
+        for (const element of node.elements) {
+          elements.push(element ? mapBabelTypes(element) : '');
+        }
+        return `[${elements.join(', ')}]`;
+      }
       if (t.isObjectProperty(node)) {
         if (!(node as any).method) {
           const key = mapBabelTypes(node.key);
@@ -163,6 +170,20 @@ export class ClassComponentVisitor implements BabelVisitor<any> {
         for (const type of node.types) types.push(mapBabelTypes(type));
         return types.join(' & ');
       }
+      if (t.isOptionalCallExpression(node))
+        return (
+          mapBabelTypes(node.callee) +
+          (node.optional ? '?.' : '') +
+          (node.typeParameters ? `${mapBabelTypes(node.typeParameters)}` : '') +
+          (node.arguments.length > 0 ? `(${node.arguments.map(mapBabelTypes).join(', ')})` : '()')
+        );
+      if (t.isCallExpression(node))
+        return (
+          mapBabelTypes(node.callee) +
+          (node.optional ? '?.' : '') +
+          (node.typeParameters ? `${mapBabelTypes(node.typeParameters)}` : '') +
+          (node.arguments.length > 0 ? `(${node.arguments.map(mapBabelTypes).join(', ')})` : '()')
+        );
     };
     return {
       ClassDeclaration(path: NodePath<t.ClassDeclaration>) {
