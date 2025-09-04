@@ -16,6 +16,7 @@ export class ClassComponentVisitor implements BabelVisitor<any> {
         return `${node.extra?.raw || node.extra?.rawValue || node.value}`;
       if (t.isStringLiteral(node))
         return `${node.extra?.raw || `'${node.extra?.rawValue}'` || `'${node.value}'`}`;
+      if (t.isTSBigIntKeyword(node)) return 'bigint';
       if (t.isTSNumberKeyword(node)) return 'number';
       if (t.isTSBooleanKeyword(node)) return 'boolean';
       if (t.isTSStringKeyword(node)) return 'string';
@@ -24,16 +25,28 @@ export class ClassComponentVisitor implements BabelVisitor<any> {
       if (t.isTSNeverKeyword(node)) return 'never';
       if (t.isTSUnknownKeyword(node)) return 'unknown';
       if (t.isTSAnyKeyword(node)) return 'any';
+      if (t.isTSVoidKeyword(node)) return 'void';
+      if (t.isTSTypeQuery(node)) return `typeof ${mapBabelTypes(node.exprName)}`;
+      if (t.isRestElement(node)) return `...${mapBabelTypes(node.argument)}`;
       if (t.isTSTypeAnnotation(node)) return mapBabelTypes(node.typeAnnotation);
       if (t.isTSLiteralType(node)) return mapBabelTypes(node.literal);
+      if (t.isTSArrayType(node)) return `${mapBabelTypes(node.elementType)}[]`;
       if (t.isTSPropertySignature(node)) {
         if (!node.computed)
           return `${node.readonly ? 'readonly ' : ''}${mapBabelTypes(node.key)}${node.optional ? '?' : ''}: ${mapBabelTypes(node.typeAnnotation as t.Node)}`;
         if (node.computed)
           return `[${node.readonly ? 'readonly ' : ''}${mapBabelTypes(node.key)}${node.optional ? '?' : ''}]: ${mapBabelTypes(node.typeAnnotation as t.Node)}`;
       }
-      if (t.isTSQualifiedName(node)) {
+      if (t.isTSParenthesizedType(node)) return `(${mapBabelTypes(node.typeAnnotation as t.Node)})`;
+      if (t.isTSQualifiedName(node))
         return `${mapBabelTypes(node.left)}.${mapBabelTypes(node.right)}`;
+      if (t.isTSFunctionType(node)) {
+        const parameters = [];
+        for (const parameter of node.parameters) {
+          const parameterName = `${mapBabelTypes(parameter)}${parameter.optional ? '?' : ''}: ${mapBabelTypes(parameter.typeAnnotation as t.Node)}`;
+          parameters.push(parameterName);
+        }
+        return `(${parameters.join(', ')}) => ${mapBabelTypes(node.typeAnnotation as t.Node)}`;
       }
       if (t.isTSIndexSignature(node)) {
         const parameters: [string, string][] = [];
