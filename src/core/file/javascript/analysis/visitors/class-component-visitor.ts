@@ -39,6 +39,8 @@ export class ClassComponentVisitor implements BabelVisitor<any> {
         if (node.computed)
           return `[${node.readonly ? 'readonly ' : ''}${mapBabelTypes(node.key)}${node.optional ? '?' : ''}]: ${mapBabelTypes(node.typeAnnotation as t.Node)}`;
       }
+      if (t.isTSIndexedAccessType(node))
+        return `${mapBabelTypes(node.objectType as t.Node)}[${mapBabelTypes(node.indexType as t.Node)}]`;
       if (t.isTemplateLiteral(node)) {
         const quasis: string[] = [];
         for (let i = 0; i < node.quasis.length; i++) {
@@ -105,6 +107,7 @@ export class ClassComponentVisitor implements BabelVisitor<any> {
         return members.length > 0 ? `{ ${members.join(', ')} }` : '{}';
       }
       if (t.isTSTypeReference(node)) {
+        console.log(node);
         let name = '';
         if (node.typeName) name += mapBabelTypes(node.typeName);
         if (node.typeParameters) name += mapBabelTypes(node.typeParameters);
