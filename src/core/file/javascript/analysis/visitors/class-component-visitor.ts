@@ -1307,6 +1307,51 @@ export class ClassComponentVisitor implements BabelVisitor<any> {
         acc += node.type;
         acc += node.value;
         return acc;
+      } else if (t.isLVal(n)) {
+        const node: t.LVal = n;
+        let acc: any = '';
+        acc += node.accessibility;
+        node.decorators
+          ? node.decorators.forEach((decorator) => {
+              acc += babelTypesMapper(decorator);
+            })
+          : (acc += node.decorators);
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.override;
+        acc += babelTypesMapper(node.parameter);
+        acc += node.readonly;
+        acc += node.type;
+        return acc;
+      } else if (t.isLabeledStatement(n)) {
+        const node: t.LabeledStatement = n;
+        let acc: any = '';
+        acc += babelTypesMapper(node.body);
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += babelTypesMapper(node.label);
+        acc += node.type;
+        return acc;
+      } else if (t.isLiteral(n)) {
+        const node: t.Literal = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isLogicalExpression(n)) {
+        const node: t.LogicalExpression = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += babelTypesMapper(node.left);
+        acc += node.operator;
+        acc += babelTypesMapper(node.right);
+        acc += node.type;
+        return acc;
+      } else if (t.isLoop(n)) {
+        const node: t.Loop = n;
+        let acc: any = '';
+        acc += babelTypesMapper(node.body);
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
       }
     };
     return {
