@@ -1418,6 +1418,70 @@ export class ClassComponentVisitor implements BabelVisitor<any> {
         acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
         acc += node.type;
         return acc;
+      } else if (t.isNewExpression(n)) {
+        const node: t.NewExpression = n;
+        let acc: any = '';
+        node.arguments.forEach((arg) => {
+          acc += babelTypesMapper(arg);
+        });
+        acc += babelTypesMapper(node.callee);
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.optional;
+        acc += node.type;
+        acc += node.typeArguments ? babelTypesMapper(node.typeArguments) : node.typeArguments;
+        acc += node.typeParameters ? babelTypesMapper(node.typeParameters) : node.typeParameters;
+        return acc;
+      } else if (t.isNode(n)) {
+        const node: t.Node = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isNoop(n)) {
+        const node: t.Noop = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isNullLiteral(n)) {
+        const node: t.NullLiteral = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isNullLiteralTypeAnnotation(n)) {
+        const node: t.NullLiteralTypeAnnotation = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isNullableTypeAnnotation(n)) {
+        const node: t.NullableTypeAnnotation = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        acc += babelTypesMapper(node.typeAnnotation);
+        return acc;
+      } else if (t.isNumberLiteralTypeAnnotation(n)) {
+        const node: t.NumberLiteralTypeAnnotation = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        acc += node.value;
+        return acc;
+      } else if (t.isNumberTypeAnnotation(n)) {
+        const node: t.NumberTypeAnnotation = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isNumericLiteral(n)) {
+        const node: t.NumericLiteral = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        acc += node.value;
+        return acc;
       }
     };
     return {
