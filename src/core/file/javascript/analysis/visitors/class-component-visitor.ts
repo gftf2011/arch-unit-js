@@ -1124,6 +1124,189 @@ export class ClassComponentVisitor implements BabelVisitor<any> {
         acc += babelTypesMapper(node.objectType);
         acc += node.type;
         return acc;
+      } else if (t.isInferredPredicate(n)) {
+        const node: t.InferredPredicate = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isInterfaceDeclaration(n)) {
+        const node: t.InterfaceDeclaration = n;
+        let acc: any = '';
+        acc += babelTypesMapper(node.body);
+        node.extends
+          ? node.extends.forEach((item) => {
+              acc += babelTypesMapper(item);
+            })
+          : (acc += node.extends);
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += babelTypesMapper(node.id);
+        acc += node.type;
+        acc += node.typeParameters ? babelTypesMapper(node.typeParameters) : node.typeParameters;
+        return acc;
+      } else if (t.isInterfaceExtends(n)) {
+        const node: t.InterfaceExtends = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += babelTypesMapper(node.id);
+        acc += node.type;
+        acc += node.typeParameters ? babelTypesMapper(node.typeParameters) : node.typeParameters;
+        return acc;
+      } else if (t.isInterfaceTypeAnnotation(n)) {
+        const node: t.InterfaceTypeAnnotation = n;
+        let acc: any = '';
+        acc += babelTypesMapper(node.body);
+        node.extends
+          ? node.extends.forEach((item) => {
+              acc += babelTypesMapper(item);
+            })
+          : (acc += node.extends);
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isInterpreterDirective(n)) {
+        const node: t.InterpreterDirective = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        acc += node.value;
+        return acc;
+      } else if (t.isIntersectionTypeAnnotation(n)) {
+        const node: t.IntersectionTypeAnnotation = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        node.types.forEach((item) => {
+          acc += babelTypesMapper(item);
+        });
+        return acc;
+      } else if (t.isJSX(n)) {
+        const node: t.JSX = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isJSXAttribute(n)) {
+        const node: t.JSXAttribute = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += babelTypesMapper(node.name);
+        acc += node.type;
+        acc += node.value ? babelTypesMapper(node.value) : node.value;
+        return acc;
+      } else if (t.isJSXClosingElement(n)) {
+        const node: t.JSXClosingElement = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += babelTypesMapper(node.name);
+        acc += node.type;
+        return acc;
+      } else if (t.isJSXClosingFragment(n)) {
+        const node: t.JSXClosingFragment = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isJSXElement(n)) {
+        const node: t.JSXElement = n;
+        let acc: any = '';
+        node.children.forEach((child) => {
+          acc += babelTypesMapper(child);
+        });
+        acc += node.closingElement ? babelTypesMapper(node.closingElement) : node.closingElement;
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += babelTypesMapper(node.openingElement);
+        acc += node.selfClosing;
+        acc += node.type;
+        return acc;
+      } else if (t.isJSXEmptyExpression(n)) {
+        const node: t.JSXEmptyExpression = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isJSXExpressionContainer(n)) {
+        const node: t.JSXExpressionContainer = n;
+        let acc: any = '';
+        acc += babelTypesMapper(node.expression);
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += babelTypesMapper(node.expression);
+        acc += node.type;
+        return acc;
+      } else if (t.isJSXFragment(n)) {
+        const node: t.JSXFragment = n;
+        let acc: any = '';
+        node.children.forEach((child) => {
+          acc += babelTypesMapper(child);
+        });
+        acc += babelTypesMapper(node.closingFragment);
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += babelTypesMapper(node.openingFragment);
+        acc += node.type;
+        return acc;
+      } else if (t.isJSXIdentifier(n)) {
+        const node: t.JSXIdentifier = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.name;
+        acc += node.type;
+        return acc;
+      } else if (t.isJSXMemberExpression(n)) {
+        const node: t.JSXMemberExpression = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += babelTypesMapper(node.object);
+        acc += babelTypesMapper(node.property);
+        acc += node.type;
+        return acc;
+      } else if (t.isJSXNamespacedName(n)) {
+        const node: t.JSXNamespacedName = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += babelTypesMapper(node.namespace);
+        acc += babelTypesMapper(node.name);
+        acc += node.type;
+        return acc;
+      } else if (t.isJSXOpeningElement(n)) {
+        const node: t.JSXOpeningElement = n;
+        let acc: any = '';
+        node.attributes.forEach((attribute) => {
+          acc += babelTypesMapper(attribute);
+        });
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += babelTypesMapper(node.name);
+        acc += node.selfClosing;
+        acc += node.type;
+        acc += node.typeArguments ? babelTypesMapper(node.typeArguments) : node.typeArguments;
+        acc += node.typeParameters ? babelTypesMapper(node.typeParameters) : node.typeParameters;
+        return acc;
+      } else if (t.isJSXOpeningFragment(n)) {
+        const node: t.JSXOpeningFragment = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isJSXSpreadAttribute(n)) {
+        const node: t.JSXSpreadAttribute = n;
+        let acc: any = '';
+        acc += babelTypesMapper(node.argument);
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isJSXSpreadChild(n)) {
+        const node: t.JSXSpreadChild = n;
+        let acc: any = '';
+        acc += babelTypesMapper(node.expression);
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isJSXText(n)) {
+        const node: t.JSXText = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        acc += node.value;
+        return acc;
       }
     };
     return {
