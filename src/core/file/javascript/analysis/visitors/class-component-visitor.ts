@@ -1352,6 +1352,72 @@ export class ClassComponentVisitor implements BabelVisitor<any> {
         acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
         acc += node.type;
         return acc;
+      } else if (t.isMemberExpression(n)) {
+        const node: t.MemberExpression = n;
+        let acc: any = '';
+        acc += node.computed;
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += babelTypesMapper(node.object);
+        acc += node.optional;
+        acc += babelTypesMapper(node.property);
+        acc += node.type;
+        return acc;
+      } else if (t.isMetaProperty(n)) {
+        const node: t.MetaProperty = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += babelTypesMapper(node.meta);
+        acc += babelTypesMapper(node.property);
+        acc += node.type;
+        return acc;
+      } else if (t.isMethod(n)) {
+        const node: t.Method = n;
+        let acc: any = '';
+        acc += node.async;
+        acc += babelTypesMapper(node.body);
+        acc += node.generator;
+        acc += node.computed;
+        node.decorators
+          ? node.decorators.forEach((decorator) => {
+              acc += babelTypesMapper(decorator);
+            })
+          : (acc += node.decorators);
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.generator;
+        acc += babelTypesMapper(node.key);
+        acc += node.kind;
+        node.params.forEach((param) => {
+          acc += babelTypesMapper(param);
+        });
+        acc += node.returnType ? babelTypesMapper(node.returnType) : node.returnType;
+        acc += node.type;
+        acc += node.typeParameters ? babelTypesMapper(node.typeParameters) : node.typeParameters;
+        return acc;
+      } else if (t.isMiscellaneous(n)) {
+        const node: t.Miscellaneous = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isMixedTypeAnnotation(n)) {
+        const node: t.MixedTypeAnnotation = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isModuleExpression(n)) {
+        const node: t.ModuleExpression = n;
+        let acc: any = '';
+        acc += babelTypesMapper(node.body);
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isModuleSpecifier(n)) {
+        const node: t.ModuleSpecifier = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
       }
     };
     return {
