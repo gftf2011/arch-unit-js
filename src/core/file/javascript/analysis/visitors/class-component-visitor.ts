@@ -1774,6 +1774,361 @@ export class ClassComponentVisitor implements BabelVisitor<any> {
         acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
         acc += node.type;
         return acc;
+      } else if (t.isSequenceExpression(n)) {
+        const node: t.SequenceExpression = n;
+        let acc: any = '';
+        node.expressions.forEach((expression) => {
+          acc += babelTypesMapper(expression);
+        });
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isSpreadElement(n)) {
+        const node: t.SpreadElement = n;
+        let acc: any = '';
+        acc += babelTypesMapper(node.argument);
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isStaticBlock(n)) {
+        const node: t.StaticBlock = n;
+        let acc: any = '';
+        node.body.forEach((body) => {
+          acc += babelTypesMapper(body);
+        });
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isStringLiteral(n)) {
+        const node: t.StringLiteral = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.value;
+        acc += node.type;
+        return acc;
+      } else if (t.isStringLiteralTypeAnnotation(n)) {
+        const node: t.StringLiteralTypeAnnotation = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        acc += node.value;
+        return acc;
+      } else if (t.isStringTypeAnnotation(n)) {
+        const node: t.StringTypeAnnotation = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isSuper(n)) {
+        const node: t.Super = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isSwitchCase(n)) {
+        const node: t.SwitchCase = n;
+        let acc: any = '';
+        node.consequent.forEach((consequent) => {
+          acc += babelTypesMapper(consequent);
+        });
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.test ? babelTypesMapper(node.test) : node.test;
+        acc += node.type;
+        return acc;
+      } else if (t.isSwitchStatement(n)) {
+        const node: t.SwitchStatement = n;
+        let acc: any = '';
+        node.cases.forEach((case_) => {
+          acc += babelTypesMapper(case_);
+        });
+        acc += babelTypesMapper(node.discriminant);
+        node.cases.forEach((case_) => {
+          acc += babelTypesMapper(case_);
+        });
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isSymbolTypeAnnotation(n)) {
+        const node: t.SymbolTypeAnnotation = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isTSAnyKeyword(n)) {
+        const node: t.TSAnyKeyword = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isTSArrayType(n)) {
+        const node: t.TSArrayType = n;
+        let acc: any = '';
+        acc += babelTypesMapper(node.elementType);
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isTSAsExpression(n)) {
+        const node: t.TSAsExpression = n;
+        let acc: any = '';
+        acc += babelTypesMapper(node.expression);
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isTSBigIntKeyword(n)) {
+        const node: t.TSBigIntKeyword = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isTSBooleanKeyword(n)) {
+        const node: t.TSBooleanKeyword = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isTSCallSignatureDeclaration(n)) {
+        const node: t.TSCallSignatureDeclaration = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        node.parameters.forEach((parameter) => {
+          acc += babelTypesMapper(parameter);
+        });
+        acc += node.type;
+        acc += node.typeAnnotation ? babelTypesMapper(node.typeAnnotation) : node.typeAnnotation;
+        acc += node.typeParameters ? babelTypesMapper(node.typeParameters) : node.typeParameters;
+        return acc;
+      } else if (t.isTSConditionalType(n)) {
+        const node: t.TSConditionalType = n;
+        let acc: any = '';
+        acc += babelTypesMapper(node.checkType);
+        acc += babelTypesMapper(node.extendsType);
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += babelTypesMapper(node.falseType);
+        acc += babelTypesMapper(node.trueType);
+        acc += node.type;
+        return acc;
+      } else if (t.isTSConstructSignatureDeclaration(n)) {
+        const node: t.TSConstructSignatureDeclaration = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        node.parameters.forEach((parameter) => {
+          acc += babelTypesMapper(parameter);
+        });
+        acc += node.type;
+        acc += node.typeAnnotation ? babelTypesMapper(node.typeAnnotation) : node.typeAnnotation;
+        acc += node.typeParameters ? babelTypesMapper(node.typeParameters) : node.typeParameters;
+        return acc;
+      } else if (t.isTSConstructorType(n)) {
+        const node: t.TSConstructorType = n;
+        let acc: any = '';
+        acc += node.abstract;
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        node.parameters.forEach((parameter) => {
+          acc += babelTypesMapper(parameter);
+        });
+        acc += node.type;
+        acc += node.typeAnnotation ? babelTypesMapper(node.typeAnnotation) : node.typeAnnotation;
+        acc += node.typeParameters ? babelTypesMapper(node.typeParameters) : node.typeParameters;
+        return acc;
+      } else if (t.isTSDeclareFunction(n)) {
+        const node: t.TSDeclareFunction = n;
+        let acc: any = '';
+        acc += node.async;
+        acc += node.declare;
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.generator;
+        acc += node.id ? babelTypesMapper(node.id) : node.id;
+        node.params.forEach((param) => {
+          acc += babelTypesMapper(param);
+        });
+        acc += node.returnType ? babelTypesMapper(node.returnType) : node.returnType;
+        acc += node.type;
+        acc += node.typeParameters ? babelTypesMapper(node.typeParameters) : node.typeParameters;
+        return acc;
+      } else if (t.isTSDeclareMethod(n)) {
+        const node: t.TSDeclareMethod = n;
+        let acc: any = '';
+        acc += node.abstract;
+        acc += node.access;
+        acc += node.accessibility;
+        acc += node.async;
+        acc += node.computed;
+        node.decorators
+          ? node.decorators.forEach((decorator) => {
+              acc += babelTypesMapper(decorator);
+            })
+          : (acc += node.decorators);
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.generator;
+        acc += babelTypesMapper(node.key);
+        acc += node.kind;
+        acc += node.optional;
+        acc += node.override;
+        node.params.forEach((param) => {
+          acc += babelTypesMapper(param);
+        });
+        acc += node.returnType ? babelTypesMapper(node.returnType) : node.returnType;
+        acc += node.static;
+        acc += node.type;
+        acc += node.typeParameters ? babelTypesMapper(node.typeParameters) : node.typeParameters;
+        return acc;
+      } else if (t.isTSEnumBody(n)) {
+        const node: t.TSEnumBody = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        node.members.forEach((member) => {
+          acc += babelTypesMapper(member);
+        });
+        acc += node.type;
+        return acc;
+      } else if (t.isTSEnumDeclaration(n)) {
+        const node: t.TSEnumDeclaration = n;
+        let acc: any = '';
+        acc += node.body ? babelTypesMapper(node.body) : node.body;
+        acc += node.const;
+        acc += node.declare;
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += babelTypesMapper(node.id);
+        acc += node.initializer ? babelTypesMapper(node.initializer) : node.initializer;
+        node.members.forEach((member) => {
+          acc += babelTypesMapper(member);
+        });
+        return acc;
+      } else if (t.isTSEnumMember(n)) {
+        const node: t.TSEnumMember = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += babelTypesMapper(node.id);
+        acc += node.initializer ? babelTypesMapper(node.initializer) : node.initializer;
+        acc += node.type;
+        return acc;
+      } else if (t.isTSExportAssignment(n)) {
+        const node: t.TSExportAssignment = n;
+        let acc: any = '';
+        acc += babelTypesMapper(node.expression);
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isTSExpressionWithTypeArguments(n)) {
+        const node: t.TSExpressionWithTypeArguments = n;
+        let acc: any = '';
+        acc += babelTypesMapper(node.expression);
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        acc += node.typeParameters ? babelTypesMapper(node.typeParameters) : node.typeParameters;
+        return acc;
+      } else if (t.isTSExternalModuleReference(n)) {
+        const node: t.TSExternalModuleReference = n;
+        let acc: any = '';
+        acc += babelTypesMapper(node.expression);
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isTSFunctionType(n)) {
+        const node: t.TSFunctionType = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        node.parameters.forEach((parameter) => {
+          acc += babelTypesMapper(parameter);
+        });
+        acc += node.type;
+        acc += node.typeAnnotation ? babelTypesMapper(node.typeAnnotation) : node.typeAnnotation;
+        acc += node.typeParameters ? babelTypesMapper(node.typeParameters) : node.typeParameters;
+        return acc;
+      } else if (t.isTSImportEqualsDeclaration(n)) {
+        const node: t.TSImportEqualsDeclaration = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += babelTypesMapper(node.id);
+        acc += node.importKind;
+        acc += node.isExport;
+        acc += babelTypesMapper(node.moduleReference);
+        acc += node.type;
+        return acc;
+      } else if (t.isTSImportType(n)) {
+        const node: t.TSImportType = n;
+        let acc: any = '';
+        acc += babelTypesMapper(node.argument);
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.options ? babelTypesMapper(node.options) : node.options;
+        acc += node.qualifier ? babelTypesMapper(node.qualifier) : node.qualifier;
+        acc += node.type;
+        acc += node.typeParameters ? babelTypesMapper(node.typeParameters) : node.typeParameters;
+        return acc;
+      } else if (t.isTSIndexSignature(n)) {
+        const node: t.TSIndexSignature = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        node.parameters.forEach((parameter) => {
+          acc += babelTypesMapper(parameter);
+        });
+        acc += node.readonly;
+        acc += node.static;
+        acc += node.type;
+        acc += node.typeAnnotation ? babelTypesMapper(node.typeAnnotation) : node.typeAnnotation;
+        return acc;
+      } else if (t.isTSIndexedAccessType(n)) {
+        const node: t.TSIndexedAccessType = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += babelTypesMapper(node.indexType);
+        acc += babelTypesMapper(node.objectType);
+        acc += node.type;
+        return acc;
+      } else if (t.isTSInferType(n)) {
+        const node: t.TSInferType = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        acc += babelTypesMapper(node.typeParameter);
+        return acc;
+      } else if (t.isTSInstantiationExpression(n)) {
+        const node: t.TSInstantiationExpression = n;
+        let acc: any = '';
+        acc += babelTypesMapper(node.expression);
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        acc += node.typeParameters ? babelTypesMapper(node.typeParameters) : node.typeParameters;
+        return acc;
+      } else if (t.isTSInterfaceBody(n)) {
+        const node: t.TSInterfaceBody = n;
+        let acc: any = '';
+        node.body.forEach((member) => {
+          acc += babelTypesMapper(member);
+        });
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isTSInterfaceDeclaration(n)) {
+        const node: t.TSInterfaceDeclaration = n;
+        let acc: any = '';
+        acc += babelTypesMapper(node.body);
+        acc += node.declare;
+        node.extends
+          ? node.extends.forEach((extend) => {
+              acc += babelTypesMapper(extend);
+            })
+          : (acc += node.extends);
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += babelTypesMapper(node.id);
+        acc += node.type;
+        acc += node.typeParameters ? babelTypesMapper(node.typeParameters) : node.typeParameters;
+        return acc;
+      } else if (t.isTSIntersectionType(n)) {
+        const node: t.TSIntersectionType = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        node.types.forEach((type) => {
+          acc += babelTypesMapper(type);
+        });
+        return acc;
+      } else if (t.isTSIntrinsicKeyword(n)) {
+        const node: t.TSIntrinsicKeyword = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
       }
     };
     return {
