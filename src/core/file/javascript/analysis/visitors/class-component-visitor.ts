@@ -1735,6 +1735,45 @@ export class ClassComponentVisitor implements BabelVisitor<any> {
         acc += babelTypesMapper(node.qualification);
         acc += node.type;
         return acc;
+      } else if (t.isRecordExpression(n)) {
+        const node: t.RecordExpression = n;
+        let acc: any = '';
+
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        node.properties.forEach((property) => {
+          acc += babelTypesMapper(property);
+        });
+        acc += node.type;
+        return acc;
+      } else if (t.isRegExpLiteral(n)) {
+        const node: t.RegExpLiteral = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.flags;
+        acc += node.pattern;
+        acc += node.type;
+        return acc;
+      } else if (t.isRestElement(n)) {
+        const node: t.RestElement = n;
+        let acc: any = '';
+        acc += babelTypesMapper(node.argument);
+        node.decorators
+          ? node.decorators.forEach((decorator) => {
+              acc += babelTypesMapper(decorator);
+            })
+          : (acc += node.decorators);
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.optional;
+        acc += node.type;
+        acc += node.typeAnnotation ? babelTypesMapper(node.typeAnnotation) : node.typeAnnotation;
+        return acc;
+      } else if (t.isReturnStatement(n)) {
+        const node: t.ReturnStatement = n;
+        let acc: any = '';
+        acc += node.argument ? babelTypesMapper(node.argument) : node.argument;
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
       }
     };
     return {
