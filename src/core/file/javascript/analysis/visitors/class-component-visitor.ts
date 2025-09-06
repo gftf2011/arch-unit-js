@@ -2129,6 +2129,147 @@ export class ClassComponentVisitor implements BabelVisitor<any> {
         acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
         acc += node.type;
         return acc;
+      } else if (t.isTSLiteralType(n)) {
+        const node: t.TSLiteralType = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += babelTypesMapper(node.literal);
+        acc += node.type;
+        return acc;
+      } else if (t.isTSMappedType(n)) {
+        const node: t.TSMappedType = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.nameType ? babelTypesMapper(node.nameType) : node.nameType;
+        acc += node.optional;
+        acc += node.readonly;
+        acc += node.type;
+        acc += node.typeAnnotation ? babelTypesMapper(node.typeAnnotation) : node.typeAnnotation;
+        acc += node.typeParameter ? babelTypesMapper(node.typeParameter) : node.typeParameter;
+        return acc;
+      } else if (t.isTSMethodSignature(n)) {
+        const node: t.TSMethodSignature = n;
+        let acc: any = '';
+        acc += node.computed;
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += babelTypesMapper(node.key);
+        acc += node.kind;
+        acc += node.optional;
+        node.parameters.forEach((parameter) => {
+          acc += babelTypesMapper(parameter);
+        });
+        acc += node.type;
+        acc += node.typeAnnotation ? babelTypesMapper(node.typeAnnotation) : node.typeAnnotation;
+        acc += node.typeParameters ? babelTypesMapper(node.typeParameters) : node.typeParameters;
+        return acc;
+      } else if (t.isTSModuleBlock(n)) {
+        const node: t.TSModuleBlock = n;
+        let acc: any = '';
+        node.body.forEach((member) => {
+          acc += babelTypesMapper(member);
+        });
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isTSModuleDeclaration(n)) {
+        const node: t.TSModuleDeclaration = n;
+        let acc: any = '';
+        acc += babelTypesMapper(node.body);
+        acc += node.declare;
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.global;
+        acc += babelTypesMapper(node.id);
+        acc += node.kind;
+        acc += node.type;
+        return acc;
+      } else if (t.isTSNamedTupleMember(n)) {
+        const node: t.TSNamedTupleMember = n;
+        let acc: any = '';
+        acc += babelTypesMapper(node.elementType);
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += babelTypesMapper(node.label);
+        acc += node.optional;
+        acc += node.type;
+        return acc;
+      } else if (t.isTSNamespaceExportDeclaration(n)) {
+        const node: t.TSNamespaceExportDeclaration = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += babelTypesMapper(node.id);
+        acc += node.type;
+        return acc;
+      } else if (t.isTSNeverKeyword(n)) {
+        const node: t.TSNeverKeyword = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isTSNonNullExpression(n)) {
+        const node: t.TSNonNullExpression = n;
+        let acc: any = '';
+        acc += babelTypesMapper(node.expression);
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isTSNullKeyword(n)) {
+        const node: t.TSNullKeyword = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isTSNumberKeyword(n)) {
+        const node: t.TSNumberKeyword = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isTSObjectKeyword(n)) {
+        const node: t.TSObjectKeyword = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        return acc;
+      } else if (t.isTSOptionalType(n)) {
+        const node: t.TSOptionalType = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        acc += babelTypesMapper(node.typeAnnotation);
+        return acc;
+      } else if (t.isTSParameterProperty(n)) {
+        const node: t.TSParameterProperty = n;
+        let acc: any = '';
+        acc += node.accessibility;
+        node.decorators
+          ? node.decorators.forEach((decorator) => {
+              acc += babelTypesMapper(decorator);
+            })
+          : (acc += node.decorators);
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.override;
+        acc += babelTypesMapper(node.parameter);
+        acc += node.readonly;
+        acc += node.type;
+        return acc;
+      } else if (t.isTSParenthesizedType(n)) {
+        const node: t.TSParenthesizedType = n;
+        let acc: any = '';
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += node.type;
+        acc += babelTypesMapper(node.typeAnnotation);
+        return acc;
+      } else if (t.isTSPropertySignature(n)) {
+        const node: t.TSPropertySignature = n;
+        let acc: any = '';
+        acc += node.computed;
+        acc += (node.extra?.raw as any) + (node.extra?.rawValue as any);
+        acc += babelTypesMapper(node.key);
+        acc += node.kind;
+        acc += node.optional;
+        acc += node.readonly;
+        acc += node.type;
+        acc += node.typeAnnotation ? babelTypesMapper(node.typeAnnotation) : node.typeAnnotation;
+        return acc;
       }
     };
     return {
