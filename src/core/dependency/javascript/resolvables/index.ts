@@ -28,7 +28,11 @@ export class PackageJsonDependencyResolvable extends Resolvable {
     super(depProps, resolvableProps);
   }
   public override resolve(): ResolvableResponse {
-    if (nodejs.isPackageJsonDependency(this.resolvableProps.rootDir, this.depProps.name)) {
+    const dirs: string[] = this.resolvableProps.workspaceDir
+      ? [this.resolvableProps.rootDir, this.resolvableProps.workspaceDir]
+      : [this.resolvableProps.rootDir];
+
+    if (nodejs.isPackageJsonDependency(dirs, this.depProps.name)) {
       this.depProps.type = 'node-package';
       return { status: 'resolved', depProps: { ...this.depProps } };
     }
@@ -41,7 +45,11 @@ export class PackageJsonDevDependencyResolvable extends Resolvable {
     super(depProps, resolvableProps);
   }
   public override resolve(): ResolvableResponse {
-    if (nodejs.isPackageJsonDevDependency(this.resolvableProps.rootDir, this.depProps.name)) {
+    const dirs: string[] = this.resolvableProps.workspaceDir
+      ? [this.resolvableProps.workspaceDir, this.resolvableProps.rootDir]
+      : [this.resolvableProps.rootDir];
+
+    if (nodejs.isPackageJsonDevDependency(dirs, this.depProps.name)) {
       this.depProps.type = 'node-dev-package';
       return { status: 'resolved', depProps: { ...this.depProps } };
     }
@@ -57,6 +65,7 @@ export class ModuleAliasDependencyResolvable extends Resolvable {
   public override resolve(): ResolvableResponse {
     if (this.depProps.resolvedWith === 'require') {
       try {
+        const require = createRequire(this.resolvableProps.filePath);
         const candidate = path.normalize(require.resolve(this.depProps.name));
         const dependency = micromatch(this.resolvableProps.availableFiles, [candidate])[0];
         if (dependency) {
@@ -79,7 +88,7 @@ export class TypescriptPathDependencyResolvable extends Resolvable {
   public override resolve(): ResolvableResponse {
     try {
       if (this.resolvableProps.typescriptPath) {
-        const require = createRequire(path.join(this.resolvableProps.rootDir, 'package.json'));
+        const require = createRequire(this.resolvableProps.filePath);
         const ts = require('typescript');
 
         const { dir, base } = path.parse(this.resolvableProps.typescriptPath);
@@ -165,12 +174,12 @@ export class WebpackDependencyResolvable extends Resolvable {
   }
 
   private dependencyResolver(webpackConfig: any): string | false {
-    const require = createRequire(path.join(this.resolvableProps.rootDir, 'package.json'));
+    const require = createRequire(this.resolvableProps.filePath);
     const enhancedResolve = require('enhanced-resolve'); // available in node_modules for webpack ^2.2.0
     const { dir } = path.parse(this.resolvableProps.filePath);
     const resolver = enhancedResolve.create.sync(webpackConfig.resolve || {});
     const resolvedDependency = resolver(dir, this.depProps.name);
-    return resolvedDependency;
+    return resolvedDependency as string;
   }
 
   public override resolve(): ResolvableResponse {

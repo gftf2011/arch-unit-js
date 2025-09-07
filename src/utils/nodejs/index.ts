@@ -7,24 +7,38 @@ export function isBuiltinModule(dependency: string): boolean {
   return builtinModules.has(dependency);
 }
 
-export function isPackageJsonDependency(rootDir: string, dependency: string): boolean {
-  try {
-    const packageJsonPath = path.join(rootDir, 'package.json');
-    fs.statSync(packageJsonPath);
-    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-    return Object.keys(packageJson.dependencies).some((key) => dependency.includes(key));
-  } catch (_error) {
-    return false;
+export function isPackageJsonDependency(dirs: string[], dependency: string): boolean {
+  let hasDependency = false;
+  for (const dir of dirs) {
+    try {
+      const packageJsonPath = path.join(dir, 'package.json');
+      fs.statSync(packageJsonPath);
+      const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+      if (Object.keys(packageJson.dependencies).some((key) => dependency.includes(key))) {
+        hasDependency = true;
+        break;
+      }
+    } catch (_error) {
+      continue;
+    }
   }
+  return hasDependency;
 }
 
-export function isPackageJsonDevDependency(rootDir: string, dependency: string): boolean {
-  try {
-    const packageJsonPath = path.join(rootDir, 'package.json');
-    fs.statSync(packageJsonPath);
-    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-    return Object.keys(packageJson.devDependencies).some((key) => dependency.includes(key));
-  } catch (_error) {
-    return false;
+export function isPackageJsonDevDependency(dirs: string[], dependency: string): boolean {
+  let hasDependency = false;
+  for (const dir of dirs) {
+    try {
+      const packageJsonPath = path.join(dir, 'package.json');
+      fs.statSync(packageJsonPath);
+      const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+      if (Object.keys(packageJson.devDependencies).some((key) => dependency.includes(key))) {
+        hasDependency = true;
+        break;
+      }
+    } catch (_error) {
+      continue;
+    }
   }
+  return hasDependency;
 }

@@ -24,6 +24,7 @@ export abstract class Matchable implements Checkable {
     const filteringPattern = glob.resolveRootDirPatterns(
       [...filters, ...this.props.excludePattern],
       this.props.rootDir,
+      this.props.options.workspaceDir,
     );
 
     const filteredFiles = new Map(
@@ -48,6 +49,7 @@ export abstract class Matchable implements Checkable {
       this.props.options.includeMatcher,
       this.props.options.ignoreMatcher ?? [],
       this.props.options.extensionTypes,
+      this.props.options.workspaceDir,
       this.props.options.typescriptPath,
       this.props.options.webpack,
     );

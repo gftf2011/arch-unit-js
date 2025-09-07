@@ -87,6 +87,7 @@ export class JavascriptRelatedFileForDependenciesAnalysis extends JavascriptRela
       dependency.resolve({
         rootDir: buildableProps.rootDir,
         filePath,
+        workspaceDir: buildableProps.workspaceDir,
         availableFiles: buildableProps.availableFiles,
         extensions: buildableProps.extensions,
         ...(buildableProps.typescriptPath ? { typescriptPath: buildableProps.typescriptPath } : {}),

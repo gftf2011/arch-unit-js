@@ -30,6 +30,7 @@ export class Project {
     filesOrFoldersToInclude: string[],
     filesOrFoldersToIgnore: string[],
     extensionTypes: string[],
+    workspaceDir?: string,
     typescriptPath?: string,
     webpack?: {
       path: string;
@@ -40,19 +41,31 @@ export class Project {
       glob.extractExtensionFromGlobPattern(mimeType),
     ) as string[];
 
-    const includePatterns = glob.resolveRootDirPatterns(filesOrFoldersToInclude, startPath);
-    const ignorePatterns = glob.resolveRootDirPatterns(filesOrFoldersToIgnore, startPath);
+    const includePatterns = glob.resolveRootDirPatterns(
+      filesOrFoldersToInclude,
+      startPath,
+      workspaceDir,
+    );
+    const ignorePatterns = glob.resolveRootDirPatterns(
+      filesOrFoldersToIgnore,
+      startPath,
+      workspaceDir,
+    );
 
     const typescriptPathResolved = typescriptPath
-      ? glob.resolveRootDirPattern(typescriptPath, startPath)
+      ? glob.resolveRootDirPattern(typescriptPath, startPath, workspaceDir)
       : typescriptPath;
 
     const webpackResolved = webpack
       ? {
-          path: glob.resolveRootDirPattern(webpack.path, startPath),
+          path: glob.resolveRootDirPattern(webpack.path, startPath, workspaceDir),
           ...(webpack.names ? { names: webpack.names } : {}),
         }
       : webpack;
+
+    const workspaceDirResolved = workspaceDir
+      ? glob.resolveRootDirPattern(workspaceDir, startPath, workspaceDir)
+      : workspaceDir;
 
     async function walk(currentPath: string, visitor: WalkVisitor, availableFiles: string[]) {
       const entries = await fs.promises.readdir(currentPath, { withFileTypes: true });
@@ -69,6 +82,7 @@ export class Project {
               rootDir: startPath,
               availableFiles,
               extensions,
+              workspaceDir: workspaceDirResolved,
               ...(typescriptPathResolved ? { typescriptPath: typescriptPathResolved } : {}),
               ...(webpackResolved
                 ? { webpack: { path: webpackResolved.path, names: webpackResolved.names } }
@@ -82,8 +96,10 @@ export class Project {
     const availableFilesVisitor = new AvailableFilesVisitor();
     const filesVisitor = new FilesVisitor(fileAnalysisType);
 
-    await walk(startPath, availableFilesVisitor, []);
-    await walk(startPath, filesVisitor, availableFilesVisitor.files);
+    const currentPath = workspaceDirResolved || startPath;
+
+    await walk(currentPath, availableFilesVisitor, []);
+    await walk(currentPath, filesVisitor, availableFilesVisitor.files);
 
     let projectSizeInBytes = 0;
     for (const [_, file] of filesVisitor.files) {

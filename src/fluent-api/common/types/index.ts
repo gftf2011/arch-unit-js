@@ -1,4 +1,5 @@
 export type Options = {
+  workspaceDir?: string;
   extensionTypes: string[];
   includeMatcher: string[];
   ignoreMatcher?: string[];
