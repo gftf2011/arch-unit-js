@@ -15,30 +15,40 @@ export function resolveRootDirPattern(
 ): string {
   if (workspaceDir) {
     if (pattern.startsWith('!')) {
-      const cleanedWorkspaceDir = workspaceDir.replace('<rootDir>', '').replace(/^!/, '');
+      const cleanedWorkspaceDir = workspaceDir.replace('<rootDir>', '').replace(/^!/, '').replace(/^\.?\//, '');
       const workspaceDirPath = path.resolve(rootDir, cleanedWorkspaceDir);
       if (pattern.includes('<workspaceDir>')) {
         const cleaned = pattern.replace('<workspaceDir>', '').replace(/^!/, '');
         const relative = cleaned.replace(/^\.?\//, '');
         const newPattern = `!${path.resolve(workspaceDirPath, relative)}`;
         return newPattern;
+      } else if (pattern.includes('<rootDir>')) {
+        const cleaned = pattern.replace('<rootDir>', '');
+        const relative = cleaned.replace(/^\.?\//, '');
+        const newPattern = `${path.resolve(rootDir, relative)}`;
+        return newPattern;
       }
-      const cleaned = pattern.replace('<rootDir>', '').replace(/^!/, '');
+      const cleaned = pattern.replace(/^!/, '');
       const relative = cleaned.replace(/^\.?\//, '');
-      const newPattern = `!${path.resolve(rootDir, relative)}`;
+      const newPattern = `!${path.resolve(workspaceDirPath, relative)}`;
       return newPattern;
     }
-    const cleanedWorkspaceDir = workspaceDir.replace('<rootDir>', '').replace(/^!/, '');
+    const cleanedWorkspaceDir = workspaceDir.replace('<rootDir>', '').replace(/^!/, '').replace(/^\.?\//, '');
     const workspaceDirPath = path.resolve(rootDir, cleanedWorkspaceDir);
     if (pattern.includes('<workspaceDir>')) {
       const cleaned = pattern.replace('<workspaceDir>', '');
       const relative = cleaned.replace(/^\.?\//, '');
       const newPattern = path.resolve(workspaceDirPath, relative);
       return newPattern;
+    } else if (pattern.includes('<rootDir>')) {
+      const cleaned = pattern.replace('<rootDir>', '');
+      const relative = cleaned.replace(/^\.?\//, '');
+      const newPattern = `${path.resolve(rootDir, relative)}`;
+      return newPattern;
     }
-    const cleaned = pattern.replace('<rootDir>', '');
+    const cleaned = pattern;
     const relative = cleaned.replace(/^\.?\//, '');
-    const newPattern = `${path.resolve(rootDir, relative)}`;
+    const newPattern = `${path.resolve(workspaceDirPath, relative)}`;
     return newPattern;
   } else {
     if (pattern.startsWith('!')) {
