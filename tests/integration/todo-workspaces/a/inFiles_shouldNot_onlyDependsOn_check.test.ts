@@ -26,8 +26,8 @@ const workspaceDir = path.resolve(
 const includeMatchers: string[][] = [
   ['<workspaceDir>/**'],
   ['<workspaceDir>/**/'],
-  ['./**'],
-  ['./**/'],
+  ['./packages/a/**'],
+  ['./packages/a/**/'],
   [
     '<workspaceDir>/domain/**',
     '<workspaceDir>/use-cases/**',
@@ -40,8 +40,18 @@ const includeMatchers: string[][] = [
     '<workspaceDir>/infra/**/',
     '<workspaceDir>/main/**/',
   ],
-  ['./domain/**', './use-cases/**', './infra/**', './main/**'],
-  ['./domain/**/', './use-cases/**/', './infra/**/', './main/**/'],
+  [
+    './packages/a/domain/**',
+    './packages/a/use-cases/**',
+    './packages/a/infra/**',
+    './packages/a/main/**',
+  ],
+  [
+    './packages/a/domain/**/',
+    './packages/a/use-cases/**/',
+    './packages/a/infra/**/',
+    './packages/a/main/**/',
+  ],
 ];
 
 const ignoreMatchers = [

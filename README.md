@@ -642,11 +642,11 @@ it('"**/numberUtils.js" file should have less than 50 - L.O.C.', async () => {
 
 By using the `shouldNot` "modifier" the "matcher" behave was modified to check if the selected files had a L.O.C. greater or equal than the specified value !
 
-## Aggragators
+## Aggregators
 
 ### `and()`
 
-The `and` is an "aggragator". An "aggragator" gives the ability to chain "selectors" with other "selectors" & chain "matchers" with other "matchers" creating more complex architecture rules to be validated !
+The `and` is an "aggregator". An "aggregator" gives the ability to chain "selectors" with other "selectors" & chain "matchers" with other "matchers" creating more complex architecture rules to be validated !
 
 In the example below we wanna check if files inside the `**/domain/entities/**` & `**/services/contracts/**` directories & `**/shared/utils.js` file have more than 30 - L.O.C. - (Lines Of Code) & less than 120 - L.O.C. - (Lines Of Code).
 
@@ -672,7 +672,7 @@ it('"**/domain/entities/**" & "**/services/contracts/**" & "**/shared/utils.js" 
 });
 ```
 
-As demonstrated in the example "aggragators" are a powerful tool to create stronger architecture rules by combinig different "selectors" and "matchers" in more meaningful setences !
+As demonstrated in the example "aggregators" are a powerful tool to create stronger architecture rules by combinig different "selectors" and "matchers" in more meaningful setences !
 
 ## Matchers
 

@@ -36,9 +36,7 @@ export function resolveRootDirPattern(
       const newPattern = `!${path.resolve(workspaceDirPath, relative)}`;
       return newPattern;
     }
-    const cleanedWorkspaceDir = workspaceDir
-      .replace('<rootDir>', '')
-      .replace(/^\.?\//, '');
+    const cleanedWorkspaceDir = workspaceDir.replace('<rootDir>', '').replace(/^\.?\//, '');
     const workspaceDirPath = path.resolve(rootDir, cleanedWorkspaceDir);
     if (pattern.includes('<workspaceDir>')) {
       const cleaned = pattern.replace('<workspaceDir>', '');
