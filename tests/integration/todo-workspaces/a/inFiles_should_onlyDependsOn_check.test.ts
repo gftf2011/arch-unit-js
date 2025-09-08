@@ -68,9 +68,9 @@ const webpacks = [
   },
 ];
 
-describe('inFiles.should.dependsOn scenarios (vanilla JS decorators sample)', () => {
-  describe('Scenario 1: Some selected files have NO dependencies (FAIL)', () => {
-    test("'domain/Todo.js' and 'infra/InMemoryTodoRepository.js' should depend on @infra and @usecases - FAIL", async () => {
+describe('inFiles.should.onlyDependsOn scenarios (vanilla JS decorators sample)', () => {
+  describe('Scenario 1: Selected files have NO dependencies (PASS)', () => {
+    test("['domain/Todo.js','infra/InMemoryTodoRepository.js'] should only depend on 'domain' - PASS", async () => {
       for (const includeMatcher of includeMatchers) {
         for (const { webpack } of webpacks) {
           const options: Options = {
@@ -81,31 +81,19 @@ describe('inFiles.should.dependsOn scenarios (vanilla JS decorators sample)', ()
             webpack,
           };
           const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-          try {
-            await appInstance
-              .projectFiles()
-              .inFiles(['**/domain/Todo.js', '**/infra/InMemoryTodoRepository.js'])
-              .should()
-              .dependsOn(['**/infra/**', '**/use-cases/**'])
-              .check();
-            // If we get here, the test should fail
-            expect(1).toBe(2);
-          } catch (error) {
-            const errorMessage = (error as Error).message;
-
-            expect(errorMessage).toContain(
-              `Violation - Rule: project files in files '[**/domain/Todo.js, **/infra/InMemoryTodoRepository.js]' should depends on '[**/infra/**, **/use-cases/**]'\n\n`,
-            );
-            expect(errorMessage).toContain(`- '${workspaceDir}/domain/Todo.js'`);
-            expect(errorMessage).toContain(`- '${workspaceDir}/infra/InMemoryTodoRepository.js'`);
-          }
+          await appInstance
+            .projectFiles()
+            .inFiles(['**/domain/Todo.js', '**/infra/InMemoryTodoRepository.js'])
+            .should()
+            .onlyDependsOn(['**/domain/**'])
+            .check();
         }
       }
     });
   });
 
-  describe('Scenario 2: Some selected files have dependencies but NONE match the patterns (FAIL)', () => {
-    test("'use-cases/CreateTodo.js' and 'use-cases/GetAllTodos.js' should depend on 'infra' and 'domain' - FAIL (only local imports)", async () => {
+  describe('Scenario 2: Files have dependencies but NONE match the patterns (FAIL)', () => {
+    test("['use-cases/CreateTodo.js'] should only depend on 'infra' - FAIL", async () => {
       for (const includeMatcher of includeMatchers) {
         for (const { webpack } of webpacks) {
           const options: Options = {
@@ -119,55 +107,18 @@ describe('inFiles.should.dependsOn scenarios (vanilla JS decorators sample)', ()
           try {
             await appInstance
               .projectFiles()
-              .inFiles(['**/use-cases/CreateTodo.js', '**/use-cases/GetAllTodos.js'])
+              .inFiles(['**/use-cases/CreateTodo.js'])
               .should()
-              .dependsOn(['**/infra/**', '**/domain/**'])
+              .onlyDependsOn(['**/infra/**'])
               .check();
+
             // If we get here, the test should fail
             expect(1).toBe(2);
           } catch (error) {
             const errorMessage = (error as Error).message;
-
             expect(errorMessage).toContain(
-              `Violation - Rule: project files in files '[**/use-cases/CreateTodo.js, **/use-cases/GetAllTodos.js]' should depends on '[**/infra/**, **/domain/**]'\n\n`,
+              `Violation - Rule: project files in files '[**/use-cases/CreateTodo.js]' should only depends on '[**/infra/**]'\n\n`,
             );
-
-            expect(errorMessage).toContain(`- '${workspaceDir}/use-cases/CreateTodo.js'`);
-            expect(errorMessage).toContain(`- '${workspaceDir}/use-cases/GetAllTodos.js'`);
-          }
-        }
-      }
-    });
-  });
-
-  describe('Scenario 3: Some selected files have dependencies and SOME match the patterns (FAIL)', () => {
-    test("'main/index.js' and 'use-cases/CreateTodo.js' should depend on 'infra' and 'use-cases' - FAIL (use-cases missing 'infra' and 'use-cases')", async () => {
-      for (const includeMatcher of includeMatchers) {
-        for (const { webpack } of webpacks) {
-          const options: Options = {
-            workspaceDir: '<rootDir>/packages/a',
-            extensionTypes: ['**/*.js'],
-            includeMatcher: [...includeMatcher],
-            ignoreMatcher: ignoreMatchers,
-            webpack,
-          };
-          const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-          try {
-            await appInstance
-              .projectFiles()
-              .inFiles(['**/main/index.js', '**/use-cases/CreateTodo.js'])
-              .should()
-              .dependsOn(['**/infra/**', '**/use-cases/**'])
-              .check();
-            // If we get here, the test should fail
-            expect(1).toBe(2);
-          } catch (error) {
-            const errorMessage = (error as Error).message;
-
-            expect(errorMessage).toContain(
-              `Violation - Rule: project files in files '[**/main/index.js, **/use-cases/CreateTodo.js]' should depends on '[**/infra/**, **/use-cases/**]'\n\n`,
-            );
-            expect(errorMessage).not.toContain(`- '${workspaceDir}/main/index.js'`);
             expect(errorMessage).toContain(`- '${workspaceDir}/use-cases/CreateTodo.js'`);
           }
         }
@@ -175,8 +126,31 @@ describe('inFiles.should.dependsOn scenarios (vanilla JS decorators sample)', ()
     });
   });
 
-  describe('Scenario 4: All selected files have dependencies and ALL patterns are present (PASS)', () => {
-    test("'main/index.js' should depend on 'infra' and 'use-cases' - PASS", async () => {
+  describe('Scenario 3: Files depend exclusively on SOME of the allowed patterns (PASS)', () => {
+    test("['use-cases/CreateTodo.js'] should only depend on 'domain' and 'use-cases' - PASS (subset)", async () => {
+      for (const includeMatcher of includeMatchers) {
+        for (const { webpack } of webpacks) {
+          const options: Options = {
+            workspaceDir: '<rootDir>/packages/a',
+            extensionTypes: ['**/*.js'],
+            includeMatcher: [...includeMatcher],
+            ignoreMatcher: ignoreMatchers,
+            webpack,
+          };
+          const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+          await appInstance
+            .projectFiles()
+            .inFiles(['**/use-cases/CreateTodo.js'])
+            .should()
+            .onlyDependsOn(['**/domain/**', '**/use-cases/**'])
+            .check();
+        }
+      }
+    });
+  });
+
+  describe('Scenario 4: Files depend exclusively on ALL allowed patterns (PASS)', () => {
+    test("['main/index.js'] should only depend on 'use-cases' and 'infra' - PASS", async () => {
       for (const includeMatcher of includeMatchers) {
         for (const { webpack } of webpacks) {
           const options: Options = {
@@ -191,49 +165,15 @@ describe('inFiles.should.dependsOn scenarios (vanilla JS decorators sample)', ()
             .projectFiles()
             .inFiles(['**/main/index.js'])
             .should()
-            .dependsOn(['**/use-cases/**'])
-            .and()
-            .dependsOn(['**/infra/**'])
+            .onlyDependsOn(['**/use-cases/**', '**/infra/**'])
             .check();
         }
       }
     });
   });
 
-  describe('Edge scenarios', () => {
-    test('empty array - should FAIL', async () => {
-      for (const includeMatcher of includeMatchers) {
-        for (const { webpack } of webpacks) {
-          const options: Options = {
-            workspaceDir: '<rootDir>/packages/a',
-            extensionTypes: ['**/*.js'],
-            includeMatcher: [...includeMatcher],
-            ignoreMatcher: ignoreMatchers,
-            webpack,
-          };
-          const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-          try {
-            await appInstance
-              .projectFiles()
-              .inFiles([])
-              .should()
-              .dependsOn(['**/infra/**'])
-              .check();
-            // If we get here, the test should fail
-            expect(1).toBe(2);
-          } catch (error) {
-            const errorMessage = (error as Error).message;
-
-            expect(errorMessage).toContain(
-              `Violation - Rule: project files in files '[]' should depends on '[**/infra/**]'\n\n`,
-            );
-            expect(errorMessage).toContain(`No pattern was provided for checking`);
-          }
-        }
-      }
-    });
-
-    test('array with empty string pattern - should FAIL', async () => {
+  describe('Scenario 5: Files have dependencies with additional non-matching dependencies (FAIL)', () => {
+    test("['main/index.js'] should only depend on 'use-cases' - FAIL (has 'infra' too)", async () => {
       for (const includeMatcher of includeMatchers) {
         for (const { webpack } of webpacks) {
           const options: Options = {
@@ -249,15 +189,110 @@ describe('inFiles.should.dependsOn scenarios (vanilla JS decorators sample)', ()
               .projectFiles()
               .inFiles(['**/main/index.js'])
               .should()
-              .dependsOn(['**/infra/**', ''])
+              .onlyDependsOn(['**/use-cases/**'])
               .check();
-            // If we get here, the test should fail
+
             expect(1).toBe(2);
           } catch (error) {
             const errorMessage = (error as Error).message;
-
             expect(errorMessage).toContain(
-              `Violation - Rule: project files in files '[**/main/index.js]' should depends on '[**/infra/**, ]'\n\n`,
+              `Violation - Rule: project files in files '[**/main/index.js]' should only depends on '[**/use-cases/**]'\n\n`,
+            );
+            expect(errorMessage).toContain(`- '${workspaceDir}/main/index.js'`);
+          }
+        }
+      }
+    });
+
+    test("['use-cases/CreateTodo.js','use-cases/GetAllTodos.js'] should only depend on 'infra' - FAIL (only 'use-cases')", async () => {
+      for (const includeMatcher of includeMatchers) {
+        for (const { webpack } of webpacks) {
+          const options: Options = {
+            workspaceDir: '<rootDir>/packages/a',
+            extensionTypes: ['**/*.ts'],
+            includeMatcher: [...includeMatcher],
+            ignoreMatcher: ignoreMatchers,
+            webpack,
+          };
+          const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+          try {
+            await appInstance
+              .projectFiles()
+              .inFiles(['**/use-cases/CreateTodo.js', '**/use-cases/GetAllTodos.js'])
+              .should()
+              .onlyDependsOn(['**/infra/**'])
+              .check();
+
+            expect(1).toBe(2);
+          } catch (error) {
+            const errorMessage = (error as Error).message;
+            expect(errorMessage).toContain(
+              `Violation - Rule: project files in files '[**/use-cases/CreateTodo.js, **/use-cases/GetAllTodos.js]' should only depends on '[**/infra/**]'\n\n`,
+            );
+            expect(errorMessage).toContain(`- '${workspaceDir}/use-cases/CreateTodo.js'`);
+            expect(errorMessage).toContain(`- '${workspaceDir}/use-cases/GetAllTodos.js'`);
+          }
+        }
+      }
+    });
+  });
+
+  describe('Edge scenarios', () => {
+    test('empty selection should FAIL', async () => {
+      for (const includeMatcher of includeMatchers) {
+        for (const { webpack } of webpacks) {
+          const options: Options = {
+            workspaceDir: '<rootDir>/packages/a',
+            extensionTypes: ['**/*.js'],
+            includeMatcher: [...includeMatcher],
+            ignoreMatcher: ignoreMatchers,
+            webpack,
+          };
+          const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+          try {
+            await appInstance
+              .projectFiles()
+              .inFiles([])
+              .should()
+              .onlyDependsOn(['**/use-cases/**'])
+              .check();
+
+            expect(1).toBe(2);
+          } catch (error) {
+            const errorMessage = (error as Error).message;
+            expect(errorMessage).toContain(
+              `Violation - Rule: project files in files '[]' should only depends on '[**/use-cases/**]'\n\n`,
+            );
+            expect(errorMessage).toContain(`No pattern was provided for checking`);
+          }
+        }
+      }
+    });
+
+    test('array with empty string pattern should FAIL', async () => {
+      for (const includeMatcher of includeMatchers) {
+        for (const { webpack } of webpacks) {
+          const options: Options = {
+            workspaceDir: '<rootDir>/packages/a',
+            extensionTypes: ['**/*.js'],
+            includeMatcher: [...includeMatcher],
+            ignoreMatcher: ignoreMatchers,
+            webpack,
+          };
+          const appInstance = ComponentSelectorBuilder.create(rootDir, options);
+          try {
+            await appInstance
+              .projectFiles()
+              .inFiles(['**/main/index.js'])
+              .should()
+              .onlyDependsOn(['**/infra/**', ''])
+              .check();
+
+            expect(1).toBe(2);
+          } catch (error) {
+            const errorMessage = (error as Error).message;
+            expect(errorMessage).toContain(
+              `Violation - Rule: project files in files '[**/main/index.js]' should only depends on '[**/infra/**, ]'\n\n`,
             );
             expect(errorMessage).toContain(`No pattern was provided for checking`);
           }

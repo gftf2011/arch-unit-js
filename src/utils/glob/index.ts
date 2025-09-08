@@ -15,7 +15,10 @@ export function resolveRootDirPattern(
 ): string {
   if (workspaceDir) {
     if (pattern.startsWith('!')) {
-      const cleanedWorkspaceDir = workspaceDir.replace('<rootDir>', '').replace(/^!/, '').replace(/^\.?\//, '');
+      const cleanedWorkspaceDir = workspaceDir
+        .replace('<rootDir>', '')
+        .replace(/^!/, '')
+        .replace(/^\.?\//, '');
       const workspaceDirPath = path.resolve(rootDir, cleanedWorkspaceDir);
       if (pattern.includes('<workspaceDir>')) {
         const cleaned = pattern.replace('<workspaceDir>', '').replace(/^!/, '');
@@ -33,7 +36,10 @@ export function resolveRootDirPattern(
       const newPattern = `!${path.resolve(workspaceDirPath, relative)}`;
       return newPattern;
     }
-    const cleanedWorkspaceDir = workspaceDir.replace('<rootDir>', '').replace(/^!/, '').replace(/^\.?\//, '');
+    const cleanedWorkspaceDir = workspaceDir
+      .replace('<rootDir>', '')
+      .replace(/^!/, '')
+      .replace(/^\.?\//, '');
     const workspaceDirPath = path.resolve(rootDir, cleanedWorkspaceDir);
     if (pattern.includes('<workspaceDir>')) {
       const cleaned = pattern.replace('<workspaceDir>', '');
