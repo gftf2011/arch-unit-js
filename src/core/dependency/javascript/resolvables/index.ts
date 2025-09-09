@@ -57,30 +57,6 @@ export class PackageJsonDevDependencyResolvable extends Resolvable {
   }
 }
 
-export class ModuleAliasDependencyResolvable extends Resolvable {
-  constructor(depProps: DependencyProps, resolvableProps: ResolvableDependencyProps) {
-    super(depProps, resolvableProps);
-  }
-
-  public override resolve(): ResolvableResponse {
-    if (this.depProps.resolvedWith === 'require') {
-      try {
-        const require = createRequire(this.resolvableProps.filePath);
-        const candidate = path.normalize(require.resolve(this.depProps.name));
-        const dependency = micromatch(this.resolvableProps.availableFiles, [candidate])[0];
-        if (dependency) {
-          this.depProps.type = 'valid-path';
-          this.depProps.name = dependency;
-          return { status: 'resolved', depProps: { ...this.depProps } };
-        }
-      } catch (_) {
-        return { status: 'unresolved', depProps: this.depProps };
-      }
-    }
-    return { status: 'unresolved', depProps: this.depProps };
-  }
-}
-
 export class TypescriptPathDependencyResolvable extends Resolvable {
   constructor(depProps: DependencyProps, resolvableProps: ResolvableDependencyProps) {
     super(depProps, resolvableProps);

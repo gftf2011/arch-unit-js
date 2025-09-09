@@ -3,7 +3,6 @@ import { ResolvableIterator } from '@/core/dependency/javascript/iterators';
 import {
   BuildinModuleResolvable,
   InvalidDependencyResolvable,
-  ModuleAliasDependencyResolvable,
   PackageJsonDependencyResolvable,
   PackageJsonDevDependencyResolvable,
   TypescriptPathDependencyResolvable,
@@ -29,7 +28,6 @@ export class JavascriptRelatedDependency extends Dependency {
     iterator.add(new PackageJsonDevDependencyResolvable({ ...this.props }, { ...resolvableProps }));
     iterator.add(new ValidPathDependencyResolvable({ ...this.props }, { ...resolvableProps }));
     iterator.add(new WebpackDependencyResolvable({ ...this.props }, { ...resolvableProps }));
-    iterator.add(new ModuleAliasDependencyResolvable({ ...this.props }, { ...resolvableProps }));
     iterator.add(new TypescriptPathDependencyResolvable({ ...this.props }, { ...resolvableProps }));
     iterator.add(new InvalidDependencyResolvable({ ...this.props }, { ...resolvableProps }));
 

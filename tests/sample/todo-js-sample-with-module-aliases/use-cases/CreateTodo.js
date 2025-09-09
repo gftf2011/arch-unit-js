@@ -1,4 +1,4 @@
-const { Todo } = require('#domain/entities/Todo');
+const { Todo } = require('#domain1/entities/Todo');
 
 class CreateTodo {
   constructor(todoRepository) {
