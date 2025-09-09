@@ -43,6 +43,7 @@ const projects = [
       path.resolve(rootDir, 'tests', 'sample', 'todo-workspaces', 'packages', 'b'),
       path.resolve(rootDir, 'tests', 'sample', 'todo-workspaces', 'packages', 'c'),
       path.resolve(rootDir, 'tests', 'sample', 'todo-workspaces', 'packages', 'd'),
+      path.resolve(rootDir, 'tests', 'sample', 'todo-workspaces', 'packages', 'e'),
     ],
   },
 ];
