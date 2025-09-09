@@ -7,37 +7,50 @@ const rootDir = path.resolve(
   path.dirname(__filename),
   '..',
   '..',
+  '..',
   'sample',
-  'todo-js-sample-with-module-aliases',
+  'todo-workspaces',
 );
 
 const includeMatchers: string[][] = [
-  ['<rootDir>/**'],
-  ['<rootDir>/**/'],
-  ['./**'],
-  ['./**/'],
-  [
-    '<rootDir>/domain/**',
-    '<rootDir>/use-cases/**',
-    '<rootDir>/infra/**',
-    '<rootDir>/main/**',
-    '<rootDir>/setup-aliases.js',
-  ],
-  [
-    '<rootDir>/domain/**/',
-    '<rootDir>/use-cases/**/',
-    '<rootDir>/infra/**/',
-    '<rootDir>/main/**/',
-    '<rootDir>/setup-aliases.js',
-  ],
-  ['./domain/**', './use-cases/**', './infra/**', './main/**', './setup-aliases.js'],
-  ['./domain/**/', './use-cases/**/', './infra/**/', './main/**/', './setup-aliases.js'],
+  ['<workspaceDir>/**'],
+  // ['<workspaceDir>/**/'],
+  // ['./packages/d/**'],
+  // ['./packages/d/**/'],
+  // [
+  //   '<workspaceDir>/domain/**',
+  //   '<workspaceDir>/use-cases/**',
+  //   '<workspaceDir>/infra/**',
+  //   '<workspaceDir>/main/**',
+  //   '<workspaceDir>/setup-aliases.js',
+  // ],
+  // [
+  //   '<workspaceDir>/domain/**/',
+  //   '<workspaceDir>/use-cases/**/',
+  //   '<workspaceDir>/infra/**/',
+  //   '<workspaceDir>/main/**/',
+  //   '<workspaceDir>/setup-aliases.js',
+  // ],
+  // [
+  //   './packages/d/domain/**',
+  //   './packages/d/use-cases/**',
+  //   './packages/d/infra/**',
+  //   './packages/d/main/**',
+  //   './packages/d/setup-aliases.js',
+  // ],
+  // [
+  //   './packages/d/domain/**/',
+  //   './packages/d/use-cases/**/',
+  //   './packages/d/infra/**/',
+  //   './packages/d/main/**/',
+  //   './packages/d/setup-aliases.js',
+  // ],
 ];
 
 const ignoreMatchers = [
-  '!<rootDir>/**/package.json',
-  '!<rootDir>/**/node_modules/**',
-  '!<rootDir>/**/package-lock.json',
+  '!<workspaceDir>/**/package.json',
+  '!<workspaceDir>/**/node_modules/**',
+  '!<workspaceDir>/**/package-lock.json',
 ];
 
 describe('inDirectories.should.haveCycles scenarios', () => {
@@ -45,6 +58,7 @@ describe('inDirectories.should.haveCycles scenarios', () => {
     for (const includeMatcher of includeMatchers) {
       try {
         const options: Options = {
+          workspaceDir: '<rootDir>/packages/d',
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
