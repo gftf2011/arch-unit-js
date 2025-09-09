@@ -30,7 +30,7 @@ let hasBlacklistDependency = true;
 
 try {
   execSync(`${cmd} ls ${blacklist.join(' ')}`, { stdio: 'ignore' });
-} catch (error) {
+} catch (_error) {
   hasBlacklistDependency = false;
 }
 
