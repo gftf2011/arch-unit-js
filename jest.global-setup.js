@@ -38,6 +38,12 @@ const projects = [
   {
     path: path.resolve(rootDir, 'tests', 'sample', 'todo-workspaces'),
     workspace: true,
+    packages: [
+      path.resolve(rootDir, 'tests', 'sample', 'todo-workspaces', 'packages', 'a'),
+      path.resolve(rootDir, 'tests', 'sample', 'todo-workspaces', 'packages', 'b'),
+      path.resolve(rootDir, 'tests', 'sample', 'todo-workspaces', 'packages', 'c'),
+      path.resolve(rootDir, 'tests', 'sample', 'todo-workspaces', 'packages', 'd'),
+    ],
   },
 ];
 
@@ -48,6 +54,22 @@ async function npmInstall(target) {
     await execAsync(`${cmd} install${target.workspace ? ' --workspaces' : ''}`, {
       cwd: target.path,
     });
+    await execAsync(
+      `node ${path.resolve(rootDir, 'scripts', 'blacklist.js')} --cwd ${target.path}`,
+      {
+        cwd: rootDir,
+      },
+    );
+    if (target.packages) {
+      for (const package of target.packages) {
+        await execAsync(
+          `node ${path.resolve(rootDir, 'scripts', 'blacklist.js')} --cwd ${package}`,
+          {
+            cwd: rootDir,
+          },
+        );
+      }
+    }
   } catch (error) {
     throw error;
   }
