@@ -32,6 +32,10 @@ jobs:
         run: |
           npm i
 
+      - name: Verify Blacklist
+        run: |
+          node ./scripts/blacklist.js
+
       - name: Cache "node-modules"
         uses: actions/cache@v4
         with:
