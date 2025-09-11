@@ -12,35 +12,65 @@ const rootDir = path.resolve(
   'todo-workspaces',
 );
 
-const includeMatchers: string[][] = [['<workspaceDir>/**'], ['./packages/f/**']];
+const includeMatchers = [
+  ['<workspaceDir>/**'],
+  ['<workspaceDir>/**/'],
+  ['./packages/g/**'],
+  ['./packages/g/**/'],
+  [
+    '<workspaceDir>/domain/**',
+    '<workspaceDir>/use-cases/**',
+    '<workspaceDir>/infra/**',
+    '<workspaceDir>/main/**',
+  ],
+  [
+    '<workspaceDir>/domain/**/',
+    '<workspaceDir>/use-cases/**/',
+    '<workspaceDir>/infra/**/',
+    '<workspaceDir>/main/**/',
+  ],
+  [
+    './packages/g/domain/**',
+    './packages/g/use-cases/**',
+    './packages/g/infra/**',
+    './packages/g/main/**',
+  ],
+  [
+    './packages/g/domain/**/',
+    './packages/g/use-cases/**/',
+    './packages/g/infra/**/',
+    './packages/g/main/**/',
+  ],
+];
 
 const ignoreMatchers = [
   '!<workspaceDir>/**/package.json',
   '!<workspaceDir>/**/node_modules/**',
   '!<workspaceDir>/**/package-lock.json',
   '!<workspaceDir>/**/tsconfig.json',
-  '!<workspaceDir>/**/.swcrc',
-  '!<workspaceDir>/**/tsconfig.build.json',
 ];
+
+const typescriptPath = '<workspaceDir>/tsconfig.json';
 
 describe('should.haveCycles scenarios', () => {
   test('entire project should have cycles - DO I REALLY NEED TO EXPLAIN THIS ?', async () => {
     for (const includeMatcher of includeMatchers) {
       try {
         const options: Options = {
-          workspaceDir: '<rootDir>/packages/f',
+          workspaceDir: '<rootDir>/packages/g',
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
+          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
-        await appInstance.projectFiles().inFile('**/*.ts').should().haveCycles().check();
+        await appInstance.projectFiles().inDirectory('**').should().haveCycles().check();
 
         expect(1).toBe(2);
       } catch (error) {
         const errorMessage = (error as Error).message;
         expect(errorMessage).toBe(
-          "Violation - Rule: project files in file '**/*.ts' should have cycles\n\nIF YOU SEE THIS, YOU MUST BE A UTTERLY STUPID PERSON",
+          "Violation - Rule: project files in directory '**' should have cycles\n\nIF YOU SEE THIS, YOU MUST BE A UTTERLY STUPID PERSON",
         );
       }
     }
