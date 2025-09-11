@@ -370,6 +370,8 @@ describe('Architecture Test', () => {
 
 Again, you successfully tested you application topology 🥳 , you getting the hang of it !
 
+<br/>
+
 > ### TypeScript - (Basic Scenario)
 
 `arch-unit-js` also provides support for `typescript`. To include `typescript` support just provide the path to your **tsconfig.json** using the "_typescriptPath_"
@@ -386,6 +388,58 @@ const options: Options = {
 
 <br/>
 
+> ### workspaces
+
+> **Important:** Ensure to install `arch-unit-js` in the root `package.json` file to ensure the dependency is hoisted for your _monorepo_ project. If you're sure the dependency will not be hoisted and will be installed in the local project within the _monorepo_ then you can skip the following steps and use the tool _as is_ !
+
+`arch-unit-js` also provides support for `workspaces` ! Given you're working in a _workspace monorepo_ project ilustrated below:
+
+```
+project/
+├── node_modules/
+│   └ arch-unit-js/
+├── packages/
+│   ├── a/
+│   │   ├── src/
+│   │   └── package.json
+│   ├── b/
+│   │   ├── src/
+│   │   ├── package.json
+│   │   └── tsconfig.json
+│   └── c/
+│       ├── src/
+│       └── package.json
+└── package.json
+```
+
+Suppose you're testing the topology from _package_ `b` ! To include support for the workspace you can use the following configuration:
+
+```typescript
+import { Options } from 'arch-unit-js';
+
+const options: Options = {
+  workspaceDir: '<rootDir>/packages/b',
+  extensionTypes: ['**/*.ts'],
+  includeMatcher: ['<rootDir>/packages/b/**'],
+  typescriptPath: '<rootDir>/packages/b/tsconfig.json',
+};
+```
+
+Or alternatively, you can also use the following configuration:
+
+```typescript
+import { Options } from 'arch-unit-js';
+
+const options: Options = {
+  workspaceDir: '<rootDir>/packages/b',
+  extensionTypes: ['**/*.ts'],
+  includeMatcher: ['<workspaceDir>/**'],
+  typescriptPath: '<workspaceDir>/tsconfig.json',
+};
+```
+
+> **Note**: The annotation `<workspaceDir>` works as an alias towards the path described in the `Options.workspaceDir` !
+
 ## :notebook: API Documentation
 
 ## `app(options)`
@@ -398,6 +452,7 @@ The initial `app` API is the representation of your application and to define wh
 const { app } = require('arch-unit-js');
 
 app({
+  workspaceDir: '<rootDir>/packages/a', // Optional,
   extensionTypes: ['**/*.js'], // Required
   includeMatcher: ['<rootDir>/**'], // Required
   ignoreMatcher: ['!**/node_modules/**'], // Optional
@@ -411,6 +466,7 @@ app({
 
 The 'options' parameter is an object which has:
 
+- The `workspaceDir` which is a path like `string`, representing the path to your `workspace` you're working on
 - The `extensionTypes` which is a `string[]` of glob patterns, representing the allowed extensions which compose your project files
 - The `includeMatcher` which is a `string[]` of glob patterns, representing the source directories of your application
 - The `ignoreMatcher` which is a `string[]` of glob patterns, representing the resources you want to ignore
