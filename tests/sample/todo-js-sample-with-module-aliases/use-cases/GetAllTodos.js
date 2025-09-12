@@ -1,5 +1,5 @@
 // useless require to test module alias
-const { Todo } = require('#domain/entities/Todo');
+const { Todo } = require('#domain1/entities/Todo');
 
 class GetAllTodos {
   constructor(todoRepository) {

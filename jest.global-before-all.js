@@ -1,12 +1,10 @@
 const { spawn } = require('child_process');
 const path = require('pathe');
 
-const rootDir = path.resolve(
-  path.dirname(__filename),
-  'tests',
-  'sample',
-  'todo-js-sample-with-module-aliases',
-);
+const rootDirs = [
+  path.resolve(path.dirname(__filename), 'tests', 'sample', 'todo-js-sample-with-module-aliases'),
+  path.resolve(path.dirname(__filename), 'tests', 'sample', 'todo-workspaces', 'packages', 'd'),
+];
 
 beforeAll(async () => {
   // This will run in every test file UNLESS we skip it.
@@ -17,7 +15,7 @@ beforeAll(async () => {
   // Set the flag so it won't run again
   global.__GLOBAL_BEFORE_ALL_HAS_RUN__ = true;
 
-  const resolveSpawn = async () => {
+  const resolveSpawn = async (rootDir) => {
     return new Promise((resolve, reject) => {
       const child = spawn(process.execPath, [path.resolve(rootDir, 'setup-aliases.js')], {
         stdio: 'ignore',
@@ -31,5 +29,7 @@ beforeAll(async () => {
       child.on('error', (err) => reject(err));
     });
   };
-  await resolveSpawn();
+  for (const rootDir of rootDirs) {
+    await resolveSpawn(rootDir);
+  }
 });

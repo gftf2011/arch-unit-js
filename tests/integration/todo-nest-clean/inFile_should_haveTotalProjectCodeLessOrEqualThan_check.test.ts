@@ -16,8 +16,6 @@ const ignoreMatchers = [
   '!<rootDir>/**/tsconfig.build.json',
 ];
 
-const typescriptPath = '<rootDir>/tsconfig.json';
-
 describe('inFile.should.haveTotalProjectCodeLessOrEqualThan (NestJS clean sample)', () => {
   describe('Scenario 1: File bytes <= allowed percentage of total project (PASS)', () => {
     test("'main.ts' should represent less or equal than 100% of total project bytes - PASS", async () => {
@@ -26,7 +24,6 @@ describe('inFile.should.haveTotalProjectCodeLessOrEqualThan (NestJS clean sample
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
@@ -44,7 +41,6 @@ describe('inFile.should.haveTotalProjectCodeLessOrEqualThan (NestJS clean sample
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
@@ -64,7 +60,6 @@ describe('inFile.should.haveTotalProjectCodeLessOrEqualThan (NestJS clean sample
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         try {
@@ -93,7 +88,6 @@ describe('inFile.should.haveTotalProjectCodeLessOrEqualThan (NestJS clean sample
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         try {
@@ -124,7 +118,6 @@ describe('inFile.should.haveTotalProjectCodeLessOrEqualThan (NestJS clean sample
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await expect(
@@ -144,7 +137,6 @@ describe('inFile.should.haveTotalProjectCodeLessOrEqualThan (NestJS clean sample
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         try {
@@ -211,7 +203,6 @@ describe('inFile.should.haveTotalProjectCodeLessOrEqualThan (NestJS clean sample
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         try {
@@ -242,7 +233,6 @@ describe('inFile.should.haveTotalProjectCodeLessOrEqualThan (NestJS clean sample
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         try {

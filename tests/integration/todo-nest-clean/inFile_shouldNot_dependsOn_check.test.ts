@@ -16,8 +16,6 @@ const ignoreMatchers = [
   '!<rootDir>/**/tsconfig.build.json',
 ];
 
-const typescriptPath = '<rootDir>/tsconfig.json';
-
 describe('inFile.shouldNot.dependsOn scenarios (NestJS clean sample)', () => {
   describe('Scenario 1: File has NO dependencies', () => {
     test('"domain/todo.entity.ts" should not depend on "repositories" and "uuid" - should PASS', async () => {
@@ -26,7 +24,6 @@ describe('inFile.shouldNot.dependsOn scenarios (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
@@ -46,7 +43,6 @@ describe('inFile.shouldNot.dependsOn scenarios (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
@@ -64,7 +60,6 @@ describe('inFile.shouldNot.dependsOn scenarios (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
@@ -84,7 +79,6 @@ describe('inFile.shouldNot.dependsOn scenarios (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await expect(
@@ -104,7 +98,6 @@ describe('inFile.shouldNot.dependsOn scenarios (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await expect(
@@ -124,7 +117,6 @@ describe('inFile.shouldNot.dependsOn scenarios (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await expect(
@@ -144,7 +136,6 @@ describe('inFile.shouldNot.dependsOn scenarios (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await expect(
@@ -166,7 +157,6 @@ describe('inFile.shouldNot.dependsOn scenarios (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await expect(
@@ -186,7 +176,6 @@ describe('inFile.shouldNot.dependsOn scenarios (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await expect(
@@ -206,7 +195,6 @@ describe('inFile.shouldNot.dependsOn scenarios (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await expect(
