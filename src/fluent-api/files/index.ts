@@ -1,16 +1,56 @@
 import { Operation } from "../../operations/base";
-import { Arguments } from "../common/arguments";
-import { Options } from "../common/options";
+import { Arguments } from "../../common/arguments";
+import { Options } from "../../common/options";
 
 type GlobPattern = string;
 
-class CheckConditionBuilder {
-    constructor(public should: ShouldSelectorBuilder) {}
+abstract class AbstractCheckConditionBuilder {
+    constructor(public condition: AbstractConditionBuilder) {}
 
-    and(): ShouldSelectorBuilder {
-        return new ShouldSelectorBuilder(this.should.options, this.should.rules, this.should.args, this.should.operations);
+    abstract and(): Omit<AbstractShouldSelectorBuilder, 'and'>
+}
+
+class CheckConditionBuilder extends AbstractCheckConditionBuilder {
+    constructor(public condition: AbstractConditionBuilder) {
+        super(condition);
+    }
+
+    override and(): Omit<ShouldSelectorBuilder, 'and'> {
+        return new ShouldSelectorBuilder(this.condition.options, [...this.condition.rules, ', and'], this.condition.args, this.condition.operations);
     }
 }
+
+class CheckConditionBuilder_ForJavascript extends AbstractCheckConditionBuilder {
+    constructor(public condition: AbstractConditionBuilder) {
+        super(condition);
+    }
+
+    override and(): Omit<ShouldSelectorBuilder_ForJavascript, 'and'> {
+        return new ShouldSelectorBuilder_ForJavascript(this.condition.options, [...this.condition.rules, ', and'], this.condition.args, this.condition.operations);
+    }
+}
+
+class CheckConditionBuilder_ForTypescript extends AbstractCheckConditionBuilder {
+    constructor(public condition: AbstractConditionBuilder) {
+        super(condition);
+    }
+
+    override and(): Omit<ShouldSelectorBuilder_ForTypescript, 'and'> {
+        return new ShouldSelectorBuilder_ForTypescript(this.condition.options, [...this.condition.rules, ', and'], this.condition.args, this.condition.operations);
+    }
+}
+
+class CheckConditionBuilder_ForCss extends AbstractCheckConditionBuilder {
+    constructor(public condition: AbstractConditionBuilder) {
+        super(condition);
+    }
+
+    override and(): Omit<ShouldSelectorBuilder_ForCss, 'and'> {
+        return new ShouldSelectorBuilder_ForCss(this.condition.options, [...this.condition.rules, ', and'], this.condition.args, this.condition.operations);
+    }
+}
+
+// ------------------------------------------------------------
 
 abstract class AbstractConditionBuilder {
     public abstract negated: boolean;
@@ -21,13 +61,13 @@ abstract class AbstractConditionBuilder {
         public operations: Operation[]
     ) {}
 
-    abstract haveName(pattern: GlobPattern): any
-    abstract haveNameStartingWith(prefix: string): any
-    abstract haveNameEndingWith(suffix: string): any
-    abstract haveNameContaining(substring: string): any
-    abstract dependsOn(dependencies: GlobPattern | GlobPattern[]): any
-    abstract onlyDependsOn(dependencies: GlobPattern | GlobPattern[]): any
-    abstract beFreeOfCycles(): any
+    abstract haveName(pattern: GlobPattern): AbstractCheckConditionBuilder
+    abstract haveNameStartingWith(prefix: string): AbstractCheckConditionBuilder
+    abstract haveNameEndingWith(suffix: string): AbstractCheckConditionBuilder
+    abstract haveNameContaining(substring: string): AbstractCheckConditionBuilder
+    abstract dependsOn(dependencies: GlobPattern | GlobPattern[]): AbstractCheckConditionBuilder
+    abstract onlyDependsOn(dependencies: GlobPattern | GlobPattern[]): AbstractCheckConditionBuilder
+    abstract beFreeOfCycles(): AbstractCheckConditionBuilder
 }
 
 class PositiveConditionBuilder extends AbstractConditionBuilder {
@@ -41,37 +81,45 @@ class PositiveConditionBuilder extends AbstractConditionBuilder {
         super(options, rules, args, operations);
     }
 
-    override haveName(pattern: GlobPattern): any {
+    override haveName(pattern: GlobPattern): CheckConditionBuilder {
         // this.operations.push(new Operation(this.negated));
+        return new CheckConditionBuilder(this);
     }
 
-    override haveNameStartingWith(prefix: string): any {
+    override haveNameStartingWith(prefix: string): CheckConditionBuilder {
         // this.operations.push(new Operation(this.negated));
+        return new CheckConditionBuilder(this);
     }
 
-    override haveNameEndingWith(suffix: string): any {
+    override haveNameEndingWith(suffix: string): CheckConditionBuilder {
         // this.operations.push(new Operation(this.negated));
+        return new CheckConditionBuilder(this);
     }
 
-    override haveNameContaining(substring: string): any {
+    override haveNameContaining(substring: string): CheckConditionBuilder {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder(this);
     }
 
-    override dependsOn(dependencies: GlobPattern | GlobPattern[]): any {
+    override dependsOn(dependencies: GlobPattern | GlobPattern[]): CheckConditionBuilder {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder(this);
     }
 
-    override onlyDependsOn(dependencies: GlobPattern | GlobPattern[]): any {
+    override onlyDependsOn(dependencies: GlobPattern | GlobPattern[]): CheckConditionBuilder {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder(this);
     }
 
-    override beFreeOfCycles(): any {
+    override beFreeOfCycles(): CheckConditionBuilder {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder(this);
     }
 }
 
 class NegativeConditionBuilder extends AbstractConditionBuilder {
     public override negated: boolean = true;
+
     constructor(
         public options: Options,
         public rules: string[],
@@ -81,32 +129,39 @@ class NegativeConditionBuilder extends AbstractConditionBuilder {
         super(options, rules, args, operations);
     }
 
-    override haveName(pattern: GlobPattern): any {
+    override haveName(pattern: GlobPattern): CheckConditionBuilder {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder(this);
     }
 
-    override haveNameStartingWith(prefix: string): any {
+    override haveNameStartingWith(prefix: string): CheckConditionBuilder {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder(this);
     }
 
-    override haveNameEndingWith(suffix: string): any {
+    override haveNameEndingWith(suffix: string): CheckConditionBuilder {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder(this);
     }
 
-    override haveNameContaining(substring: string): any {
+    override haveNameContaining(substring: string): CheckConditionBuilder {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder(this);
     }
 
-    override dependsOn(dependencies: GlobPattern | GlobPattern[]): any {
+    override dependsOn(dependencies: GlobPattern | GlobPattern[]): CheckConditionBuilder {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder(this);
     }
 
-    override onlyDependsOn(dependencies: GlobPattern | GlobPattern[]): any {
+    override onlyDependsOn(dependencies: GlobPattern | GlobPattern[]): CheckConditionBuilder {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder(this);
     }
 
-    override beFreeOfCycles(): any {
+    override beFreeOfCycles(): CheckConditionBuilder {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder(this);
     }
 }
 
@@ -120,7 +175,7 @@ abstract class AbstractConditionBuilder_ForJavascript extends AbstractConditionB
         super(options, rules, args, operations);
     }
 
-    abstract haveClassComponent(something: any[]): any
+    abstract haveClassComponent(something: any[]): AbstractCheckConditionBuilder
 }
 
 class PositiveConditionBuilder_ForJavascript extends AbstractConditionBuilder_ForJavascript {
@@ -135,36 +190,44 @@ class PositiveConditionBuilder_ForJavascript extends AbstractConditionBuilder_Fo
         super(options, rules, args, operations);
     }
 
-    override haveName(pattern: GlobPattern): any {
+    override haveName(pattern: GlobPattern): CheckConditionBuilder_ForJavascript {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForJavascript(this);
     }
 
-    override haveNameStartingWith(prefix: string): any {
+    override haveNameStartingWith(prefix: string): CheckConditionBuilder_ForJavascript {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForJavascript(this);
     }
 
-    override haveNameEndingWith(suffix: string): any {
+    override haveNameEndingWith(suffix: string): CheckConditionBuilder_ForJavascript {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForJavascript(this);
     }
 
-    override haveNameContaining(substring: string): any {
+    override haveNameContaining(substring: string): CheckConditionBuilder_ForJavascript {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForJavascript(this);
     }
 
-    override dependsOn(dependencies: GlobPattern | GlobPattern[]): any {
+    override dependsOn(dependencies: GlobPattern | GlobPattern[]): CheckConditionBuilder_ForJavascript {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForJavascript(this);
     }
 
-    override onlyDependsOn(dependencies: GlobPattern | GlobPattern[]): any {
+    override onlyDependsOn(dependencies: GlobPattern | GlobPattern[]): CheckConditionBuilder_ForJavascript {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForJavascript(this);
     }
 
-    override beFreeOfCycles(): any {
+    override beFreeOfCycles(): CheckConditionBuilder_ForJavascript {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForJavascript(this);
     }
 
-    override haveClassComponent(something: any[]): any {
+    override haveClassComponent(something: any[]): CheckConditionBuilder_ForJavascript {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForJavascript(this);
     }
 }
 
@@ -180,36 +243,44 @@ class NegativeConditionBuilder_ForJavascript extends AbstractConditionBuilder_Fo
         super(options, rules, args, operations);
     }
 
-    override haveName(pattern: GlobPattern): any {
+    override haveName(pattern: GlobPattern): CheckConditionBuilder_ForJavascript {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForJavascript(this);
     }
 
-    override haveNameStartingWith(prefix: string): any {
+    override haveNameStartingWith(prefix: string): CheckConditionBuilder_ForJavascript {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForJavascript(this);
     }
 
-    override haveNameEndingWith(suffix: string): any {
+    override haveNameEndingWith(suffix: string): CheckConditionBuilder_ForJavascript {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForJavascript(this);
     }
 
-    override haveNameContaining(substring: string): any {
+    override haveNameContaining(substring: string): CheckConditionBuilder_ForJavascript {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForJavascript(this);
     }
 
-    override dependsOn(dependencies: GlobPattern | GlobPattern[]): any {
+    override dependsOn(dependencies: GlobPattern | GlobPattern[]): CheckConditionBuilder_ForJavascript {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForJavascript(this);
     }
 
-    override onlyDependsOn(dependencies: GlobPattern | GlobPattern[]): any {
+    override onlyDependsOn(dependencies: GlobPattern | GlobPattern[]): CheckConditionBuilder_ForJavascript {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForJavascript(this);
     }
 
-    override beFreeOfCycles(): any {
+    override beFreeOfCycles(): CheckConditionBuilder_ForJavascript {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForJavascript(this);
     }
 
-    override haveClassComponent(something: any[]): any {
+    override haveClassComponent(something: any[]): CheckConditionBuilder_ForJavascript {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForJavascript(this);
     }
 }
 
@@ -236,36 +307,44 @@ class PositiveConditionBuilder_ForTypescript extends AbstractConditionBuilder_Fo
         super(options, rules, args, operations);
     }
 
-    override haveName(pattern: GlobPattern): any {
+    override haveName(pattern: GlobPattern): CheckConditionBuilder_ForTypescript {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForTypescript(this);
     }
 
-    override haveNameStartingWith(prefix: string): any {
+    override haveNameStartingWith(prefix: string): CheckConditionBuilder_ForTypescript {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForTypescript(this);
     }
 
-    override haveNameEndingWith(suffix: string): any {
+    override haveNameEndingWith(suffix: string): CheckConditionBuilder_ForTypescript {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForTypescript(this);
     }
 
-    override haveNameContaining(substring: string): any {
+    override haveNameContaining(substring: string): CheckConditionBuilder_ForTypescript {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForTypescript(this);
     }
 
-    override dependsOn(dependencies: GlobPattern | GlobPattern[]): any {
+    override dependsOn(dependencies: GlobPattern | GlobPattern[]): CheckConditionBuilder_ForTypescript {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForTypescript(this);
     }
 
-    override onlyDependsOn(dependencies: GlobPattern | GlobPattern[]): any {
+    override onlyDependsOn(dependencies: GlobPattern | GlobPattern[]): CheckConditionBuilder_ForTypescript {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForTypescript(this);
     }
 
-    override beFreeOfCycles(): any {
+    override beFreeOfCycles(): CheckConditionBuilder_ForTypescript {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForTypescript(this);
     }
 
-    override haveClassComponent(something: any[]): any {
+    override haveClassComponent(something: any[]): CheckConditionBuilder_ForTypescript {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForTypescript(this);
     }
 }
 
@@ -281,36 +360,44 @@ class NegativeConditionBuilder_ForTypescript extends AbstractConditionBuilder_Fo
         super(options, rules, args, operations);
     }
 
-    override haveName(pattern: GlobPattern): any {
+    override haveName(pattern: GlobPattern): CheckConditionBuilder_ForTypescript {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForTypescript(this);
     }
 
-    override haveNameStartingWith(prefix: string): any {
+    override haveNameStartingWith(prefix: string): CheckConditionBuilder_ForTypescript {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForTypescript(this);
     }
 
-    override haveNameEndingWith(suffix: string): any {
+    override haveNameEndingWith(suffix: string): CheckConditionBuilder_ForTypescript {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForTypescript(this);
     }
 
-    override haveNameContaining(substring: string): any {
+    override haveNameContaining(substring: string): CheckConditionBuilder_ForTypescript {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForTypescript(this);
     }
 
-    override dependsOn(dependencies: GlobPattern | GlobPattern[]): any {
+    override dependsOn(dependencies: GlobPattern | GlobPattern[]): CheckConditionBuilder_ForTypescript {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForTypescript(this);
     }
 
-    override onlyDependsOn(dependencies: GlobPattern | GlobPattern[]): any {
+    override onlyDependsOn(dependencies: GlobPattern | GlobPattern[]): CheckConditionBuilder_ForTypescript {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForTypescript(this);
     }
 
-    override beFreeOfCycles(): any {
+    override beFreeOfCycles(): CheckConditionBuilder_ForTypescript {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForTypescript(this);
     }
 
-    override haveClassComponent(something: any[]): any {
+    override haveClassComponent(something: any[]): CheckConditionBuilder_ForTypescript {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForTypescript(this);
     }
 }
 
@@ -337,32 +424,39 @@ class PositiveConditionBuilder_ForCss extends AbstractConditionBuilder_ForCss {
         super(options, rules, args, operations);
     }
 
-    override haveName(pattern: GlobPattern): any {
+    override haveName(pattern: GlobPattern): CheckConditionBuilder_ForCss {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForCss(this);
     }
 
-    override haveNameStartingWith(prefix: string): any {
+    override haveNameStartingWith(prefix: string): CheckConditionBuilder_ForCss {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForCss(this);
     }
 
-    override haveNameEndingWith(suffix: string): any {
+    override haveNameEndingWith(suffix: string): CheckConditionBuilder_ForCss {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForCss(this);
     }
 
-    override haveNameContaining(substring: string): any {
+    override haveNameContaining(substring: string): CheckConditionBuilder_ForCss {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForCss(this);
     }
 
-    override dependsOn(dependencies: GlobPattern | GlobPattern[]): any {
+    override dependsOn(dependencies: GlobPattern | GlobPattern[]): CheckConditionBuilder_ForCss {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForCss(this);
     }
 
-    override onlyDependsOn(dependencies: GlobPattern | GlobPattern[]): any {
+    override onlyDependsOn(dependencies: GlobPattern | GlobPattern[]): CheckConditionBuilder_ForCss {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForCss(this);
     }
 
-    override beFreeOfCycles(): any {
+    override beFreeOfCycles(): CheckConditionBuilder_ForCss {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForCss(this);
     }
 }
 
@@ -378,34 +472,43 @@ class NegativeConditionBuilder_ForCss extends AbstractConditionBuilder_ForCss {
         super(options, rules, args, operations);
     }
 
-    override haveName(pattern: GlobPattern): any {
+    override haveName(pattern: GlobPattern): CheckConditionBuilder_ForCss {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForCss(this);
     }
 
-    override haveNameStartingWith(prefix: string): any {
+    override haveNameStartingWith(prefix: string): CheckConditionBuilder_ForCss {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForCss(this);
     }
 
-    override haveNameEndingWith(suffix: string): any {
+    override haveNameEndingWith(suffix: string): CheckConditionBuilder_ForCss {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForCss(this);
     }
 
-    override haveNameContaining(substring: string): any {
+    override haveNameContaining(substring: string): CheckConditionBuilder_ForCss {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForCss(this);
     }
 
-    override dependsOn(dependencies: GlobPattern | GlobPattern[]): any {
+    override dependsOn(dependencies: GlobPattern | GlobPattern[]): CheckConditionBuilder_ForCss {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForCss(this);
     }
 
-    override onlyDependsOn(dependencies: GlobPattern | GlobPattern[]): any {
+    override onlyDependsOn(dependencies: GlobPattern | GlobPattern[]): CheckConditionBuilder_ForCss {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForCss(this);
     }
 
-    override beFreeOfCycles(): any {
+    override beFreeOfCycles(): CheckConditionBuilder_ForCss {
         // this.operations.push(new Operation());
+        return new CheckConditionBuilder_ForCss(this);
     }
 }
+
+// ------------------------------------------------------------
 
 abstract class AbstractShouldSelectorBuilder {
     constructor(
@@ -558,6 +661,8 @@ class ShouldSelectorBuilder_ForCss extends AbstractShouldSelectorBuilder {
         );
     }
 }
+
+// ------------------------------------------------------------
 
 abstract class AbstractFilesSelectorBuilder {
     constructor(

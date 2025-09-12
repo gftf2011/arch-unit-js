@@ -2,7 +2,7 @@ import * as path from 'pathe';
 import { fileURLToPath } from 'url';
 
 import { ProjectBuilder } from '@/fluent-api';
-import { Options } from './fluent-api/common/options';
+import { Options } from '@/common/options';
 
 type AppOptions = Omit<Options, 'rootDir'>;
 

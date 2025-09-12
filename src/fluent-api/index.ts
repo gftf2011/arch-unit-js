@@ -1,4 +1,4 @@
-import { Options } from "./common/options";
+import { Options } from "../common/options";
 import { FilesSelectorBuilder } from "./files";
 import { LayersSelectorBuilder } from "./layers";
 import { MetricsSelectorBuilder } from "./metrics";

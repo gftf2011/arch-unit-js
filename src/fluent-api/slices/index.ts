@@ -1,4 +1,4 @@
-import { Options } from "../common/options";
+import { Options } from "../../common/options";
 
 export class SlicesSelectorBuilder {
     constructor(private readonly props: { options: Options }) {}
