@@ -5,8 +5,8 @@ const moduleAlias = require('module-alias');
 const baseDir = __dirname;
 
 moduleAlias.addAliases({
-  '#domain': path.join(baseDir, 'domain'),
-  '#usecases': path.join(baseDir, 'use-cases'),
-  '#infra': path.join(baseDir, 'infra'),
-  '#main': path.join(baseDir, 'main'),
+  '#domain1': path.join(baseDir, 'domain'),
+  '#usecases1': path.join(baseDir, 'use-cases'),
+  '#infra1': path.join(baseDir, 'infra'),
+  '#main1': path.join(baseDir, 'main'),
 });

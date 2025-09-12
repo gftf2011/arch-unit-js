@@ -16,8 +16,6 @@ const ignoreMatchers = [
   '!<rootDir>/**/tsconfig.build.json',
 ];
 
-const typescriptPath = '<rootDir>/tsconfig.json';
-
 describe('inFile.should.onlyHaveName (NestJS clean sample)', () => {
   describe('Scenario 1: File does NOT match the pattern (FAIL)', () => {
     test('"modules/todo/todo.controller.ts" should only have name "*UseCase.ts" - should FAIL', async () => {
@@ -26,7 +24,6 @@ describe('inFile.should.onlyHaveName (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await expect(
@@ -46,7 +43,6 @@ describe('inFile.should.onlyHaveName (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await expect(
@@ -68,7 +64,6 @@ describe('inFile.should.onlyHaveName (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
@@ -86,7 +81,6 @@ describe('inFile.should.onlyHaveName (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
@@ -104,7 +98,6 @@ describe('inFile.should.onlyHaveName (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
@@ -122,7 +115,6 @@ describe('inFile.should.onlyHaveName (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
@@ -140,7 +132,6 @@ describe('inFile.should.onlyHaveName (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
@@ -160,7 +151,6 @@ describe('inFile.should.onlyHaveName (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await expect(
@@ -180,7 +170,6 @@ describe('inFile.should.onlyHaveName (NestJS clean sample)', () => {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await expect(
@@ -200,7 +189,6 @@ describe('inFile.should.onlyHaveName (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await expect(
@@ -219,7 +207,6 @@ describe('inFile.should.onlyHaveName (NestJS clean sample)', () => {
         extensionTypes: ['**/*.ts'],
         includeMatcher: ['<rootDir>/use-cases/**'],
         ignoreMatcher: ignoreMatchers,
-        typescriptPath,
       };
       const appInstance = ComponentSelectorBuilder.create(rootDir, options);
       await expect(

@@ -2,9 +2,9 @@
 
 require('../setup-aliases');
 
-const { InMemoryTodoRepository } = require('#infra/repositories/InMemoryTodoRepository');
-const { CreateTodo } = require('#usecases/CreateTodo');
-const { GetAllTodos } = require('#usecases/GetAllTodos');
+const { InMemoryTodoRepository } = require('#infra1/repositories/InMemoryTodoRepository');
+const { CreateTodo } = require('#usecases1/CreateTodo');
+const { GetAllTodos } = require('#usecases1/GetAllTodos');
 
 async function main() {
   const repo = new InMemoryTodoRepository();

@@ -16,8 +16,6 @@ const ignoreMatchers = [
   '!<rootDir>/**/tsconfig.build.json',
 ];
 
-const typescriptPath = '<rootDir>/tsconfig.json';
-
 describe('inFile.should.haveLocLessThan (NestJS clean sample)', () => {
   describe('Scenario 1: File LOC < threshold (PASS)', () => {
     test('"modules/app.module.ts" should have LOC less than 21 - PASS', async () => {
@@ -26,7 +24,6 @@ describe('inFile.should.haveLocLessThan (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
@@ -44,7 +41,6 @@ describe('inFile.should.haveLocLessThan (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
@@ -62,7 +58,6 @@ describe('inFile.should.haveLocLessThan (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
@@ -80,7 +75,6 @@ describe('inFile.should.haveLocLessThan (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
@@ -98,7 +92,6 @@ describe('inFile.should.haveLocLessThan (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance.projectFiles().inFile('**/main.ts').should().haveLocLessThan(16).check();
@@ -113,7 +106,6 @@ describe('inFile.should.haveLocLessThan (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await expect(
@@ -133,7 +125,6 @@ describe('inFile.should.haveLocLessThan (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await expect(
@@ -153,7 +144,6 @@ describe('inFile.should.haveLocLessThan (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await expect(
@@ -173,7 +163,6 @@ describe('inFile.should.haveLocLessThan (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await expect(
@@ -193,7 +182,6 @@ describe('inFile.should.haveLocLessThan (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await expect(
@@ -213,7 +201,6 @@ describe('inFile.should.haveLocLessThan (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await expect(
@@ -230,7 +217,6 @@ describe('inFile.should.haveLocLessThan (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await expect(

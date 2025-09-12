@@ -16,8 +16,6 @@ const ignoreMatchers = [
   '!<rootDir>/**/tsconfig.build.json',
 ];
 
-const typescriptPath = '<rootDir>/tsconfig.json';
-
 describe('inFile.shouldNot.onlyDependsOn (NestJS clean sample)', () => {
   describe('Scenario 1: File has NO dependencies (PASS)', () => {
     test('"domain/todo.entity.ts" should NOT only depend on [@nestjs/**] - PASS (no imports)', async () => {
@@ -26,7 +24,6 @@ describe('inFile.shouldNot.onlyDependsOn (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
@@ -47,7 +44,6 @@ describe('inFile.shouldNot.onlyDependsOn (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
@@ -68,7 +64,6 @@ describe('inFile.shouldNot.onlyDependsOn (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
@@ -87,7 +82,6 @@ describe('inFile.shouldNot.onlyDependsOn (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
@@ -108,7 +102,6 @@ describe('inFile.shouldNot.onlyDependsOn (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
@@ -131,7 +124,6 @@ describe('inFile.shouldNot.onlyDependsOn (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
@@ -152,7 +144,6 @@ describe('inFile.shouldNot.onlyDependsOn (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
@@ -173,7 +164,6 @@ describe('inFile.shouldNot.onlyDependsOn (NestJS clean sample)', () => {
           extensionTypes: ['**/*.js'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 
@@ -194,7 +184,6 @@ describe('inFile.shouldNot.onlyDependsOn (NestJS clean sample)', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
 

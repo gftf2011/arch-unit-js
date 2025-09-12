@@ -44,3 +44,12 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           files: ./coverage/lcov.info
+          parallel: true
+
+      - name: Finish Upload to Coveralls
+        if: >
+          (github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.base_ref == 'main')
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel-finished: true

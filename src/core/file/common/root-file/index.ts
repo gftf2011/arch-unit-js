@@ -24,6 +24,7 @@ export type BaseBuildableProps = {
   rootDir: string;
   availableFiles: string[];
   extensions: string[];
+  workspaceDir?: string;
   typescriptPath?: string;
   webpack?: {
     path: string;

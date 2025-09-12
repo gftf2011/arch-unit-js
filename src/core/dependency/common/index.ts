@@ -23,6 +23,7 @@ export type ResolvableDependencyProps = {
   filePath: string;
   availableFiles: string[];
   extensions: string[];
+  workspaceDir?: string;
   typescriptPath?: string;
   webpack?: {
     path: string;

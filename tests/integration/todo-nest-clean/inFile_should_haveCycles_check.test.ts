@@ -16,8 +16,6 @@ const ignoreMatchers = [
   '!<rootDir>/**/tsconfig.build.json',
 ];
 
-const typescriptPath = '<rootDir>/tsconfig.json';
-
 describe('should.haveCycles scenarios', () => {
   test('entire project should have cycles - DO I REALLY NEED TO EXPLAIN THIS ?', async () => {
     for (const includeMatcher of includeMatchers) {
@@ -26,7 +24,6 @@ describe('should.haveCycles scenarios', () => {
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance.projectFiles().inFile('**/*.ts').should().haveCycles().check();

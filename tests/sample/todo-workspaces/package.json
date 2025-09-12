@@ -1,0 +1,12 @@
+{
+  "name": "todo-workspaces",
+  "version": "1.0.0",
+  "description": "Node.Js API",
+  "main": "",
+  "scripts": {},
+  "keywords": [],
+  "author": "Gabriel Ferrari Tarallo Ferraz",
+  "workspaces": [
+    "packages/*"
+  ]
+}

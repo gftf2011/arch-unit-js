@@ -16,8 +16,6 @@ const ignoreMatchers = [
   '!<rootDir>/**/tsconfig.build.json',
 ];
 
-const typescriptPath = '<rootDir>/tsconfig.json';
-
 describe('inFile.should.haveLocGreaterOrEqualThan scenarios (NestJS clean sample)', () => {
   describe('Scenario 1: File has lines of code GREATER than or EQUAL to the threshold', () => {
     test('"use-cases/create-todo.usecase.ts" should have LOC >= 1 - should PASS', async () => {
@@ -26,7 +24,6 @@ describe('inFile.should.haveLocGreaterOrEqualThan scenarios (NestJS clean sample
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
@@ -44,7 +41,6 @@ describe('inFile.should.haveLocGreaterOrEqualThan scenarios (NestJS clean sample
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
@@ -64,7 +60,6 @@ describe('inFile.should.haveLocGreaterOrEqualThan scenarios (NestJS clean sample
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         try {
@@ -93,7 +88,6 @@ describe('inFile.should.haveLocGreaterOrEqualThan scenarios (NestJS clean sample
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await expect(
@@ -115,7 +109,6 @@ describe('inFile.should.haveLocGreaterOrEqualThan scenarios (NestJS clean sample
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await appInstance
@@ -134,7 +127,6 @@ describe('inFile.should.haveLocGreaterOrEqualThan scenarios (NestJS clean sample
             extensionTypes: ['**/*.ts'],
             includeMatcher: [...includeMatcher],
             ignoreMatcher: ignoreMatchers,
-            typescriptPath,
           };
           const appInstance = ComponentSelectorBuilder.create(rootDir, options);
           await appInstance
@@ -163,7 +155,6 @@ describe('inFile.should.haveLocGreaterOrEqualThan scenarios (NestJS clean sample
             extensionTypes: ['**/*.ts'],
             includeMatcher: [...includeMatcher],
             ignoreMatcher: ignoreMatchers,
-            typescriptPath,
           };
           const appInstance = ComponentSelectorBuilder.create(rootDir, options);
           await appInstance
@@ -191,7 +182,6 @@ describe('inFile.should.haveLocGreaterOrEqualThan scenarios (NestJS clean sample
           extensionTypes: ['**/*.ts'],
           includeMatcher: [...includeMatcher],
           ignoreMatcher: ignoreMatchers,
-          typescriptPath,
         };
         const appInstance = ComponentSelectorBuilder.create(rootDir, options);
         await expect(
@@ -210,7 +200,6 @@ describe('inFile.should.haveLocGreaterOrEqualThan scenarios (NestJS clean sample
         extensionTypes: ['**/*.ts'],
         includeMatcher: ['<rootDir>/infra/**'],
         ignoreMatcher: ignoreMatchers,
-        typescriptPath,
       };
       const appInstance = ComponentSelectorBuilder.create(rootDir, options);
       await expect(

@@ -69,7 +69,7 @@
       }
     },
     {
-      "files": ["esbuild.config.js"],
+      "files": ["esbuild.config.js", "scripts/**/*.js"],
       "rules": {
         "import/no-commonjs": "off",
         "@typescript-eslint/no-var-requires": "off"

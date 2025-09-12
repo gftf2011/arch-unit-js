@@ -23,9 +23,14 @@ module.exports = {
     '@/tests/(.*)': '<rootDir>/tests/$1',
     '@/(.*)': '<rootDir>/src/$1',
 
-    '^#domain/(.*)$': '<rootDir>/tests/sample/todo-js-sample-with-module-aliases/domain/$1', // map to solve module-alias in todo-js-sample-with-module-aliases
-    '^#usecases/(.*)$': '<rootDir>/tests/sample/todo-js-sample-with-module-aliases/use-cases/$1', // map to solve module-alias in todo-js-sample-with-module-aliases
-    '^#infra/(.*)$': '<rootDir>/tests/sample/todo-js-sample-with-module-aliases/infra/$1', // map to solve module-alias in todo-js-sample-with-module-aliases
-    '^#main/(.*)$': '<rootDir>/tests/sample/todo-js-sample-with-module-aliases/main/$1', // map to solve module-alias in todo-js-sample-with-module-aliases
+    '^#domain1/(.*)$': '<rootDir>/tests/sample/todo-js-sample-with-module-aliases/domain/$1', // map to solve module-alias in todo-js-sample-with-module-aliases
+    '^#usecases1/(.*)$': '<rootDir>/tests/sample/todo-js-sample-with-module-aliases/use-cases/$1', // map to solve module-alias in todo-js-sample-with-module-aliases
+    '^#infra1/(.*)$': '<rootDir>/tests/sample/todo-js-sample-with-module-aliases/infra/$1', // map to solve module-alias in todo-js-sample-with-module-aliases
+    '^#main1/(.*)$': '<rootDir>/tests/sample/todo-js-sample-with-module-aliases/main/$1', // map to solve module-alias in todo-js-sample-with-module-aliases
+
+    '^#domain2/(.*)$': '<rootDir>/tests/sample/todo-workspaces/packages/d/domain/$1', // map to solve module-alias in todo-workspaces
+    '^#usecases2/(.*)$': '<rootDir>/tests/sample/todo-workspaces/packages/d/use-cases/$1', // map to solve module-alias in todo-workspaces
+    '^#infra2/(.*)$': '<rootDir>/tests/sample/todo-workspaces/packages/d/infra/$1', // map to solve module-alias in todo-workspaces
+    '^#main2/(.*)$': '<rootDir>/tests/sample/todo-workspaces/packages/d/main/$1', // map to solve module-alias in todo-workspaces
   },
 };
