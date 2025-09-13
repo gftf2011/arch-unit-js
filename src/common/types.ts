@@ -1,0 +1,1 @@
+export type GlobPattern = string;
