@@ -1,3 +1,3 @@
 export interface Check {
-  check(): Promise<void>;
+  check(): Promise<void> | void;
 }

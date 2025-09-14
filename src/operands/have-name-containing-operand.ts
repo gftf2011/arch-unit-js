@@ -1,3 +1,4 @@
+import { Edge } from '@/edge';
 import { Operand } from '@/operands/operand';
 
 export class HaveNameContainingOperand extends Operand<string> {
@@ -5,7 +6,15 @@ export class HaveNameContainingOperand extends Operand<string> {
     super(value);
   }
 
-  override check(name: string): boolean {
-    return name.includes(this.value);
+  override errorMessage(edge: Edge, negated: boolean): string {
+    if (negated) {
+      return `File ${edge.name} name contains pattern ${this.value}`;
+    }
+    return `File ${edge.name} name does not contain pattern ${this.value}`;
+  }
+
+  override check(edge: Edge, negated: boolean): boolean {
+    const has = edge.name.includes(this.value);
+    return negated ? !has : has;
   }
 }

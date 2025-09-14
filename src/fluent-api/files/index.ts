@@ -1,17 +1,13 @@
 import { CheckOperation } from '@/operations/check-operation';
-import { HaveNameOperation } from '@/operations/check/have-name-operation';
-import { HaveNameEndingWithOperation } from '@/operations/check/have-name-ending-with-operation';
-import { HaveNameStartingWithOperation } from '@/operations/check/have-name-starting-with-operation';
-import { Arguments } from '@/common/arguments';
+import { Argument } from '@/common/argument';
 import { Options } from '@/common/options';
-import { ProjectType } from '@/common/project-type';
 import { Check } from '@/common/check';
-import { GlobPattern } from '@/common/types';
+import { GlobPattern, ProjectType } from '@/common/types';
 import { HaveNameOperand } from '@/operands/have-name-operand';
 import { HaveNameStartingWithOperand } from '@/operands/have-name-starting-with-operand';
 import { HaveNameEndingWithOperand } from '@/operands/have-name-ending-with-operand';
-import { HaveNameContainingOperation } from '@/operations/check/have-name-containing-operation';
 import { HaveNameContainingOperand } from '@/operands/have-name-containing-operand';
+import { OperationChecker } from '@/operation-checker';
 
 abstract class AbstractCheckConditionBuilder implements Check {
   public abstract projectType: ProjectType;
@@ -40,15 +36,15 @@ class CheckConditionBuilder extends AbstractCheckConditionBuilder {
   }
 
   override async check(): Promise<void> {
-    // const operationChecker = new OperationChecker(
-    //   this.projectType,
-    //   this.condition.options,
-    //   this.condition.rules,
-    //   this.condition.args,
-    //   this.condition.operations,
-    // );
+    const operationChecker = new OperationChecker(
+      this.projectType,
+      this.condition.options,
+      this.condition.rules,
+      this.condition.args,
+      this.condition.operations,
+    );
 
-    // await operationChecker.check();
+    await operationChecker.check();
   }
 }
 
@@ -122,7 +118,7 @@ abstract class AbstractConditionBuilder {
   constructor(
     public options: Options,
     public rules: string[],
-    public args: Arguments[],
+    public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {}
 
@@ -140,7 +136,7 @@ class PositiveConditionBuilder extends AbstractConditionBuilder {
   constructor(
     public options: Options,
     public rules: string[],
-    public args: Arguments[],
+    public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
     super(options, rules, args, operations);
@@ -148,25 +144,25 @@ class PositiveConditionBuilder extends AbstractConditionBuilder {
 
   override haveName(pattern: GlobPattern): CheckConditionBuilder {
     this.rules.push(`have name "${pattern}"`);
-    this.operations.push(new HaveNameOperation(this.negated, new HaveNameOperand(pattern)));
+    this.operations.push(new CheckOperation(this.negated, new HaveNameOperand(pattern)));
     return new CheckConditionBuilder(this);
   }
 
   override haveNameStartingWith(prefix: string): CheckConditionBuilder {
     this.rules.push(`have name starting with "${prefix}"`);
-    this.operations.push(new HaveNameStartingWithOperation(this.negated, new HaveNameStartingWithOperand(prefix)));
+    this.operations.push(new CheckOperation(this.negated, new HaveNameStartingWithOperand(prefix)));
     return new CheckConditionBuilder(this);
   }
 
   override haveNameEndingWith(suffix: string): CheckConditionBuilder {
     this.rules.push(`have name ending with "${suffix}"`);
-    this.operations.push(new HaveNameEndingWithOperation(this.negated, new HaveNameEndingWithOperand(suffix)));
+    this.operations.push(new CheckOperation(this.negated, new HaveNameEndingWithOperand(suffix)));
     return new CheckConditionBuilder(this);
   }
 
   override haveNameContaining(substring: string): CheckConditionBuilder {
     this.rules.push(`have name containing "${substring}"`);
-    this.operations.push(new HaveNameContainingOperation(this.negated, new HaveNameContainingOperand(substring)));
+    this.operations.push(new CheckOperation(this.negated, new HaveNameContainingOperand(substring)));
     return new CheckConditionBuilder(this);
   }
 
@@ -192,7 +188,7 @@ class NegativeConditionBuilder extends AbstractConditionBuilder {
   constructor(
     public options: Options,
     public rules: string[],
-    public args: Arguments[],
+    public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
     super(options, rules, args, operations);
@@ -200,25 +196,25 @@ class NegativeConditionBuilder extends AbstractConditionBuilder {
 
   override haveName(pattern: GlobPattern): CheckConditionBuilder {
     this.rules.push(`have name "${pattern}"`);
-    this.operations.push(new HaveNameOperation(this.negated, new HaveNameOperand(pattern)));
+    this.operations.push(new CheckOperation(this.negated, new HaveNameOperand(pattern)));
     return new CheckConditionBuilder(this);
   }
 
   override haveNameStartingWith(prefix: string): CheckConditionBuilder {
     this.rules.push(`have name starting with "${prefix}"`);
-    this.operations.push(new HaveNameStartingWithOperation(this.negated, new HaveNameStartingWithOperand(prefix)));
+    this.operations.push(new CheckOperation(this.negated, new HaveNameStartingWithOperand(prefix)));
     return new CheckConditionBuilder(this);
   }
 
   override haveNameEndingWith(suffix: string): CheckConditionBuilder {
     this.rules.push(`have name ending with "${suffix}"`);
-    this.operations.push(new HaveNameEndingWithOperation(this.negated, new HaveNameEndingWithOperand(suffix)));
+    this.operations.push(new CheckOperation(this.negated, new HaveNameEndingWithOperand(suffix)));
     return new CheckConditionBuilder(this);
   }
 
   override haveNameContaining(substring: string): CheckConditionBuilder {
     this.rules.push(`have name containing "${substring}"`);
-    this.operations.push(new HaveNameContainingOperation(this.negated, new HaveNameContainingOperand(substring)));
+    this.operations.push(new CheckOperation(this.negated, new HaveNameContainingOperand(substring)));
     return new CheckConditionBuilder(this);
   }
 
@@ -242,7 +238,7 @@ abstract class AbstractConditionBuilder_ForJavascript extends AbstractConditionB
   constructor(
     public options: Options,
     public rules: string[],
-    public args: Arguments[],
+    public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
     super(options, rules, args, operations);
@@ -257,7 +253,7 @@ class PositiveConditionBuilder_ForJavascript extends AbstractConditionBuilder_Fo
   constructor(
     public options: Options,
     public rules: string[],
-    public args: Arguments[],
+    public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
     super(options, rules, args, operations);
@@ -265,25 +261,25 @@ class PositiveConditionBuilder_ForJavascript extends AbstractConditionBuilder_Fo
 
   override haveName(pattern: GlobPattern): CheckConditionBuilder_ForJavascript {
     this.rules.push(`have name "${pattern}"`);
-    this.operations.push(new HaveNameOperation(this.negated, new HaveNameOperand(pattern)));
+    this.operations.push(new CheckOperation(this.negated, new HaveNameOperand(pattern)));
     return new CheckConditionBuilder_ForJavascript(this);
   }
 
   override haveNameStartingWith(prefix: string): CheckConditionBuilder_ForJavascript {
     this.rules.push(`have name starting with "${prefix}"`);
-    this.operations.push(new HaveNameStartingWithOperation(this.negated, new HaveNameStartingWithOperand(prefix)));
+    this.operations.push(new CheckOperation(this.negated, new HaveNameStartingWithOperand(prefix)));
     return new CheckConditionBuilder_ForJavascript(this);
   }
 
   override haveNameEndingWith(suffix: string): CheckConditionBuilder_ForJavascript {
     this.rules.push(`have name ending with "${suffix}"`);
-    this.operations.push(new HaveNameEndingWithOperation(this.negated, new HaveNameEndingWithOperand(suffix)));
+    this.operations.push(new CheckOperation(this.negated, new HaveNameEndingWithOperand(suffix)));
     return new CheckConditionBuilder_ForJavascript(this);
   }
 
   override haveNameContaining(substring: string): CheckConditionBuilder_ForJavascript {
     this.rules.push(`have name containing "${substring}"`);
-    this.operations.push(new HaveNameContainingOperation(this.negated, new HaveNameContainingOperand(substring)));
+    this.operations.push(new CheckOperation(this.negated, new HaveNameContainingOperand(substring)));
     return new CheckConditionBuilder_ForJavascript(this);
   }
 
@@ -318,7 +314,7 @@ class NegativeConditionBuilder_ForJavascript extends AbstractConditionBuilder_Fo
   constructor(
     public options: Options,
     public rules: string[],
-    public args: Arguments[],
+    public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
     super(options, rules, args, operations);
@@ -326,25 +322,25 @@ class NegativeConditionBuilder_ForJavascript extends AbstractConditionBuilder_Fo
 
   override haveName(pattern: GlobPattern): CheckConditionBuilder_ForJavascript {
     this.rules.push(`have name "${pattern}"`);
-    this.operations.push(new HaveNameOperation(this.negated, new HaveNameOperand(pattern)));
+    this.operations.push(new CheckOperation(this.negated, new HaveNameOperand(pattern)));
     return new CheckConditionBuilder_ForJavascript(this);
   }
 
   override haveNameStartingWith(prefix: string): CheckConditionBuilder_ForJavascript {
     this.rules.push(`have name starting with "${prefix}"`);
-    this.operations.push(new HaveNameStartingWithOperation(this.negated, new HaveNameStartingWithOperand(prefix)));
+    this.operations.push(new CheckOperation(this.negated, new HaveNameStartingWithOperand(prefix)));
     return new CheckConditionBuilder_ForJavascript(this);
   }
 
   override haveNameEndingWith(suffix: string): CheckConditionBuilder_ForJavascript {
     this.rules.push(`have name ending with "${suffix}"`);
-    this.operations.push(new HaveNameEndingWithOperation(this.negated, new HaveNameEndingWithOperand(suffix)));
+    this.operations.push(new CheckOperation(this.negated, new HaveNameEndingWithOperand(suffix)));
     return new CheckConditionBuilder_ForJavascript(this);
   }
 
   override haveNameContaining(substring: string): CheckConditionBuilder_ForJavascript {
     this.rules.push(`have name containing "${substring}"`);
-    this.operations.push(new HaveNameContainingOperation(this.negated, new HaveNameContainingOperand(substring)));
+    this.operations.push(new CheckOperation(this.negated, new HaveNameContainingOperand(substring)));
     return new CheckConditionBuilder_ForJavascript(this);
   }
 
@@ -377,7 +373,7 @@ abstract class AbstractConditionBuilder_ForTypescript extends AbstractConditionB
   constructor(
     public options: Options,
     public rules: string[],
-    public args: Arguments[],
+    public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
     super(options, rules, args, operations);
@@ -390,7 +386,7 @@ class PositiveConditionBuilder_ForTypescript extends AbstractConditionBuilder_Fo
   constructor(
     public options: Options,
     public rules: string[],
-    public args: Arguments[],
+    public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
     super(options, rules, args, operations);
@@ -398,25 +394,25 @@ class PositiveConditionBuilder_ForTypescript extends AbstractConditionBuilder_Fo
 
   override haveName(pattern: GlobPattern): CheckConditionBuilder_ForTypescript {
     this.rules.push(`have name "${pattern}"`);
-    this.operations.push(new HaveNameOperation(this.negated, new HaveNameOperand(pattern)));
+    this.operations.push(new CheckOperation(this.negated, new HaveNameOperand(pattern)));
     return new CheckConditionBuilder_ForTypescript(this);
   }
 
   override haveNameStartingWith(prefix: string): CheckConditionBuilder_ForTypescript {
     this.rules.push(`have name starting with "${prefix}"`);
-    this.operations.push(new HaveNameStartingWithOperation(this.negated, new HaveNameStartingWithOperand(prefix)));
+    this.operations.push(new CheckOperation(this.negated, new HaveNameStartingWithOperand(prefix)));
     return new CheckConditionBuilder_ForTypescript(this);
   }
 
   override haveNameEndingWith(suffix: string): CheckConditionBuilder_ForTypescript {
     this.rules.push(`have name ending with "${suffix}"`);
-    this.operations.push(new HaveNameEndingWithOperation(this.negated, new HaveNameEndingWithOperand(suffix)));
+    this.operations.push(new CheckOperation(this.negated, new HaveNameEndingWithOperand(suffix)));
     return new CheckConditionBuilder_ForTypescript(this);
   }
 
   override haveNameContaining(substring: string): CheckConditionBuilder_ForTypescript {
     this.rules.push(`have name containing "${substring}"`);
-    this.operations.push(new HaveNameContainingOperation(this.negated, new HaveNameContainingOperand(substring)));
+    this.operations.push(new CheckOperation(this.negated, new HaveNameContainingOperand(substring)));
     return new CheckConditionBuilder_ForTypescript(this);
   }
 
@@ -451,7 +447,7 @@ class NegativeConditionBuilder_ForTypescript extends AbstractConditionBuilder_Fo
   constructor(
     public options: Options,
     public rules: string[],
-    public args: Arguments[],
+    public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
     super(options, rules, args, operations);
@@ -459,25 +455,25 @@ class NegativeConditionBuilder_ForTypescript extends AbstractConditionBuilder_Fo
 
   override haveName(pattern: GlobPattern): CheckConditionBuilder_ForTypescript {
     this.rules.push(`have name "${pattern}"`);
-    this.operations.push(new HaveNameOperation(this.negated, new HaveNameOperand(pattern)));
+    this.operations.push(new CheckOperation(this.negated, new HaveNameOperand(pattern)));
     return new CheckConditionBuilder_ForTypescript(this);
   }
 
   override haveNameStartingWith(prefix: string): CheckConditionBuilder_ForTypescript {
     this.rules.push(`have name starting with "${prefix}"`);
-    this.operations.push(new HaveNameStartingWithOperation(this.negated, new HaveNameStartingWithOperand(prefix)));
+    this.operations.push(new CheckOperation(this.negated, new HaveNameStartingWithOperand(prefix)));
     return new CheckConditionBuilder_ForTypescript(this);
   }
 
   override haveNameEndingWith(suffix: string): CheckConditionBuilder_ForTypescript {
     this.rules.push(`have name ending with "${suffix}"`);
-    this.operations.push(new HaveNameEndingWithOperation(this.negated, new HaveNameEndingWithOperand(suffix)));
+    this.operations.push(new CheckOperation(this.negated, new HaveNameEndingWithOperand(suffix)));
     return new CheckConditionBuilder_ForTypescript(this);
   }
 
   override haveNameContaining(substring: string): CheckConditionBuilder_ForTypescript {
     this.rules.push(`have name containing "${substring}"`);
-    this.operations.push(new HaveNameContainingOperation(this.negated, new HaveNameContainingOperand(substring)));
+    this.operations.push(new CheckOperation(this.negated, new HaveNameContainingOperand(substring)));
     return new CheckConditionBuilder_ForTypescript(this);
   }
 
@@ -510,7 +506,7 @@ abstract class AbstractConditionBuilder_ForCss extends AbstractConditionBuilder 
   constructor(
     public options: Options,
     public rules: string[],
-    public args: Arguments[],
+    public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
     super(options, rules, args, operations);
@@ -523,7 +519,7 @@ class PositiveConditionBuilder_ForCss extends AbstractConditionBuilder_ForCss {
   constructor(
     public options: Options,
     public rules: string[],
-    public args: Arguments[],
+    public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
     super(options, rules, args, operations);
@@ -531,25 +527,25 @@ class PositiveConditionBuilder_ForCss extends AbstractConditionBuilder_ForCss {
 
   override haveName(pattern: GlobPattern): CheckConditionBuilder_ForCss {
     this.rules.push(`have name "${pattern}"`);
-    this.operations.push(new HaveNameOperation(this.negated, new HaveNameOperand(pattern)));
+    this.operations.push(new CheckOperation(this.negated, new HaveNameOperand(pattern)));
     return new CheckConditionBuilder_ForCss(this);
   }
 
   override haveNameStartingWith(prefix: string): CheckConditionBuilder_ForCss {
     this.rules.push(`have name starting with "${prefix}"`);
-    this.operations.push(new HaveNameStartingWithOperation(this.negated, new HaveNameStartingWithOperand(prefix)));
+    this.operations.push(new CheckOperation(this.negated, new HaveNameStartingWithOperand(prefix)));
     return new CheckConditionBuilder_ForCss(this);
   }
 
   override haveNameEndingWith(suffix: string): CheckConditionBuilder_ForCss {
     this.rules.push(`have name ending with "${suffix}"`);
-    this.operations.push(new HaveNameEndingWithOperation(this.negated, new HaveNameEndingWithOperand(suffix)));
+    this.operations.push(new CheckOperation(this.negated, new HaveNameEndingWithOperand(suffix)));
     return new CheckConditionBuilder_ForCss(this);
   }
 
   override haveNameContaining(substring: string): CheckConditionBuilder_ForCss {
     this.rules.push(`have name containing "${substring}"`);
-    this.operations.push(new HaveNameContainingOperation(this.negated, new HaveNameContainingOperand(substring)));
+    this.operations.push(new CheckOperation(this.negated, new HaveNameContainingOperand(substring)));
     return new CheckConditionBuilder_ForCss(this);
   }
 
@@ -575,7 +571,7 @@ class NegativeConditionBuilder_ForCss extends AbstractConditionBuilder_ForCss {
   constructor(
     public options: Options,
     public rules: string[],
-    public args: Arguments[],
+    public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
     super(options, rules, args, operations);
@@ -583,25 +579,25 @@ class NegativeConditionBuilder_ForCss extends AbstractConditionBuilder_ForCss {
 
   override haveName(pattern: GlobPattern): CheckConditionBuilder_ForCss {
     this.rules.push(`have name "${pattern}"`);
-    this.operations.push(new HaveNameOperation(this.negated, new HaveNameOperand(pattern)));
+    this.operations.push(new CheckOperation(this.negated, new HaveNameOperand(pattern)));
     return new CheckConditionBuilder_ForCss(this);
   }
 
   override haveNameStartingWith(prefix: string): CheckConditionBuilder_ForCss {
     this.rules.push(`have name starting with "${prefix}"`);
-    this.operations.push(new HaveNameStartingWithOperation(this.negated, new HaveNameStartingWithOperand(prefix)));
+    this.operations.push(new CheckOperation(this.negated, new HaveNameStartingWithOperand(prefix)));
     return new CheckConditionBuilder_ForCss(this);
   }
 
   override haveNameEndingWith(suffix: string): CheckConditionBuilder_ForCss {
     this.rules.push(`have name ending with "${suffix}"`);
-    this.operations.push(new HaveNameEndingWithOperation(this.negated, new HaveNameEndingWithOperand(suffix)));
+    this.operations.push(new CheckOperation(this.negated, new HaveNameEndingWithOperand(suffix)));
     return new CheckConditionBuilder_ForCss(this);
   }
 
   override haveNameContaining(substring: string): CheckConditionBuilder_ForCss {
     this.rules.push(`have name containing "${substring}"`);
-    this.operations.push(new HaveNameContainingOperation(this.negated, new HaveNameContainingOperand(substring)));
+    this.operations.push(new CheckOperation(this.negated, new HaveNameContainingOperand(substring)));
     return new CheckConditionBuilder_ForCss(this);
   }
 
@@ -627,7 +623,7 @@ abstract class AbstractShouldSelectorBuilder {
   constructor(
     public options: Options,
     public rules: string[],
-    public args: Arguments[],
+    public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {}
   abstract should(): PositiveConditionBuilder;
@@ -639,7 +635,7 @@ class ShouldSelectorBuilder extends AbstractShouldSelectorBuilder {
   constructor(
     public options: Options,
     public rules: string[],
-    public args: Arguments[],
+    public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
     super(options, rules, args, operations);
@@ -674,7 +670,7 @@ class ShouldSelectorBuilder_ForJavascript extends AbstractShouldSelectorBuilder 
   constructor(
     public options: Options,
     public rules: string[],
-    public args: Arguments[],
+    public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
     super(options, rules, args, operations);
@@ -709,7 +705,7 @@ class ShouldSelectorBuilder_ForTypescript extends AbstractShouldSelectorBuilder 
   constructor(
     public options: Options,
     public rules: string[],
-    public args: Arguments[],
+    public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
     super(options, rules, args, operations);
@@ -744,7 +740,7 @@ class ShouldSelectorBuilder_ForCss extends AbstractShouldSelectorBuilder {
   constructor(
     public options: Options,
     public rules: string[],
-    public args: Arguments[],
+    public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
     super(options, rules, args, operations);
@@ -781,7 +777,7 @@ abstract class AbstractFilesSelectorBuilder {
   constructor(
     public options: Options,
     public rules: string[],
-    public args: Arguments[],
+    public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {}
 
@@ -795,14 +791,14 @@ class JavascriptFilesSelectorBuilder extends AbstractFilesSelectorBuilder {
   constructor(
     public options: Options,
     public rules: string[],
-    public args: Arguments[],
+    public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
     super(options, rules, args, operations);
   }
 
   inFile(pattern: string): ShouldSelectorBuilder_ForJavascript {
-    this.args.push(Arguments.create().setValues([pattern]));
+    this.args.push(Argument.create().setValues([pattern]));
     const should = new ShouldSelectorBuilder_ForJavascript(
       this.options,
       [...this.rules, 'in file'],
@@ -812,7 +808,7 @@ class JavascriptFilesSelectorBuilder extends AbstractFilesSelectorBuilder {
     return should;
   }
   inFiles(patterns: string[]): ShouldSelectorBuilder_ForJavascript {
-    this.args.push(Arguments.create().setValues(patterns));
+    this.args.push(Argument.create().setValues(patterns));
     const should = new ShouldSelectorBuilder_ForJavascript(
       this.options,
       [...this.rules, 'in files'],
@@ -822,7 +818,7 @@ class JavascriptFilesSelectorBuilder extends AbstractFilesSelectorBuilder {
     return should;
   }
   inDirectory(patterns: string[]): ShouldSelectorBuilder_ForJavascript {
-    this.args.push(Arguments.create().setValues(patterns));
+    this.args.push(Argument.create().setValues(patterns));
     const should = new ShouldSelectorBuilder_ForJavascript(
       this.options,
       [...this.rules, 'in directory'],
@@ -832,7 +828,7 @@ class JavascriptFilesSelectorBuilder extends AbstractFilesSelectorBuilder {
     return should;
   }
   inDirectories(patterns: string[]): ShouldSelectorBuilder_ForJavascript {
-    this.args.push(Arguments.create().setValues(patterns));
+    this.args.push(Argument.create().setValues(patterns));
     const should = new ShouldSelectorBuilder_ForJavascript(
       this.options,
       [...this.rules, 'in directories'],
@@ -847,14 +843,14 @@ class TypescriptFilesSelectorBuilder extends AbstractFilesSelectorBuilder {
   constructor(
     public options: Options,
     public rules: string[],
-    public args: Arguments[],
+    public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
     super(options, rules, args, operations);
   }
 
   inFile(pattern: string): ShouldSelectorBuilder_ForTypescript {
-    this.args.push(Arguments.create().setValues([pattern]));
+    this.args.push(Argument.create().setValues([pattern]));
     const should = new ShouldSelectorBuilder_ForTypescript(
       this.options,
       [...this.rules, 'in file'],
@@ -864,7 +860,7 @@ class TypescriptFilesSelectorBuilder extends AbstractFilesSelectorBuilder {
     return should;
   }
   inFiles(patterns: string[]): ShouldSelectorBuilder_ForTypescript {
-    this.args.push(Arguments.create().setValues(patterns));
+    this.args.push(Argument.create().setValues(patterns));
     const should = new ShouldSelectorBuilder_ForTypescript(
       this.options,
       [...this.rules, 'in files'],
@@ -874,7 +870,7 @@ class TypescriptFilesSelectorBuilder extends AbstractFilesSelectorBuilder {
     return should;
   }
   inDirectory(patterns: string[]): ShouldSelectorBuilder_ForTypescript {
-    this.args.push(Arguments.create().setValues(patterns));
+    this.args.push(Argument.create().setValues(patterns));
     const should = new ShouldSelectorBuilder_ForTypescript(
       this.options,
       [...this.rules, 'in directory'],
@@ -884,7 +880,7 @@ class TypescriptFilesSelectorBuilder extends AbstractFilesSelectorBuilder {
     return should;
   }
   inDirectories(patterns: string[]): ShouldSelectorBuilder_ForTypescript {
-    this.args.push(Arguments.create().setValues(patterns));
+    this.args.push(Argument.create().setValues(patterns));
     const should = new ShouldSelectorBuilder_ForTypescript(
       this.options,
       [...this.rules, 'in directories'],
@@ -899,14 +895,14 @@ class CssFilesSelectorBuilder extends AbstractFilesSelectorBuilder {
   constructor(
     public options: Options,
     public rules: string[],
-    public args: Arguments[],
+    public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
     super(options, rules, args, operations);
   }
 
   inFile(pattern: string): ShouldSelectorBuilder_ForCss {
-    this.args.push(Arguments.create().setValues([pattern]));
+    this.args.push(Argument.create().setValues([pattern]));
     const should = new ShouldSelectorBuilder_ForCss(
       this.options,
       [...this.rules, 'in file'],
@@ -916,7 +912,7 @@ class CssFilesSelectorBuilder extends AbstractFilesSelectorBuilder {
     return should;
   }
   inFiles(patterns: string[]): ShouldSelectorBuilder_ForCss {
-    this.args.push(Arguments.create().setValues(patterns));
+    this.args.push(Argument.create().setValues(patterns));
     const should = new ShouldSelectorBuilder_ForCss(
       this.options,
       [...this.rules, 'in files'],
@@ -926,7 +922,7 @@ class CssFilesSelectorBuilder extends AbstractFilesSelectorBuilder {
     return should;
   }
   inDirectory(patterns: string[]): ShouldSelectorBuilder_ForCss {
-    this.args.push(Arguments.create().setValues(patterns));
+    this.args.push(Argument.create().setValues(patterns));
     const should = new ShouldSelectorBuilder_ForCss(
       this.options,
       [...this.rules, 'in directory'],
@@ -936,7 +932,7 @@ class CssFilesSelectorBuilder extends AbstractFilesSelectorBuilder {
     return should;
   }
   inDirectories(patterns: string[]): ShouldSelectorBuilder_ForCss {
-    this.args.push(Arguments.create().setValues(patterns));
+    this.args.push(Argument.create().setValues(patterns));
     const should = new ShouldSelectorBuilder_ForCss(
       this.options,
       [...this.rules, 'in directories'],
@@ -951,14 +947,14 @@ export class FilesSelectorBuilder extends AbstractFilesSelectorBuilder {
   constructor(
     public options: Options,
     public rules: string[],
-    public args: Arguments[] = [],
+    public args: Argument[] = [],
     public operations: CheckOperation<any>[] = [],
   ) {
     super(options, rules, args, operations);
   }
 
   inFile(pattern: string): ShouldSelectorBuilder {
-    this.args.push(Arguments.create().setValues([pattern]));
+    this.args.push(Argument.create().setValues([pattern]));
     const should = new ShouldSelectorBuilder(
       this.options,
       [...this.rules, 'in file'],
@@ -968,7 +964,7 @@ export class FilesSelectorBuilder extends AbstractFilesSelectorBuilder {
     return should;
   }
   inFiles(patterns: string[]): ShouldSelectorBuilder {
-    this.args.push(Arguments.create().setValues(patterns));
+    this.args.push(Argument.create().setValues(patterns));
     const should = new ShouldSelectorBuilder(
       this.options,
       [...this.rules, 'in files'],
@@ -978,7 +974,7 @@ export class FilesSelectorBuilder extends AbstractFilesSelectorBuilder {
     return should;
   }
   inDirectory(patterns: string[]): ShouldSelectorBuilder {
-    this.args.push(Arguments.create().setValues(patterns));
+    this.args.push(Argument.create().setValues(patterns));
     const should = new ShouldSelectorBuilder(
       this.options,
       [...this.rules, 'in directory'],
@@ -988,7 +984,7 @@ export class FilesSelectorBuilder extends AbstractFilesSelectorBuilder {
     return should;
   }
   inDirectories(patterns: string[]): ShouldSelectorBuilder {
-    this.args.push(Arguments.create().setValues(patterns));
+    this.args.push(Argument.create().setValues(patterns));
     const should = new ShouldSelectorBuilder(
       this.options,
       [...this.rules, 'in directories'],

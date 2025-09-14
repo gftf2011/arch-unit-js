@@ -1,4 +1,4 @@
-export class Arguments {
+export class Argument {
   private constructor(
     private label: string = '',
     private values: string[] = [],
@@ -6,11 +6,11 @@ export class Arguments {
     this.label = label;
   }
 
-  public static create(): Arguments {
-    return new Arguments();
+  public static create(): Argument {
+    return new Argument();
   }
 
-  setLabel(label: string): Arguments {
+  setLabel(label: string): Argument {
     this.label = label;
     return this;
   }
@@ -19,7 +19,7 @@ export class Arguments {
     return this.label;
   }
 
-  setValues(values: string[]): Arguments {
+  setValues(values: string[]): Argument {
     this.values = values;
     return this;
   }

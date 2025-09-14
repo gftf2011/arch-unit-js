@@ -1,3 +1,5 @@
+import { Edge } from "@/edge";
+
 export abstract class Operand<T> {
   constructor(private _value: T) {}
 
@@ -9,5 +11,7 @@ export abstract class Operand<T> {
     this._value = _value;
   }
 
-  public abstract check(value: T): boolean;
+  public abstract errorMessage(Edge: Edge, negated: boolean): string;
+
+  public abstract check(edge: Edge, negated: boolean): boolean;
 }
