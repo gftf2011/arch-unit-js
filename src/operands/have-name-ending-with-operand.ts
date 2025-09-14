@@ -6,6 +6,6 @@ export class HaveNameEndingWithOperand extends Operand<string> {
   }
 
   override check(name: string): boolean {
-    return this.value.endsWith(name);
+    return name.endsWith(this.value);
   }
 }

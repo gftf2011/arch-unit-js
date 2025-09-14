@@ -1,11 +1,11 @@
 import { Operand } from '@/operands/operand';
 
-export class HaveNameStartingWithOperand extends Operand<string> {
+export class HaveNameContainingOperand extends Operand<string> {
   constructor(value: string) {
     super(value);
   }
 
   override check(name: string): boolean {
-    return name.startsWith(this.value);
+    return name.includes(this.value);
   }
 }
