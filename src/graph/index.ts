@@ -1,5 +1,5 @@
-import { Edge } from "@/edge";
+import { Edge } from '@/edge';
 
 export class Graph {
-    constructor(public readonly edges: Edge[]) {}
+  constructor(public readonly edges: Edge[]) {}
 }

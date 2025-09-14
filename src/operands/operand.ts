@@ -1,4 +1,4 @@
-import { Edge } from "@/edge";
+import { Edge } from '@/edge';
 
 export abstract class Operand<T> {
   constructor(private _value: T) {}

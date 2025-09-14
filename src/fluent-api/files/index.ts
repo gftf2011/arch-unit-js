@@ -9,6 +9,7 @@ import { HaveNameEndingWithOperand } from '@/operands/have-name-ending-with-oper
 import { HaveNameContainingOperand } from '@/operands/have-name-containing-operand';
 import { OperationChecker } from '@/operation-checker';
 import { DependsOnOperand } from '@/operands/depends-on-operand';
+import { OnlyDependsOnOperand } from '@/operands/only-depends-on-operand';
 
 abstract class AbstractCheckConditionBuilder implements Check {
   public abstract projectType: ProjectType;
@@ -187,7 +188,9 @@ class PositiveConditionBuilder extends AbstractConditionBuilder {
 
   override haveNameContaining(substring: string): CheckConditionBuilder {
     this.rules.push(`have name containing "${substring}"`);
-    this.operations.push(new CheckOperation(this.negated, new HaveNameContainingOperand(substring)));
+    this.operations.push(
+      new CheckOperation(this.negated, new HaveNameContainingOperand(substring)),
+    );
     return new CheckConditionBuilder(this);
   }
 
@@ -199,7 +202,11 @@ class PositiveConditionBuilder extends AbstractConditionBuilder {
   }
 
   override onlyDependsOn(dependencies: GlobPattern | GlobPattern[]): CheckConditionBuilder {
-    // this.operations.push(new CheckOperation());
+    const dependenciesArray = typeof dependencies === 'string' ? [dependencies] : dependencies;
+    this.rules.push(`only depends on [${dependenciesArray.join(', ')}]`);
+    this.operations.push(
+      new CheckOperation(this.negated, new OnlyDependsOnOperand(dependenciesArray)),
+    );
     return new CheckConditionBuilder(this);
   }
 
@@ -241,7 +248,9 @@ class NegativeConditionBuilder extends AbstractConditionBuilder {
 
   override haveNameContaining(substring: string): CheckConditionBuilder {
     this.rules.push(`have name containing "${substring}"`);
-    this.operations.push(new CheckOperation(this.negated, new HaveNameContainingOperand(substring)));
+    this.operations.push(
+      new CheckOperation(this.negated, new HaveNameContainingOperand(substring)),
+    );
     return new CheckConditionBuilder(this);
   }
 
@@ -253,7 +262,11 @@ class NegativeConditionBuilder extends AbstractConditionBuilder {
   }
 
   override onlyDependsOn(dependencies: GlobPattern | GlobPattern[]): CheckConditionBuilder {
-    // this.operations.push(new CheckOperation());
+    const dependenciesArray = typeof dependencies === 'string' ? [dependencies] : dependencies;
+    this.rules.push(`only depends on [${dependenciesArray.join(', ')}]`);
+    this.operations.push(
+      new CheckOperation(this.negated, new OnlyDependsOnOperand(dependenciesArray)),
+    );
     return new CheckConditionBuilder(this);
   }
 
@@ -308,7 +321,9 @@ class PositiveConditionBuilder_ForJavascript extends AbstractConditionBuilder_Fo
 
   override haveNameContaining(substring: string): CheckConditionBuilder_ForJavascript {
     this.rules.push(`have name containing "${substring}"`);
-    this.operations.push(new CheckOperation(this.negated, new HaveNameContainingOperand(substring)));
+    this.operations.push(
+      new CheckOperation(this.negated, new HaveNameContainingOperand(substring)),
+    );
     return new CheckConditionBuilder_ForJavascript(this);
   }
 
@@ -324,7 +339,11 @@ class PositiveConditionBuilder_ForJavascript extends AbstractConditionBuilder_Fo
   override onlyDependsOn(
     dependencies: GlobPattern | GlobPattern[],
   ): CheckConditionBuilder_ForJavascript {
-    // this.operations.push(new CheckOperation());
+    const dependenciesArray = typeof dependencies === 'string' ? [dependencies] : dependencies;
+    this.rules.push(`only depends on [${dependenciesArray.join(', ')}]`);
+    this.operations.push(
+      new CheckOperation(this.negated, new OnlyDependsOnOperand(dependenciesArray)),
+    );
     return new CheckConditionBuilder_ForJavascript(this);
   }
 
@@ -371,7 +390,9 @@ class NegativeConditionBuilder_ForJavascript extends AbstractConditionBuilder_Fo
 
   override haveNameContaining(substring: string): CheckConditionBuilder_ForJavascript {
     this.rules.push(`have name containing "${substring}"`);
-    this.operations.push(new CheckOperation(this.negated, new HaveNameContainingOperand(substring)));
+    this.operations.push(
+      new CheckOperation(this.negated, new HaveNameContainingOperand(substring)),
+    );
     return new CheckConditionBuilder_ForJavascript(this);
   }
 
@@ -387,7 +408,11 @@ class NegativeConditionBuilder_ForJavascript extends AbstractConditionBuilder_Fo
   override onlyDependsOn(
     dependencies: GlobPattern | GlobPattern[],
   ): CheckConditionBuilder_ForJavascript {
-    // this.operations.push(new CheckOperation());
+    const dependenciesArray = typeof dependencies === 'string' ? [dependencies] : dependencies;
+    this.rules.push(`only depends on [${dependenciesArray.join(', ')}]`);
+    this.operations.push(
+      new CheckOperation(this.negated, new OnlyDependsOnOperand(dependenciesArray)),
+    );
     return new CheckConditionBuilder_ForJavascript(this);
   }
 
@@ -445,7 +470,9 @@ class PositiveConditionBuilder_ForTypescript extends AbstractConditionBuilder_Fo
 
   override haveNameContaining(substring: string): CheckConditionBuilder_ForTypescript {
     this.rules.push(`have name containing "${substring}"`);
-    this.operations.push(new CheckOperation(this.negated, new HaveNameContainingOperand(substring)));
+    this.operations.push(
+      new CheckOperation(this.negated, new HaveNameContainingOperand(substring)),
+    );
     return new CheckConditionBuilder_ForTypescript(this);
   }
 
@@ -461,7 +488,11 @@ class PositiveConditionBuilder_ForTypescript extends AbstractConditionBuilder_Fo
   override onlyDependsOn(
     dependencies: GlobPattern | GlobPattern[],
   ): CheckConditionBuilder_ForTypescript {
-    // this.operations.push(new CheckOperation());
+    const dependenciesArray = typeof dependencies === 'string' ? [dependencies] : dependencies;
+    this.rules.push(`only depends on [${dependenciesArray.join(', ')}]`);
+    this.operations.push(
+      new CheckOperation(this.negated, new OnlyDependsOnOperand(dependenciesArray)),
+    );
     return new CheckConditionBuilder_ForTypescript(this);
   }
 
@@ -508,7 +539,9 @@ class NegativeConditionBuilder_ForTypescript extends AbstractConditionBuilder_Fo
 
   override haveNameContaining(substring: string): CheckConditionBuilder_ForTypescript {
     this.rules.push(`have name containing "${substring}"`);
-    this.operations.push(new CheckOperation(this.negated, new HaveNameContainingOperand(substring)));
+    this.operations.push(
+      new CheckOperation(this.negated, new HaveNameContainingOperand(substring)),
+    );
     return new CheckConditionBuilder_ForTypescript(this);
   }
 
@@ -524,7 +557,11 @@ class NegativeConditionBuilder_ForTypescript extends AbstractConditionBuilder_Fo
   override onlyDependsOn(
     dependencies: GlobPattern | GlobPattern[],
   ): CheckConditionBuilder_ForTypescript {
-    // this.operations.push(new CheckOperation());
+    const dependenciesArray = typeof dependencies === 'string' ? [dependencies] : dependencies;
+    this.rules.push(`only depends on [${dependenciesArray.join(', ')}]`);
+    this.operations.push(
+      new CheckOperation(this.negated, new OnlyDependsOnOperand(dependenciesArray)),
+    );
     return new CheckConditionBuilder_ForTypescript(this);
   }
 
@@ -582,7 +619,9 @@ class PositiveConditionBuilder_ForCss extends AbstractConditionBuilder_ForCss {
 
   override haveNameContaining(substring: string): CheckConditionBuilder_ForCss {
     this.rules.push(`have name containing "${substring}"`);
-    this.operations.push(new CheckOperation(this.negated, new HaveNameContainingOperand(substring)));
+    this.operations.push(
+      new CheckOperation(this.negated, new HaveNameContainingOperand(substring)),
+    );
     return new CheckConditionBuilder_ForCss(this);
   }
 
@@ -594,7 +633,11 @@ class PositiveConditionBuilder_ForCss extends AbstractConditionBuilder_ForCss {
   }
 
   override onlyDependsOn(dependencies: GlobPattern | GlobPattern[]): CheckConditionBuilder_ForCss {
-    // this.operations.push(new CheckOperation());
+    const dependenciesArray = typeof dependencies === 'string' ? [dependencies] : dependencies;
+    this.rules.push(`only depends on [${dependenciesArray.join(', ')}]`);
+    this.operations.push(
+      new CheckOperation(this.negated, new OnlyDependsOnOperand(dependenciesArray)),
+    );
     return new CheckConditionBuilder_ForCss(this);
   }
 
@@ -636,7 +679,9 @@ class NegativeConditionBuilder_ForCss extends AbstractConditionBuilder_ForCss {
 
   override haveNameContaining(substring: string): CheckConditionBuilder_ForCss {
     this.rules.push(`have name containing "${substring}"`);
-    this.operations.push(new CheckOperation(this.negated, new HaveNameContainingOperand(substring)));
+    this.operations.push(
+      new CheckOperation(this.negated, new HaveNameContainingOperand(substring)),
+    );
     return new CheckConditionBuilder_ForCss(this);
   }
 
@@ -648,7 +693,11 @@ class NegativeConditionBuilder_ForCss extends AbstractConditionBuilder_ForCss {
   }
 
   override onlyDependsOn(dependencies: GlobPattern | GlobPattern[]): CheckConditionBuilder_ForCss {
-    // this.operations.push(new CheckOperation());
+    const dependenciesArray = typeof dependencies === 'string' ? [dependencies] : dependencies;
+    this.rules.push(`only depends on [${dependenciesArray.join(', ')}]`);
+    this.operations.push(
+      new CheckOperation(this.negated, new OnlyDependsOnOperand(dependenciesArray)),
+    );
     return new CheckConditionBuilder_ForCss(this);
   }
 
