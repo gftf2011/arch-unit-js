@@ -8,6 +8,7 @@ import { HaveNameStartingWithOperand } from '@/operands/have-name-starting-with-
 import { HaveNameEndingWithOperand } from '@/operands/have-name-ending-with-operand';
 import { HaveNameContainingOperand } from '@/operands/have-name-containing-operand';
 import { OperationChecker } from '@/operation-checker';
+import { DependsOnOperand } from '@/operands/depends-on-operand';
 
 abstract class AbstractCheckConditionBuilder implements Check {
   public abstract projectType: ProjectType;
@@ -65,7 +66,15 @@ class CheckConditionBuilder_ForJavascript extends AbstractCheckConditionBuilder 
   }
 
   override async check(): Promise<void> {
-    // Implement
+    const operationChecker = new OperationChecker(
+      this.projectType,
+      this.condition.options,
+      this.condition.rules,
+      this.condition.args,
+      this.condition.operations,
+    );
+
+    await operationChecker.check();
   }
 }
 
@@ -86,7 +95,15 @@ class CheckConditionBuilder_ForTypescript extends AbstractCheckConditionBuilder 
   }
 
   override async check(): Promise<void> {
-    // Implement
+    const operationChecker = new OperationChecker(
+      this.projectType,
+      this.condition.options,
+      this.condition.rules,
+      this.condition.args,
+      this.condition.operations,
+    );
+
+    await operationChecker.check();
   }
 }
 
@@ -107,7 +124,15 @@ class CheckConditionBuilder_ForCss extends AbstractCheckConditionBuilder {
   }
 
   override async check(): Promise<void> {
-    // Implement
+    const operationChecker = new OperationChecker(
+      this.projectType,
+      this.condition.options,
+      this.condition.rules,
+      this.condition.args,
+      this.condition.operations,
+    );
+
+    await operationChecker.check();
   }
 }
 
@@ -167,7 +192,9 @@ class PositiveConditionBuilder extends AbstractConditionBuilder {
   }
 
   override dependsOn(dependencies: GlobPattern | GlobPattern[]): CheckConditionBuilder {
-    // this.operations.push(new CheckOperation());
+    const dependenciesArray = typeof dependencies === 'string' ? [dependencies] : dependencies;
+    this.rules.push(`depends on [${dependenciesArray.join(', ')}]`);
+    this.operations.push(new CheckOperation(this.negated, new DependsOnOperand(dependenciesArray)));
     return new CheckConditionBuilder(this);
   }
 
@@ -219,7 +246,9 @@ class NegativeConditionBuilder extends AbstractConditionBuilder {
   }
 
   override dependsOn(dependencies: GlobPattern | GlobPattern[]): CheckConditionBuilder {
-    // this.operations.push(new CheckOperation());
+    const dependenciesArray = typeof dependencies === 'string' ? [dependencies] : dependencies;
+    this.rules.push(`depends on [${dependenciesArray.join(', ')}]`);
+    this.operations.push(new CheckOperation(this.negated, new DependsOnOperand(dependenciesArray)));
     return new CheckConditionBuilder(this);
   }
 
@@ -286,7 +315,9 @@ class PositiveConditionBuilder_ForJavascript extends AbstractConditionBuilder_Fo
   override dependsOn(
     dependencies: GlobPattern | GlobPattern[],
   ): CheckConditionBuilder_ForJavascript {
-    // this.operations.push(new CheckOperation());
+    const dependenciesArray = typeof dependencies === 'string' ? [dependencies] : dependencies;
+    this.rules.push(`depends on [${dependenciesArray.join(', ')}]`);
+    this.operations.push(new CheckOperation(this.negated, new DependsOnOperand(dependenciesArray)));
     return new CheckConditionBuilder_ForJavascript(this);
   }
 
@@ -347,7 +378,9 @@ class NegativeConditionBuilder_ForJavascript extends AbstractConditionBuilder_Fo
   override dependsOn(
     dependencies: GlobPattern | GlobPattern[],
   ): CheckConditionBuilder_ForJavascript {
-    // this.operations.push(new CheckOperation());
+    const dependenciesArray = typeof dependencies === 'string' ? [dependencies] : dependencies;
+    this.rules.push(`depends on [${dependenciesArray.join(', ')}]`);
+    this.operations.push(new CheckOperation(this.negated, new DependsOnOperand(dependenciesArray)));
     return new CheckConditionBuilder_ForJavascript(this);
   }
 
@@ -419,7 +452,9 @@ class PositiveConditionBuilder_ForTypescript extends AbstractConditionBuilder_Fo
   override dependsOn(
     dependencies: GlobPattern | GlobPattern[],
   ): CheckConditionBuilder_ForTypescript {
-    // this.operations.push(new CheckOperation());
+    const dependenciesArray = typeof dependencies === 'string' ? [dependencies] : dependencies;
+    this.rules.push(`depends on [${dependenciesArray.join(', ')}]`);
+    this.operations.push(new CheckOperation(this.negated, new DependsOnOperand(dependenciesArray)));
     return new CheckConditionBuilder_ForTypescript(this);
   }
 
@@ -480,7 +515,9 @@ class NegativeConditionBuilder_ForTypescript extends AbstractConditionBuilder_Fo
   override dependsOn(
     dependencies: GlobPattern | GlobPattern[],
   ): CheckConditionBuilder_ForTypescript {
-    // this.operations.push(new CheckOperation());
+    const dependenciesArray = typeof dependencies === 'string' ? [dependencies] : dependencies;
+    this.rules.push(`depends on [${dependenciesArray.join(', ')}]`);
+    this.operations.push(new CheckOperation(this.negated, new DependsOnOperand(dependenciesArray)));
     return new CheckConditionBuilder_ForTypescript(this);
   }
 
@@ -550,7 +587,9 @@ class PositiveConditionBuilder_ForCss extends AbstractConditionBuilder_ForCss {
   }
 
   override dependsOn(dependencies: GlobPattern | GlobPattern[]): CheckConditionBuilder_ForCss {
-    // this.operations.push(new CheckOperation());
+    const dependenciesArray = typeof dependencies === 'string' ? [dependencies] : dependencies;
+    this.rules.push(`depends on [${dependenciesArray.join(', ')}]`);
+    this.operations.push(new CheckOperation(this.negated, new DependsOnOperand(dependenciesArray)));
     return new CheckConditionBuilder_ForCss(this);
   }
 
@@ -602,7 +641,9 @@ class NegativeConditionBuilder_ForCss extends AbstractConditionBuilder_ForCss {
   }
 
   override dependsOn(dependencies: GlobPattern | GlobPattern[]): CheckConditionBuilder_ForCss {
-    // this.operations.push(new CheckOperation());
+    const dependenciesArray = typeof dependencies === 'string' ? [dependencies] : dependencies;
+    this.rules.push(`depends on [${dependenciesArray.join(', ')}]`);
+    this.operations.push(new CheckOperation(this.negated, new DependsOnOperand(dependenciesArray)));
     return new CheckConditionBuilder_ForCss(this);
   }
 
