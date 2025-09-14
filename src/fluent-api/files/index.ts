@@ -1,13 +1,16 @@
 import { CheckOperation } from '@/operations/check-operation';
 import { HaveNameOperation } from '@/operations/check/have-name-operation';
+import { HaveNameEndingWithOperation } from '@/operations/check/have-name-ending-with-operation';
+import { HaveNameStartingWithOperation } from '@/operations/check/have-name-starting-with-operation';
 import { Arguments } from '@/common/arguments';
 import { Options } from '@/common/options';
 import { ProjectType } from '@/common/project-type';
 import { Check } from '@/common/check';
-import { HaveNameOperand } from '@/operands/have-name-operand';
 import { GlobPattern } from '@/common/types';
+import { HaveNameOperand } from '@/operands/have-name-operand';
 import { HaveNameStartingWithOperand } from '@/operands/have-name-starting-with-operand';
-import { HaveNameStartingWithOperation } from '@/operations/check/have-name-starting-with-operation';
+import { HaveNameEndingWithOperand } from '@/operands/have-name-ending-with-operand';
+
 
 abstract class AbstractCheckConditionBuilder implements Check {
   public abstract projectType: ProjectType;
@@ -155,7 +158,8 @@ class PositiveConditionBuilder extends AbstractConditionBuilder {
   }
 
   override haveNameEndingWith(suffix: string): CheckConditionBuilder {
-    // this.operations.push(new CheckOperation(this.negated));
+    this.rules.push(`have name ending with "${suffix}"`);
+    this.operations.push(new HaveNameEndingWithOperation(this.negated, new HaveNameEndingWithOperand(suffix)));
     return new CheckConditionBuilder(this);
   }
 
@@ -205,7 +209,8 @@ class NegativeConditionBuilder extends AbstractConditionBuilder {
   }
 
   override haveNameEndingWith(suffix: string): CheckConditionBuilder {
-    // this.operations.push(new CheckOperation());
+    this.rules.push(`have name ending with "${suffix}"`);
+    this.operations.push(new HaveNameEndingWithOperation(this.negated, new HaveNameEndingWithOperand(suffix)));
     return new CheckConditionBuilder(this);
   }
 
@@ -268,7 +273,8 @@ class PositiveConditionBuilder_ForJavascript extends AbstractConditionBuilder_Fo
   }
 
   override haveNameEndingWith(suffix: string): CheckConditionBuilder_ForJavascript {
-    // this.operations.push(new CheckOperation());
+    this.rules.push(`have name ending with "${suffix}"`);
+    this.operations.push(new HaveNameEndingWithOperation(this.negated, new HaveNameEndingWithOperand(suffix)));
     return new CheckConditionBuilder_ForJavascript(this);
   }
 
@@ -327,7 +333,8 @@ class NegativeConditionBuilder_ForJavascript extends AbstractConditionBuilder_Fo
   }
 
   override haveNameEndingWith(suffix: string): CheckConditionBuilder_ForJavascript {
-    // this.operations.push(new CheckOperation());
+    this.rules.push(`have name ending with "${suffix}"`);
+    this.operations.push(new HaveNameEndingWithOperation(this.negated, new HaveNameEndingWithOperand(suffix)));
     return new CheckConditionBuilder_ForJavascript(this);
   }
 
@@ -397,7 +404,8 @@ class PositiveConditionBuilder_ForTypescript extends AbstractConditionBuilder_Fo
   }
 
   override haveNameEndingWith(suffix: string): CheckConditionBuilder_ForTypescript {
-    // this.operations.push(new CheckOperation());
+    this.rules.push(`have name ending with "${suffix}"`);
+    this.operations.push(new HaveNameEndingWithOperation(this.negated, new HaveNameEndingWithOperand(suffix)));
     return new CheckConditionBuilder_ForTypescript(this);
   }
 
@@ -456,7 +464,8 @@ class NegativeConditionBuilder_ForTypescript extends AbstractConditionBuilder_Fo
   }
 
   override haveNameEndingWith(suffix: string): CheckConditionBuilder_ForTypescript {
-    // this.operations.push(new CheckOperation());
+    this.rules.push(`have name ending with "${suffix}"`);
+    this.operations.push(new HaveNameEndingWithOperation(this.negated, new HaveNameEndingWithOperand(suffix)));
     return new CheckConditionBuilder_ForTypescript(this);
   }
 
@@ -526,7 +535,8 @@ class PositiveConditionBuilder_ForCss extends AbstractConditionBuilder_ForCss {
   }
 
   override haveNameEndingWith(suffix: string): CheckConditionBuilder_ForCss {
-    // this.operations.push(new CheckOperation());
+    this.rules.push(`have name ending with "${suffix}"`);
+    this.operations.push(new HaveNameEndingWithOperation(this.negated, new HaveNameEndingWithOperand(suffix)));
     return new CheckConditionBuilder_ForCss(this);
   }
 
@@ -576,7 +586,8 @@ class NegativeConditionBuilder_ForCss extends AbstractConditionBuilder_ForCss {
   }
 
   override haveNameEndingWith(suffix: string): CheckConditionBuilder_ForCss {
-    // this.operations.push(new CheckOperation());
+    this.rules.push(`have name ending with "${suffix}"`);
+    this.operations.push(new HaveNameEndingWithOperation(this.negated, new HaveNameEndingWithOperand(suffix)));
     return new CheckConditionBuilder_ForCss(this);
   }
 
