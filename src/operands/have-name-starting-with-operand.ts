@@ -13,7 +13,7 @@ export class HaveNameStartingWithOperand extends Operand<string> {
     return `File ${edge.name} name does not start with pattern ${this.value}`;
   }
 
-  override check(edge: Edge, negated: boolean): boolean {
+  override validate(edge: Edge, negated: boolean): boolean {
     const starts = edge.name.startsWith(this.value);
     return negated ? !starts : starts;
   }

@@ -13,7 +13,7 @@ export class HaveNameEndingWithOperand extends Operand<string> {
     return `File ${edge.name} name does not end with pattern ${this.value}`;
   }
 
-  override check(edge: Edge, negated: boolean): boolean {
+  override validate(edge: Edge, negated: boolean): boolean {
     const ends = edge.name.endsWith(this.value);
     return negated ? !ends : ends;
   }

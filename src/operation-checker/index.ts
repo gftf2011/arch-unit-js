@@ -2,6 +2,7 @@ import { Argument } from '@/common/argument';
 import { Check } from '@/common/check';
 import { Options } from '@/common/options';
 import { ProjectType } from '@/common/types';
+import { Edge } from '@/edge';
 import { Graph } from '@/graph';
 import { CheckOperation } from '@/operations/check-operation';
 
@@ -15,7 +16,7 @@ export class OperationChecker implements Check {
   ) {}
 
   async check(): Promise<void> {
-    const graph: Graph = new Graph([]);
+    const graph: Graph = new Graph(new Map<string, Edge>());
 
     // Build graph
 

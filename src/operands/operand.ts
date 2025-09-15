@@ -13,5 +13,5 @@ export abstract class Operand<T> {
 
   public abstract errorMessage(Edge: Edge, negated: boolean): string;
 
-  public abstract check(edge: Edge, negated: boolean): boolean;
+  public abstract validate(edge: Edge, negated: boolean): boolean;
 }

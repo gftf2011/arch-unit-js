@@ -16,7 +16,7 @@ export class HaveNameOperand extends Operand<GlobPattern> {
     return `File ${edge.name} name does not match the pattern ${this.value}`;
   }
 
-  override check(edge: Edge, negated: boolean): boolean {
+  override validate(edge: Edge, negated: boolean): boolean {
     const has = micromatch([edge.name], [this.value]).length > 0;
     return negated ? !has : has;
   }

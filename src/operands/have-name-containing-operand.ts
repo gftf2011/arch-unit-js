@@ -13,7 +13,7 @@ export class HaveNameContainingOperand extends Operand<string> {
     return `File ${edge.name} name does not contain pattern ${this.value}`;
   }
 
-  override check(edge: Edge, negated: boolean): boolean {
+  override validate(edge: Edge, negated: boolean): boolean {
     const has = edge.name.includes(this.value);
     return negated ? !has : has;
   }

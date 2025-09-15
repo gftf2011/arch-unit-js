@@ -8,8 +8,8 @@ export class CheckOperation<T> extends Operation<T> implements Check {
   }
 
   public check(): void {
-    for (const edge of this.graph.edges) {
-      if (!this.operand.check(edge, this.negated)) {
+    for (const edge of this.graph.edges.values()) {
+      if (!this.operand.validate(edge, this.negated)) {
         throw new Error(this.operand.errorMessage(edge, this.negated));
       }
     }

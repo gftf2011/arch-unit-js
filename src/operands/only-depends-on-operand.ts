@@ -15,7 +15,7 @@ export class OnlyDependsOnOperand extends Operand<GlobPattern[]> {
     return `File ${edge.name} only depends on [${this.value.join(', ')}]`;
   }
 
-  override check(edge: Edge, negated: boolean): boolean {
+  override validate(edge: Edge, negated: boolean): boolean {
     if (edge.dependencies.length === 0) return true;
     const matchingDependencies = edge.dependencies.filter(
       (dependency) => micromatch([dependency.name], this.value).length > 0,

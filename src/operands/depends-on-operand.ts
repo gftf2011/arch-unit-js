@@ -15,7 +15,7 @@ export class DependsOnOperand extends Operand<GlobPattern[]> {
     return `File ${edge.name} depends on [${this.value.join(', ')}]`;
   }
 
-  override check(edge: Edge, negated: boolean): boolean {
+  override validate(edge: Edge, negated: boolean): boolean {
     if (edge.dependencies.length === 0) return negated ? true : false;
     const names: string[] = edge.dependencies.map((dependency) => dependency.name);
     const has = micromatch(names, this.value).length > 0;

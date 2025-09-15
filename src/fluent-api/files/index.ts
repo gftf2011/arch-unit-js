@@ -10,6 +10,8 @@ import { HaveNameContainingOperand } from '@/operands/have-name-containing-opera
 import { OperationChecker } from '@/operation-checker';
 import { DependsOnOperand } from '@/operands/depends-on-operand';
 import { OnlyDependsOnOperand } from '@/operands/only-depends-on-operand';
+import { CheckCyclesOperation } from '@/operations/check-cycles-operation';
+import { BeFreeOfCyclesOperand } from '@/operands/be-free-of-cycles-operand';
 
 abstract class AbstractCheckConditionBuilder implements Check {
   public abstract projectType: ProjectType;
@@ -211,7 +213,8 @@ class PositiveConditionBuilder extends AbstractConditionBuilder {
   }
 
   override beFreeOfCycles(): CheckConditionBuilder {
-    // this.operations.push(new CheckOperation());
+    this.rules.push('be free of cycles');
+    this.operations.push(new CheckCyclesOperation(this.negated, new BeFreeOfCyclesOperand()));
     return new CheckConditionBuilder(this);
   }
 }
@@ -271,7 +274,8 @@ class NegativeConditionBuilder extends AbstractConditionBuilder {
   }
 
   override beFreeOfCycles(): CheckConditionBuilder {
-    // this.operations.push(new CheckOperation());
+    this.rules.push('be free of cycles');
+    this.operations.push(new CheckCyclesOperation(this.negated, new BeFreeOfCyclesOperand()));
     return new CheckConditionBuilder(this);
   }
 }
@@ -348,7 +352,8 @@ class PositiveConditionBuilder_ForJavascript extends AbstractConditionBuilder_Fo
   }
 
   override beFreeOfCycles(): CheckConditionBuilder_ForJavascript {
-    // this.operations.push(new CheckOperation());
+    this.rules.push('be free of cycles');
+    this.operations.push(new CheckCyclesOperation(this.negated, new BeFreeOfCyclesOperand()));
     return new CheckConditionBuilder_ForJavascript(this);
   }
 
@@ -417,7 +422,8 @@ class NegativeConditionBuilder_ForJavascript extends AbstractConditionBuilder_Fo
   }
 
   override beFreeOfCycles(): CheckConditionBuilder_ForJavascript {
-    // this.operations.push(new CheckOperation());
+    this.rules.push('be free of cycles');
+    this.operations.push(new CheckCyclesOperation(this.negated, new BeFreeOfCyclesOperand()));
     return new CheckConditionBuilder_ForJavascript(this);
   }
 
@@ -497,7 +503,8 @@ class PositiveConditionBuilder_ForTypescript extends AbstractConditionBuilder_Fo
   }
 
   override beFreeOfCycles(): CheckConditionBuilder_ForTypescript {
-    // this.operations.push(new CheckOperation());
+    this.rules.push('be free of cycles');
+    this.operations.push(new CheckCyclesOperation(this.negated, new BeFreeOfCyclesOperand()));
     return new CheckConditionBuilder_ForTypescript(this);
   }
 
@@ -566,7 +573,8 @@ class NegativeConditionBuilder_ForTypescript extends AbstractConditionBuilder_Fo
   }
 
   override beFreeOfCycles(): CheckConditionBuilder_ForTypescript {
-    // this.operations.push(new CheckOperation());
+    this.rules.push('be free of cycles');
+    this.operations.push(new CheckCyclesOperation(this.negated, new BeFreeOfCyclesOperand()));
     return new CheckConditionBuilder_ForTypescript(this);
   }
 
@@ -642,7 +650,8 @@ class PositiveConditionBuilder_ForCss extends AbstractConditionBuilder_ForCss {
   }
 
   override beFreeOfCycles(): CheckConditionBuilder_ForCss {
-    // this.operations.push(new CheckOperation());
+    this.rules.push('be free of cycles');
+    this.operations.push(new CheckCyclesOperation(this.negated, new BeFreeOfCyclesOperand()));
     return new CheckConditionBuilder_ForCss(this);
   }
 }
@@ -702,7 +711,8 @@ class NegativeConditionBuilder_ForCss extends AbstractConditionBuilder_ForCss {
   }
 
   override beFreeOfCycles(): CheckConditionBuilder_ForCss {
-    // this.operations.push(new CheckOperation());
+    this.rules.push('be free of cycles');
+    this.operations.push(new CheckCyclesOperation(this.negated, new BeFreeOfCyclesOperand()));
     return new CheckConditionBuilder_ForCss(this);
   }
 }
