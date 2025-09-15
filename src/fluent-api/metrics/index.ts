@@ -2,16 +2,100 @@ import { Argument } from '@/common/argument';
 import { Options } from '@/common/options';
 import { Operation } from '@/operations/operation';
 
+interface IGeneralMetricsFunctions {
+  loc(): any;
+  totalLines(): any;
+  averageLocPerFile(): any;
+  averageLinesPerFile(): any;
+}
+
+interface INealFordMetricsFunctions {
+  codePercentage(): any;
+  averageCodePercentage(): any;
+}
+
+interface IRobertCecilMartinMetricsFunctions {
+  afferenceCoupling(): any;
+  efferenceCoupling(): any;
+  instability(): any;
+  abstractness(): any;
+}
+
+class GeneralMetricsFunctions implements IGeneralMetricsFunctions {
+  constructor(
+    public options: Options,
+    public rules: string[],
+    public args: Argument[],
+    public operations: Operation<any>[],
+  ) {}
+
+  loc(): any {
+    throw new Error('Method not implemented.');
+  }
+
+  totalLines(): any {
+    throw new Error('Method not implemented.');
+  }
+
+  averageLocPerFile(): any {
+    throw new Error('Method not implemented.');
+  }
+
+  averageLinesPerFile(): any {
+    throw new Error('Method not implemented.');
+  }
+}
+
+class NealFordMetricsFunctions implements INealFordMetricsFunctions {
+  constructor(
+    public options: Options,
+    public rules: string[],
+    public args: Argument[],
+    public operations: Operation<any>[],
+  ) {}
+
+  codePercentage(): any {
+    throw new Error('Method not implemented.');
+  }
+  averageCodePercentage(): any {
+    throw new Error('Method not implemented.');
+  }
+}
+
+class RobertCecilMartinMetricsFunctions implements IRobertCecilMartinMetricsFunctions {
+  constructor(
+    public options: Options,
+    public rules: string[],
+    public args: Argument[],
+    public operations: Operation<any>[],
+  ) {}
+
+  afferenceCoupling(): any {
+    throw new Error('Method not implemented.');
+  }
+  efferenceCoupling(): any {
+    throw new Error('Method not implemented.');
+  }
+  instability(): any {
+    throw new Error('Method not implemented.');
+  }
+  abstractness(): any {
+    throw new Error('Method not implemented.');
+  }
+}
+
+// ------------------------------------------------------------
+
 interface GeneralMetricsType {
-  general(): any;
+  general(): IGeneralMetricsFunctions;
 }
 
 interface NealFordMetricsType {
-  nealFord(): any;
+  nealFord(): INealFordMetricsFunctions;
 }
 
 interface RobertCecilMartinMetricsType {
-  robertCecilMartin(): any;
+  robertCecilMartin(): IRobertCecilMartinMetricsFunctions;
 }
 
 abstract class AbstractMetricsTypeBuilder implements GeneralMetricsType, NealFordMetricsType {
@@ -22,9 +106,9 @@ abstract class AbstractMetricsTypeBuilder implements GeneralMetricsType, NealFor
     public operations: Operation<any>[],
   ) {}
 
-  abstract general(): any;
+  abstract general(): IGeneralMetricsFunctions;
 
-  abstract nealFord(): any;
+  abstract nealFord(): INealFordMetricsFunctions;
 }
 
 class MetricsTypeBuilder extends AbstractMetricsTypeBuilder {
@@ -37,9 +121,13 @@ class MetricsTypeBuilder extends AbstractMetricsTypeBuilder {
     super(options, rules, args, operations);
   }
 
-  override general(): any {}
+  override general(): IGeneralMetricsFunctions {
+    return new GeneralMetricsFunctions(this.options, this.rules, this.args, this.operations);
+  }
 
-  override nealFord(): any {}
+  override nealFord(): INealFordMetricsFunctions {
+    return new NealFordMetricsFunctions(this.options, this.rules, this.args, this.operations);
+  }
 }
 
 abstract class AbstractMetricsTypeBuilder_ForJavascript
@@ -55,7 +143,7 @@ abstract class AbstractMetricsTypeBuilder_ForJavascript
     super(options, rules, args, operations);
   }
 
-  abstract robertCecilMartin(): any;
+  abstract robertCecilMartin(): IRobertCecilMartinMetricsFunctions;
 }
 
 class MetricsTypeBuilder_ForJavascript extends AbstractMetricsTypeBuilder_ForJavascript {
@@ -68,11 +156,22 @@ class MetricsTypeBuilder_ForJavascript extends AbstractMetricsTypeBuilder_ForJav
     super(options, rules, args, operations);
   }
 
-  override general(): any {}
+  override general(): IGeneralMetricsFunctions {
+    return new GeneralMetricsFunctions(this.options, this.rules, this.args, this.operations);
+  }
 
-  override nealFord(): any {}
+  override nealFord(): INealFordMetricsFunctions {
+    return new NealFordMetricsFunctions(this.options, this.rules, this.args, this.operations);
+  }
 
-  override robertCecilMartin(): any {}
+  override robertCecilMartin(): IRobertCecilMartinMetricsFunctions {
+    return new RobertCecilMartinMetricsFunctions(
+      this.options,
+      this.rules,
+      this.args,
+      this.operations,
+    );
+  }
 }
 
 abstract class AbstractMetricsTypeBuilder_ForTypescript
@@ -88,7 +187,7 @@ abstract class AbstractMetricsTypeBuilder_ForTypescript
     super(options, rules, args, operations);
   }
 
-  abstract robertCecilMartin(): any;
+  abstract robertCecilMartin(): IRobertCecilMartinMetricsFunctions;
 }
 
 class MetricsTypeBuilder_ForTypescript extends AbstractMetricsTypeBuilder_ForTypescript {
@@ -101,11 +200,22 @@ class MetricsTypeBuilder_ForTypescript extends AbstractMetricsTypeBuilder_ForTyp
     super(options, rules, args, operations);
   }
 
-  override general(): any {}
+  override general(): IGeneralMetricsFunctions {
+    return new GeneralMetricsFunctions(this.options, this.rules, this.args, this.operations);
+  }
 
-  override nealFord(): any {}
+  override nealFord(): INealFordMetricsFunctions {
+    return new NealFordMetricsFunctions(this.options, this.rules, this.args, this.operations);
+  }
 
-  override robertCecilMartin(): any {}
+  override robertCecilMartin(): IRobertCecilMartinMetricsFunctions {
+    return new RobertCecilMartinMetricsFunctions(
+      this.options,
+      this.rules,
+      this.args,
+      this.operations,
+    );
+  }
 }
 
 class MetricsTypeBuilder_ForCss extends AbstractMetricsTypeBuilder {
@@ -118,9 +228,13 @@ class MetricsTypeBuilder_ForCss extends AbstractMetricsTypeBuilder {
     super(options, rules, args, operations);
   }
 
-  override general(): any {}
+  override general(): IGeneralMetricsFunctions {
+    return new GeneralMetricsFunctions(this.options, this.rules, this.args, this.operations);
+  }
 
-  override nealFord(): any {}
+  override nealFord(): INealFordMetricsFunctions {
+    return new NealFordMetricsFunctions(this.options, this.rules, this.args, this.operations);
+  }
 }
 
 // ------------------------------------------------------------
