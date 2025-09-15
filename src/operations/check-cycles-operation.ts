@@ -1,5 +1,5 @@
 import { Check } from '@/common/check';
-import { CheckOperation } from './check-operation';
+import { CheckOperation } from '@/operations/check-operation';
 import { BeFreeOfCyclesOperand } from '@/operands/be-free-of-cycles-operand';
 
 export class CheckCyclesOperation extends CheckOperation<null> implements Check {

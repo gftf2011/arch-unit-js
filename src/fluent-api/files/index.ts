@@ -290,7 +290,7 @@ abstract class AbstractConditionBuilder_ForJavascript extends AbstractConditionB
     super(options, rules, args, operations);
   }
 
-  abstract haveClassComponent(something: any[]): AbstractCheckConditionBuilder;
+  // abstract haveClassComponent(something: any[]): AbstractCheckConditionBuilder;
 }
 
 class PositiveConditionBuilder_ForJavascript extends AbstractConditionBuilder_ForJavascript {
@@ -357,10 +357,10 @@ class PositiveConditionBuilder_ForJavascript extends AbstractConditionBuilder_Fo
     return new CheckConditionBuilder_ForJavascript(this);
   }
 
-  override haveClassComponent(something: any[]): CheckConditionBuilder_ForJavascript {
-    // this.operations.push(new CheckOperation());
-    return new CheckConditionBuilder_ForJavascript(this);
-  }
+  // override haveClassComponent(something: any[]): CheckConditionBuilder_ForJavascript {
+  //   // this.operations.push(new CheckOperation());
+  //   return new CheckConditionBuilder_ForJavascript(this);
+  // }
 }
 
 class NegativeConditionBuilder_ForJavascript extends AbstractConditionBuilder_ForJavascript {
@@ -427,10 +427,10 @@ class NegativeConditionBuilder_ForJavascript extends AbstractConditionBuilder_Fo
     return new CheckConditionBuilder_ForJavascript(this);
   }
 
-  override haveClassComponent(something: any[]): CheckConditionBuilder_ForJavascript {
-    // this.operations.push(new CheckOperation());
-    return new CheckConditionBuilder_ForJavascript(this);
-  }
+  // override haveClassComponent(something: any[]): CheckConditionBuilder_ForJavascript {
+  //   // this.operations.push(new CheckOperation());
+  //   return new CheckConditionBuilder_ForJavascript(this);
+  // }
 }
 
 abstract class AbstractConditionBuilder_ForTypescript extends AbstractConditionBuilder_ForJavascript {
@@ -508,10 +508,10 @@ class PositiveConditionBuilder_ForTypescript extends AbstractConditionBuilder_Fo
     return new CheckConditionBuilder_ForTypescript(this);
   }
 
-  override haveClassComponent(something: any[]): CheckConditionBuilder_ForTypescript {
-    // this.operations.push(new CheckOperation());
-    return new CheckConditionBuilder_ForTypescript(this);
-  }
+  // override haveClassComponent(something: any[]): CheckConditionBuilder_ForTypescript {
+  //   // this.operations.push(new CheckOperation());
+  //   return new CheckConditionBuilder_ForTypescript(this);
+  // }
 }
 
 class NegativeConditionBuilder_ForTypescript extends AbstractConditionBuilder_ForTypescript {
@@ -578,10 +578,10 @@ class NegativeConditionBuilder_ForTypescript extends AbstractConditionBuilder_Fo
     return new CheckConditionBuilder_ForTypescript(this);
   }
 
-  override haveClassComponent(something: any[]): CheckConditionBuilder_ForTypescript {
-    // this.operations.push(new CheckOperation());
-    return new CheckConditionBuilder_ForTypescript(this);
-  }
+  // override haveClassComponent(something: any[]): CheckConditionBuilder_ForTypescript {
+  //   // this.operations.push(new CheckOperation());
+  //   return new CheckConditionBuilder_ForTypescript(this);
+  // }
 }
 
 abstract class AbstractConditionBuilder_ForCss extends AbstractConditionBuilder {
