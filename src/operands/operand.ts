@@ -1,17 +1,18 @@
-import { Edge } from '@/edge';
+// import { Edge } from '@/edge';
 
-export abstract class Operand<T> {
-  constructor(private _value: T) {}
+import { NotificationError } from '@/errors/notification-error';
+
+export class Operand<T> {
+  constructor(
+    protected readonly _value: T,
+    protected readonly _notificationError: NotificationError = new NotificationError(),
+  ) {}
 
   public get value(): T {
     return this._value;
   }
 
-  public set value(_value: T) {
-    this._value = _value;
-  }
+  // public abstract errorMessage(Edge: Edge, negated: boolean): string;
 
-  public abstract errorMessage(Edge: Edge, negated: boolean): string;
-
-  public abstract validate(edge: Edge, negated: boolean): boolean;
+  // public abstract validate(edge: Edge, negated: boolean): boolean;
 }

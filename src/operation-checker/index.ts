@@ -1,12 +1,14 @@
 import { Argument } from '@/common/argument';
-import { Check } from '@/common/check';
+import { NullaryCheck } from '@/common/check';
 import { Options } from '@/common/options';
 import { ProjectType } from '@/common/types';
 import { Edge } from '@/edge';
 import { Graph } from '@/graph';
 import { CheckOperation } from '@/operations/check-operation';
 
-export class OperationChecker implements Check {
+export type OUTPUT = Promise<void>;
+
+export class OperationChecker implements NullaryCheck<OUTPUT> {
   constructor(
     private readonly projectType: ProjectType,
     private readonly options: Options,
@@ -15,7 +17,7 @@ export class OperationChecker implements Check {
     private readonly operations: CheckOperation<any>[],
   ) {}
 
-  async check(): Promise<void> {
+  async check(): OUTPUT {
     const graph: Graph = new Graph(new Map<string, Edge>());
 
     // Build graph

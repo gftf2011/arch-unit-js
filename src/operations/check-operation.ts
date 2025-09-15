@@ -1,17 +1,23 @@
-import { Check } from '@/common/check';
-import { Operand } from '@/operands/operand';
+import { NullaryCheck } from '@/common/check';
+import { NotificationError } from '@/errors/notification-error';
+import { CheckOperand } from '@/operands/check-operand';
 import { Operation } from '@/operations/operation';
 
-export class CheckOperation<T> extends Operation<T> implements Check {
-  constructor(negated: boolean, operand: Operand<T>) {
+export type OUTPUT = void;
+
+export class CheckOperation<T> extends Operation<T> implements NullaryCheck<OUTPUT> {
+  constructor(
+    protected readonly negated: boolean,
+    protected readonly operand: CheckOperand<T>,
+  ) {
     super(negated, operand);
   }
 
-  public check(): void {
-    for (const edge of this.graph.edges.values()) {
-      if (!this.operand.validate(edge, this.negated)) {
-        throw new Error(this.operand.errorMessage(edge, this.negated));
-      }
-    }
+  public check(): OUTPUT {
+    const notificationError: NotificationError = this.operand.check({
+      graph: this.graph,
+      negated: this.negated,
+    });
+    if (notificationError.hasErrors()) throw notificationError;
   }
 }
