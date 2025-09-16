@@ -1,12 +1,14 @@
 import { Argument } from '@/common/argument';
 import { NullaryGet } from '@/common/get';
 import { Options } from '@/common/options';
+import { ProjectType } from '@/common/types';
 import { Operation } from '@/operations/operation';
 
 interface IGetLocMetric extends NullaryGet<{ key: string; value: number }[]> {}
 
 class GetLocMetric implements IGetLocMetric {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
@@ -23,6 +25,7 @@ interface IGetTotalLinesMetric extends NullaryGet<{ key: string; value: number }
 
 class GetTotalLinesMetric implements IGetTotalLinesMetric {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
@@ -39,6 +42,7 @@ interface IGetAverageLocPerFileMetric extends NullaryGet<number> {}
 
 class GetAverageLocPerFileMetric implements IGetAverageLocPerFileMetric {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
@@ -55,6 +59,7 @@ interface IGetAverageLinesPerFileMetric extends NullaryGet<number> {}
 
 class GetAverageLinesPerFileMetric implements IGetAverageLinesPerFileMetric {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
@@ -90,6 +95,7 @@ interface IRobertCecilMartinMetricsFunctions {
 
 class GeneralMetricsFunctions implements IGeneralMetricsFunctions {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
@@ -97,24 +103,43 @@ class GeneralMetricsFunctions implements IGeneralMetricsFunctions {
   ) {}
 
   loc(): IGetLocMetric {
-    return new GetLocMetric(this.options, this.rules, this.args, this.operations);
+    return new GetLocMetric(this.projectType, this.options, this.rules, this.args, this.operations);
   }
 
   totalLines(): IGetTotalLinesMetric {
-    return new GetTotalLinesMetric(this.options, this.rules, this.args, this.operations);
+    return new GetTotalLinesMetric(
+      this.projectType,
+      this.options,
+      this.rules,
+      this.args,
+      this.operations,
+    );
   }
 
   averageLocPerFile(): IGetAverageLocPerFileMetric {
-    return new GetAverageLocPerFileMetric(this.options, this.rules, this.args, this.operations);
+    return new GetAverageLocPerFileMetric(
+      this.projectType,
+      this.options,
+      this.rules,
+      this.args,
+      this.operations,
+    );
   }
 
   averageLinesPerFile(): IGetAverageLinesPerFileMetric {
-    return new GetAverageLinesPerFileMetric(this.options, this.rules, this.args, this.operations);
+    return new GetAverageLinesPerFileMetric(
+      this.projectType,
+      this.options,
+      this.rules,
+      this.args,
+      this.operations,
+    );
   }
 }
 
 class NealFordMetricsFunctions implements INealFordMetricsFunctions {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
@@ -132,6 +157,7 @@ class NealFordMetricsFunctions implements INealFordMetricsFunctions {
 
 class RobertCecilMartinMetricsFunctions implements IRobertCecilMartinMetricsFunctions {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
@@ -168,6 +194,7 @@ interface RobertCecilMartinMetricsType {
 
 abstract class AbstractMetricsTypeBuilder implements GeneralMetricsType, NealFordMetricsType {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
@@ -181,20 +208,33 @@ abstract class AbstractMetricsTypeBuilder implements GeneralMetricsType, NealFor
 
 class MetricsTypeBuilder extends AbstractMetricsTypeBuilder {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: Operation<any>[],
   ) {
-    super(options, rules, args, operations);
+    super(projectType, options, rules, args, operations);
   }
 
   override general(): IGeneralMetricsFunctions {
-    return new GeneralMetricsFunctions(this.options, this.rules, this.args, this.operations);
+    return new GeneralMetricsFunctions(
+      this.projectType,
+      this.options,
+      this.rules,
+      this.args,
+      this.operations,
+    );
   }
 
   override nealFord(): INealFordMetricsFunctions {
-    return new NealFordMetricsFunctions(this.options, this.rules, this.args, this.operations);
+    return new NealFordMetricsFunctions(
+      this.projectType,
+      this.options,
+      this.rules,
+      this.args,
+      this.operations,
+    );
   }
 }
 
@@ -203,12 +243,13 @@ abstract class AbstractMetricsTypeBuilder_ForJavascript
   implements RobertCecilMartinMetricsType
 {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: Operation<any>[],
   ) {
-    super(options, rules, args, operations);
+    super(projectType, options, rules, args, operations);
   }
 
   abstract robertCecilMartin(): IRobertCecilMartinMetricsFunctions;
@@ -216,24 +257,38 @@ abstract class AbstractMetricsTypeBuilder_ForJavascript
 
 class MetricsTypeBuilder_ForJavascript extends AbstractMetricsTypeBuilder_ForJavascript {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: Operation<any>[],
   ) {
-    super(options, rules, args, operations);
+    super(projectType, options, rules, args, operations);
   }
 
   override general(): IGeneralMetricsFunctions {
-    return new GeneralMetricsFunctions(this.options, this.rules, this.args, this.operations);
+    return new GeneralMetricsFunctions(
+      this.projectType,
+      this.options,
+      this.rules,
+      this.args,
+      this.operations,
+    );
   }
 
   override nealFord(): INealFordMetricsFunctions {
-    return new NealFordMetricsFunctions(this.options, this.rules, this.args, this.operations);
+    return new NealFordMetricsFunctions(
+      this.projectType,
+      this.options,
+      this.rules,
+      this.args,
+      this.operations,
+    );
   }
 
   override robertCecilMartin(): IRobertCecilMartinMetricsFunctions {
     return new RobertCecilMartinMetricsFunctions(
+      this.projectType,
       this.options,
       this.rules,
       this.args,
@@ -247,12 +302,13 @@ abstract class AbstractMetricsTypeBuilder_ForTypescript
   implements RobertCecilMartinMetricsType
 {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: Operation<any>[],
   ) {
-    super(options, rules, args, operations);
+    super(projectType, options, rules, args, operations);
   }
 
   abstract robertCecilMartin(): IRobertCecilMartinMetricsFunctions;
@@ -260,24 +316,38 @@ abstract class AbstractMetricsTypeBuilder_ForTypescript
 
 class MetricsTypeBuilder_ForTypescript extends AbstractMetricsTypeBuilder_ForTypescript {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: Operation<any>[],
   ) {
-    super(options, rules, args, operations);
+    super(projectType, options, rules, args, operations);
   }
 
   override general(): IGeneralMetricsFunctions {
-    return new GeneralMetricsFunctions(this.options, this.rules, this.args, this.operations);
+    return new GeneralMetricsFunctions(
+      this.projectType,
+      this.options,
+      this.rules,
+      this.args,
+      this.operations,
+    );
   }
 
   override nealFord(): INealFordMetricsFunctions {
-    return new NealFordMetricsFunctions(this.options, this.rules, this.args, this.operations);
+    return new NealFordMetricsFunctions(
+      this.projectType,
+      this.options,
+      this.rules,
+      this.args,
+      this.operations,
+    );
   }
 
   override robertCecilMartin(): IRobertCecilMartinMetricsFunctions {
     return new RobertCecilMartinMetricsFunctions(
+      this.projectType,
       this.options,
       this.rules,
       this.args,
@@ -288,20 +358,33 @@ class MetricsTypeBuilder_ForTypescript extends AbstractMetricsTypeBuilder_ForTyp
 
 class MetricsTypeBuilder_ForCss extends AbstractMetricsTypeBuilder {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: Operation<any>[],
   ) {
-    super(options, rules, args, operations);
+    super(projectType, options, rules, args, operations);
   }
 
   override general(): IGeneralMetricsFunctions {
-    return new GeneralMetricsFunctions(this.options, this.rules, this.args, this.operations);
+    return new GeneralMetricsFunctions(
+      this.projectType,
+      this.options,
+      this.rules,
+      this.args,
+      this.operations,
+    );
   }
 
   override nealFord(): INealFordMetricsFunctions {
-    return new NealFordMetricsFunctions(this.options, this.rules, this.args, this.operations);
+    return new NealFordMetricsFunctions(
+      this.projectType,
+      this.options,
+      this.rules,
+      this.args,
+      this.operations,
+    );
   }
 }
 
@@ -309,6 +392,7 @@ class MetricsTypeBuilder_ForCss extends AbstractMetricsTypeBuilder {
 
 abstract class AbstractMetricsBuilder {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
@@ -322,16 +406,18 @@ abstract class AbstractMetricsBuilder {
 
 class MetricsBuilder extends AbstractMetricsBuilder {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: Operation<any>[],
   ) {
-    super(options, rules, args, operations);
+    super(projectType, options, rules, args, operations);
   }
 
   metrics(): MetricsTypeBuilder {
     return new MetricsTypeBuilder(
+      this.projectType,
       this.options,
       [...this.rules, 'metrics'],
       this.args,
@@ -341,6 +427,7 @@ class MetricsBuilder extends AbstractMetricsBuilder {
 
   and(): MetricsSelectorBuilder {
     return new MetricsSelectorBuilder(
+      this.projectType,
       this.options,
       [...this.rules, 'and'],
       this.args,
@@ -351,16 +438,18 @@ class MetricsBuilder extends AbstractMetricsBuilder {
 
 class MetricsBuilder_ForJavascript extends AbstractMetricsBuilder {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: Operation<any>[],
   ) {
-    super(options, rules, args, operations);
+    super(projectType, options, rules, args, operations);
   }
 
   metrics(): MetricsTypeBuilder_ForJavascript {
     return new MetricsTypeBuilder_ForJavascript(
+      this.projectType,
       this.options,
       [...this.rules, 'metrics'],
       this.args,
@@ -370,6 +459,7 @@ class MetricsBuilder_ForJavascript extends AbstractMetricsBuilder {
 
   and(): JavascriptMetricsSelectorBuilder {
     return new JavascriptMetricsSelectorBuilder(
+      this.projectType,
       this.options,
       [...this.rules, 'and'],
       this.args,
@@ -380,16 +470,18 @@ class MetricsBuilder_ForJavascript extends AbstractMetricsBuilder {
 
 class MetricsBuilder_ForTypescript extends AbstractMetricsBuilder {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: Operation<any>[],
   ) {
-    super(options, rules, args, operations);
+    super(projectType, options, rules, args, operations);
   }
 
   metrics(): MetricsTypeBuilder_ForTypescript {
     return new MetricsTypeBuilder_ForTypescript(
+      this.projectType,
       this.options,
       [...this.rules, 'metrics'],
       this.args,
@@ -399,6 +491,7 @@ class MetricsBuilder_ForTypescript extends AbstractMetricsBuilder {
 
   and(): TypescriptMetricsSelectorBuilder {
     return new TypescriptMetricsSelectorBuilder(
+      this.projectType,
       this.options,
       [...this.rules, 'and'],
       this.args,
@@ -409,16 +502,18 @@ class MetricsBuilder_ForTypescript extends AbstractMetricsBuilder {
 
 class MetricsBuilder_ForCss extends AbstractMetricsBuilder {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: Operation<any>[],
   ) {
-    super(options, rules, args, operations);
+    super(projectType, options, rules, args, operations);
   }
 
   metrics(): MetricsTypeBuilder_ForCss {
     return new MetricsTypeBuilder_ForCss(
+      this.projectType,
       this.options,
       [...this.rules, 'metrics'],
       this.args,
@@ -428,6 +523,7 @@ class MetricsBuilder_ForCss extends AbstractMetricsBuilder {
 
   and(): CssMetricsSelectorBuilder {
     return new CssMetricsSelectorBuilder(
+      this.projectType,
       this.options,
       [...this.rules, 'and'],
       this.args,
@@ -440,6 +536,7 @@ class MetricsBuilder_ForCss extends AbstractMetricsBuilder {
 
 abstract class AbstractMetricsSelectorBuilder {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
@@ -454,17 +551,19 @@ abstract class AbstractMetricsSelectorBuilder {
 
 export class JavascriptMetricsSelectorBuilder extends AbstractMetricsSelectorBuilder {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: Operation<any>[],
   ) {
-    super(options, rules, args, operations);
+    super(projectType, options, rules, args, operations);
   }
 
   inFile(pattern: string): MetricsBuilder_ForJavascript {
     this.args.push(Argument.create().setValues([pattern]));
     const should = new MetricsBuilder_ForJavascript(
+      this.projectType,
       this.options,
       [...this.rules, 'in file'],
       this.args,
@@ -475,6 +574,7 @@ export class JavascriptMetricsSelectorBuilder extends AbstractMetricsSelectorBui
   inFiles(patterns: string[]): MetricsBuilder_ForJavascript {
     this.args.push(Argument.create().setValues(patterns));
     const should = new MetricsBuilder_ForJavascript(
+      this.projectType,
       this.options,
       [...this.rules, 'in files'],
       this.args,
@@ -485,6 +585,7 @@ export class JavascriptMetricsSelectorBuilder extends AbstractMetricsSelectorBui
   inDirectory(patterns: string[]): MetricsBuilder_ForJavascript {
     this.args.push(Argument.create().setValues(patterns));
     const should = new MetricsBuilder_ForJavascript(
+      this.projectType,
       this.options,
       [...this.rules, 'in directory'],
       this.args,
@@ -495,6 +596,7 @@ export class JavascriptMetricsSelectorBuilder extends AbstractMetricsSelectorBui
   inDirectories(patterns: string[]): MetricsBuilder_ForJavascript {
     this.args.push(Argument.create().setValues(patterns));
     const should = new MetricsBuilder_ForJavascript(
+      this.projectType,
       this.options,
       [...this.rules, 'in directories'],
       this.args,
@@ -506,17 +608,19 @@ export class JavascriptMetricsSelectorBuilder extends AbstractMetricsSelectorBui
 
 export class TypescriptMetricsSelectorBuilder extends AbstractMetricsSelectorBuilder {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: Operation<any>[],
   ) {
-    super(options, rules, args, operations);
+    super(projectType, options, rules, args, operations);
   }
 
   inFile(pattern: string): MetricsBuilder_ForTypescript {
     this.args.push(Argument.create().setValues([pattern]));
     const should = new MetricsBuilder_ForTypescript(
+      this.projectType,
       this.options,
       [...this.rules, 'in file'],
       this.args,
@@ -527,6 +631,7 @@ export class TypescriptMetricsSelectorBuilder extends AbstractMetricsSelectorBui
   inFiles(patterns: string[]): MetricsBuilder_ForTypescript {
     this.args.push(Argument.create().setValues(patterns));
     const should = new MetricsBuilder_ForTypescript(
+      this.projectType,
       this.options,
       [...this.rules, 'in files'],
       this.args,
@@ -537,6 +642,7 @@ export class TypescriptMetricsSelectorBuilder extends AbstractMetricsSelectorBui
   inDirectory(patterns: string[]): MetricsBuilder_ForTypescript {
     this.args.push(Argument.create().setValues(patterns));
     const should = new MetricsBuilder_ForTypescript(
+      this.projectType,
       this.options,
       [...this.rules, 'in directory'],
       this.args,
@@ -547,6 +653,7 @@ export class TypescriptMetricsSelectorBuilder extends AbstractMetricsSelectorBui
   inDirectories(patterns: string[]): MetricsBuilder_ForTypescript {
     this.args.push(Argument.create().setValues(patterns));
     const should = new MetricsBuilder_ForTypescript(
+      this.projectType,
       this.options,
       [...this.rules, 'in directories'],
       this.args,
@@ -558,17 +665,19 @@ export class TypescriptMetricsSelectorBuilder extends AbstractMetricsSelectorBui
 
 class CssMetricsSelectorBuilder extends AbstractMetricsSelectorBuilder {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: Operation<any>[],
   ) {
-    super(options, rules, args, operations);
+    super(projectType, options, rules, args, operations);
   }
 
   inFile(pattern: string): MetricsBuilder_ForCss {
     this.args.push(Argument.create().setValues([pattern]));
     const should = new MetricsBuilder_ForCss(
+      this.projectType,
       this.options,
       [...this.rules, 'in file'],
       this.args,
@@ -579,6 +688,7 @@ class CssMetricsSelectorBuilder extends AbstractMetricsSelectorBuilder {
   inFiles(patterns: string[]): MetricsBuilder_ForCss {
     this.args.push(Argument.create().setValues(patterns));
     const should = new MetricsBuilder_ForCss(
+      this.projectType,
       this.options,
       [...this.rules, 'in files'],
       this.args,
@@ -589,6 +699,7 @@ class CssMetricsSelectorBuilder extends AbstractMetricsSelectorBuilder {
   inDirectory(patterns: string[]): MetricsBuilder_ForCss {
     this.args.push(Argument.create().setValues(patterns));
     const should = new MetricsBuilder_ForCss(
+      this.projectType,
       this.options,
       [...this.rules, 'in directory'],
       this.args,
@@ -599,6 +710,7 @@ class CssMetricsSelectorBuilder extends AbstractMetricsSelectorBuilder {
   inDirectories(patterns: string[]): MetricsBuilder_ForCss {
     this.args.push(Argument.create().setValues(patterns));
     const should = new MetricsBuilder_ForCss(
+      this.projectType,
       this.options,
       [...this.rules, 'in directories'],
       this.args,
@@ -608,19 +720,21 @@ class CssMetricsSelectorBuilder extends AbstractMetricsSelectorBuilder {
   }
 }
 
-export class MetricsSelectorBuilder extends AbstractMetricsSelectorBuilder {
+class MetricsSelectorBuilder extends AbstractMetricsSelectorBuilder {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
-    public args: Argument[] = [],
-    public operations: Operation<any>[] = [],
+    public args: Argument[],
+    public operations: Operation<any>[],
   ) {
-    super(options, rules, args, operations);
+    super(projectType, options, rules, args, operations);
   }
 
   inFile(pattern: string): MetricsBuilder {
     this.args.push(Argument.create().setValues([pattern]));
     const should = new MetricsBuilder(
+      this.projectType,
       this.options,
       [...this.rules, 'in file'],
       this.args,
@@ -631,6 +745,7 @@ export class MetricsSelectorBuilder extends AbstractMetricsSelectorBuilder {
   inFiles(patterns: string[]): MetricsBuilder {
     this.args.push(Argument.create().setValues(patterns));
     const should = new MetricsBuilder(
+      this.projectType,
       this.options,
       [...this.rules, 'in files'],
       this.args,
@@ -641,6 +756,7 @@ export class MetricsSelectorBuilder extends AbstractMetricsSelectorBuilder {
   inDirectory(patterns: string[]): MetricsBuilder {
     this.args.push(Argument.create().setValues(patterns));
     const should = new MetricsBuilder(
+      this.projectType,
       this.options,
       [...this.rules, 'in directory'],
       this.args,
@@ -651,6 +767,7 @@ export class MetricsSelectorBuilder extends AbstractMetricsSelectorBuilder {
   inDirectories(patterns: string[]): MetricsBuilder {
     this.args.push(Argument.create().setValues(patterns));
     const should = new MetricsBuilder(
+      this.projectType,
       this.options,
       [...this.rules, 'in directories'],
       this.args,
@@ -658,9 +775,23 @@ export class MetricsSelectorBuilder extends AbstractMetricsSelectorBuilder {
     );
     return should;
   }
+}
+
+export class RootMetricsSelectorBuilder extends MetricsSelectorBuilder {
+  constructor(
+    public options: Options,
+    public rules: string[],
+    public args: Argument[] = [],
+    public operations: Operation<any>[] = [],
+    public projectType: ProjectType = ProjectType.Any,
+  ) {
+    super(projectType, options, rules, args, operations);
+  }
 
   forJavascript(): JavascriptMetricsSelectorBuilder {
+    this.projectType = ProjectType.Javascript;
     const selector = new JavascriptMetricsSelectorBuilder(
+      this.projectType,
       this.options,
       [...this.rules, 'for javascript'],
       this.args,
@@ -669,7 +800,9 @@ export class MetricsSelectorBuilder extends AbstractMetricsSelectorBuilder {
     return selector;
   }
   forTypescript(): TypescriptMetricsSelectorBuilder {
+    this.projectType = ProjectType.Typescript;
     const selector = new TypescriptMetricsSelectorBuilder(
+      this.projectType,
       this.options,
       [...this.rules, 'for typescript'],
       this.args,
@@ -678,7 +811,9 @@ export class MetricsSelectorBuilder extends AbstractMetricsSelectorBuilder {
     return selector;
   }
   forCss(): CssMetricsSelectorBuilder {
+    this.projectType = ProjectType.Css;
     const selector = new CssMetricsSelectorBuilder(
+      this.projectType,
       this.options,
       [...this.rules, 'for css'],
       this.args,
