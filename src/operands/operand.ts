@@ -1,5 +1,3 @@
-// import { Edge } from '@/edge';
-
 import { NotificationError } from '@/errors/notification-error';
 
 export class Operand<T> {
@@ -11,8 +9,4 @@ export class Operand<T> {
   public get value(): T {
     return this._value;
   }
-
-  // public abstract errorMessage(Edge: Edge, negated: boolean): string;
-
-  // public abstract validate(edge: Edge, negated: boolean): boolean;
 }

@@ -15,7 +15,7 @@ import { BeFreeOfCyclesOperand } from '@/operands/check/be-free-of-cycles-operan
 abstract class AbstractCheckConditionBuilder implements NullaryCheck<Promise<void>> {
   constructor(public condition: AbstractConditionBuilder) {}
 
-  abstract and(): Omit<AbstractShouldSelectorBuilder, 'and'>;
+  abstract and(): Omit<IShouldSelectorBuilder, 'and'>;
 
   abstract check(): Promise<void>;
 }
@@ -724,7 +724,13 @@ class NegativeConditionBuilder_ForCss extends AbstractConditionBuilder_ForCss {
 
 // ------------------------------------------------------------
 
-abstract class AbstractShouldSelectorBuilder {
+interface IShouldSelectorBuilder {
+  should(): PositiveConditionBuilder;
+  shouldNot(): NegativeConditionBuilder;
+  and(): IFilesSelectorBuilder;
+}
+
+class ShouldSelectorBuilder implements IShouldSelectorBuilder {
   constructor(
     public projectType: ProjectType,
     public options: Options,
@@ -732,21 +738,7 @@ abstract class AbstractShouldSelectorBuilder {
     public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {}
-  abstract should(): PositiveConditionBuilder;
-  abstract shouldNot(): NegativeConditionBuilder;
-  abstract and(): AbstractFilesSelectorBuilder;
-}
 
-class ShouldSelectorBuilder extends AbstractShouldSelectorBuilder {
-  constructor(
-    public projectType: ProjectType,
-    public options: Options,
-    public rules: string[],
-    public args: Argument[],
-    public operations: CheckOperation<any>[],
-  ) {
-    super(projectType, options, rules, args, operations);
-  }
   should(): PositiveConditionBuilder {
     return new PositiveConditionBuilder(
       this.projectType,
@@ -765,27 +757,26 @@ class ShouldSelectorBuilder extends AbstractShouldSelectorBuilder {
       this.operations,
     );
   }
-  and(): FilesSelectorBuilder {
+  and(): IFilesSelectorBuilder {
     return new FilesSelectorBuilder(
-      this.projectType,
       this.options,
       [...this.rules, 'and'],
       this.args,
       this.operations,
+      this.projectType,
     );
   }
 }
 
-class ShouldSelectorBuilder_ForJavascript extends AbstractShouldSelectorBuilder {
+class ShouldSelectorBuilder_ForJavascript implements IShouldSelectorBuilder {
   constructor(
     public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: CheckOperation<any>[],
-  ) {
-    super(projectType, options, rules, args, operations);
-  }
+  ) {}
+
   should(): PositiveConditionBuilder_ForJavascript {
     return new PositiveConditionBuilder_ForJavascript(
       this.projectType,
@@ -815,16 +806,15 @@ class ShouldSelectorBuilder_ForJavascript extends AbstractShouldSelectorBuilder 
   }
 }
 
-class ShouldSelectorBuilder_ForTypescript extends AbstractShouldSelectorBuilder {
+class ShouldSelectorBuilder_ForTypescript implements IShouldSelectorBuilder {
   constructor(
     public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: CheckOperation<any>[],
-  ) {
-    super(projectType, options, rules, args, operations);
-  }
+  ) {}
+
   should(): PositiveConditionBuilder_ForTypescript {
     return new PositiveConditionBuilder_ForTypescript(
       this.projectType,
@@ -854,16 +844,15 @@ class ShouldSelectorBuilder_ForTypescript extends AbstractShouldSelectorBuilder 
   }
 }
 
-class ShouldSelectorBuilder_ForCss extends AbstractShouldSelectorBuilder {
+class ShouldSelectorBuilder_ForCss implements IShouldSelectorBuilder {
   constructor(
     public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: CheckOperation<any>[],
-  ) {
-    super(projectType, options, rules, args, operations);
-  }
+  ) {}
+
   should(): PositiveConditionBuilder_ForCss {
     return new PositiveConditionBuilder_ForCss(
       this.projectType,
@@ -895,7 +884,14 @@ class ShouldSelectorBuilder_ForCss extends AbstractShouldSelectorBuilder {
 
 // ------------------------------------------------------------
 
-abstract class AbstractFilesSelectorBuilder {
+interface IFilesSelectorBuilder {
+  inFile(pattern: string): IShouldSelectorBuilder;
+  inFiles(patterns: string[]): IShouldSelectorBuilder;
+  inDirectory(patterns: string[]): IShouldSelectorBuilder;
+  inDirectories(patterns: string[]): IShouldSelectorBuilder;
+}
+
+class JavascriptFilesSelectorBuilder implements IFilesSelectorBuilder {
   constructor(
     public projectType: ProjectType,
     public options: Options,
@@ -903,23 +899,6 @@ abstract class AbstractFilesSelectorBuilder {
     public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {}
-
-  abstract inFile(pattern: string): AbstractShouldSelectorBuilder;
-  abstract inFiles(patterns: string[]): AbstractShouldSelectorBuilder;
-  abstract inDirectory(patterns: string[]): AbstractShouldSelectorBuilder;
-  abstract inDirectories(patterns: string[]): AbstractShouldSelectorBuilder;
-}
-
-class JavascriptFilesSelectorBuilder extends AbstractFilesSelectorBuilder {
-  constructor(
-    public projectType: ProjectType,
-    public options: Options,
-    public rules: string[],
-    public args: Argument[],
-    public operations: CheckOperation<any>[],
-  ) {
-    super(projectType, options, rules, args, operations);
-  }
 
   inFile(pattern: string): ShouldSelectorBuilder_ForJavascript {
     this.args.push(Argument.create().setValues([pattern]));
@@ -970,16 +949,14 @@ class JavascriptFilesSelectorBuilder extends AbstractFilesSelectorBuilder {
   }
 }
 
-class TypescriptFilesSelectorBuilder extends AbstractFilesSelectorBuilder {
+class TypescriptFilesSelectorBuilder implements IFilesSelectorBuilder {
   constructor(
     public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: CheckOperation<any>[],
-  ) {
-    super(projectType, options, rules, args, operations);
-  }
+  ) {}
 
   inFile(pattern: string): ShouldSelectorBuilder_ForTypescript {
     this.args.push(Argument.create().setValues([pattern]));
@@ -1030,16 +1007,14 @@ class TypescriptFilesSelectorBuilder extends AbstractFilesSelectorBuilder {
   }
 }
 
-class CssFilesSelectorBuilder extends AbstractFilesSelectorBuilder {
+class CssFilesSelectorBuilder implements IFilesSelectorBuilder {
   constructor(
     public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: CheckOperation<any>[],
-  ) {
-    super(projectType, options, rules, args, operations);
-  }
+  ) {}
 
   inFile(pattern: string): ShouldSelectorBuilder_ForCss {
     this.args.push(Argument.create().setValues([pattern]));
@@ -1090,21 +1065,25 @@ class CssFilesSelectorBuilder extends AbstractFilesSelectorBuilder {
   }
 }
 
-export class FilesSelectorBuilder extends AbstractFilesSelectorBuilder {
+export interface IRootFilesSelectorBuilder extends IFilesSelectorBuilder {
+  forJavascript(): IFilesSelectorBuilder;
+  forTypescript(): IFilesSelectorBuilder;
+  forCss(): IFilesSelectorBuilder;
+}
+
+export class FilesSelectorBuilder implements IRootFilesSelectorBuilder {
   constructor(
-    public projectType: ProjectType,
     public options: Options,
     public rules: string[] = [],
     public args: Argument[] = [],
     public operations: CheckOperation<any>[] = [],
-  ) {
-    super(projectType, options, rules, args, operations);
-  }
+    public projectType: ProjectType = ProjectType.Any,
+  ) {}
 
   inFile(pattern: string): ShouldSelectorBuilder {
     this.args.push(Argument.create().setValues([pattern]));
     const should = new ShouldSelectorBuilder(
-      ProjectType.Any,
+      this.projectType,
       this.options,
       [...this.rules, 'in file'],
       this.args,
@@ -1116,7 +1095,7 @@ export class FilesSelectorBuilder extends AbstractFilesSelectorBuilder {
   inFiles(patterns: string[]): ShouldSelectorBuilder {
     this.args.push(Argument.create().setValues(patterns));
     const should = new ShouldSelectorBuilder(
-      ProjectType.Any,
+      this.projectType,
       this.options,
       [...this.rules, 'in files'],
       this.args,
@@ -1128,7 +1107,7 @@ export class FilesSelectorBuilder extends AbstractFilesSelectorBuilder {
   inDirectory(patterns: string[]): ShouldSelectorBuilder {
     this.args.push(Argument.create().setValues(patterns));
     const should = new ShouldSelectorBuilder(
-      ProjectType.Any,
+      this.projectType,
       this.options,
       [...this.rules, 'in directory'],
       this.args,
@@ -1140,7 +1119,7 @@ export class FilesSelectorBuilder extends AbstractFilesSelectorBuilder {
   inDirectories(patterns: string[]): ShouldSelectorBuilder {
     this.args.push(Argument.create().setValues(patterns));
     const should = new ShouldSelectorBuilder(
-      ProjectType.Any,
+      this.projectType,
       this.options,
       [...this.rules, 'in directories'],
       this.args,
@@ -1149,9 +1128,10 @@ export class FilesSelectorBuilder extends AbstractFilesSelectorBuilder {
     return should;
   }
 
-  forJavascript(): JavascriptFilesSelectorBuilder {
+  forJavascript(): IFilesSelectorBuilder {
+    this.projectType = ProjectType.Javascript;
     const selector = new JavascriptFilesSelectorBuilder(
-      ProjectType.Javascript,
+      this.projectType,
       this.options,
       [...this.rules, 'for javascript'],
       this.args,
@@ -1160,9 +1140,10 @@ export class FilesSelectorBuilder extends AbstractFilesSelectorBuilder {
     return selector;
   }
 
-  forTypescript(): TypescriptFilesSelectorBuilder {
+  forTypescript(): IFilesSelectorBuilder {
+    this.projectType = ProjectType.Typescript;
     const selector = new TypescriptFilesSelectorBuilder(
-      ProjectType.Typescript,
+      this.projectType,
       this.options,
       [...this.rules, 'for typescript'],
       this.args,
@@ -1171,9 +1152,10 @@ export class FilesSelectorBuilder extends AbstractFilesSelectorBuilder {
     return selector;
   }
 
-  forCss(): CssFilesSelectorBuilder {
+  forCss(): IFilesSelectorBuilder {
+    this.projectType = ProjectType.Css;
     const selector = new CssFilesSelectorBuilder(
-      ProjectType.Css,
+      this.projectType,
       this.options,
       [...this.rules, 'for css'],
       this.args,
