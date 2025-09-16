@@ -13,8 +13,6 @@ import { OnlyDependsOnOperand } from '@/operands/check/only-depends-on-operand';
 import { BeFreeOfCyclesOperand } from '@/operands/check/be-free-of-cycles-operand';
 
 abstract class AbstractCheckConditionBuilder implements NullaryCheck<Promise<void>> {
-  public abstract projectType: ProjectType;
-
   constructor(public condition: AbstractConditionBuilder) {}
 
   abstract and(): Omit<AbstractShouldSelectorBuilder, 'and'>;
@@ -23,14 +21,13 @@ abstract class AbstractCheckConditionBuilder implements NullaryCheck<Promise<voi
 }
 
 class CheckConditionBuilder extends AbstractCheckConditionBuilder {
-  public override projectType: ProjectType = ProjectType.Any;
-
   constructor(public condition: AbstractConditionBuilder) {
     super(condition);
   }
 
   override and(): Omit<ShouldSelectorBuilder, 'and'> {
     return new ShouldSelectorBuilder(
+      this.condition.projectType,
       this.condition.options,
       [...this.condition.rules, ', and'],
       this.condition.args,
@@ -40,7 +37,7 @@ class CheckConditionBuilder extends AbstractCheckConditionBuilder {
 
   override async check(): Promise<void> {
     const operationChecker = new OperationChecker(
-      this.projectType,
+      this.condition.projectType,
       this.condition.options,
       this.condition.rules,
       this.condition.args,
@@ -52,14 +49,13 @@ class CheckConditionBuilder extends AbstractCheckConditionBuilder {
 }
 
 class CheckConditionBuilder_ForJavascript extends AbstractCheckConditionBuilder {
-  public override projectType: ProjectType = ProjectType.Javascript;
-
   constructor(public condition: AbstractConditionBuilder) {
     super(condition);
   }
 
   override and(): Omit<ShouldSelectorBuilder_ForJavascript, 'and'> {
     return new ShouldSelectorBuilder_ForJavascript(
+      this.condition.projectType,
       this.condition.options,
       [...this.condition.rules, ', and'],
       this.condition.args,
@@ -69,7 +65,7 @@ class CheckConditionBuilder_ForJavascript extends AbstractCheckConditionBuilder 
 
   override async check(): Promise<void> {
     const operationChecker = new OperationChecker(
-      this.projectType,
+      this.condition.projectType,
       this.condition.options,
       this.condition.rules,
       this.condition.args,
@@ -81,14 +77,13 @@ class CheckConditionBuilder_ForJavascript extends AbstractCheckConditionBuilder 
 }
 
 class CheckConditionBuilder_ForTypescript extends AbstractCheckConditionBuilder {
-  public override projectType: ProjectType = ProjectType.Typescript;
-
   constructor(public condition: AbstractConditionBuilder) {
     super(condition);
   }
 
   override and(): Omit<ShouldSelectorBuilder_ForTypescript, 'and'> {
     return new ShouldSelectorBuilder_ForTypescript(
+      this.condition.projectType,
       this.condition.options,
       [...this.condition.rules, ', and'],
       this.condition.args,
@@ -98,7 +93,7 @@ class CheckConditionBuilder_ForTypescript extends AbstractCheckConditionBuilder 
 
   override async check(): Promise<void> {
     const operationChecker = new OperationChecker(
-      this.projectType,
+      this.condition.projectType,
       this.condition.options,
       this.condition.rules,
       this.condition.args,
@@ -110,14 +105,13 @@ class CheckConditionBuilder_ForTypescript extends AbstractCheckConditionBuilder 
 }
 
 class CheckConditionBuilder_ForCss extends AbstractCheckConditionBuilder {
-  public override projectType: ProjectType = ProjectType.Css;
-
   constructor(public condition: AbstractConditionBuilder) {
     super(condition);
   }
 
   override and(): Omit<ShouldSelectorBuilder_ForCss, 'and'> {
     return new ShouldSelectorBuilder_ForCss(
+      this.condition.projectType,
       this.condition.options,
       [...this.condition.rules, ', and'],
       this.condition.args,
@@ -127,7 +121,7 @@ class CheckConditionBuilder_ForCss extends AbstractCheckConditionBuilder {
 
   override async check(): Promise<void> {
     const operationChecker = new OperationChecker(
-      this.projectType,
+      this.condition.projectType,
       this.condition.options,
       this.condition.rules,
       this.condition.args,
@@ -143,6 +137,7 @@ class CheckConditionBuilder_ForCss extends AbstractCheckConditionBuilder {
 abstract class AbstractConditionBuilder {
   public abstract negated: boolean;
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
@@ -161,12 +156,13 @@ abstract class AbstractConditionBuilder {
 class PositiveConditionBuilder extends AbstractConditionBuilder {
   public override negated: boolean = false;
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
-    super(options, rules, args, operations);
+    super(projectType, options, rules, args, operations);
   }
 
   override haveName(pattern: GlobPattern): CheckConditionBuilder {
@@ -222,12 +218,13 @@ class NegativeConditionBuilder extends AbstractConditionBuilder {
   public override negated: boolean = true;
 
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
-    super(options, rules, args, operations);
+    super(projectType, options, rules, args, operations);
   }
 
   override haveName(pattern: GlobPattern): CheckConditionBuilder {
@@ -281,12 +278,13 @@ class NegativeConditionBuilder extends AbstractConditionBuilder {
 
 abstract class AbstractConditionBuilder_ForJavascript extends AbstractConditionBuilder {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
-    super(options, rules, args, operations);
+    super(projectType, options, rules, args, operations);
   }
 
   // abstract haveClassComponent(something: any[]): AbstractCheckConditionBuilder;
@@ -296,12 +294,13 @@ class PositiveConditionBuilder_ForJavascript extends AbstractConditionBuilder_Fo
   public override negated: boolean = false;
 
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
-    super(options, rules, args, operations);
+    super(projectType, options, rules, args, operations);
   }
 
   override haveName(pattern: GlobPattern): CheckConditionBuilder_ForJavascript {
@@ -366,12 +365,13 @@ class NegativeConditionBuilder_ForJavascript extends AbstractConditionBuilder_Fo
   public override negated: boolean = true;
 
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
-    super(options, rules, args, operations);
+    super(projectType, options, rules, args, operations);
   }
 
   override haveName(pattern: GlobPattern): CheckConditionBuilder_ForJavascript {
@@ -434,12 +434,13 @@ class NegativeConditionBuilder_ForJavascript extends AbstractConditionBuilder_Fo
 
 abstract class AbstractConditionBuilder_ForTypescript extends AbstractConditionBuilder_ForJavascript {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
-    super(options, rules, args, operations);
+    super(projectType, options, rules, args, operations);
   }
 }
 
@@ -447,12 +448,13 @@ class PositiveConditionBuilder_ForTypescript extends AbstractConditionBuilder_Fo
   public override negated: boolean = false;
 
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
-    super(options, rules, args, operations);
+    super(projectType, options, rules, args, operations);
   }
 
   override haveName(pattern: GlobPattern): CheckConditionBuilder_ForTypescript {
@@ -517,12 +519,13 @@ class NegativeConditionBuilder_ForTypescript extends AbstractConditionBuilder_Fo
   public override negated: boolean = true;
 
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
-    super(options, rules, args, operations);
+    super(projectType, options, rules, args, operations);
   }
 
   override haveName(pattern: GlobPattern): CheckConditionBuilder_ForTypescript {
@@ -585,12 +588,13 @@ class NegativeConditionBuilder_ForTypescript extends AbstractConditionBuilder_Fo
 
 abstract class AbstractConditionBuilder_ForCss extends AbstractConditionBuilder {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
-    super(options, rules, args, operations);
+    super(projectType, options, rules, args, operations);
   }
 }
 
@@ -598,12 +602,13 @@ class PositiveConditionBuilder_ForCss extends AbstractConditionBuilder_ForCss {
   public override negated: boolean = false;
 
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
-    super(options, rules, args, operations);
+    super(projectType, options, rules, args, operations);
   }
 
   override haveName(pattern: GlobPattern): CheckConditionBuilder_ForCss {
@@ -659,12 +664,13 @@ class NegativeConditionBuilder_ForCss extends AbstractConditionBuilder_ForCss {
   public override negated: boolean = true;
 
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
-    super(options, rules, args, operations);
+    super(projectType, options, rules, args, operations);
   }
 
   override haveName(pattern: GlobPattern): CheckConditionBuilder_ForCss {
@@ -720,6 +726,7 @@ class NegativeConditionBuilder_ForCss extends AbstractConditionBuilder_ForCss {
 
 abstract class AbstractShouldSelectorBuilder {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
@@ -732,15 +739,17 @@ abstract class AbstractShouldSelectorBuilder {
 
 class ShouldSelectorBuilder extends AbstractShouldSelectorBuilder {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
-    super(options, rules, args, operations);
+    super(projectType, options, rules, args, operations);
   }
   should(): PositiveConditionBuilder {
     return new PositiveConditionBuilder(
+      this.projectType,
       this.options,
       [...this.rules, 'should'],
       this.args,
@@ -749,6 +758,7 @@ class ShouldSelectorBuilder extends AbstractShouldSelectorBuilder {
   }
   shouldNot(): NegativeConditionBuilder {
     return new NegativeConditionBuilder(
+      this.projectType,
       this.options,
       [...this.rules, 'should not'],
       this.args,
@@ -757,6 +767,7 @@ class ShouldSelectorBuilder extends AbstractShouldSelectorBuilder {
   }
   and(): FilesSelectorBuilder {
     return new FilesSelectorBuilder(
+      this.projectType,
       this.options,
       [...this.rules, 'and'],
       this.args,
@@ -767,15 +778,17 @@ class ShouldSelectorBuilder extends AbstractShouldSelectorBuilder {
 
 class ShouldSelectorBuilder_ForJavascript extends AbstractShouldSelectorBuilder {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
-    super(options, rules, args, operations);
+    super(projectType, options, rules, args, operations);
   }
   should(): PositiveConditionBuilder_ForJavascript {
     return new PositiveConditionBuilder_ForJavascript(
+      this.projectType,
       this.options,
       [...this.rules, 'should'],
       this.args,
@@ -784,6 +797,7 @@ class ShouldSelectorBuilder_ForJavascript extends AbstractShouldSelectorBuilder 
   }
   shouldNot(): NegativeConditionBuilder_ForJavascript {
     return new NegativeConditionBuilder_ForJavascript(
+      this.projectType,
       this.options,
       [...this.rules, 'should not'],
       this.args,
@@ -792,6 +806,7 @@ class ShouldSelectorBuilder_ForJavascript extends AbstractShouldSelectorBuilder 
   }
   and(): JavascriptFilesSelectorBuilder {
     return new JavascriptFilesSelectorBuilder(
+      this.projectType,
       this.options,
       [...this.rules, 'and'],
       this.args,
@@ -802,15 +817,17 @@ class ShouldSelectorBuilder_ForJavascript extends AbstractShouldSelectorBuilder 
 
 class ShouldSelectorBuilder_ForTypescript extends AbstractShouldSelectorBuilder {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
-    super(options, rules, args, operations);
+    super(projectType, options, rules, args, operations);
   }
   should(): PositiveConditionBuilder_ForTypescript {
     return new PositiveConditionBuilder_ForTypescript(
+      this.projectType,
       this.options,
       [...this.rules, 'should'],
       this.args,
@@ -819,6 +836,7 @@ class ShouldSelectorBuilder_ForTypescript extends AbstractShouldSelectorBuilder 
   }
   shouldNot(): NegativeConditionBuilder_ForTypescript {
     return new NegativeConditionBuilder_ForTypescript(
+      this.projectType,
       this.options,
       [...this.rules, 'should not'],
       this.args,
@@ -827,6 +845,7 @@ class ShouldSelectorBuilder_ForTypescript extends AbstractShouldSelectorBuilder 
   }
   and(): TypescriptFilesSelectorBuilder {
     return new TypescriptFilesSelectorBuilder(
+      this.projectType,
       this.options,
       [...this.rules, 'and'],
       this.args,
@@ -837,15 +856,17 @@ class ShouldSelectorBuilder_ForTypescript extends AbstractShouldSelectorBuilder 
 
 class ShouldSelectorBuilder_ForCss extends AbstractShouldSelectorBuilder {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
-    super(options, rules, args, operations);
+    super(projectType, options, rules, args, operations);
   }
   should(): PositiveConditionBuilder_ForCss {
     return new PositiveConditionBuilder_ForCss(
+      this.projectType,
       this.options,
       [...this.rules, 'should'],
       this.args,
@@ -854,6 +875,7 @@ class ShouldSelectorBuilder_ForCss extends AbstractShouldSelectorBuilder {
   }
   shouldNot(): NegativeConditionBuilder_ForCss {
     return new NegativeConditionBuilder_ForCss(
+      this.projectType,
       this.options,
       [...this.rules, 'should not'],
       this.args,
@@ -862,6 +884,7 @@ class ShouldSelectorBuilder_ForCss extends AbstractShouldSelectorBuilder {
   }
   and(): CssFilesSelectorBuilder {
     return new CssFilesSelectorBuilder(
+      this.projectType,
       this.options,
       [...this.rules, 'and'],
       this.args,
@@ -874,6 +897,7 @@ class ShouldSelectorBuilder_ForCss extends AbstractShouldSelectorBuilder {
 
 abstract class AbstractFilesSelectorBuilder {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
@@ -888,17 +912,19 @@ abstract class AbstractFilesSelectorBuilder {
 
 class JavascriptFilesSelectorBuilder extends AbstractFilesSelectorBuilder {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
-    super(options, rules, args, operations);
+    super(projectType, options, rules, args, operations);
   }
 
   inFile(pattern: string): ShouldSelectorBuilder_ForJavascript {
     this.args.push(Argument.create().setValues([pattern]));
     const should = new ShouldSelectorBuilder_ForJavascript(
+      this.projectType,
       this.options,
       [...this.rules, 'in file'],
       this.args,
@@ -906,9 +932,11 @@ class JavascriptFilesSelectorBuilder extends AbstractFilesSelectorBuilder {
     );
     return should;
   }
+
   inFiles(patterns: string[]): ShouldSelectorBuilder_ForJavascript {
     this.args.push(Argument.create().setValues(patterns));
     const should = new ShouldSelectorBuilder_ForJavascript(
+      this.projectType,
       this.options,
       [...this.rules, 'in files'],
       this.args,
@@ -916,9 +944,11 @@ class JavascriptFilesSelectorBuilder extends AbstractFilesSelectorBuilder {
     );
     return should;
   }
+
   inDirectory(patterns: string[]): ShouldSelectorBuilder_ForJavascript {
     this.args.push(Argument.create().setValues(patterns));
     const should = new ShouldSelectorBuilder_ForJavascript(
+      this.projectType,
       this.options,
       [...this.rules, 'in directory'],
       this.args,
@@ -926,9 +956,11 @@ class JavascriptFilesSelectorBuilder extends AbstractFilesSelectorBuilder {
     );
     return should;
   }
+
   inDirectories(patterns: string[]): ShouldSelectorBuilder_ForJavascript {
     this.args.push(Argument.create().setValues(patterns));
     const should = new ShouldSelectorBuilder_ForJavascript(
+      this.projectType,
       this.options,
       [...this.rules, 'in directories'],
       this.args,
@@ -940,17 +972,19 @@ class JavascriptFilesSelectorBuilder extends AbstractFilesSelectorBuilder {
 
 class TypescriptFilesSelectorBuilder extends AbstractFilesSelectorBuilder {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
-    super(options, rules, args, operations);
+    super(projectType, options, rules, args, operations);
   }
 
   inFile(pattern: string): ShouldSelectorBuilder_ForTypescript {
     this.args.push(Argument.create().setValues([pattern]));
     const should = new ShouldSelectorBuilder_ForTypescript(
+      this.projectType,
       this.options,
       [...this.rules, 'in file'],
       this.args,
@@ -958,9 +992,11 @@ class TypescriptFilesSelectorBuilder extends AbstractFilesSelectorBuilder {
     );
     return should;
   }
+
   inFiles(patterns: string[]): ShouldSelectorBuilder_ForTypescript {
     this.args.push(Argument.create().setValues(patterns));
     const should = new ShouldSelectorBuilder_ForTypescript(
+      this.projectType,
       this.options,
       [...this.rules, 'in files'],
       this.args,
@@ -968,9 +1004,11 @@ class TypescriptFilesSelectorBuilder extends AbstractFilesSelectorBuilder {
     );
     return should;
   }
+
   inDirectory(patterns: string[]): ShouldSelectorBuilder_ForTypescript {
     this.args.push(Argument.create().setValues(patterns));
     const should = new ShouldSelectorBuilder_ForTypescript(
+      this.projectType,
       this.options,
       [...this.rules, 'in directory'],
       this.args,
@@ -978,9 +1016,11 @@ class TypescriptFilesSelectorBuilder extends AbstractFilesSelectorBuilder {
     );
     return should;
   }
+
   inDirectories(patterns: string[]): ShouldSelectorBuilder_ForTypescript {
     this.args.push(Argument.create().setValues(patterns));
     const should = new ShouldSelectorBuilder_ForTypescript(
+      this.projectType,
       this.options,
       [...this.rules, 'in directories'],
       this.args,
@@ -992,17 +1032,19 @@ class TypescriptFilesSelectorBuilder extends AbstractFilesSelectorBuilder {
 
 class CssFilesSelectorBuilder extends AbstractFilesSelectorBuilder {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
     public rules: string[],
     public args: Argument[],
     public operations: CheckOperation<any>[],
   ) {
-    super(options, rules, args, operations);
+    super(projectType, options, rules, args, operations);
   }
 
   inFile(pattern: string): ShouldSelectorBuilder_ForCss {
     this.args.push(Argument.create().setValues([pattern]));
     const should = new ShouldSelectorBuilder_ForCss(
+      this.projectType,
       this.options,
       [...this.rules, 'in file'],
       this.args,
@@ -1010,9 +1052,11 @@ class CssFilesSelectorBuilder extends AbstractFilesSelectorBuilder {
     );
     return should;
   }
+
   inFiles(patterns: string[]): ShouldSelectorBuilder_ForCss {
     this.args.push(Argument.create().setValues(patterns));
     const should = new ShouldSelectorBuilder_ForCss(
+      this.projectType,
       this.options,
       [...this.rules, 'in files'],
       this.args,
@@ -1020,9 +1064,11 @@ class CssFilesSelectorBuilder extends AbstractFilesSelectorBuilder {
     );
     return should;
   }
+
   inDirectory(patterns: string[]): ShouldSelectorBuilder_ForCss {
     this.args.push(Argument.create().setValues(patterns));
     const should = new ShouldSelectorBuilder_ForCss(
+      this.projectType,
       this.options,
       [...this.rules, 'in directory'],
       this.args,
@@ -1030,9 +1076,11 @@ class CssFilesSelectorBuilder extends AbstractFilesSelectorBuilder {
     );
     return should;
   }
+
   inDirectories(patterns: string[]): ShouldSelectorBuilder_ForCss {
     this.args.push(Argument.create().setValues(patterns));
     const should = new ShouldSelectorBuilder_ForCss(
+      this.projectType,
       this.options,
       [...this.rules, 'in directories'],
       this.args,
@@ -1044,17 +1092,19 @@ class CssFilesSelectorBuilder extends AbstractFilesSelectorBuilder {
 
 export class FilesSelectorBuilder extends AbstractFilesSelectorBuilder {
   constructor(
+    public projectType: ProjectType,
     public options: Options,
-    public rules: string[],
+    public rules: string[] = [],
     public args: Argument[] = [],
     public operations: CheckOperation<any>[] = [],
   ) {
-    super(options, rules, args, operations);
+    super(projectType, options, rules, args, operations);
   }
 
   inFile(pattern: string): ShouldSelectorBuilder {
     this.args.push(Argument.create().setValues([pattern]));
     const should = new ShouldSelectorBuilder(
+      ProjectType.Any,
       this.options,
       [...this.rules, 'in file'],
       this.args,
@@ -1062,9 +1112,11 @@ export class FilesSelectorBuilder extends AbstractFilesSelectorBuilder {
     );
     return should;
   }
+
   inFiles(patterns: string[]): ShouldSelectorBuilder {
     this.args.push(Argument.create().setValues(patterns));
     const should = new ShouldSelectorBuilder(
+      ProjectType.Any,
       this.options,
       [...this.rules, 'in files'],
       this.args,
@@ -1072,9 +1124,11 @@ export class FilesSelectorBuilder extends AbstractFilesSelectorBuilder {
     );
     return should;
   }
+
   inDirectory(patterns: string[]): ShouldSelectorBuilder {
     this.args.push(Argument.create().setValues(patterns));
     const should = new ShouldSelectorBuilder(
+      ProjectType.Any,
       this.options,
       [...this.rules, 'in directory'],
       this.args,
@@ -1082,9 +1136,11 @@ export class FilesSelectorBuilder extends AbstractFilesSelectorBuilder {
     );
     return should;
   }
+
   inDirectories(patterns: string[]): ShouldSelectorBuilder {
     this.args.push(Argument.create().setValues(patterns));
     const should = new ShouldSelectorBuilder(
+      ProjectType.Any,
       this.options,
       [...this.rules, 'in directories'],
       this.args,
@@ -1095,6 +1151,7 @@ export class FilesSelectorBuilder extends AbstractFilesSelectorBuilder {
 
   forJavascript(): JavascriptFilesSelectorBuilder {
     const selector = new JavascriptFilesSelectorBuilder(
+      ProjectType.Javascript,
       this.options,
       [...this.rules, 'for javascript'],
       this.args,
@@ -1102,8 +1159,10 @@ export class FilesSelectorBuilder extends AbstractFilesSelectorBuilder {
     );
     return selector;
   }
+
   forTypescript(): TypescriptFilesSelectorBuilder {
     const selector = new TypescriptFilesSelectorBuilder(
+      ProjectType.Typescript,
       this.options,
       [...this.rules, 'for typescript'],
       this.args,
@@ -1111,8 +1170,10 @@ export class FilesSelectorBuilder extends AbstractFilesSelectorBuilder {
     );
     return selector;
   }
+
   forCss(): CssFilesSelectorBuilder {
     const selector = new CssFilesSelectorBuilder(
+      ProjectType.Css,
       this.options,
       [...this.rules, 'for css'],
       this.args,

@@ -1,12 +1,79 @@
 import { Argument } from '@/common/argument';
+import { NullaryGet } from '@/common/get';
 import { Options } from '@/common/options';
 import { Operation } from '@/operations/operation';
 
+interface IGetLocMetric extends NullaryGet<{ key: string; value: number }[]> {}
+
+class GetLocMetric implements IGetLocMetric {
+  constructor(
+    public options: Options,
+    public rules: string[],
+    public args: Argument[],
+    public operations: Operation<any>[],
+  ) {}
+
+  get(): { key: string; value: number }[] {
+    // Implement
+    return [];
+  }
+}
+
+interface IGetTotalLinesMetric extends NullaryGet<{ key: string; value: number }[]> {}
+
+class GetTotalLinesMetric implements IGetTotalLinesMetric {
+  constructor(
+    public options: Options,
+    public rules: string[],
+    public args: Argument[],
+    public operations: Operation<any>[],
+  ) {}
+
+  get(): { key: string; value: number }[] {
+    // Implement
+    return [];
+  }
+}
+
+interface IGetAverageLocPerFileMetric extends NullaryGet<number> {}
+
+class GetAverageLocPerFileMetric implements IGetAverageLocPerFileMetric {
+  constructor(
+    public options: Options,
+    public rules: string[],
+    public args: Argument[],
+    public operations: Operation<any>[],
+  ) {}
+
+  get(): number {
+    // Implement
+    return -1;
+  }
+}
+
+interface IGetAverageLinesPerFileMetric extends NullaryGet<number> {}
+
+class GetAverageLinesPerFileMetric implements IGetAverageLinesPerFileMetric {
+  constructor(
+    public options: Options,
+    public rules: string[],
+    public args: Argument[],
+    public operations: Operation<any>[],
+  ) {}
+
+  get(): number {
+    // Implement
+    return -1;
+  }
+}
+
+// ------------------------------------------------------------
+
 interface IGeneralMetricsFunctions {
-  loc(): any;
-  totalLines(): any;
-  averageLocPerFile(): any;
-  averageLinesPerFile(): any;
+  loc(): IGetLocMetric;
+  totalLines(): IGetTotalLinesMetric;
+  averageLocPerFile(): IGetAverageLocPerFileMetric;
+  averageLinesPerFile(): IGetAverageLinesPerFileMetric;
 }
 
 interface INealFordMetricsFunctions {
@@ -29,20 +96,20 @@ class GeneralMetricsFunctions implements IGeneralMetricsFunctions {
     public operations: Operation<any>[],
   ) {}
 
-  loc(): any {
-    throw new Error('Method not implemented.');
+  loc(): IGetLocMetric {
+    return new GetLocMetric(this.options, this.rules, this.args, this.operations);
   }
 
-  totalLines(): any {
-    throw new Error('Method not implemented.');
+  totalLines(): IGetTotalLinesMetric {
+    return new GetTotalLinesMetric(this.options, this.rules, this.args, this.operations);
   }
 
-  averageLocPerFile(): any {
-    throw new Error('Method not implemented.');
+  averageLocPerFile(): IGetAverageLocPerFileMetric {
+    return new GetAverageLocPerFileMetric(this.options, this.rules, this.args, this.operations);
   }
 
-  averageLinesPerFile(): any {
-    throw new Error('Method not implemented.');
+  averageLinesPerFile(): IGetAverageLinesPerFileMetric {
+    return new GetAverageLinesPerFileMetric(this.options, this.rules, this.args, this.operations);
   }
 }
 
@@ -57,6 +124,7 @@ class NealFordMetricsFunctions implements INealFordMetricsFunctions {
   codePercentage(): any {
     throw new Error('Method not implemented.');
   }
+
   averageCodePercentage(): any {
     throw new Error('Method not implemented.');
   }
